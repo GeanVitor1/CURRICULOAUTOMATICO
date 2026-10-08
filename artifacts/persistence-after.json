@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-08T13:47:25.372Z",
+  "stage": "verify-after-process-restart",
+  "jobs": 183,
+  "runsRetained": true,
+  "noticesRetained": true,
+  "sourceOriginsRetained": true,
+  "applications": 0,
+  "externalRequests": 0
+}

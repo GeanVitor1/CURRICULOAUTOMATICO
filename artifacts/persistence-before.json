@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-10-08T13:47:24.279Z",
+  "stage": "capture-current-persisted-state",
+  "jobs": 183,
+  "runs": [
+    {
+      "at": "2026-10-08T12:38:49.908Z",
+      "id": "f995f220-8b60-44e7-ae72-c98206baee04",
+      "errors": [],
+      "status": "completed",
+      "message": "0 novas oportunidades, sem duplicações. 188 registros publicados consultados.",
+      "processed": 0,
+      "discovered": 0
+    },
+    {
+      "at": "2026-10-08T12:32:55.195Z",
+      "id": "05bc6e10-0b54-4d5e-92c8-e626f9becf75",
+      "errors": [],
+      "status": "completed",
+      "message": "183 novas oportunidades, sem duplicações. 188 registros publicados consultados.",
+      "processed": 0,
+      "discovered": 183
+    }
+  ],
+  "notices": [
+    {
+      "at": "2026-10-08T12:38:50.269Z",
+      "id": "7e6005f0-77b0-40a5-ac82-1af048d56aa3",
+      "read": false,
+      "title": "Busca finalizada",
+      "message": "0 novas oportunidades disponíveis para análise."
+    },
+    {
+      "at": "2026-10-08T12:33:01.203Z",
+      "id": "b7f1db38-6fa1-465c-a9e5-3935e292e4c3",
+      "read": false,
+      "title": "Busca finalizada",
+      "message": "183 novas oportunidades disponíveis para análise."
+    }
+  ],
+  "firstJob": {
+    "id": "c8ef9174-18c0-47d8-b5ec-b8ef9910deb4",
+    "title": "Software Engineer Intern (Summer 2027)",
+    "url": "https://job-boards.greenhouse.io/khanacademy/jobs/8250259",
+    "origin": {
+      "id": "khanacademy:8250259",
+      "url": "https://job-boards.greenhouse.io/khanacademy/jobs/8250259",
+      "source": "greenhouse"
+    }
+  },
+  "applications": 0
+}

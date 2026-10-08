@@ -1,0 +1,165 @@
+{
+  "checkedAt": "2026-10-08T12:29:42.590Z",
+  "note": "Consultas oficiais read-only, sem candidatura. Resultados refletem apenas os boards consultados; não há garantia de cobertura local.",
+  "sources": [
+    {
+      "type": "greenhouse",
+      "company": "Cloudflare",
+      "board": "cloudflare",
+      "sector": "Tecnologia",
+      "jobs": 426,
+      "example": {
+        "title": "Account Executive, FedCiv",
+        "url": "https://boards.greenhouse.io/cloudflare/jobs/7695702?gh_jid=7695702",
+        "origin": {
+          "source": "greenhouse",
+          "id": "cloudflare:7695702",
+          "url": "https://boards.greenhouse.io/cloudflare/jobs/7695702?gh_jid=7695702"
+        }
+      },
+      "automaticApplication": false,
+      "result": "success"
+    },
+    {
+      "type": "greenhouse",
+      "board": "warbyparker",
+      "result": "failed",
+      "error": "A fonte retornou HTTP 404: organização não encontrada."
+    },
+    {
+      "type": "lever",
+      "company": "Lalamove",
+      "board": "lalamove",
+      "sector": "Logística",
+      "jobs": 181,
+      "example": {
+        "title": "(Sr.) Legal & Compliance Associate",
+        "url": "https://jobs.lever.co/lalamove/7bda3069-d97c-4a69-bd06-091e1ec081a7",
+        "origin": {
+          "source": "lever",
+          "id": "lalamove:7bda3069-d97c-4a69-bd06-091e1ec081a7",
+          "url": "https://jobs.lever.co/lalamove/7bda3069-d97c-4a69-bd06-091e1ec081a7"
+        }
+      },
+      "automaticApplication": false,
+      "result": "success"
+    },
+    {
+      "type": "ashby",
+      "company": "Ashby",
+      "board": "Ashby",
+      "sector": "Serviços e tecnologia",
+      "jobs": 68,
+      "example": {
+        "title": "Engineering Manager - EU",
+        "url": "https://jobs.ashbyhq.com/Ashby/7458d4e9-da2e-47bd-98cb-adfda43d42b2",
+        "origin": {
+          "source": "ashby",
+          "id": "Ashby:7458d4e9-da2e-47bd-98cb-adfda43d42b2",
+          "url": "https://jobs.ashbyhq.com/Ashby/7458d4e9-da2e-47bd-98cb-adfda43d42b2"
+        }
+      },
+      "automaticApplication": false,
+      "result": "success"
+    },
+    {
+      "type": "jobicy",
+      "company": "Jobicy",
+      "board": "public",
+      "sector": "Várias áreas · remoto",
+      "jobs": 697,
+      "example": {
+        "title": "Account Development Representative - France",
+        "url": "https://jobicy.com/jobs/153811-account-development-representative-france-2",
+        "origin": {
+          "source": "jobicy",
+          "id": "153811",
+          "url": "https://jobicy.com/jobs/153811-account-development-representative-france-2"
+        }
+      },
+      "automaticApplication": false,
+      "result": "success"
+    }
+  ],
+  "acceptance": {
+    "administrative": {
+      "query": "Auxiliar administrativo",
+      "modality": "Presencial",
+      "count": 0,
+      "examples": [],
+      "coverage": "Sem correspondência exata nas fontes consultadas. É necessário ampliar fontes locais verificadas; zero vagas não é uma falha que justifique gerar dados."
+    },
+    "developer": {
+      "query": "Desenvolvedor .NET",
+      "count": 12,
+      "juniorCount": 0,
+      "examples": [
+        {
+          "title": "Senior Software Engineer, Zero Trust Client",
+          "company": "Cloudflare",
+          "location": "Hybrid",
+          "modality": "Híbrido",
+          "level": "Sênior",
+          "url": "https://boards.greenhouse.io/cloudflare/jobs/8204256?gh_jid=8204256",
+          "origin": {
+            "source": "greenhouse",
+            "id": "cloudflare:8204256",
+            "url": "https://boards.greenhouse.io/cloudflare/jobs/8204256?gh_jid=8204256"
+          }
+        },
+        {
+          "title": "Senior Backend Engineer (Core Team)",
+          "company": "Playson",
+          "location": "Europe,  Ukraine",
+          "modality": "Remoto",
+          "level": "Sênior",
+          "url": "https://jobicy.com/jobs/152752-senior-backend-engineer-core-team",
+          "origin": {
+            "source": "jobicy",
+            "id": "152752",
+            "url": "https://jobicy.com/jobs/152752-senior-backend-engineer-core-team"
+          }
+        },
+        {
+          "title": "Software Developer II",
+          "company": "Cision",
+          "location": "Canada",
+          "modality": "Remoto",
+          "level": "Sênior",
+          "url": "https://jobicy.com/jobs/145141-software-developer-ii",
+          "origin": {
+            "source": "jobicy",
+            "id": "145141",
+            "url": "https://jobicy.com/jobs/145141-software-developer-ii"
+          }
+        },
+        {
+          "title": "Staff Software Developer",
+          "company": "Cision",
+          "location": "Canada",
+          "modality": "Remoto",
+          "level": "Sênior",
+          "url": "https://jobicy.com/jobs/145140-staff-software-developer",
+          "origin": {
+            "source": "jobicy",
+            "id": "145140",
+            "url": "https://jobicy.com/jobs/145140-staff-software-developer"
+          }
+        },
+        {
+          "title": "Senior Backend Engineer",
+          "company": "Eight Sleep",
+          "location": "Canada,  USA",
+          "modality": "Remoto",
+          "level": "Sênior",
+          "url": "https://jobicy.com/jobs/154740-senior-backend-engineer-9",
+          "origin": {
+            "source": "jobicy",
+            "id": "154740",
+            "url": "https://jobicy.com/jobs/154740-senior-backend-engineer-9"
+          }
+        }
+      ]
+    }
+  }
+}

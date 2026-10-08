@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-08T12:46:29.122Z",
+  "transport": "HTTP runtime API",
+  "externalApplications": 0,
+  "unauthenticatedRegistryStatus": 401,
+  "enqueue": {
+    "httpStatus": 200,
+    "id": "182f7c08-1bfa-4ed8-bcf9-e34d2f07aaa8",
+    "status": "queued"
+  },
+  "run": {
+    "at": "2026-10-08T12:46:30.827Z",
+    "id": "182f7c08-1bfa-4ed8-bcf9-e34d2f07aaa8",
+    "errors": [],
+    "status": "completed",
+    "message": "587 novas oportunidades, sem duplicações. 607 registros publicados consultados.",
+    "processed": 0,
+    "discovered": 587
+  },
+  "sources": [
+    {
+      "company": "Lalamove",
+      "status": "181 vagas publicadas · cache verificado",
+      "lastError": null
+    },
+    {
+      "company": "Cloudflare",
+      "status": "426 vagas publicadas · consulta oficial",
+      "lastError": null
+    }
+  ],
+  "administrative": {
+    "query": "Auxiliar administrativo",
+    "modality": "Presencial",
+    "total": 0,
+    "examples": []
+  },
+  "developer": {
+    "query": "Desenvolvedor .NET",
+    "total": 0,
+    "examples": []
+  },
+  "juniorDeveloperCount": 0,
+  "secondAccountIsolated": true,
+  "pagination": {
+    "page": 2,
+    "pageSize": 1,
+    "items": 1
+  },
+  "temporaryAccountsDeleted": true
+}
