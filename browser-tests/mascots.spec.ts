@@ -333,3 +333,22 @@ test("busca em segundo plano troca o GIF pela pose do resultado", async ({
     status.getByRole("button", { name: "Conferir fontes" }),
   ).toBeVisible();
 });
+
+test("próxima ação mantém o mascote visível no celular", async ({
+  page,
+}, testInfo) => {
+  const w = workspace();
+  w.filters.titles = ["Atendimento"];
+  await account(page, w);
+  await page.setViewportSize({ width: 375, height: 900 });
+  await page.goto("/app");
+  await loaded(page.locator('.next-action-mascot[data-mascot="writing"]'));
+  await expect(
+    page.getByRole("button", { name: "Preparar meu currículo", exact: true }),
+  ).toBeVisible();
+  await noOverflow(page);
+  await page.screenshot({
+    path: testInfo.outputPath("proxima-acao-celular.png"),
+    animations: "disabled",
+  });
+});

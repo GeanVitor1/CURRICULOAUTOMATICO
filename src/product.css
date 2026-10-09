@@ -915,7 +915,17 @@
     gap: 0;
   }
   .next-action-art {
-    display: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    margin-top: 22px;
+    padding: 18px 0 0;
+    gap: 14px;
+  }
+  .next-action-mascot {
+    width: 72px;
   }
   .next-action-copy h2 {
     font-size: 23px;
