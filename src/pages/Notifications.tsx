@@ -44,6 +44,7 @@ export default function Notifications() {
           ))
         ) : (
           <Empty
+            mascot="considering"
             title="Tudo tranquilo por aqui"
             description="Quando uma busca terminar ou uma candidatura mudar de etapa, você acompanha a atualização neste espaço."
             icon={<Bell size={27} />}

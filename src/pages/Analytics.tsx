@@ -84,6 +84,7 @@ export default function Analytics() {
       {!sent.length ? (
         <div className="panel">
           <Empty
+            mascot="idea"
             title="Sua estratégia ganha clareza com o tempo"
             description="Confirme envios e registre respostas. Assim você consegue comparar fontes e versões do currículo usando sua própria experiência."
             icon={<BarChart3 size={28} />}

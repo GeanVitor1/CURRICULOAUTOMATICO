@@ -24,6 +24,7 @@ import {
   PageHead,
   Score,
   StatusBadge,
+  Mascot,
 } from "../components";
 import { date, useAction, useApp } from "../lib";
 import type { Application, Status } from "../../shared/types";
@@ -276,6 +277,7 @@ export default function Applications() {
         <div className="panel">
           <Empty
             title="Uma jornada para acompanhar"
+            mascot="handing-resume"
             description="Prepare uma candidatura a partir de uma vaga ou registre uma candidatura feita fora da EmpreGatos."
             icon={<BriefcaseBusiness size={28} />}
             action={
@@ -293,6 +295,17 @@ export default function Applications() {
       >
         {current && job && (
           <>
+            {current.status === "Contratada" && (
+              <div className="hired-celebration">
+                <Mascot className="hired-mascot" variant="employed" />
+                <div>
+                  <h3>Um novo capítulo na sua carreira!</h3>
+                  <p>
+                    Você registrou sua contratação. Parabéns por essa conquista.
+                  </p>
+                </div>
+              </div>
+            )}
             <div className="detail-top">
               <CompanyLogo name={job.company} />
               <div>

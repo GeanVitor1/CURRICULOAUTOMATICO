@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sparkles, Check } from "lucide-react";
-import { Button } from "./components";
+import { Button, Mascot } from "./components";
 import { useAction, useApp } from "./lib";
 import type { Resume } from "../shared/types";
 
@@ -14,9 +14,12 @@ export default function ResumeTargets({ resume }: { resume: Resume }) {
   );
   return (
     <section className="resume-targets" aria-label="Tipos de vaga sugeridos">
-      <h3>
-        <Sparkles size={17} /> Para quais vagas este currículo faz sentido?
-      </h3>
+      <div className="resume-target-heading">
+        <Mascot className="target-mascot" variant="idea" decorative />
+        <h3>
+          <Sparkles size={17} /> Para quais vagas este currículo faz sentido?
+        </h3>
+      </div>
       <p>
         {resume.targetsMessage ||
           "Analise esta versão para ver sugestões de cargos baseadas no currículo."}

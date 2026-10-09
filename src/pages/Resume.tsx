@@ -8,7 +8,15 @@ import {
   UserRound,
   Sparkles,
 } from "lucide-react";
-import { Badge, Button, Empty, Modal, PageHead, Panel } from "../components";
+import {
+  Badge,
+  Button,
+  Empty,
+  Mascot,
+  Modal,
+  PageHead,
+  Panel,
+} from "../components";
 import { date, useAction, useApp } from "../lib";
 import type { Resume as ResumeType } from "../../shared/types";
 import ResumeBuilder from "../ResumeBuilder";
@@ -68,7 +76,18 @@ export default function Resume() {
                 );
               }}
             >
-              <Upload size={29} className="upload-icon" />
+              <Mascot
+                className="upload-mascot"
+                variant={
+                  a.isError
+                    ? "surprised"
+                    : a.isPending
+                      ? "thinking"
+                      : "handing-resume"
+                }
+                animated={a.isPending}
+                eager
+              />
               <h3>Seu próximo passo começa pelo currículo</h3>
               <p>
                 Escolha um arquivo para identificar suas competências e
@@ -185,6 +204,7 @@ export default function Resume() {
               ))
             ) : (
               <Empty
+                mascot="writing"
                 title="Sua história ainda não chegou aqui"
                 description="Envie o currículo e mantenha as versões que melhor representam sua experiência."
                 icon={<FileText size={27} />}

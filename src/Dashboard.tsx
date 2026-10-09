@@ -22,6 +22,7 @@ import {
   Panel,
   PageHead,
   StatusBadge,
+  Mascot,
 } from "./components";
 import { api, useApp, useAction, date, isToday, submitted } from "./lib";
 import type { Job } from "../shared/types";
@@ -58,7 +59,7 @@ export default function Dashboard() {
         text: "Escolha os cargos e os lugares que fazem sentido para você.",
         label: "Definir preferências",
         page: "onboarding",
-        icon: SlidersHorizontal,
+        mascot: "idea" as const,
       }
     : !w.resumes.length
       ? {
@@ -66,7 +67,7 @@ export default function Dashboard() {
           text: "Envie seu currículo ou crie um com perguntas simples. Experiências informais também contam.",
           label: "Preparar meu currículo",
           page: "curriculo",
-          icon: FileText,
+          mascot: "writing" as const,
         }
       : !sources.length
         ? {
@@ -74,7 +75,7 @@ export default function Dashboard() {
             text: "Conecte um mural público de uma empresa para começar a buscar oportunidades reais.",
             label: "Conectar uma fonte",
             page: "configuracoes",
-            icon: Plug,
+            mascot: "thinking" as const,
           }
         : pending.length
           ? {
@@ -82,14 +83,14 @@ export default function Dashboard() {
               text: "Revise as oportunidades e confira o próximo passo de cada candidatura.",
               label: "Revisar candidaturas",
               page: "candidaturas",
-              icon: BriefcaseBusiness,
+              mascot: "handing-resume" as const,
             }
           : {
               title: "Tudo pronto para seu próximo passo",
               text: "Faça uma nova busca ou explore as oportunidades que você já encontrou.",
               label: "Explorar oportunidades",
               page: "vagas",
-              icon: Search,
+              mascot: "idea" as const,
             };
   const name = w.profile.name.trim().split(" ")[0];
   const latestRun = w.runs[0];
@@ -147,8 +148,8 @@ export default function Dashboard() {
             <ArrowRight size={15} />
           </Button>
         </div>
-        <div className="next-action-art" aria-hidden="true">
-          <next.icon size={48} strokeWidth={1} />
+        <div className="next-action-art">
+          <Mascot className="next-action-mascot" variant={next.mascot} />
           <span>Um passo de cada vez.</span>
         </div>
       </section>
@@ -175,6 +176,8 @@ export default function Dashboard() {
                 ))
             ) : (
               <Empty
+                mascot={recommendations.isError ? "surprised" : "thinking"}
+                animated={recommendations.isPending}
                 title={
                   jobs.length
                     ? "Vamos ajustar a direção?"
@@ -240,6 +243,7 @@ export default function Dashboard() {
                 })
             ) : (
               <Empty
+                mascot="handing-resume"
                 title="Cada candidatura tem uma história"
                 description="Salve uma oportunidade e prepare sua candidatura. Você poderá acompanhar os próximos passos aqui."
                 icon={<BriefcaseBusiness size={26} />}

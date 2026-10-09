@@ -227,7 +227,7 @@ export default function Landing() {
             <motion.div
               style={reduced ? undefined : { y: mascotY, x: mascotX }}
             >
-              <Mascot className="hero-mascot" eager />
+              <Mascot className="hero-mascot" variant="handing-resume" eager />
             </motion.div>
             <motion.div
               className="hero-sticker"
@@ -331,6 +331,19 @@ export default function Landing() {
             >
               <div className="preview-label">
                 <span className="live-dot on" /> PRÉVIA ILUSTRATIVA DA INTERFACE
+              </div>
+              <div className="preview-companion">
+                <Mascot
+                  className="preview-mascot"
+                  variant={
+                    step === 0
+                      ? "writing"
+                      : step === 1
+                        ? "considering"
+                        : "handing-resume"
+                  }
+                />
+                <span>Seu companheiro em cada etapa.</span>
               </div>
               <div className="preview-sequence" aria-hidden="true">
                 {steps.map((s, i) => (
@@ -736,7 +749,7 @@ export default function Landing() {
               Vamos encontrar seu próximo emprego <ArrowUpRight size={18} />
             </a>
           </div>
-          <Mascot className="cta-mascot" />
+          <Mascot className="cta-mascot" variant="idea" />
         </motion.section>
       </main>
       <footer className="landing-footer landing-width">

@@ -2,6 +2,8 @@
 
 Uma plataforma para preparar seu currículo, consultar oportunidades reais e acompanhar candidaturas. Atende diferentes áreas profissionais, inclusive primeiro emprego e experiências informais. A imagem original do mascote é usada na marca e no ícone da aba.
 
+O mascote também acompanha o cadastro, o guia, a escrita do currículo, as buscas e as candidaturas com poses diferentes. As artes e seus usos estão documentados em [Video/README.md](Video/README.md).
+
 ## Executar
 
 Requisitos: Node.js 22.12+ e npm.

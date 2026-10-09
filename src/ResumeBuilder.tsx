@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Download, FileText } from "lucide-react";
-import { Button, Field } from "./components";
+import { Button, Field, Mascot } from "./components";
 import { api, split, useAction, useApp } from "./lib";
 import "./product.css";
 
@@ -133,6 +133,7 @@ export default function ResumeBuilder({
   if (ready)
     return (
       <section className="wizard-shell builder-success">
+        <Mascot className="success-mascot" variant="handing-resume" eager />
         <span className="success-mark">
           <Check size={28} />
         </span>
@@ -179,6 +180,22 @@ export default function ResumeBuilder({
         ))}
       </div>
       <div className="wizard-heading">
+        <Mascot
+          className="wizard-mascot"
+          variant={
+            error
+              ? "surprised"
+              : finalizing
+                ? "thinking"
+                : step === questions.length - 1
+                  ? "writing-right"
+                  : step === 0
+                    ? "writing-to-you"
+                    : "writing"
+          }
+          animated={finalizing}
+          eager
+        />
         <span className="eyebrow">
           ETAPA {String(step + 1).padStart(2, "0")} /{" "}
           {String(questions.length).padStart(2, "0")}

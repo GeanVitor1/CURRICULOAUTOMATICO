@@ -286,6 +286,8 @@ export default function Jobs() {
         <div className="panel loading-reveal" role="status">
           <Empty
             title="Preparando suas oportunidades"
+            mascot="thinking"
+            animated
             description="Estamos consultando os registros da sua busca."
             icon={<Search size={28} />}
           />
@@ -294,6 +296,7 @@ export default function Jobs() {
         <div className="panel">
           <Empty
             title="Não foi possível carregar as vagas"
+            mascot="surprised"
             description={result.error.message}
             action={
               <Button onClick={() => result.refetch()}>Tentar novamente</Button>
@@ -317,6 +320,7 @@ export default function Jobs() {
       ) : (
         <div className="panel">
           <Empty
+            mascot={search ? "considering" : "thinking"}
             title={
               search
                 ? "Nenhuma conexão com essa busca"

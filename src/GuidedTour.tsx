@@ -3,6 +3,16 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, BookOpen, Check, X } from "lucide-react";
 import { Button, Mascot, Modal } from "./components";
 import { useAction, useApp } from "./lib";
+import type { MascotVariant } from "./mascots";
+
+const guideMascots: MascotVariant[] = [
+  "writing",
+  "writing-to-you",
+  "thinking",
+  "considering",
+  "handing-resume",
+  "idea",
+];
 
 export const guideSteps = [
   {
@@ -97,7 +107,7 @@ export default function GuidedTour({
         }}
       >
         <div className="guide-welcome">
-          <Mascot className="guide-mascot" />
+          <Mascot className="guide-mascot" variant="writing-to-you" />
           <div>
             <span className="eyebrow">SEU COMPANHEIRO DE BUSCA</span>
             <h3>Um passo de cada vez.</h3>
@@ -154,7 +164,14 @@ export default function GuidedTour({
                 <X size={16} />
               </button>
             </div>
-            <h2>{current.title}</h2>
+            <div className="guided-step-heading">
+              <Mascot
+                className="guided-step-mascot"
+                variant={guideMascots[step]}
+                decorative
+              />
+              <h2>{current.title}</h2>
+            </div>
             <p>{current.text}</p>
             <div className="guided-tip">
               <Check size={14} />

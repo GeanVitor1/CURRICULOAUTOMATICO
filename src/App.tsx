@@ -75,9 +75,8 @@ function Privacy() {
         ativar a análise externa, serão enviados apenas dados profissionais
         necessários, com redução de contatos e identificadores pessoais. A
         integração usa Gemini ou o provedor escolhido por você. Os provedores
-        podem ter políticas diferentes de retenção e uso para
-        melhoria. Leia a política exibida nas configurações e só ative após
-        concordar.
+        podem ter políticas diferentes de retenção e uso para melhoria. Leia a
+        política exibida nas configurações e só ative após concordar.
       </p>
       <h2>Exportação e exclusão</h2>
       <p>
@@ -129,7 +128,11 @@ function Auth({
           <br />
           começa com você.
         </h2>
-        <Mascot className="auth-mascot" />
+        <Mascot
+          className="auth-mascot"
+          variant={register ? "idea" : "writing-to-you"}
+          eager
+        />
         <p>
           Do primeiro emprego ao próximo desafio.
           <br />
@@ -137,6 +140,10 @@ function Auth({
         </p>
       </div>
       <div className="auth-card">
+        <Mascot
+          className="auth-card-mascot"
+          variant={register ? "idea" : "writing-to-you"}
+        />
         <div className="eyebrow">SEU PRÓXIMO PASSO</div>
         <h1>
           {register
@@ -347,6 +354,7 @@ export default function App() {
         <Privacy />
       ) : !["/login", "/register", "/app"].includes(route) ? (
         <div className="error-page">
+          <Mascot className="page-state-mascot" variant="surprised" eager />
           <h1>Página não encontrada</h1>
           <a className="button primary" href="/">
             Voltar ao início
@@ -354,13 +362,18 @@ export default function App() {
         </div>
       ) : me.isPending ? (
         <div className="app-loading">
-          <Logo />
+          <Mascot
+            className="page-state-mascot"
+            variant="thinking"
+            animated
+            eager
+          />
           <span>Preparando seu espaço…</span>
         </div>
       ) : me.isError &&
         (me.error as Error & { status?: number }).status !== 401 ? (
         <div className="error-page">
-          <Logo />
+          <Mascot className="page-state-mascot" variant="surprised" eager />
           <h2>Não conseguimos verificar sua sessão agora.</h2>
           <p>
             O serviço pode estar reiniciando. Seus dados continuam na sua conta.
@@ -564,7 +577,11 @@ export default function App() {
                 </div>
               ) : workspace.error ? (
                 <div className="error-page">
-                  <AlertCircle />
+                  <Mascot
+                    className="page-state-mascot"
+                    variant="surprised"
+                    eager
+                  />
                   <h2>Não conseguimos carregar seu espaço.</h2>
                   <p>{workspace.error.message}</p>
                   <Button onClick={() => workspace.refetch()}>

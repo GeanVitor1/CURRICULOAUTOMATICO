@@ -21,10 +21,13 @@ import {
   AlertCircle,
   BriefcaseBusiness,
   Clock3,
+  Pause,
+  Play,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useAction, useApp, salary, date } from "./lib";
 import type { Job } from "../shared/types";
+import { animatedThinking, mascots, type MascotVariant } from "./mascots";
 export function Logo({ small = false }: { small?: boolean }) {
   return (
     <span className={`logo ${small ? "small" : ""}`}>
@@ -41,20 +44,54 @@ export function Logo({ small = false }: { small?: boolean }) {
 export function Mascot({
   className = "",
   eager = false,
+  variant = "welcome",
+  animated = false,
+  decorative = false,
 }: {
   className?: string;
   eager?: boolean;
+  variant?: MascotVariant;
+  animated?: boolean;
+  decorative?: boolean;
 }) {
-  return (
+  const reduced = useReducedMotion();
+  const [paused, setPaused] = useState(false);
+  const canAnimate = animated && reduced === false;
+  const playing = canAnimate && !paused;
+  const asset = playing ? animatedThinking : mascots[variant];
+  const size = playing ? animatedThinking.size : 1254;
+  const illustration = (
     <img
-      className={`mascot ${className}`}
-      src="/mascot-original.jpeg"
-      alt="Mascote da EmpreGatos: gato preto em pixel art, de terno e gravata azul, com uma pasta"
-      width={1254}
-      height={1254}
+      className={canAnimate ? "mascot-image" : `mascot ${className}`}
+      data-mascot={variant}
+      src={asset.src}
+      alt={decorative ? "" : asset.alt}
+      aria-hidden={decorative || undefined}
+      width={size}
+      height={size}
       loading={eager ? "eager" : "lazy"}
+      fetchPriority={eager ? "high" : undefined}
       decoding="async"
     />
+  );
+  if (!canAnimate) return illustration;
+  return (
+    <span className={`mascot-animation ${className}`}>
+      {illustration}
+      <button
+        type="button"
+        className="mascot-motion-toggle"
+        aria-label={
+          paused
+            ? "Reproduzir animação do mascote"
+            : "Pausar animação do mascote"
+        }
+        title={paused ? "Reproduzir animação" : "Pausar animação"}
+        onClick={() => setPaused((value) => !value)}
+      >
+        {paused ? <Play size={12} /> : <Pause size={12} />}
+      </button>
+    </span>
   );
 }
 export function DiscoveryStatus() {
@@ -68,9 +105,20 @@ export function DiscoveryStatus() {
       className={`discovery-status ${run.status}`}
       role="status"
     >
-      <span className={working ? "search-pulse" : ""}>
-        <Radar size={19} />
-      </span>
+      <Mascot
+        className="discovery-mascot"
+        variant={
+          working
+            ? "thinking"
+            : run.status === "failed"
+              ? "surprised"
+              : run.status === "partial"
+                ? "considering"
+                : "idea"
+        }
+        animated={working}
+        eager
+      />
       <div>
         <strong>
           {run.status === "queued"
@@ -190,16 +238,24 @@ export function Empty({
   title,
   description,
   action,
-  icon = <Radar size={27} />,
+  mascot = "thinking",
+  animated = false,
 }: {
   title: string;
   description: string;
   action?: ReactNode;
   icon?: ReactNode;
+  mascot?: MascotVariant;
+  animated?: boolean;
 }) {
   return (
     <div className="empty">
-      <Mascot className="empty-mascot" />
+      <Mascot
+        className="empty-mascot"
+        variant={mascot}
+        animated={animated}
+        eager={animated}
+      />
       <h3>{title}</h3>
       <p>{description}</p>
       {action}

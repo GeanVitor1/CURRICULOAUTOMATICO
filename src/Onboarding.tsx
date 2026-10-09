@@ -10,7 +10,8 @@ import {
   Upload,
   WandSparkles,
 } from "lucide-react";
-import { Button, Field } from "./components";
+import { Button, Field, Mascot } from "./components";
+import type { MascotVariant } from "./mascots";
 import { api, useAction, useApp } from "./lib";
 import type { VerifiedOrganization } from "../server/source-registry";
 import ResumeBuilder from "./ResumeBuilder";
@@ -51,6 +52,14 @@ const steps = [
     "Vamos conferir suas preferências?",
     "Tudo pode ser ajustado depois. Esse é só o começo.",
   ],
+];
+const stepMascots: MascotVariant[] = [
+  "idea",
+  "thinking",
+  "handing-resume",
+  "writing-to-you",
+  "considering",
+  "writing-right",
 ];
 function Pick({
   options,
@@ -274,6 +283,18 @@ export default function Onboarding({
         ))}
       </div>
       <div className="wizard-heading">
+        <Mascot
+          className="wizard-mascot"
+          variant={
+            error
+              ? "surprised"
+              : action.isPending || finishing
+                ? "thinking"
+                : stepMascots[step]
+          }
+          animated={action.isPending || finishing}
+          eager
+        />
         <span className="eyebrow">
           VAMOS NOS CONHECER · {String(step + 1).padStart(2, "0")} / 06
         </span>
