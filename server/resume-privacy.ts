@@ -25,6 +25,7 @@ export function minimizeResume(text: string): string {
     .replace(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi, "[contato removido]")
     .replace(/https?:\/\/\S+|www\.\S+/gi, "[link removido]")
     .replace(/\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/g, "[documento removido]")
+    .replace(/\b(?:55)?\d{10,11}\b/g, "[telefone removido]")
     .replace(
       /(?:\+55\s*)?(?:\(?\d{2}\)?[\s.-]*)?\d{4,5}[\s.-]\d{4}\b/g,
       "[telefone removido]",

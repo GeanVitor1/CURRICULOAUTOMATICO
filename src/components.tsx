@@ -2,6 +2,7 @@ import {
   Children,
   cloneElement,
   isValidElement,
+  useEffect,
   useId,
   useState,
   type ReactNode,
@@ -21,8 +22,6 @@ import {
   AlertCircle,
   BriefcaseBusiness,
   Clock3,
-  Pause,
-  Play,
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useAction, useApp, salary, date } from "./lib";
@@ -55,11 +54,9 @@ export function Mascot({
   decorative?: boolean;
 }) {
   const reduced = useReducedMotion();
-  const [paused, setPaused] = useState(false);
   const canAnimate = animated && reduced === false;
-  const playing = canAnimate && !paused;
-  const asset = playing ? animatedThinking : mascots[variant];
-  const size = playing ? animatedThinking.size : 1254;
+  const asset = canAnimate ? animatedThinking : mascots[variant];
+  const size = canAnimate ? animatedThinking.size : 1254;
   const illustration = (
     <img
       className={canAnimate ? "mascot-image" : `mascot ${className}`}
@@ -78,19 +75,6 @@ export function Mascot({
   return (
     <span className={`mascot-animation ${className}`}>
       {illustration}
-      <button
-        type="button"
-        className="mascot-motion-toggle"
-        aria-label={
-          paused
-            ? "Reproduzir animação do mascote"
-            : "Pausar animação do mascote"
-        }
-        title={paused ? "Reproduzir animação" : "Pausar animação"}
-        onClick={() => setPaused((value) => !value)}
-      >
-        {paused ? <Play size={12} /> : <Pause size={12} />}
-      </button>
     </span>
   );
 }
@@ -124,20 +108,22 @@ export function DiscoveryStatus() {
           {run.status === "queued"
             ? "Sua busca está na fila"
             : run.status === "running"
-              ? "Estamos consultando suas fontes"
+              ? "Estamos buscando nos sites escolhidos"
               : run.status === "failed"
                 ? "A busca precisa de atenção"
                 : run.status === "partial"
-                  ? "Busca concluída com uma fonte pendente"
+                  ? "Busca concluída com um site pendente"
                   : "Busca concluída"}
         </strong>
-        <p>{run.message}</p>
+        <p>
+          {!working && run.status !== "failed" && w.jobCounts
+            ? `${w.jobCounts.total} vagas atendem às suas preferências.`
+            : run.message}
+        </p>
         {run.errors.length > 0 && <p>{run.errors.join(" · ")}</p>}
       </div>
       {run.errors.length > 0 && (
-        <Button onClick={() => navigate("configuracoes")}>
-          Conferir fontes
-        </Button>
+        <Button onClick={() => navigate("preferencias")}>Conferir sites</Button>
       )}
     </motion.div>
   );
@@ -165,7 +151,7 @@ export function Badge({
 export function StatusBadge({ status }: { status: string }) {
   const tone = /entrevista|Proposta|Contratada/.test(status)
     ? "green"
-    : /Enviada|resposta/.test(status)
+    : /Enviada|Enviando|resposta/.test(status)
       ? "blue"
       : /Rejeitada|Falha/.test(status)
         ? "red"
@@ -320,18 +306,57 @@ export function Field({
   help?: string;
 }) {
   const id = useId();
+  const controls = ["input", "select", "textarea"];
+  const findInput = (nodes: ReactNode): ReactElement<any> | undefined => {
+    for (const child of Children.toArray(nodes)) {
+      if (!isValidElement(child)) continue;
+      const element = child as ReactElement<any>;
+      if (controls.includes(String(element.type))) return element;
+      // Native wrappers are transparent; custom components can contain groups.
+      if (typeof element.type === "string") {
+        const nested = findInput(element.props.children);
+        if (nested) return nested;
+      }
+    }
+  };
+  const input = findInput(children);
+  const inputId = input?.props.id || id;
+  const labelControls = (nodes: ReactNode): ReactNode =>
+    Children.map(nodes, (child) => {
+      if (!isValidElement(child)) return child;
+      const element = child as ReactElement<any>;
+      if (element === input || (input && element.props === input.props)) {
+        return cloneElement(element, {
+          id: inputId,
+          "aria-labelledby": [element.props["aria-labelledby"], `${id}-label`]
+            .filter(Boolean)
+            .join(" "),
+          "aria-describedby":
+            [element.props["aria-describedby"], help ? `${id}-help` : undefined]
+              .filter(Boolean)
+              .join(" ") || undefined,
+        });
+      }
+      return typeof element.type === "string" && element.props.children
+        ? cloneElement(element, {
+            children: labelControls(element.props.children),
+          })
+        : child;
+    });
   return (
-    <div className="field">
-      <span id={id}>{label}</span>
-      {Children.map(children, (child) =>
-        isValidElement(child) &&
-        ["input", "select", "textarea"].includes(String(child.type))
-          ? cloneElement(child as ReactElement<any>, {
-              "aria-labelledby": id,
-              ...(help ? { "aria-describedby": `${id}-help` } : {}),
-            })
-          : child,
+    <div
+      className="field"
+      role={!input ? "group" : undefined}
+      aria-labelledby={!input ? `${id}-label` : undefined}
+    >
+      {input ? (
+        <label id={`${id}-label`} htmlFor={inputId}>
+          {label}
+        </label>
+      ) : (
+        <span id={`${id}-label`}>{label}</span>
       )}
+      {labelControls(children)}
       {help && <small id={`${id}-help`}>{help}</small>}
     </div>
   );
@@ -343,6 +368,7 @@ export function Modal({
   onOpenChange,
   children,
   wide = false,
+  busy = false,
 }: {
   title: string;
   description?: string;
@@ -350,12 +376,21 @@ export function Modal({
   onOpenChange: (v: boolean) => void;
   children: ReactNode;
   wide?: boolean;
+  busy?: boolean;
 }) {
   return (
-    <RDialog.Root open={open} onOpenChange={onOpenChange}>
+    <RDialog.Root
+      open={open}
+      onOpenChange={(next) => {
+        if (!busy || next) onOpenChange(next);
+      }}
+    >
       <RDialog.Portal>
         <RDialog.Overlay className="modal-overlay" />
-        <RDialog.Content className={`modal ${wide ? "wide" : ""}`}>
+        <RDialog.Content
+          className={`modal ${wide ? "wide" : ""}`}
+          aria-busy={busy}
+        >
           <div className="modal-heading">
             <div>
               <RDialog.Title>{title}</RDialog.Title>
@@ -363,7 +398,11 @@ export function Modal({
                 {description || "Revise as informações abaixo."}
               </RDialog.Description>
             </div>
-            <RDialog.Close className="icon-button" aria-label="Fechar">
+            <RDialog.Close
+              className="icon-button"
+              aria-label="Fechar"
+              disabled={busy}
+            >
               <X size={19} />
             </RDialog.Close>
           </div>
@@ -413,6 +452,8 @@ export function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
         </div>
         <button
           className={`icon-button ${job.saved ? "selected" : ""}`}
+          disabled={a.isPending}
+          aria-pressed={job.saved}
           aria-label={
             job.saved
               ? `Remover ${job.title} dos salvos`
@@ -484,9 +525,10 @@ export function JobDetail({
   job: Job | null;
   close: () => void;
 }) {
-  const { w, demo, toast } = useApp();
+  const { w, demo, toast, navigate } = useApp();
   const a = useAction();
   const [resumeId, setResumeId] = useState("");
+  useEffect(() => setResumeId(""), [job?.id]);
   const application = job
     ? w.applications.find((a) => a.jobId === job.id)
     : undefined;
@@ -551,10 +593,13 @@ export function JobDetail({
                     body: { jobId: job.id, resumeId: resumeId || undefined },
                   },
                   {
-                    onSuccess: () =>
+                    onSuccess: () => {
                       toast(
                         "Candidatura preparada. Finalize o envio no processo oficial.",
-                      ),
+                      );
+                      close();
+                      navigate("candidaturas");
+                    },
                   },
                 )
               }
@@ -574,6 +619,8 @@ export function JobDetail({
               </a>
             )}
             <Button
+              disabled={a.isPending}
+              aria-pressed={job.saved}
               onClick={() =>
                 a.mutate({
                   path: `/jobs/${job.id}`,

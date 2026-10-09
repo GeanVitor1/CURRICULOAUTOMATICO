@@ -1,0 +1,126 @@
+{
+  "before": [
+    {
+      "width": 1440,
+      "frame": 0,
+      "dark_rows": 28,
+      "boundary_color": [
+        71,
+        86,
+        78
+      ]
+    },
+    {
+      "width": 1440,
+      "frame": 1,
+      "dark_rows": 1,
+      "boundary_color": [
+        162,
+        172,
+        164
+      ]
+    },
+    {
+      "width": 1440,
+      "frame": 2,
+      "dark_rows": 1,
+      "boundary_color": [
+        210,
+        215,
+        209
+      ]
+    },
+    {
+      "width": 375,
+      "frame": 0,
+      "dark_rows": 28,
+      "boundary_color": [
+        87,
+        102,
+        93
+      ]
+    },
+    {
+      "width": 375,
+      "frame": 1,
+      "dark_rows": 1,
+      "boundary_color": [
+        144,
+        154,
+        147
+      ]
+    },
+    {
+      "width": 375,
+      "frame": 2,
+      "dark_rows": 1,
+      "boundary_color": [
+        183,
+        190,
+        183
+      ]
+    }
+  ],
+  "after": [
+    {
+      "width": 1440,
+      "frame": 0,
+      "dark_rows": 0,
+      "boundary_color": [
+        250,
+        251,
+        248
+      ]
+    },
+    {
+      "width": 1440,
+      "frame": 1,
+      "dark_rows": 0,
+      "boundary_color": [
+        250,
+        251,
+        248
+      ]
+    },
+    {
+      "width": 1440,
+      "frame": 2,
+      "dark_rows": 0,
+      "boundary_color": [
+        250,
+        251,
+        248
+      ]
+    },
+    {
+      "width": 375,
+      "frame": 0,
+      "dark_rows": 0,
+      "boundary_color": [
+        250,
+        251,
+        248
+      ]
+    },
+    {
+      "width": 375,
+      "frame": 1,
+      "dark_rows": 0,
+      "boundary_color": [
+        250,
+        251,
+        248
+      ]
+    },
+    {
+      "width": 375,
+      "frame": 2,
+      "dark_rows": 0,
+      "boundary_color": [
+        250,
+        251,
+        248
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+﻿[
+  {
+    "width": 1440,
+    "frame": 0,
+    "initial": {
+      "opacity": "1",
+      "transform": "none"
+    },
+    "opacity": "1",
+    "transform": "none",
+    "boundary": 850,
+    "visualTop": 850
+  },
+  {
+    "width": 1440,
+    "frame": 1,
+    "initial": {
+      "opacity": "1",
+      "transform": "none"
+    },
+    "opacity": "1",
+    "transform": "none",
+    "boundary": 850,
+    "visualTop": 850
+  },
+  {
+    "width": 1440,
+    "frame": 2,
+    "initial": {
+      "opacity": "1",
+      "transform": "none"
+    },
+    "opacity": "1",
+    "transform": "none",
+    "boundary": 850,
+    "visualTop": 850
+  },
+  {
+    "width": 375,
+    "frame": 0,
+    "initial": {
+      "opacity": "1",
+      "transform": "none"
+    },
+    "opacity": "1",
+    "transform": "none",
+    "boundary": 850,
+    "visualTop": 849.984375
+  },
+  {
+    "width": 375,
+    "frame": 1,
+    "initial": {
+      "opacity": "1",
+      "transform": "none"
+    },
+    "opacity": "1",
+    "transform": "none",
+    "boundary": 850,
+    "visualTop": 849.984375
+  },
+  {
+    "width": 375,
+    "frame": 2,
+    "initial": {
+      "opacity": "1",
+      "transform": "none"
+    },
+    "opacity": "1",
+    "transform": "none",
+    "boundary": 850,
+    "visualTop": 849.984375
+  }
+]

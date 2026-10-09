@@ -10,6 +10,12 @@ import type { Job, Source, Workspace } from "../shared/types";
 import { classify, extractSkills } from "./engine";
 import { generateGemini } from "./gemini";
 import { SourceError } from "./connectors";
+import {
+  discoverPublicPortal,
+  type PortalResult,
+} from "./public-portal-discovery";
+import { geminiConfigured } from "./gemini";
+import { publicDiscoveryAvailable } from "./provider-capabilities";
 
 const resultsSchema = z.object({
   jobs: z
@@ -26,6 +32,11 @@ const resultsSchema = z.object({
 });
 const identity = (value: string) => {
   const url = new URL(value);
+  if (
+    /^(?:www\.)?glassdoor\.com(?:\.br)?$/.test(url.hostname) &&
+    url.searchParams.get("jl")
+  )
+    return `glassdoor:${url.searchParams.get("jl")}`;
   if (
     url.hostname.endsWith("linkedin.com") &&
     /\/jobs\/view\//.test(url.pathname)
@@ -80,14 +91,15 @@ async function citedUrl(
 export async function discoverPortal(
   source: Source,
   workspace: Workspace,
-): Promise<{
-  jobs: Job[];
-  checkedAt: string;
-  cached: boolean;
-  searchSuggestionsHtml?: string;
-}> {
+): Promise<PortalResult> {
   if (!isPortalId(source.board))
     throw new SourceError("Escolha um portal disponível na lista.");
+  if (!publicDiscoveryAvailable(source.board, geminiConfigured()))
+    throw new SourceError(
+      source.board === "linkedin"
+        ? "A busca LinkedIn exige autorização do provedor nesta instalação. Abra a busca oficial ou use outra fonte disponível."
+        : "Esta fonte precisa de uma conexão de busca configurada no servidor.",
+    );
   const portal = portals[source.board];
   const titles = workspace.filters.titles.length
     ? workspace.filters.titles
@@ -96,12 +108,19 @@ export async function discoverPortal(
     throw new SourceError(
       "Informe os cargos que procura ou confirme as sugestões do currículo antes de pesquisar.",
     );
+  if (source.board === "gupy" || source.board === "linkedin") {
+    try {
+      return await discoverPublicPortal(source.board, workspace);
+    } catch (error) {
+      if (!geminiConfigured()) throw error;
+    }
+  }
   const location =
     workspace.filters.locations.join(", ") ||
     workspace.profile.location ||
     "Brasil";
   try {
-    const query = `site:${portal.host} ${source.board === "linkedin" ? "inurl:jobs/view" : source.board === "infojobs" ? "inurl:__" : source.board === "gupy" ? "inurl:jobs" : "inurl:viewjob"} ${titles.join(" OR ")} ${location}`;
+    const query = `${source.board === "glassdoor" ? "(site:glassdoor.com.br OR site:glassdoor.com)" : `site:${portal.host}`} ${source.board === "linkedin" ? "inurl:jobs/view" : source.board === "infojobs" ? "inurl:__" : source.board === "gupy" ? "inurl:jobs" : source.board === "glassdoor" ? "inurl:job-listing" : "inurl:viewjob"} ${titles.join(" OR ")} ${workspace.filters.modalities.includes("Remoto") && workspace.filters.remoteAnywhere !== false ? "Brasil remoto" : location}`;
     const result = await generateGemini(
       `Use Google Search agora para a consulta: ${query}. Busque URLs de anúncios individuais. Dados da busca: ` +
         JSON.stringify({
@@ -161,11 +180,9 @@ export async function discoverPortal(
           item.description +
           "\nEncontrada em busca pública com Gemini. Confira os requisitos e se a vaga continua aberta no anúncio original.",
         ...classify(item.title + " " + item.description),
-        contract: "Não especificado",
         salaryMin: null,
         salaryMax: null,
         currency: "",
-        requiredYears: null,
         skills: extractSkills(item.description),
         requiredSkills: [],
         publishedAt: null,
@@ -198,6 +215,7 @@ export async function discoverPortal(
       jobs,
       checkedAt: new Date().toISOString(),
       cached: false,
+      method: "busca pública com Gemini",
       searchSuggestionsHtml: grounding.searchEntryPoint?.renderedContent,
     };
   } catch (error) {

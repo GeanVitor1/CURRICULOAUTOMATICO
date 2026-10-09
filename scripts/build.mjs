@@ -24,6 +24,7 @@ await run(
   resolve(dirname(require.resolve("vite/package.json")), "bin/vite.js"),
   ["build"],
 );
+await run(resolve("scripts/precompress.mjs"), []);
 await build({
   entryPoints: ["server/index.ts", "server/worker.ts"],
   bundle: true,

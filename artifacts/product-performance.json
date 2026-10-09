@@ -1,0 +1,1722 @@
+{
+  "checkedAt": "2026-10-09T16:53:57.487Z",
+  "status": "passed",
+  "scope": "Medições locais da landing pública, sem limitação de CPU/rede. Não representam capacidade sob carga ou latência de usuários reais.",
+  "setup": {
+    "coldContexts": 3,
+    "warmNavigation": "Mesmo contexto após about:blank, sem reload forçado",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "reducedMotion": "reduce",
+    "serviceWorkers": "block",
+    "requestRouting": false,
+    "cacheEvidence": "Recursos same-origin com transferSize=0 e decodedBodySize>0 indicam reutilização pelo navegador. Compara também os bytes transferidos observados em cada par cold/warm.",
+    "gzipEvidence": "gzipBytes usa o arquivo pré-comprimido quando gzipVariantPresent=true; caso contrário, é calculado. brotliBytes usa a variante real do build. Headers de negociação verificam br/gzip e a resposta sem Accept-Encoding.",
+    "timingWindow": "LCP observado até a coleta, antes de rolagem; apenas a viewport inicial entra nas métricas. Screenshots completos são coletados depois das medições.",
+    "browserVersion": "156.0.8078.4"
+  },
+  "samples": [
+    {
+      "run": 1,
+      "cold": {
+        "navigation": {
+          "ttfbMs": 2.4000000953674316,
+          "domContentLoadedMs": 52.300000071525574,
+          "loadMs": 53,
+          "documentTransferBytes": 606,
+          "documentEncodedBytes": 306
+        },
+        "paint": {
+          "firstContentfulPaintMs": 76,
+          "lcpSupported": true,
+          "lcpMs": 440
+        },
+        "resourceCount": 13,
+        "resourceTransferBytes": 673154,
+        "hashedAssetTransferBytes": 439136,
+        "cachedResourceCount": 0,
+        "cachedHashedAssetCount": 0,
+        "resources": [
+          {
+            "path": "/assets/index-CD42B9jb.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 7.799999952316284,
+            "transferBytes": 129332,
+            "encodedBytes": 129032,
+            "decodedBytes": 464607,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/index-CYcFs1hP.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 7.399999976158142,
+            "transferBytes": 15090,
+            "encodedBytes": 14790,
+            "decodedBytes": 88089,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/Landing-dcVtcL7o.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 6.700000047683716,
+            "transferBytes": 10583,
+            "encodedBytes": 10283,
+            "decodedBytes": 31885,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/search-CNiWjTgd.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 6.100000023841858,
+            "transferBytes": 460,
+            "encodedBytes": 160,
+            "decodedBytes": 175,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/arrow-right-Jhh76gei.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 6.600000023841858,
+            "transferBytes": 465,
+            "encodedBytes": 165,
+            "decodedBytes": 166,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/shield-check-DOs6VeRY.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 6.399999976158142,
+            "transferBytes": 531,
+            "encodedBytes": 231,
+            "decodedBytes": 321,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/plus-ClGCzHDA.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 6.899999976158142,
+            "transferBytes": 422,
+            "encodedBytes": 122,
+            "decodedBytes": 154,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/Landing-CSErlImo.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 6.700000047683716,
+            "transferBytes": 4586,
+            "encodedBytes": 4286,
+            "decodedBytes": 21096,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 14.699999928474426,
+            "transferBytes": 48556,
+            "encodedBytes": 48256,
+            "decodedBytes": 48256,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/mascot-original.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 5.699999928474426,
+            "transferBytes": 170664,
+            "encodedBytes": 170364,
+            "decodedBytes": 170364,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/novogifcapa-poster.png",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 4.400000095367432,
+            "transferBytes": 63354,
+            "encodedBytes": 63054,
+            "decodedBytes": 63054,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 58.90000009536743,
+            "transferBytes": 25136,
+            "encodedBytes": 24836,
+            "decodedBytes": 24836,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/escrevendo-Cxek28JC.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 16.600000023841858,
+            "transferBytes": 203975,
+            "encodedBytes": 203675,
+            "decodedBytes": 203675,
+            "cachedByBrowser": false
+          }
+        ],
+        "horizontalOverflow": false,
+        "consoleErrors": [],
+        "pageErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      },
+      "warm": {
+        "navigation": {
+          "ttfbMs": 1.5,
+          "domContentLoadedMs": 7.600000023841858,
+          "loadMs": 8.299999952316284,
+          "documentTransferBytes": 300,
+          "documentEncodedBytes": 306
+        },
+        "paint": {
+          "firstContentfulPaintMs": 36,
+          "lcpSupported": true,
+          "lcpMs": 348
+        },
+        "resourceCount": 13,
+        "resourceTransferBytes": 600,
+        "hashedAssetTransferBytes": 0,
+        "cachedResourceCount": 11,
+        "cachedHashedAssetCount": 11,
+        "resources": [
+          {
+            "path": "/assets/index-CD42B9jb.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 129032,
+            "decodedBytes": 464607,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/index-CYcFs1hP.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 14790,
+            "decodedBytes": 88089,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 48256,
+            "decodedBytes": 48256,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 24836,
+            "decodedBytes": 24836,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/Landing-dcVtcL7o.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 10283,
+            "decodedBytes": 31885,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/search-CNiWjTgd.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 160,
+            "decodedBytes": 175,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/arrow-right-Jhh76gei.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 165,
+            "decodedBytes": 166,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/shield-check-DOs6VeRY.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 231,
+            "decodedBytes": 321,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/plus-ClGCzHDA.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 122,
+            "decodedBytes": 154,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/Landing-CSErlImo.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 4286,
+            "decodedBytes": 21096,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/mascot-original.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 6.399999976158142,
+            "transferBytes": 300,
+            "encodedBytes": 0,
+            "decodedBytes": 0,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/novogifcapa-poster.png",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 5.199999928474426,
+            "transferBytes": 300,
+            "encodedBytes": 0,
+            "decodedBytes": 0,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/escrevendo-Cxek28JC.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 203675,
+            "decodedBytes": 203675,
+            "cachedByBrowser": true
+          }
+        ],
+        "horizontalOverflow": false,
+        "consoleErrors": [],
+        "pageErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      }
+    },
+    {
+      "run": 2,
+      "cold": {
+        "navigation": {
+          "ttfbMs": 2.3000000715255737,
+          "domContentLoadedMs": 43.299999952316284,
+          "loadMs": 43.299999952316284,
+          "documentTransferBytes": 606,
+          "documentEncodedBytes": 306
+        },
+        "paint": {
+          "firstContentfulPaintMs": 72,
+          "lcpSupported": true,
+          "lcpMs": 416
+        },
+        "resourceCount": 13,
+        "resourceTransferBytes": 673154,
+        "hashedAssetTransferBytes": 439136,
+        "cachedResourceCount": 0,
+        "cachedHashedAssetCount": 0,
+        "resources": [
+          {
+            "path": "/assets/index-CD42B9jb.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 7.600000023841858,
+            "transferBytes": 129332,
+            "encodedBytes": 129032,
+            "decodedBytes": 464607,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/index-CYcFs1hP.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 6.100000023841858,
+            "transferBytes": 15090,
+            "encodedBytes": 14790,
+            "decodedBytes": 88089,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/Landing-dcVtcL7o.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 4,
+            "transferBytes": 10583,
+            "encodedBytes": 10283,
+            "decodedBytes": 31885,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/search-CNiWjTgd.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 4.100000023841858,
+            "transferBytes": 460,
+            "encodedBytes": 160,
+            "decodedBytes": 175,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/arrow-right-Jhh76gei.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 4.5,
+            "transferBytes": 465,
+            "encodedBytes": 165,
+            "decodedBytes": 166,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/shield-check-DOs6VeRY.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 4.300000071525574,
+            "transferBytes": 531,
+            "encodedBytes": 231,
+            "decodedBytes": 321,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/Landing-CSErlImo.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 5.100000023841858,
+            "transferBytes": 4586,
+            "encodedBytes": 4286,
+            "decodedBytes": 21096,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/plus-ClGCzHDA.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 4.700000047683716,
+            "transferBytes": 422,
+            "encodedBytes": 122,
+            "decodedBytes": 154,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 9.599999904632568,
+            "transferBytes": 48556,
+            "encodedBytes": 48256,
+            "decodedBytes": 48256,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/mascot-original.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 7.400000095367432,
+            "transferBytes": 170664,
+            "encodedBytes": 170364,
+            "decodedBytes": 170364,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/novogifcapa-poster.png",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 3.600000023841858,
+            "transferBytes": 63354,
+            "encodedBytes": 63054,
+            "decodedBytes": 63054,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 43.700000047683716,
+            "transferBytes": 25136,
+            "encodedBytes": 24836,
+            "decodedBytes": 24836,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/escrevendo-Cxek28JC.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 11.899999976158142,
+            "transferBytes": 203975,
+            "encodedBytes": 203675,
+            "decodedBytes": 203675,
+            "cachedByBrowser": false
+          }
+        ],
+        "horizontalOverflow": false,
+        "consoleErrors": [],
+        "pageErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      },
+      "warm": {
+        "navigation": {
+          "ttfbMs": 1.5999999046325684,
+          "domContentLoadedMs": 9.600000023841858,
+          "loadMs": 10.399999976158142,
+          "documentTransferBytes": 300,
+          "documentEncodedBytes": 306
+        },
+        "paint": {
+          "firstContentfulPaintMs": 40,
+          "lcpSupported": true,
+          "lcpMs": 364
+        },
+        "resourceCount": 13,
+        "resourceTransferBytes": 600,
+        "hashedAssetTransferBytes": 0,
+        "cachedResourceCount": 11,
+        "cachedHashedAssetCount": 11,
+        "resources": [
+          {
+            "path": "/assets/index-CD42B9jb.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 129032,
+            "decodedBytes": 464607,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/index-CYcFs1hP.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 14790,
+            "decodedBytes": 88089,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 48256,
+            "decodedBytes": 48256,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 24836,
+            "decodedBytes": 24836,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/Landing-dcVtcL7o.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 10283,
+            "decodedBytes": 31885,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/search-CNiWjTgd.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 160,
+            "decodedBytes": 175,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/arrow-right-Jhh76gei.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 165,
+            "decodedBytes": 166,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/shield-check-DOs6VeRY.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 231,
+            "decodedBytes": 321,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/plus-ClGCzHDA.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 122,
+            "decodedBytes": 154,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/Landing-CSErlImo.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 4286,
+            "decodedBytes": 21096,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/mascot-original.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 4.899999976158142,
+            "transferBytes": 300,
+            "encodedBytes": 0,
+            "decodedBytes": 0,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/novogifcapa-poster.png",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 3.5,
+            "transferBytes": 300,
+            "encodedBytes": 0,
+            "decodedBytes": 0,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/escrevendo-Cxek28JC.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 203675,
+            "decodedBytes": 203675,
+            "cachedByBrowser": true
+          }
+        ],
+        "horizontalOverflow": false,
+        "consoleErrors": [],
+        "pageErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      }
+    },
+    {
+      "run": 3,
+      "cold": {
+        "navigation": {
+          "ttfbMs": 2.899999976158142,
+          "domContentLoadedMs": 51,
+          "loadMs": 51.799999952316284,
+          "documentTransferBytes": 606,
+          "documentEncodedBytes": 306
+        },
+        "paint": {
+          "firstContentfulPaintMs": 72,
+          "lcpSupported": true,
+          "lcpMs": 440
+        },
+        "resourceCount": 13,
+        "resourceTransferBytes": 673154,
+        "hashedAssetTransferBytes": 439136,
+        "cachedResourceCount": 0,
+        "cachedHashedAssetCount": 0,
+        "resources": [
+          {
+            "path": "/assets/index-CD42B9jb.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 13.400000095367432,
+            "transferBytes": 129332,
+            "encodedBytes": 129032,
+            "decodedBytes": 464607,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/index-CYcFs1hP.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 11.100000023841858,
+            "transferBytes": 15090,
+            "encodedBytes": 14790,
+            "decodedBytes": 88089,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/Landing-dcVtcL7o.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 4,
+            "transferBytes": 10583,
+            "encodedBytes": 10283,
+            "decodedBytes": 31885,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/search-CNiWjTgd.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 5.199999928474426,
+            "transferBytes": 460,
+            "encodedBytes": 160,
+            "decodedBytes": 175,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/arrow-right-Jhh76gei.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 5.400000095367432,
+            "transferBytes": 465,
+            "encodedBytes": 165,
+            "decodedBytes": 166,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/shield-check-DOs6VeRY.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 5.5,
+            "transferBytes": 531,
+            "encodedBytes": 231,
+            "decodedBytes": 321,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/Landing-CSErlImo.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 6.5,
+            "transferBytes": 4586,
+            "encodedBytes": 4286,
+            "decodedBytes": 21096,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/plus-ClGCzHDA.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 5.600000023841858,
+            "transferBytes": 422,
+            "encodedBytes": 122,
+            "decodedBytes": 154,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 10.399999976158142,
+            "transferBytes": 48556,
+            "encodedBytes": 48256,
+            "decodedBytes": 48256,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/novogifcapa-poster.png",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 6,
+            "transferBytes": 63354,
+            "encodedBytes": 63054,
+            "decodedBytes": 63054,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/mascot-original.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 7.600000023841858,
+            "transferBytes": 170664,
+            "encodedBytes": 170364,
+            "decodedBytes": 170364,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 56,
+            "transferBytes": 25136,
+            "encodedBytes": 24836,
+            "decodedBytes": 24836,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/escrevendo-Cxek28JC.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 20.5,
+            "transferBytes": 203975,
+            "encodedBytes": 203675,
+            "decodedBytes": 203675,
+            "cachedByBrowser": false
+          }
+        ],
+        "horizontalOverflow": false,
+        "consoleErrors": [],
+        "pageErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      },
+      "warm": {
+        "navigation": {
+          "ttfbMs": 3.600000023841858,
+          "domContentLoadedMs": 15.600000023841858,
+          "loadMs": 16.399999976158142,
+          "documentTransferBytes": 300,
+          "documentEncodedBytes": 306
+        },
+        "paint": {
+          "firstContentfulPaintMs": 40,
+          "lcpSupported": true,
+          "lcpMs": 348
+        },
+        "resourceCount": 13,
+        "resourceTransferBytes": 600,
+        "hashedAssetTransferBytes": 0,
+        "cachedResourceCount": 11,
+        "cachedHashedAssetCount": 11,
+        "resources": [
+          {
+            "path": "/assets/index-CD42B9jb.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 129032,
+            "decodedBytes": 464607,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/index-CYcFs1hP.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 14790,
+            "decodedBytes": 88089,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 48256,
+            "decodedBytes": 48256,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+            "sameOrigin": true,
+            "initiatorType": "css",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 24836,
+            "decodedBytes": 24836,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/Landing-dcVtcL7o.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 10283,
+            "decodedBytes": 31885,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/search-CNiWjTgd.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 160,
+            "decodedBytes": 175,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/arrow-right-Jhh76gei.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 165,
+            "decodedBytes": 166,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/shield-check-DOs6VeRY.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 231,
+            "decodedBytes": 321,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/plus-ClGCzHDA.js",
+            "sameOrigin": true,
+            "initiatorType": "script",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 122,
+            "decodedBytes": 154,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/assets/Landing-CSErlImo.css",
+            "sameOrigin": true,
+            "initiatorType": "link",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 4286,
+            "decodedBytes": 21096,
+            "cachedByBrowser": true
+          },
+          {
+            "path": "/mascot-original.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 4,
+            "transferBytes": 300,
+            "encodedBytes": 0,
+            "decodedBytes": 0,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/novogifcapa-poster.png",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 6.899999976158142,
+            "transferBytes": 300,
+            "encodedBytes": 0,
+            "decodedBytes": 0,
+            "cachedByBrowser": false
+          },
+          {
+            "path": "/assets/escrevendo-Cxek28JC.jpeg",
+            "sameOrigin": true,
+            "initiatorType": "img",
+            "durationMs": 0,
+            "transferBytes": 0,
+            "encodedBytes": 203675,
+            "decodedBytes": 203675,
+            "cachedByBrowser": true
+          }
+        ],
+        "horizontalOverflow": false,
+        "consoleErrors": [],
+        "pageErrors": [],
+        "httpErrors": [],
+        "requestsFailed": []
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "artifacts/product-landing-1440.png",
+      "width": 1440,
+      "fullPage": false
+    },
+    {
+      "path": "artifacts/product-landing-375.png",
+      "width": 375,
+      "fullPage": true,
+      "horizontalOverflow": false
+    }
+  ],
+  "failures": [],
+  "origin": "http://127.0.0.1:3109",
+  "assets": [
+    {
+      "path": "/assets/GIF ANIMADO DELE PENSANDO-CM11eNjc.gif",
+      "bytes": 2480548,
+      "gzipBytes": 2469204,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/NOVOVIDEO-Dqxbd2XW.mp4",
+      "bytes": 775937,
+      "gzipBytes": 771897,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/index-CD42B9jb.js",
+      "bytes": 464607,
+      "gzipBytes": 148452,
+      "gzipVariantPresent": true,
+      "brotliBytes": 129032
+    },
+    {
+      "path": "/assets/escrevendo-Cxek28JC.jpeg",
+      "bytes": 203675,
+      "gzipBytes": 202831,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/escrevendo olhando pra direita-OTLcpDml.jpeg",
+      "bytes": 200495,
+      "gzipBytes": 199032,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/pensando 1-BQg-djda.jpeg",
+      "bytes": 193306,
+      "gzipBytes": 191290,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/teve uma ideia-DtpmZDvK.jpeg",
+      "bytes": 188125,
+      "gzipBytes": 187488,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/pensando 2-CacKckSy.jpeg",
+      "bytes": 184253,
+      "gzipBytes": 183640,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/Assustado-BeXrRtIF.jpeg",
+      "bytes": 175887,
+      "gzipBytes": 173981,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/entregando curriculo-By-pB0fL.jpeg",
+      "bytes": 171512,
+      "gzipBytes": 164305,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/escrevendo e olhando pra espectador-Bo9LA9-u.jpeg",
+      "bytes": 171370,
+      "gzipBytes": 168447,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/empregado-DwKaCdxc.jpeg",
+      "bytes": 165601,
+      "gzipBytes": 165365,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/JobForms-DcJbnAQg.js",
+      "bytes": 125266,
+      "gzipBytes": 38626,
+      "gzipVariantPresent": true,
+      "brotliBytes": 34496
+    },
+    {
+      "path": "/assets/index-CYcFs1hP.css",
+      "bytes": 88089,
+      "gzipBytes": 16873,
+      "gzipVariantPresent": true,
+      "brotliBytes": 14790
+    },
+    {
+      "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+      "bytes": 48256,
+      "gzipBytes": 48254,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/Landing-dcVtcL7o.js",
+      "bytes": 31885,
+      "gzipBytes": 11504,
+      "gzipVariantPresent": true,
+      "brotliBytes": 10283
+    },
+    {
+      "path": "/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+      "bytes": 24836,
+      "gzipBytes": 24864,
+      "gzipVariantPresent": false,
+      "brotliBytes": null
+    },
+    {
+      "path": "/assets/Landing-CSErlImo.css",
+      "bytes": 21096,
+      "gzipBytes": 4883,
+      "gzipVariantPresent": true,
+      "brotliBytes": 4286
+    },
+    {
+      "path": "/assets/Applications-C5q0-uqa.js",
+      "bytes": 12413,
+      "gzipBytes": 4431,
+      "gzipVariantPresent": true,
+      "brotliBytes": 3968
+    },
+    {
+      "path": "/assets/SimpleResume-Cbh8Iw9w.js",
+      "bytes": 11300,
+      "gzipBytes": 4275,
+      "gzipVariantPresent": true,
+      "brotliBytes": 3815
+    },
+    {
+      "path": "/assets/PortalConnections-BhGexhZ-.js",
+      "bytes": 10437,
+      "gzipBytes": 3948,
+      "gzipVariantPresent": true,
+      "brotliBytes": 3533
+    },
+    {
+      "path": "/assets/CareerInterview-BWR7q1My.js",
+      "bytes": 10413,
+      "gzipBytes": 3801,
+      "gzipVariantPresent": true,
+      "brotliBytes": 3429
+    },
+    {
+      "path": "/assets/Jobs-Dw34mWtU.js",
+      "bytes": 6139,
+      "gzipBytes": 2411,
+      "gzipVariantPresent": true,
+      "brotliBytes": 2143
+    },
+    {
+      "path": "/assets/SimpleAutomation-CLtmTmje.js",
+      "bytes": 5198,
+      "gzipBytes": 1973,
+      "gzipVariantPresent": true,
+      "brotliBytes": 1768
+    },
+    {
+      "path": "/assets/SimpleAccount-CiYwKmI0.js",
+      "bytes": 2947,
+      "gzipBytes": 1369,
+      "gzipVariantPresent": true,
+      "brotliBytes": 1197
+    },
+    {
+      "path": "/assets/IntelligenceControl-Bvia81CD.js",
+      "bytes": 1284,
+      "gzipBytes": 757,
+      "gzipVariantPresent": true,
+      "brotliBytes": 653
+    },
+    {
+      "path": "/assets/shield-check-DOs6VeRY.js",
+      "bytes": 321,
+      "gzipBytes": 249,
+      "gzipVariantPresent": true,
+      "brotliBytes": 231
+    },
+    {
+      "path": "/assets/download-BH4WMied.js",
+      "bytes": 233,
+      "gzipBytes": 191,
+      "gzipVariantPresent": true,
+      "brotliBytes": 202
+    },
+    {
+      "path": "/assets/search-CNiWjTgd.js",
+      "bytes": 175,
+      "gzipBytes": 167,
+      "gzipVariantPresent": true,
+      "brotliBytes": 160
+    },
+    {
+      "path": "/assets/arrow-left-B9CSjuDe.js",
+      "bytes": 166,
+      "gzipBytes": 163,
+      "gzipVariantPresent": true,
+      "brotliBytes": 149
+    },
+    {
+      "path": "/assets/arrow-right-Jhh76gei.js",
+      "bytes": 166,
+      "gzipBytes": 162,
+      "gzipVariantPresent": true,
+      "brotliBytes": 165
+    },
+    {
+      "path": "/assets/plus-ClGCzHDA.js",
+      "bytes": 154,
+      "gzipBytes": 148,
+      "gzipVariantPresent": true,
+      "brotliBytes": 122
+    }
+  ],
+  "headers": {
+    "index": {
+      "path": "/",
+      "requestedEncoding": null,
+      "status": 200,
+      "cacheControl": "no-cache",
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "contentLength": "779",
+      "etag": "W/\"30b-1a12192f80b\"",
+      "vary": "accept-encoding"
+    },
+    "spaFallback": {
+      "path": "/privacy",
+      "requestedEncoding": null,
+      "status": 200,
+      "cacheControl": "no-cache",
+      "contentType": "text/html; charset=utf-8",
+      "contentEncoding": null,
+      "contentLength": "779",
+      "etag": "W/\"30b-1a12192f80b\"",
+      "vary": "accept-encoding"
+    },
+    "hashedAssets": [
+      {
+        "path": "/assets/GIF%20ANIMADO%20DELE%20PENSANDO-CM11eNjc.gif",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/gif",
+        "contentEncoding": null,
+        "contentLength": "2480548",
+        "etag": "W/\"25d9a4-1a12192f819\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/NOVOVIDEO-Dqxbd2XW.mp4",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "video/mp4",
+        "contentEncoding": null,
+        "contentLength": "775937",
+        "etag": "W/\"bd701-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/index-CD42B9jb.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "464607",
+        "etag": "W/\"716df-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/escrevendo-Cxek28JC.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "203675",
+        "etag": "W/\"31b9b-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/escrevendo%20olhando%20pra%20direita-OTLcpDml.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "200495",
+        "etag": "W/\"30f2f-1a12192f808\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/pensando%201-BQg-djda.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "193306",
+        "etag": "W/\"2f31a-1a12192f808\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/teve%20uma%20ideia-DtpmZDvK.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "188125",
+        "etag": "W/\"2dedd-1a12192f808\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/pensando%202-CacKckSy.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "184253",
+        "etag": "W/\"2cfbd-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/Assustado-BeXrRtIF.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "175887",
+        "etag": "W/\"2af0f-1a12192f808\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/entregando%20curriculo-By-pB0fL.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "171512",
+        "etag": "W/\"29df8-1a12192f808\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/escrevendo%20e%20olhando%20pra%20espectador-Bo9LA9-u.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "171370",
+        "etag": "W/\"29d6a-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/empregado-DwKaCdxc.jpeg",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "image/jpeg",
+        "contentEncoding": null,
+        "contentLength": "165601",
+        "etag": "W/\"286e1-1a12192f807\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/JobForms-DcJbnAQg.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "125266",
+        "etag": "W/\"1e952-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/index-CYcFs1hP.css",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "text/css; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "88089",
+        "etag": "W/\"15819-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "font/woff2",
+        "contentEncoding": null,
+        "contentLength": "48256",
+        "etag": "W/\"bc80-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/Landing-dcVtcL7o.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "31885",
+        "etag": "W/\"7c8d-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/manrope-latin-wght-normal-DHIcAJRg.woff2",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "font/woff2",
+        "contentEncoding": null,
+        "contentLength": "24836",
+        "etag": "W/\"6104-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/Landing-CSErlImo.css",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "text/css; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "21096",
+        "etag": "W/\"5268-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/Applications-C5q0-uqa.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "12413",
+        "etag": "W/\"307d-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/SimpleResume-Cbh8Iw9w.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "11300",
+        "etag": "W/\"2c24-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/PortalConnections-BhGexhZ-.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "10437",
+        "etag": "W/\"28c5-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/CareerInterview-BWR7q1My.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "10413",
+        "etag": "W/\"28ad-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/Jobs-Dw34mWtU.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "6139",
+        "etag": "W/\"17fb-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/SimpleAutomation-CLtmTmje.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "5198",
+        "etag": "W/\"144e-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/SimpleAccount-CiYwKmI0.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "2947",
+        "etag": "W/\"b83-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/IntelligenceControl-Bvia81CD.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "1284",
+        "etag": "W/\"504-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/shield-check-DOs6VeRY.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "321",
+        "etag": "W/\"141-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/download-BH4WMied.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "233",
+        "etag": "W/\"e9-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/search-CNiWjTgd.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "175",
+        "etag": "W/\"af-1a12192f809\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/arrow-left-B9CSjuDe.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "166",
+        "etag": "W/\"a6-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/arrow-right-Jhh76gei.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "166",
+        "etag": "W/\"a6-1a12192f80b\"",
+        "vary": "accept-encoding"
+      },
+      {
+        "path": "/assets/plus-ClGCzHDA.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "154",
+        "etag": "W/\"9a-1a12192f809\"",
+        "vary": "accept-encoding"
+      }
+    ],
+    "compressionNegotiation": [
+      {
+        "path": "/",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "no-cache",
+        "contentType": "text/html; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "779",
+        "etag": "W/\"30b-1a12192f80b\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": null
+      },
+      {
+        "path": "/",
+        "requestedEncoding": "gzip",
+        "status": 200,
+        "cacheControl": "no-cache",
+        "contentType": "text/html; charset=utf-8",
+        "contentEncoding": "gzip",
+        "contentLength": "434",
+        "etag": "W/\"1b2-1a12192fc6e\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": "gzip"
+      },
+      {
+        "path": "/",
+        "requestedEncoding": "br",
+        "status": 200,
+        "cacheControl": "no-cache",
+        "contentType": "text/html; charset=utf-8",
+        "contentEncoding": "br",
+        "contentLength": "306",
+        "etag": "W/\"132-1a12192fc70\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": "br"
+      },
+      {
+        "path": "/assets/index-CD42B9jb.js",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "464607",
+        "etag": "W/\"716df-1a12192f809\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": null
+      },
+      {
+        "path": "/assets/index-CD42B9jb.js",
+        "requestedEncoding": "gzip",
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": "gzip",
+        "contentLength": "148452",
+        "etag": "W/\"243e4-1a12192fb3a\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": "gzip"
+      },
+      {
+        "path": "/assets/index-CD42B9jb.js",
+        "requestedEncoding": "br",
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "application/javascript; charset=utf-8",
+        "contentEncoding": "br",
+        "contentLength": "129032",
+        "etag": "W/\"1f808-1a12192fb3a\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": "br"
+      },
+      {
+        "path": "/assets/index-CYcFs1hP.css",
+        "requestedEncoding": null,
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "text/css; charset=utf-8",
+        "contentEncoding": null,
+        "contentLength": "88089",
+        "etag": "W/\"15819-1a12192f809\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": null
+      },
+      {
+        "path": "/assets/index-CYcFs1hP.css",
+        "requestedEncoding": "gzip",
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "text/css; charset=utf-8",
+        "contentEncoding": "gzip",
+        "contentLength": "16873",
+        "etag": "W/\"41e9-1a12192fb89\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": "gzip"
+      },
+      {
+        "path": "/assets/index-CYcFs1hP.css",
+        "requestedEncoding": "br",
+        "status": 200,
+        "cacheControl": "public, max-age=31536000, immutable",
+        "contentType": "text/css; charset=utf-8",
+        "contentEncoding": "br",
+        "contentLength": "14790",
+        "etag": "W/\"39c6-1a12192fb8a\"",
+        "vary": "accept-encoding",
+        "expectedContentEncoding": "br"
+      }
+    ]
+  },
+  "summary": {
+    "cold": {
+      "samples": 3,
+      "medianTtfbMs": 2.4000000953674316,
+      "medianDomContentLoadedMs": 51,
+      "medianLoadMs": 51.799999952316284,
+      "medianFirstContentfulPaintMs": 72,
+      "medianLcpMs": 440,
+      "medianResourceTransferBytes": 673154,
+      "medianHashedAssetTransferBytes": 439136,
+      "medianCachedHashedAssetCount": 0
+    },
+    "warm": {
+      "samples": 3,
+      "medianTtfbMs": 1.5999999046325684,
+      "medianDomContentLoadedMs": 9.600000023841858,
+      "medianLoadMs": 10.399999976158142,
+      "medianFirstContentfulPaintMs": 40,
+      "medianLcpMs": 348,
+      "medianResourceTransferBytes": 600,
+      "medianHashedAssetTransferBytes": 0,
+      "medianCachedHashedAssetCount": 11
+    },
+    "medianHashedAssetTransferSavedBytes": 439136,
+    "warmCacheReuseObserved": true
+  }
+}

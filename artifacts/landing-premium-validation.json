@@ -1,0 +1,26 @@
+﻿[
+  {
+    "width": 1903,
+    "height": 984,
+    "stripBottom": 984,
+    "viewportHeight": 984,
+    "overflow": false,
+    "finalGap": 56
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "stripBottom": 900,
+    "viewportHeight": 900,
+    "overflow": false,
+    "finalGap": 56
+  },
+  {
+    "width": 375,
+    "height": 900,
+    "stripBottom": 1238.28125,
+    "viewportHeight": 900,
+    "overflow": false,
+    "finalGap": 32
+  }
+]

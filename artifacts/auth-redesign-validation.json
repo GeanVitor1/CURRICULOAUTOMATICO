@@ -1,0 +1,296 @@
+﻿{
+  "report": [
+    {
+      "path": "login",
+      "width": 1440,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 756.484375,
+        "y": 241.390625,
+        "width": 483.515625,
+        "height": 640.21875
+      },
+      "fields": [
+        {
+          "name": "email",
+          "width": 409.515625
+        },
+        {
+          "name": "password",
+          "width": 409.515625
+        }
+      ]
+    },
+    {
+      "path": "login",
+      "width": 1024,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 518.671875,
+        "y": 243.65625,
+        "width": 475.3125,
+        "height": 623.6875
+      },
+      "fields": [
+        {
+          "name": "email",
+          "width": 417.3125
+        },
+        {
+          "name": "password",
+          "width": 417.3125
+        }
+      ]
+    },
+    {
+      "path": "login",
+      "width": 820,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 419.15625,
+        "y": 232.109375,
+        "width": 370.84375,
+        "height": 646.78125
+      },
+      "fields": [
+        {
+          "name": "email",
+          "width": 312.84375
+        },
+        {
+          "name": "password",
+          "width": 312.84375
+        }
+      ]
+    },
+    {
+      "path": "login",
+      "width": 768,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 174,
+        "y": 84,
+        "width": 420,
+        "height": 737.625
+      },
+      "fields": [
+        {
+          "name": "email",
+          "width": 374
+        },
+        {
+          "name": "password",
+          "width": 374
+        }
+      ]
+    },
+    {
+      "path": "login",
+      "width": 375,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 18,
+        "y": 84,
+        "width": 339,
+        "height": 759.0625
+      },
+      "fields": [
+        {
+          "name": "email",
+          "width": 293
+        },
+        {
+          "name": "password",
+          "width": 293
+        }
+      ]
+    },
+    {
+      "path": "login",
+      "width": 320,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 14,
+        "y": 84,
+        "width": 292,
+        "height": 756.609375
+      },
+      "fields": [
+        {
+          "name": "email",
+          "width": 250
+        },
+        {
+          "name": "password",
+          "width": 250
+        }
+      ]
+    },
+    {
+      "path": "register",
+      "width": 1440,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 756.484375,
+        "y": 182.265625,
+        "width": 483.515625,
+        "height": 758.46875
+      },
+      "fields": [
+        {
+          "name": "name",
+          "width": 409.515625
+        },
+        {
+          "name": "email",
+          "width": 409.515625
+        },
+        {
+          "name": "password",
+          "width": 409.515625
+        }
+      ]
+    },
+    {
+      "path": "register",
+      "width": 1024,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 518.671875,
+        "y": 182.359375,
+        "width": 475.3125,
+        "height": 746.28125
+      },
+      "fields": [
+        {
+          "name": "name",
+          "width": 417.3125
+        },
+        {
+          "name": "email",
+          "width": 417.3125
+        },
+        {
+          "name": "password",
+          "width": 417.3125
+        }
+      ]
+    },
+    {
+      "path": "register",
+      "width": 820,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 419.15625,
+        "y": 182.359375,
+        "width": 370.84375,
+        "height": 746.28125
+      },
+      "fields": [
+        {
+          "name": "name",
+          "width": 312.84375
+        },
+        {
+          "name": "email",
+          "width": 312.84375
+        },
+        {
+          "name": "password",
+          "width": 312.84375
+        }
+      ]
+    },
+    {
+      "path": "register",
+      "width": 768,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 174,
+        "y": 84,
+        "width": 420,
+        "height": 880.53125
+      },
+      "fields": [
+        {
+          "name": "name",
+          "width": 374
+        },
+        {
+          "name": "email",
+          "width": 374
+        },
+        {
+          "name": "password",
+          "width": 374
+        }
+      ]
+    },
+    {
+      "path": "register",
+      "width": 375,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 18,
+        "y": 84,
+        "width": 339,
+        "height": 903.625
+      },
+      "fields": [
+        {
+          "name": "name",
+          "width": 293
+        },
+        {
+          "name": "email",
+          "width": 293
+        },
+        {
+          "name": "password",
+          "width": 293
+        }
+      ]
+    },
+    {
+      "path": "register",
+      "width": 320,
+      "overflow": false,
+      "videoCount": 1,
+      "card": {
+        "x": 14,
+        "y": 84,
+        "width": 292,
+        "height": 898.71875
+      },
+      "fields": [
+        {
+          "name": "name",
+          "width": 250
+        },
+        {
+          "name": "email",
+          "width": 250
+        },
+        {
+          "name": "password",
+          "width": 250
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "rememberEmail": "passed",
+  "navigation": "passed",
+  "showPassword": "passed"
+}

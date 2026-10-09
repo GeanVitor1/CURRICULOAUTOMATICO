@@ -1,5 +1,16 @@
 import { createHash } from "node:crypto";
 import type { Filters, Job, Match, Profile } from "../shared/types";
+import { evidenceLines } from "./professional-evidence";
+import { isJobUrl, isPortalId } from "../shared/portals";
+import type { Workspace } from "../shared/types";
+export function matchesSelectedSites(job: Job, workspace: Workspace): boolean {
+  return (
+    !workspace.interview?.completed ||
+    workspace.interview.answers.sites.some(
+      (site) => isPortalId(site) && isJobUrl(site, job.url),
+    )
+  );
+}
 export const normalize = (s: string) =>
   s
     .normalize("NFD")
@@ -11,7 +22,8 @@ const vocabulary: Record<string, RegExp> = {
   "Atendimento ao público":
     /atend(?:imento|endo|er|ia|i)?\s+(?:ao |aos |a )?(?:publico|clientes?)|customer service/i,
   "Operação de caixa": /oper(?:acao|ador|adora) de caixa|\bcaixa\b|cashier/i,
-  "Reposição de mercadorias": /reposi(?:cao|tor|tora)|repor mercadorias/i,
+  "Reposição de mercadorias":
+    /\b(?:reposicao|repositor|repositora)\b|repor mercadorias/i,
   Vendas: /\bvendas?\b|vendedor|vendedora|sales/i,
   "Organização de estoque": /\bestoque\b|almoxarif|stock management/i,
   Logística: /logistica|logistics/i,
@@ -59,12 +71,44 @@ function includesTerm(text: string, term: string): boolean {
   );
 }
 export function extractSkills(text: string, custom: string[] = []): string[] {
+  const positive = evidenceLines(text).filter((line) => !line.negated);
+  const technicalText = positive.map((line) => line.text).join("\n");
+  const professional = positive
+    .filter((line) => !line.domainOnly)
+    .map((line) => line.text)
+    .join("\n");
+  const technical = new Set([
+    "C#",
+    ".NET",
+    "ASP.NET Core",
+    "Angular",
+    "React",
+    "SQL Server",
+    "PostgreSQL",
+    "Entity Framework",
+    "APIs REST",
+    "TypeScript",
+    "JavaScript",
+    "Node.js",
+    "Python",
+    "Java",
+    "Docker",
+    "Git",
+    "Azure",
+    "AWS",
+    "HTML",
+    "CSS",
+  ]);
   return [
     ...new Set([
       ...Object.entries(vocabulary)
-        .filter(([, re]) => re.test(normalize(text)))
+        .filter(([skill, re]) =>
+          re.test(
+            normalize(technical.has(skill) ? technicalText : professional),
+          ),
+        )
         .map(([s]) => s),
-      ...custom.filter((s) => s && includesTerm(text, s)),
+      ...custom.filter((s) => s && includesTerm(technicalText, s)),
     ]),
   ];
 }
@@ -78,11 +122,37 @@ export function parseResume(text: string): Partial<Profile> {
       normalize(s),
     ),
   );
-  const experience = lines.filter((s) =>
+  let experience = lines.filter((s) =>
     /^(experiencia|trabalho informal|experiencia informal)\s*:/i.test(
       normalize(s),
     ),
   );
+  const section = lines.findIndex((s) =>
+    /^(?:experiencia profissional|historico profissional|experiencia)$/.test(
+      normalize(s),
+    ),
+  );
+  if (section >= 0) {
+    const end = lines.findIndex(
+      (s, i) =>
+        i > section &&
+        /^(?:formacao(?: academica)?|educacao|cursos|idiomas|competencias(?: tecnicas)?|habilidades|projetos(?: pessoais)?)$/.test(
+          normalize(s),
+        ),
+    );
+    experience = lines.slice(section + 1, end < 0 ? undefined : end);
+  }
+  const headline =
+    lines
+      .find((s) => /^(?:objetivo(?: profissional)?|cargo)\s*:/i.test(s))
+      ?.replace(/^[^:]+:\s*/, "") ||
+    lines
+      .find((s) =>
+        /^(?:analista de sistemas|desenvolvedor(?:a)?|programador(?:a)?|engenheir[oa] de software|software (?:engineer|developer)|medic[oa]|enfermeir[oa]|professor[oa]?|eletricista|motorista|recepcionista|vendedor[ae]?|operador[ae]? de caixa)\b/.test(
+          normalize(s),
+        ),
+      )
+      ?.split(/\s*[|]\s*|\s+com\s+/i)[0];
   return {
     skills: extractSkills(text),
     email: text.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0] ?? "",
@@ -93,14 +163,7 @@ export function parseResume(text: string): Partial<Profile> {
     ...(experience.length
       ? { experience: experience.join("\n").slice(0, 10000) }
       : {}),
-    ...(lines.find((s) => /^objetivo\s*:/i.test(s))
-      ? {
-          headline: lines
-            .find((s) => /^objetivo\s*:/i.test(s))!
-            .replace(/^objetivo\s*:\s*/i, "")
-            .slice(0, 200),
-        }
-      : {}),
+    ...(headline ? { headline: headline.slice(0, 200) } : {}),
     confirmed: false,
   };
 }
@@ -130,13 +193,23 @@ export function suggestRoles(
   titles: string[] = [],
 ): string[] {
   const text = normalize(
-    [profile.headline, profile.experience, ...(profile.skills || []), ...titles]
-      .filter(Boolean)
-      .join(" "),
+    evidenceLines(
+      [
+        profile.headline,
+        profile.experience,
+        ...(profile.skills || []),
+        ...titles,
+      ]
+        .filter(Boolean)
+        .join("\n"),
+    )
+      .filter((line) => !line.domainOnly && !line.negated)
+      .map((line) => line.text)
+      .join("\n"),
   );
   const suggestions: string[] = [...titles];
   if (
-    /supermercado|auxiliar de loja|atendimento|atendent|caixa|repositor/.test(
+    /supermercado|auxiliar de loja|atendimento|atendent|\bcaixa\b|\brepositor[ae]?\b/.test(
       text,
     )
   )
@@ -199,9 +272,9 @@ export function classify(text: string) {
           : "Não especificado",
     requiredYears: (() => {
       const m = n.match(
-        /(?:at least|minimo(?: de)?|minimum(?: of)?)?\s*(\d{1,2})\+?\s*(?:anos|years)\s+(?:de experiencia|of (?:relevant )?experience)|(?:at least|minimum of|minimo de)\s*(\d{1,2})\+?\s*(?:anos|years)/,
+        /(?:at least|minimo(?: de)?|minimum(?: of)?)?\s*(\d{1,2})\+?\s*(?:anos|years)\s+(?:de experiencia|of (?:relevant )?experience)|(?:at least|minimum of|minimo de)\s*(\d{1,2})\+?\s*(?:anos|years)|experiencia\s+(?:minima\s+)?(?:de\s+)?(\d{1,2})\+?\s*anos/,
       );
-      return m ? Number(m[1] || m[2]) : null;
+      return m ? Number(m[1] || m[2] || m[3]) : null;
     })(),
   };
 }
@@ -263,13 +336,18 @@ export function locationMatches(
         location.includes(stateNames[target]) ||
         new RegExp(`(?:^|[,/ -])${target}(?:$|[,/ -])`).test(location)
       );
-    const city = target.split(/[,/]/)[0].trim();
-    return (
-      !!city &&
-      (location.includes(target) ||
-        location.split(/[,/]/)[0].trim() === city ||
-        location.includes(city))
-    );
+    const targetParts = target.split(/[,/]/).map((part) => part.trim());
+    const city = targetParts[0];
+    const locationParts = location.split(/[,/]/).map((part) => part.trim());
+    const state = (part: string) =>
+      stateNames[part] ||
+      Object.values(stateNames).find((name) => name === part);
+    const desiredState = targetParts.slice(1).map(state).find(Boolean);
+    const actualState = locationParts.slice(1).map(state).find(Boolean);
+    // A missing state is unknown; an explicit different state must not be ignored.
+    if (desiredState && actualState && desiredState !== actualState)
+      return false;
+    return !!city && locationParts.some((part) => part === city);
   });
 }
 export function matchesObjectiveFilters(
@@ -360,7 +438,7 @@ export function matchesObjectiveFilters(
     return false;
   const assessment = analyze(job, profile, filters);
   return !assessment.blockers.some((s) =>
-    /fora das suas preferencias|fora das suas preferências|fora do periodo|fora do período|abaixo do minimo|abaixo do mínimo|empresa bloqueada|termo excluido|termo excluído|seu filtro|seu limite|vaga nao cita|vaga não cita/.test(
+    /fora das suas preferencias|fora das suas preferências|fora do periodo|fora do período|abaixo do minimo|abaixo do mínimo|acima do maximo|acima do máximo|empresa bloqueada|termo excluido|termo excluído|seu filtro|seu limite|vaga nao cita|vaga não cita/.test(
       s.toLowerCase(),
     ),
   );
@@ -395,6 +473,20 @@ export function matchSignature(
       }),
     )
     .digest("hex");
+}
+export function matchesJobLocation(job: Job, filters: Filters): boolean {
+  if (!filters.locations.length) return true;
+  if (job.modality === "Remoto" && filters.remoteAnywhere !== false) {
+    const location = normalize(job.location);
+    if (
+      /nao informad|nao especificad|^remot[oe]$|worldwide|global|anywhere/.test(
+        location,
+      )
+    )
+      return true;
+    return locationMatches(job.location, ["Brasil"]);
+  }
+  return locationMatches(job.location, filters.locations);
 }
 export function analyze(job: Job, profile: Profile, filters: Filters): Match {
   const known = new Set(
@@ -547,10 +639,7 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
           : !period && job.source === "Manual"
             ? job.salaryMax
             : null;
-      return (
-        monthly !== null &&
-        monthly < Math.max(filters.salaryMin, profile.salaryMin)
-      );
+      return monthly !== null && monthly < filters.salaryMin;
     })()
   )
     blockers.push("Faixa salarial abaixo do mínimo configurado.");
@@ -561,6 +650,18 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     );
   if (filters.salaryOnly && job.salaryMin === null)
     blockers.push("Seu filtro exige salário divulgado.");
+  if (filters.salaryMax && job.salaryMin !== null && job.currency === "BRL") {
+    const period = normalize(job.salaryPeriod || "");
+    const monthly =
+      /^(month|monthly|mensal|mes)$/.test(period) ||
+      (!period && job.source === "Manual")
+        ? job.salaryMin
+        : /^(year|yearly|annual|annually|anual|ano)$/.test(period)
+          ? job.salaryMin / 12
+          : null;
+    if (monthly !== null && monthly > filters.salaryMax)
+      blockers.push("Faixa salarial acima do máximo configurado.");
+  }
   if (
     filters.blockedCompanies.some(
       (c) => normalize(c) === normalize(job.company),
@@ -569,14 +670,15 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     blockers.push("Empresa bloqueada nas suas preferências.");
   if (filters.levels.length && !filters.levels.includes(job.level))
     blockers.push("Senioridade fora das suas preferências.");
-  if (filters.modalities.length && !filters.modalities.includes(job.modality))
+  if (
+    filters.modalities.length &&
+    filters.modalities.length < 3 &&
+    !filters.modalities.includes(job.modality)
+  )
     blockers.push("Modalidade fora das suas preferências.");
   if (filters.contracts.length && !filters.contracts.includes(job.contract))
     blockers.push("Contratação fora das suas preferências.");
-  if (
-    filters.locations.length &&
-    !locationMatches(job.location, filters.locations)
-  )
+  if (filters.locations.length && !matchesJobLocation(job, filters))
     blockers.push(
       "Localização fora das suas preferências; revise restrições geográficas.",
     );
@@ -590,9 +692,15 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     blockers.push("Possível cobrança pela candidatura.");
   if (
     job.publishedAt &&
+    (filters.dateKnownOnly || filters.ageDays < 365) &&
     Date.now() - Date.parse(job.publishedAt) > filters.ageDays * 86400000
   )
     blockers.push("Publicação fora do período configurado.");
+  if (
+    filters.dateKnownOnly &&
+    (!job.publishedAt || !Number.isFinite(Date.parse(job.publishedAt)))
+  )
+    blockers.push("Seu filtro exige uma data de publicação informada.");
   const criteria: { label: string; earned: number; possible: number }[] = [];
   const criterion = (label: string, earned: number, possible: number) =>
     criteria.push({ label, earned: Math.round(earned * 100) / 100, possible });

@@ -1,5 +1,6 @@
 export const statuses = [
   "Aguardando aprovação",
+  "Enviando",
   "Requer ação manual",
   "Enviada",
   "Aguardando resposta",
@@ -14,6 +15,7 @@ export const statuses = [
 export type Status = (typeof statuses)[number];
 export const transitions: Record<Status, Status[]> = {
   "Aguardando aprovação": ["Requer ação manual"],
+  Enviando: [],
   "Requer ação manual": ["Enviada"],
   Enviada: [
     "Aguardando resposta",
@@ -38,6 +40,7 @@ export const transitions: Record<Status, Status[]> = {
 };
 export type Profile = {
   name: string;
+  phone?: string;
   headline: string;
   email: string;
   location: string;
@@ -55,6 +58,9 @@ export type Profile = {
   confirmed: boolean;
 };
 export type Filters = {
+  remoteAnywhere?: boolean;
+  dateKnownOnly?: boolean;
+  salaryMax?: number;
   titles: string[];
   skills: string[];
   levels: string[];
@@ -175,6 +181,7 @@ export type Resume = {
   suggestion?: Partial<Profile>;
   targets?: ResumeTarget[];
   targetsMethod?: string;
+  targetsVersion?: number;
   targetsMessage?: string;
   targetsConfirmed?: boolean;
   targetTitles?: string[];
@@ -203,6 +210,16 @@ export type Run = {
   searchSuggestions?: string[];
 };
 export type Workspace = {
+  interviewDraft?: {
+    step: number;
+    completed: boolean;
+    answers: InterviewAnswers;
+  };
+  interview?: {
+    step: number;
+    completed: boolean;
+    answers: InterviewAnswers;
+  };
   guide?: {
     step: number;
     completed: boolean;
@@ -281,6 +298,21 @@ export type Workspace = {
     filters: Filters;
     mode: Routine["mode"];
   }[];
+};
+export type InterviewAnswers = {
+  resumeId: string;
+  phone?: string;
+  titles: string[];
+  modalities: string[];
+  city: string;
+  sameCityOnly: boolean;
+  salaryMin: number;
+  salaryMax: number;
+  includeUnknownSalary: boolean;
+  ageDays: number;
+  contracts: string[];
+  sites: string[];
+  dailyLimit: number;
 };
 export const defaultProfile: Profile = {
   name: "",

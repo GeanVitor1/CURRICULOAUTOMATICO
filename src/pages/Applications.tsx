@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   BriefcaseBusiness,
   Search,
@@ -26,13 +27,16 @@ import {
   StatusBadge,
   Mascot,
 } from "../components";
-import { date, useAction, useApp } from "../lib";
-import type { Application, Status } from "../../shared/types";
+import { api, date, useAction, useApp } from "../lib";
+import type { Application, Job, Status } from "../../shared/types";
 import { transitions } from "../../shared/types";
+const ImportModal = lazy(() =>
+  import("../JobForms").then((module) => ({ default: module.ImportModal })),
+);
 export default function Applications() {
   const { w, demo, navigate, toast } = useApp();
   const a = useAction();
-  const [view, setView] = useState("kanban"),
+  const [view] = useState("table"),
     [search, setSearch] = useState(""),
     [filter, setFilter] = useState("all"),
     [selected, setSelected] = useState<Application | null>(null),
@@ -40,6 +44,30 @@ export default function Applications() {
     [confirmation, setConfirm] = useState(false),
     [note, setNote] = useState(""),
     [manual, setManual] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [manualSearch, setManualSearch] = useState("");
+  const [debouncedManualSearch, setDebouncedManualSearch] = useState("");
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedManualSearch(manualSearch), 250);
+    return () => clearTimeout(timer);
+  }, [manualSearch]);
+  const [manualPage, setManualPage] = useState(1);
+  const [manualJobId, setManualJobId] = useState("");
+  const manualJobs = useQuery({
+    queryKey: ["jobs", "manual", debouncedManualSearch, manualPage],
+    enabled: manual,
+    queryFn: ({ signal }) =>
+      api<{ items: Job[]; total: number }>(
+        "/jobs?" +
+          new URLSearchParams({
+            purpose: "manual",
+            page: String(manualPage),
+            pageSize: "50",
+            search: debouncedManualSearch,
+          }),
+        { signal },
+      ),
+  });
   const apps = w.applications.filter((a) => {
     const j = w.jobs.find((j) => j.id === a.jobId);
     return (
@@ -59,6 +87,7 @@ export default function Applications() {
       name: "Para revisar",
       statuses: [
         "Aguardando aprovação",
+        "Enviando",
         "Requer ação manual",
         "Falha no envio",
         "Resultado desconhecido",
@@ -123,29 +152,6 @@ export default function Applications() {
             <option key={s}>{s}</option>
           ))}
         </select>
-        <div className="view-toggle">
-          <button
-            aria-label="Visualização Kanban"
-            className={view === "kanban" ? "active" : ""}
-            onClick={() => setView("kanban")}
-          >
-            <Columns3 size={17} />
-          </button>
-          <button
-            aria-label="Visualização em tabela"
-            className={view === "table" ? "active" : ""}
-            onClick={() => setView("table")}
-          >
-            <List size={17} />
-          </button>
-          <button
-            aria-label="Visualização em cards"
-            className={view === "cards" ? "active" : ""}
-            onClick={() => setView("cards")}
-          >
-            <LayoutGrid size={16} />
-          </button>
-        </div>
       </div>
       <div className="count-caption">
         {apps.length} candidaturas ·{" "}
@@ -224,7 +230,12 @@ export default function Applications() {
                     <tr
                       key={app.id}
                       tabIndex={0}
-                      onKeyDown={(e) => e.key === "Enter" && open(app)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          open(app);
+                        }
+                      }}
                       onClick={() => open(app)}
                     >
                       <td>
@@ -330,17 +341,13 @@ export default function Applications() {
             )}
             {!demo && current.resumeId && (
               <div className="integration-info">
-                <h3>Prepare o envio com Gemini</h3>
+                <h3>Conclua sua candidatura</h3>
                 <p>
-                  Gere uma apresentação com informações do currículo, revise e
-                  use no formulário do portal.
+                  1. Revise a apresentação e baixe seu currículo. 2. Abra o
+                  anúncio e envie no portal. 3. Confirme o envio nesta tela.
                 </p>
                 <Button
-                  disabled={
-                    a.isPending ||
-                    !w.intelligence?.enabled ||
-                    w.intelligence?.provider !== "gemini"
-                  }
+                  disabled={a.isPending}
                   onClick={() =>
                     a.mutate(
                       { path: `/applications/${current.id}/draft` },
@@ -354,7 +361,7 @@ export default function Applications() {
                   }
                 >
                   <Sparkles size={14} />
-                  Preparar apresentação com Gemini
+                  Atualizar apresentação
                 </Button>
                 {current.draft && (
                   <Field label="Apresentação para copiar e enviar">
@@ -373,6 +380,7 @@ export default function Applications() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                if (a.isPending) return;
                 a.mutate(
                   {
                     path: `/applications/${current.id}`,
@@ -391,6 +399,7 @@ export default function Applications() {
               <div style={{ marginTop: 22 }}>
                 <Field label="Próxima etapa">
                   <select
+                    disabled={a.isPending}
                     value={status}
                     onChange={(e) => {
                       setStatus(e.target.value as Status);
@@ -416,6 +425,8 @@ export default function Applications() {
                 )}
                 <Field label="Observações pessoais">
                   <textarea
+                    disabled={a.isPending}
+                    maxLength={5000}
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     placeholder="Próximos passos, contato do recrutador, lembretes…"
@@ -457,13 +468,14 @@ export default function Applications() {
       </Modal>
       <Modal
         title="Registrar candidatura manual"
-        description="Use para candidaturas feitas fora da EmpreGatos. Primeiro adicione a vaga em Explorar vagas."
+        description="Registre um envio que você já concluiu no site da empresa. Escolha uma vaga ou adicione a oportunidade."
         open={manual}
         onOpenChange={setManual}
       >
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            if (a.isPending) return;
             const f = new FormData(e.currentTarget);
             a.mutate(
               {
@@ -484,20 +496,73 @@ export default function Applications() {
             );
           }}
         >
+          <Field label="Buscar oportunidade para registro">
+            <input
+              value={manualSearch}
+              onChange={(event) => {
+                setManualSearch(event.target.value);
+                setManualPage(1);
+                setManualJobId("");
+              }}
+            />
+          </Field>
+          {manualJobs.isError && (
+            <div className="recoverable-error" role="alert">
+              <p>{manualJobs.error.message}</p>
+              <Button
+                type="button"
+                disabled={manualJobs.isFetching}
+                onClick={() => manualJobs.refetch()}
+              >
+                Tentar novamente
+              </Button>
+            </div>
+          )}
           <Field label="Oportunidade">
-            <select name="jobId" required defaultValue="">
+            <select
+              name="jobId"
+              required
+              value={manualJobId}
+              onChange={(event) => setManualJobId(event.target.value)}
+              disabled={manualJobs.isPending || manualJobs.isError}
+            >
               <option value="" disabled>
                 Selecione uma vaga
               </option>
-              {w.jobs
-                .filter((j) => !w.applications.some((a) => a.jobId === j.id))
-                .map((j) => (
-                  <option key={j.id} value={j.id}>
-                    {j.company} · {j.title}
-                  </option>
-                ))}
+              {(manualJobs.data?.items || []).map((j) => (
+                <option key={j.id} value={j.id}>
+                  {j.company} · {j.title}
+                </option>
+              ))}
             </select>
           </Field>
+          {(manualJobs.data?.total || 0) > 50 && (
+            <div className="pagination">
+              <span>
+                Página {manualPage} de {Math.ceil(manualJobs.data!.total / 50)}
+              </span>
+              <Button
+                type="button"
+                disabled={manualPage === 1}
+                onClick={() => {
+                  setManualPage(manualPage - 1);
+                  setManualJobId("");
+                }}
+              >
+                Anterior
+              </Button>
+              <Button
+                type="button"
+                disabled={manualPage * 50 >= manualJobs.data!.total}
+                onClick={() => {
+                  setManualPage(manualPage + 1);
+                  setManualJobId("");
+                }}
+              >
+                Próxima
+              </Button>
+            </div>
+          )}
           <Field label="Data do envio">
             <input
               type="date"
@@ -509,7 +574,7 @@ export default function Applications() {
             />
           </Field>
           <Field label="Observações">
-            <textarea name="note" />
+            <textarea name="note" maxLength={5000} />
           </Field>
           <label className="checkbox-field">
             <input type="checkbox" name="confirmation" required />
@@ -520,20 +585,39 @@ export default function Applications() {
               type="button"
               onClick={() => {
                 setManual(false);
-                navigate("vagas");
+                setImporting(true);
               }}
             >
               Adicionar uma vaga
             </Button>
             <Button
               className="primary"
-              disabled={a.isPending || !w.jobs.length}
+              disabled={
+                a.isPending ||
+                !manualJobId ||
+                manualJobs.isPending ||
+                manualJobs.isError
+              }
             >
               Registrar envio
             </Button>
           </div>
         </form>
       </Modal>
+      {importing && (
+        <Suspense fallback={<p role="status">Abrindo formulário...</p>}>
+          <ImportModal
+            open={importing}
+            close={() => {
+              setImporting(false);
+              setManualSearch("");
+              setManualPage(1);
+              setManualJobId("");
+              setManual(true);
+            }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

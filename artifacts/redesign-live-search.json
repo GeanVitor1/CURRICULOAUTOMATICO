@@ -1,0 +1,131 @@
+{
+  "checkedAt": "2026-10-09T18:20:15.023Z",
+  "applicationsSent": 0,
+  "results": [
+    {
+      "provider": "gupy",
+      "status": "ok",
+      "count": 99,
+      "matching": 99,
+      "sample": [
+        {
+          "title": "Auxiliar Administrativo Aprendiz",
+          "company": "Solar Coca-Cola",
+          "url": "https://solarcocacola.gupy.io/job/eyJqb2JJZCI6MTI3MDI0NzcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "modality": "Presencial",
+          "location": "Fortaleza, Ceará",
+          "publishedAt": "2026-10-09T17:45:54.018Z"
+        },
+        {
+          "title": "APRENDIZ - AUXILIAR ADMINISTRATIVO",
+          "company": "Movida Aluguel de Carros",
+          "url": "https://movida.gupy.io/job/eyJqb2JJZCI6MTI2ODE3MDAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "modality": "Presencial",
+          "location": "Mogi das Cruzes, São Paulo",
+          "publishedAt": "2026-10-09T17:45:15.728Z"
+        },
+        {
+          "title": "Auxiliar Administrativo Aprendiz",
+          "company": "Solar Coca-Cola",
+          "url": "https://solarcocacola.gupy.io/job/eyJqb2JJZCI6MTI3MDI0NzUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "modality": "Presencial",
+          "location": "Fortaleza, Ceará",
+          "publishedAt": "2026-10-09T17:44:36.329Z"
+        }
+      ]
+    },
+    {
+      "provider": "greenhouse",
+      "status": "ok",
+      "count": 733,
+      "sample": [
+        {
+          "title": "Abuse Investigator",
+          "company": "Stripe",
+          "url": "https://stripe.com/jobs/search?gh_jid=8172508",
+          "modality": "Não especificado",
+          "location": "Dublin",
+          "publishedAt": "2026-09-03T17:32:53.000Z"
+        },
+        {
+          "title": "Abuse Investigator",
+          "company": "Stripe",
+          "url": "https://stripe.com/jobs/search?gh_jid=8172510",
+          "modality": "Não especificado",
+          "location": "Seattle, San Francisco, New York City",
+          "publishedAt": "2026-09-09T14:50:29.000Z"
+        },
+        {
+          "title": "Abuse Investigator",
+          "company": "Stripe",
+          "url": "https://stripe.com/jobs/search?gh_jid=8172487",
+          "modality": "Não especificado",
+          "location": "Dublin",
+          "publishedAt": "2026-09-03T17:30:34.000Z"
+        }
+      ]
+    },
+    {
+      "provider": "lever",
+      "status": "ok",
+      "count": 309,
+      "sample": [
+        {
+          "title": "Administrative Business Partner",
+          "company": "Palantir",
+          "url": "https://jobs.lever.co/palantir/6ed76ce8-4156-4b60-b120-403538bd66cd",
+          "modality": "Híbrido",
+          "location": "Singapore, Singapore",
+          "publishedAt": "2026-08-11T17:38:11.368Z"
+        },
+        {
+          "title": "Administrative Business Partner",
+          "company": "Palantir",
+          "url": "https://jobs.lever.co/palantir/ac978161-6f46-4f6b-ad9e-a258e642751c",
+          "modality": "Híbrido",
+          "location": "London, United Kingdom",
+          "publishedAt": "2024-03-25T21:50:16.463Z"
+        },
+        {
+          "title": "Administrative Business Partner - ShipOS",
+          "company": "Palantir",
+          "url": "https://jobs.lever.co/palantir/a237973c-cb29-41fe-9c80-416e6f42e087",
+          "modality": "Híbrido",
+          "location": "Washington, D.C.",
+          "publishedAt": "2026-06-18T08:34:20.468Z"
+        }
+      ]
+    },
+    {
+      "provider": "ashby",
+      "status": "ok",
+      "count": 134,
+      "sample": [
+        {
+          "title": "Software Engineer, Developer Platform",
+          "company": "Notion",
+          "url": "https://jobs.ashbyhq.com/notion/1fc309c8-da20-4ff2-84c7-8b863ece2b0a",
+          "modality": "Híbrido",
+          "location": "San Francisco, California / New York, New York",
+          "publishedAt": "2026-08-24T14:44:49.699Z"
+        },
+        {
+          "title": "Business Development Representative, New York",
+          "company": "Notion",
+          "url": "https://jobs.ashbyhq.com/notion/05e14247-17c4-4e98-9a13-53828a4e2f13",
+          "modality": "Híbrido",
+          "location": "New York, New York",
+          "publishedAt": "2026-04-02T21:00:55.755Z"
+        },
+        {
+          "title": "Business Development Representative, San Francisco",
+          "company": "Notion",
+          "url": "https://jobs.ashbyhq.com/notion/b21fef72-4864-4a3e-a627-91557a0f8a36",
+          "modality": "Híbrido",
+          "location": "San Francisco, California",
+          "publishedAt": "2026-04-01T23:05:05.541Z"
+        }
+      ]
+    }
+  ]
+}

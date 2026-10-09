@@ -1,0 +1,72 @@
+{
+  "externalRequests": 0,
+  "findings": [
+    {
+      "id": "QA-01",
+      "reproduced": true,
+      "evidence": {
+        "firstId": "c992fee2-616c-43a3-821f-d275c3d26587",
+        "returnedSecondId": "8c1da61b-cdcb-4d84-9bce-58876acad449",
+        "storedJobs": [
+          {
+            "id": "c992fee2-616c-43a3-821f-d275c3d26587",
+            "title": "Operador de caixa",
+            "company": "Empresa B"
+          }
+        ]
+      }
+    },
+    {
+      "id": "QA-02",
+      "reproduced": true,
+      "evidence": {
+        "status": 200,
+        "salaryMin": 9000,
+        "salaryMax": 1000
+      }
+    },
+    {
+      "id": "QA-03",
+      "reproduced": true,
+      "evidence": {
+        "listingStatus": null,
+        "detailStatus": "Requer ação manual",
+        "totalWithSelectedSites": 0
+      }
+    },
+    {
+      "id": "QA-04",
+      "reproduced": true,
+      "evidence": {
+        "enabled": true,
+        "mode": "automatic",
+        "interviewResumeId": "f91d50f4-5263-4a96-b47f-24c5093765fc",
+        "newestResumeId": "e5fef70f-d60c-4fe7-908a-22f064a5f75c",
+        "profileConfirmed": false
+      }
+    },
+    {
+      "id": "QA-05",
+      "reproduced": true,
+      "evidence": {
+        "status": 200,
+        "resumeYears": 0,
+        "profileYears": 12,
+        "resumeLevel": "Júnior",
+        "profileLevel": "Sênior",
+        "profileExperience": "Experiência antiga em outra área",
+        "confirmed": true
+      }
+    },
+    {
+      "id": "QA-06",
+      "reproduced": true,
+      "evidence": {
+        "stored": 2000,
+        "discarded": 2000,
+        "added": 0,
+        "existingJobUpdated": false
+      }
+    }
+  ]
+}

@@ -10,6 +10,7 @@ Requisitos: Node.js 22.12+ e npm.
 
 ```powershell
 npm install
+npx playwright install --with-deps chromium
 npm run dev
 ```
 
@@ -19,15 +20,15 @@ Sem `DATABASE_URL`, o banco PGlite persiste em `.data/postgres`. Esse modo local
 
 ## Como usar
 
-1. Crie uma conta e responda às etapas sobre trabalho, cidade, currículo, experiência e preferências.
-2. Envie um PDF/DOCX ou escolha **Ainda não tenho currículo**. O construtor gera um PDF com suas respostas e salva o rascunho na sua conta.
-3. Confira seu currículo e aprove a versão. Revise e confirme o perfil profissional.
-4. Em **Configurações → Onde procurar**, informe cargo e cidade, escolha um portal e escolha **Adicionar e pesquisar**. Não precisa conhecer APIs ou identificadores técnicos.
-5. Acompanhe os estados reais da fila e da busca em **Explorar vagas**. Abra a oportunidade e confira o link original, os requisitos e a localização.
-6. Prepare a candidatura e finalize o envio no canal oficial. Depois, confirme o envio em **Candidaturas**. Abrir uma página não registra um envio.
-7. Se quiser, configure uma busca diária em **Automação**, começando pelo modo Descoberta.
+1. Entre na conta e escolha **Enviar currículo**. Use PDF/DOCX ou **Ainda não tenho currículo** para criar o arquivo por perguntas.
+2. O sistema analisa o currículo e abre **Preferências**. Responda uma pergunta de cada vez: cargos, remoto/presencial/híbrido e cidade, salário, data/contratação, sites e limite diário.
+3. Escolha seus sites na entrevista e confira as capacidades exibidas. O LinkedIn oferece OAuth oficial de identidade quando configurado; isso não libera envio de candidaturas. Cada fonte informa se busca e envio estão disponíveis. As conexões por navegador exigem autorização explícita do provedor no servidor.
+4. Confira as respostas e confirme o currículo. **Ativar envio automático** aparece quando ao menos um site escolhido possui envio autorizado configurado. Sites sem essa capacidade continuam com envio manual, informado antes da ativação. Sem nenhuma integração de envio, você pode salvar ou iniciar somente busca e preparação.
+5. Acompanhe **Automação** e **Candidaturas**. As vagas ficam em **Ver vagas encontradas**, com filtros diretos de modalidade, cidade, salário e publicação (24 horas, 3 dias, semana, mês ou qualquer data).
 
-O guia de primeiros passos aparece após configurar a conta, explica as telas e salva a etapa atual. Pode ser pausado e reaberto na barra lateral. O sistema não insere vagas, salários ou candidaturas fictícias para preencher telas vazias.
+A navegação principal tem apenas **Automação, Currículo, Preferências e Candidaturas**. A entrevista salva cada etapa e continua após recarregar a página. Perfil, radar, análises, notificações e fontes não são telas do fluxo. Minha conta permite exportar dados ou excluir a conta. Nenhuma vaga, salário, pagamento ou candidatura enviada é fabricada para preencher telas.
+
+A cobrança do plano ainda depende da escolha/configuração do serviço de pagamento e do valor do plano; não há checkout real ou pagamento aprovado nesta instalação. Os detalhes do fluxo e das conexões de envio estão em [docs/FLUXO-SIMPLES.md](docs/FLUXO-SIMPLES.md).
 
 ## Gemini e tipos de vaga
 
@@ -39,17 +40,19 @@ GEMINI_MODEL=gemini-2.5-flash
 GEMINI_SEARCH_MODEL=gemini-2.5-flash
 ```
 
-Em **Configurações → Análise do currículo**, escolha Gemini, autorize os dados profissionais necessários e ative a análise. Contato e documentos pessoais são removidos antes das chamadas. A leitura verifica citações contra o currículo e mantém a extração local em caso de falha.
+Em **Currículo**, a opção de autorizar análise por IA aparece quando Gemini está configurado no servidor. Contato e documentos pessoais são removidos antes das chamadas. A leitura verifica citações contra o currículo e mantém a extração local em caso de falha.
 
-Após enviar um currículo, **Meu currículo** mostra cargos sugeridos, justificativas e trechos de evidência. Selecione e confirme os cargos para orientar os filtros e candidaturas. Versões existentes têm **Analisar novamente**. Na candidatura, Gemini prepara uma apresentação com trechos conferidos do currículo; a versão original fica disponível para download.
+Após enviar um currículo, **Meu currículo** mostra cargos sugeridos. **Entenda a sugestão** abre a justificativa e o trecho de evidência. Selecione e confirme os cargos para orientar os filtros e candidaturas. Versões existentes têm **Analisar novamente**. A preparação da candidatura gera uma apresentação local e disponibiliza o currículo original para download; Gemini pode atualizar essa apresentação se a análise externa estiver autorizada.
 
 ## Onde procurar
 
-O catálogo principal usa **LinkedIn, InfoJobs, Indeed e Gupy**, com cargo e cidade. **Adicionar e pesquisar** consulta anúncios públicos via Gemini com Google Search. Só são aceitos links de anúncios individuais encontrados nas fontes citadas. Não é uma integração autenticada com os portais e não cobre anúncios privados ou todos os resultados da pesquisa. Se não houver anúncio verificável, o app informa a ausência e oferece a busca diretamente no portal. A pesquisa pode consumir cotas do projeto Gemini.
+Os sites da entrevista continuam LinkedIn, Gupy, Glassdoor e InfoJobs. A Gupy consulta as listagens públicas do portal. A busca automatizada LinkedIn exige `PORTAL_DISCOVERY_AUTHORIZED`; seu OAuth identifica a conta, sem permissões de emprego. InfoJobs e Glassdoor usam Gemini com Google Search quando configurado e aceitam somente links individuais citados. Resultados vazios e indisponibilidade são estados separados.
 
-O envio no LinkedIn/InfoJobs/Indeed/Gupy é concluído pela pessoa no portal. Gemini prepara conteúdo e identifica compatibilidade; sua API não tem acesso à conta nem função própria de enviar candidaturas. O mecanismo de envio automático existente depende de um adapter autorizado configurado pelo operador e de recibo real. Nenhum envio é registrado só por abrir um link.
+A consulta Gupy percorre até três páginas de 50 por cargo/cidade, com até quatro cargos e três cidades. Há cache de cinco minutos, deduplicação e cooldown após HTTP 429. A cobertura é limitada; filtros não são relaxados automaticamente.
 
-Greenhouse, Lever, Ashby, Jobicy e Adzuna continuam disponíveis como fontes avançadas. Fontes antigas já adicionadas à conta podem ser removidas em **Configurações → Onde procurar**.
+Os adaptadores de navegador dos quatro portais foram preservados, mas ficam desabilitados sem `PORTAL_BROWSER_AUTHORIZED` por provedor. Somente configure essa opção com permissão do serviço. A integração de envio autorizada por webhook continua disponível. O fluxo exige currículo aprovado, preferências, consentimento e confirmação real; perguntas sem resposta ficam pendentes. Claims interrompidos não são reenviados automaticamente. Detalhes em [docs/CONEXOES.md](docs/CONEXOES.md).
+
+Greenhouse, Lever, Ashby, Jobicy e Adzuna continuam disponíveis pela API para compatibilidade. A entrevista define os sites usados pelo fluxo simples.
 
 ```powershell
 npm run verify:gemini
@@ -57,7 +60,7 @@ npm run verify:gemini
 npm run verify:gemini -- --search
 ```
 
-A análise Gemini foi validada nesta instalação. A busca real de teste no LinkedIn/InfoJobs não retornou referências de anúncios individuais verificáveis. Erro de cota ou ausência de fontes verificáveis são informados na interface. Leia [docs/AI.md](docs/AI.md).
+Na revisão atual, a Gupy retornou 99 anúncios reais para Auxiliar administrativo, e a busca pela fila foi validada até a interface. Greenhouse (Stripe), Lever (Palantir) e Ashby (Notion) também responderam com vagas reais. Nenhuma candidatura foi enviada. O round trip OAuth com credenciais reais e o envio a empregadores permanecem sem validação. Resultados e limites: [docs/REDESIGN-E-INTEGRACOES-2026-10-09.md](docs/REDESIGN-E-INTEGRACOES-2026-10-09.md).
 
 ## Build, testes e produção
 
@@ -82,3 +85,5 @@ Para workers separados, configure PostgreSQL e Redis em `.env`, execute as migra
 O armazenamento de coleções por conta continua em JSONB, com limite de 2.000 vagas. A listagem tem paginação no servidor e o dashboard recebe um resumo, mas o backend ainda lê a coleção para aplicar critérios. Escala pública maior exige tabelas relacionais e filtros SQL; esta entrega não afirma capacidade ilimitada.
 
 Relatório detalhado: [docs/REFATORACAO.md](docs/REFATORACAO.md). Resultados: [docs/VALIDATION.md](docs/VALIDATION.md).
+
+Auditoria de produto de 09/10/2026: [correções, validação e pendências de lançamento](docs/AUDITORIA-PRODUTO-2026-10-09.md). O build inclui Brotli/gzip para arquivos HTML, JS e CSS; a auditoria de carregamento e cache pode ser executada com `npm run audit:production` contra uma instância local de produção (origem padrão `http://127.0.0.1:3109`).

@@ -1,0 +1,77 @@
+{
+  "externalRequests": 0,
+  "findings": [
+    {
+      "id": "QA-01",
+      "fixed": true,
+      "evidence": {
+        "firstId": "b5359ac5-6192-45c8-ae46-7ef534f70861",
+        "returnedSecondId": "5ae4ab0d-67f6-43e4-8d28-ac7f8fb76404",
+        "storedJobs": [
+          {
+            "id": "5ae4ab0d-67f6-43e4-8d28-ac7f8fb76404",
+            "title": "Operador de caixa",
+            "company": "Empresa B"
+          },
+          {
+            "id": "b5359ac5-6192-45c8-ae46-7ef534f70861",
+            "title": "Auxiliar administrativo",
+            "company": "Empresa A"
+          }
+        ]
+      }
+    },
+    {
+      "id": "QA-02",
+      "fixed": true,
+      "evidence": {
+        "status": 400,
+        "salaryMin": 9000,
+        "salaryMax": 1000
+      }
+    },
+    {
+      "id": "QA-03",
+      "fixed": true,
+      "evidence": {
+        "listingStatus": "Requer ação manual",
+        "detailStatus": "Requer ação manual",
+        "totalWithSelectedSites": 0
+      }
+    },
+    {
+      "id": "QA-04",
+      "fixed": true,
+      "evidence": {
+        "enabled": false,
+        "mode": "automatic",
+        "interviewResumeId": "8df2c551-f655-4349-8046-8116f3da84bd",
+        "newestResumeId": "6f541cea-33d8-4d44-83d9-d60e42f8e65b",
+        "profileConfirmed": false
+      }
+    },
+    {
+      "id": "QA-05",
+      "fixed": true,
+      "evidence": {
+        "status": 200,
+        "resumeYears": 0,
+        "profileYears": 0,
+        "resumeLevel": "Júnior",
+        "profileLevel": "Júnior",
+        "profileExperience": "",
+        "confirmed": true
+      }
+    },
+    {
+      "id": "QA-06",
+      "fixed": true,
+      "evidence": {
+        "stored": 2000,
+        "discarded": 1999,
+        "added": 1,
+        "existingJobUpdated": true
+      }
+    }
+  ]
+}

@@ -1,4 +1,10 @@
-# Validação — 08/10/2026
+# Validação
+
+Revisão final de 09/10/2026: consulte a [auditoria de produto](AUDITORIA-PRODUTO-2026-10-09.md) para as correções desta sessão, testes integrados do build de produção e métricas. Os registros abaixo preservam as etapas anteriores da validação.
+
+Atualização de 09/10/2026: **139 testes unitários/API, 22 cenários de navegador, TypeScript e build aprovados**. O [fluxo simples](FLUXO-SIMPLES.md) tem quatro abas, entrevista persistida e filtros diretos. As [conexões nativas](CONEXOES.md) foram verificadas com sessões cifradas e formulários controlados; o login público real do LinkedIn foi aberto pela interface, com confirmação sem autenticação recusada. Nenhum teste envia candidaturas a empregadores. Envios com contas reais ainda precisam ser validados após conectá-las. As [correções de currículo e busca](CORRECOES-2026-10-09.md) também estão documentadas.
+
+Resultados históricos de 08/10/2026:
 
 | Verificação | Resultado |
 |---|---|

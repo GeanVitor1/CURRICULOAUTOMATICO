@@ -1,301 +1,281 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "motion/react";
+import { ArrowLeft, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import {
-  Search,
-  SlidersHorizontal,
-  Plus,
-  LayoutGrid,
-  List,
-  Bookmark,
-  Radar,
-  Sparkles,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-import {
-  Badge,
   Button,
   Empty,
   JobCard,
   JobDetail,
-  JobRow,
   PageHead,
   DiscoveryStatus,
+  Field,
 } from "../components";
-import { FiltersModal, ImportModal } from "../JobForms";
 import { api, useAction, useApp } from "../lib";
-import type { Job } from "../../shared/types";
-import { isPortalId, portalSearchUrl } from "../../shared/portals";
+import type { Filters, Job } from "../../shared/types";
+
 export default function Jobs() {
   const { w, navigate } = useApp();
   const a = useAction();
-  const radar = location.hash === "#radar";
-  const [query, setQuery] = useState(""),
-    [search, setSearch] = useState(""),
-    [tab, setTab] = useState("all"),
-    [view, setView] = useState("grid"),
-    [sort, setSort] = useState("score"),
-    [filters, setFilters] = useState(false),
-    [importOpen, setImport] = useState(false),
-    [selected, setSelected] = useState<Job | null>(null),
-    [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [selected, setSelected] = useState<Job | null>(null);
+  const [city, setCity] = useState(w.filters.locations.join("; "));
+  const [salaryMin, setSalaryMin] = useState(String(w.filters.salaryMin || ""));
+  useEffect(
+    () => setCity(w.filters.locations.join("; ")),
+    [w.filters.locations.join("; ")],
+  );
+  useEffect(
+    () => setSalaryMin(String(w.filters.salaryMin || "")),
+    [w.filters.salaryMin],
+  );
   useEffect(() => {
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       setSearch(query);
       setPage(1);
-    }, 180);
-    return () => clearTimeout(t);
+    }, 200);
+    return () => clearTimeout(timer);
   }, [query]);
-  useEffect(() => {
-    setTab("all");
+  const change = (patch: Partial<Filters>) => {
     setPage(1);
-  }, [radar]);
+    a.mutate({
+      path: "/filters",
+      method: "PUT",
+      body: { ...w.filters, ...patch },
+    });
+  };
   const result = useQuery({
     queryKey: [
       "jobs",
-      {
-        search,
-        page,
-        radar,
-        tab,
-        sort,
-        filters: w.filters,
-        run: w.runs[0] ? { id: w.runs[0].id, status: w.runs[0].status } : null,
-      },
+      "simple",
+      page,
+      search,
+      w.filters,
+      w.runs[0]?.id,
+      w.runs[0]?.status,
     ],
-    queryFn: () =>
-      api<{ items: Job[]; total: number; page: number; pageSize: number }>(
+    queryFn: ({ signal }) =>
+      api<{ items: Job[]; total: number; pageSize: number }>(
         "/jobs?" +
           new URLSearchParams({
-            search,
             page: String(page),
             pageSize: "12",
-            radar: String(radar),
-            tab,
-            sort,
+            search,
+            sort: "recent",
           }),
+        { signal },
       ),
   });
-  const jobs = result.data?.items || [];
-  const requestedJob = new URLSearchParams(location.search).get("vaga");
+  const requested = new URLSearchParams(location.search).get("vaga");
   const detail = useQuery({
-    queryKey: ["jobs", "detail", requestedJob],
-    queryFn: () => api<Job>("/jobs/" + encodeURIComponent(requestedJob!)),
-    enabled: !!requestedJob,
+    queryKey: ["jobs", "detail", requested],
+    enabled: !!requested,
+    queryFn: ({ signal }) =>
+      api<Job>("/jobs/" + encodeURIComponent(requested!), { signal }),
   });
   useEffect(() => {
     if (detail.data) setSelected(detail.data);
   }, [detail.data]);
+  const searching = ["queued", "running"].includes(w.runs[0]?.status || "");
   const total = result.data?.total || 0;
   const totalPages = Math.max(1, Math.ceil(total / 12));
-  const currentPage = Math.min(page, totalPages);
+  const sourceFailed = ["failed", "partial"].includes(w.runs[0]?.status || "");
   useEffect(() => {
-    if (result.data && page > totalPages) setPage(totalPages);
-  }, [result.data, page, totalPages]);
+    if (page > totalPages && result.data) setPage(totalPages);
+  }, [page, totalPages, result.data]);
   return (
-    <div>
+    <div className="jobs-page">
       <PageHead
-        eyebrow={
-          radar ? "CONEXÕES QUE VOCÊ NÃO PROCURAVA" : "SUA PRÓXIMA OPORTUNIDADE"
-        }
-        title={radar ? "Radar de oportunidades" : "Explorar vagas"}
-        description={
-          radar
-            ? "Outros títulos. Competências em comum. Novas possibilidades."
-            : "Encontre as vagas que fazem sentido para o seu próximo passo."
-        }
+        title="Vagas encontradas"
+        description="As vagas que atendem às suas preferências. Os mesmos critérios orientam a automação."
       >
-        <Button onClick={() => setImport(true)}>
-          <Plus size={15} />
-          Adicionar vaga
+        <Button onClick={() => navigate("automacao")}>
+          <ArrowLeft size={15} />
+          Voltar à automação
         </Button>
-        <Button className="primary" onClick={() => setFilters(true)}>
-          <SlidersHorizontal size={15} />
-          Ajustar busca
+        <Button
+          className="primary"
+          disabled={a.isPending || searching}
+          onClick={() =>
+            w.sources.some((source) => source.enabled && source.discovery)
+              ? a.mutate({ path: "/discover" })
+              : navigate("preferencias")
+          }
+        >
+          <Search size={15} />
+          {searching ? "Buscando…" : "Buscar vagas"}
         </Button>
       </PageHead>
-      <DiscoveryStatus />
-      {w.sources.some(
-        (source) => source.enabled && source.type === "portal",
-      ) && (
-        <div className="integration-info portal-search-links">
-          <strong>Confira também a busca diretamente nos portais</strong>
-          <p>
-            Anúncios privados ou sem fonte verificável na busca Gemini podem
-            aparecer no próprio portal.
-          </p>
-          <div className="resume-actions">
-            {w.sources
-              .filter(
-                (source) =>
-                  source.enabled &&
-                  source.type === "portal" &&
-                  isPortalId(source.board),
-              )
-              .map((source) => (
-                <a
-                  key={source.id}
-                  className="button"
-                  href={portalSearchUrl(
-                    source.board as import("../../shared/portals").PortalId,
-                    w.filters.titles.join(", ") || w.profile.headline,
-                    w.filters.locations.join(", ") || w.profile.location,
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Buscar no {source.company}
-                </a>
-              ))}
-          </div>
-        </div>
-      )}
-      {w.runs[0]?.searchSuggestions?.map((html, index) => (
-        <iframe
-          key={index}
-          title={`Sugestões do Google Search ${index + 1}`}
-          srcDoc={html}
-          sandbox="allow-popups allow-popups-to-escape-sandbox"
-          referrerPolicy="no-referrer"
-          className="search-suggestions"
-        />
-      ))}
-      {radar && (
-        <div className="info-inline">
-          <Sparkles size={18} />
-          <span>
-            Seu Radar cruza competências confirmadas com famílias de cargos
-            relacionados. Experiência com atendimento ao cliente, por exemplo,
-            pode se conectar a funções de recepção ou vendas. Abra uma vaga para
-            entender quais informações sustentam a conexão.
-          </span>
-        </div>
-      )}
-      <div className="tabs">
-        {[
-          ["all", "Todas as oportunidades"],
-          ["compatible", "Compatíveis"],
-          ["saved", "Salvas"],
-        ].map(([id, label]) => (
-          <button
-            key={id}
-            className={tab === id ? "active" : ""}
-            aria-pressed={tab === id}
-            onClick={() => {
-              setTab(id);
-              setPage(1);
-            }}
-          >
-            {id === "saved" && (
-              <Bookmark
-                size={13}
-                style={{ display: "inline", marginRight: 5 }}
-              />
-            )}{" "}
-            {label}
-            {tab === id && (
-              <motion.span
-                className="tactile-tab-active"
-                layoutId="job-tab-active"
-                transition={{ type: "spring", stiffness: 380, damping: 30 }}
-              />
-            )}
-          </button>
-        ))}
-      </div>
-      <div className="toolbar">
-        <div className="search-input">
-          <Search size={16} />
-          <input
-            aria-label="Buscar vagas"
-            placeholder="Buscar por cargo, empresa ou habilidade…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-        <select
-          aria-label="Ordenação de vagas"
-          value={sort}
-          onChange={(e) => {
-            setSort(e.target.value);
-            setPage(1);
-          }}
-        >
-          <option value="score">Maior compatibilidade</option>
-          <option value="recent">Mais recentes</option>
-        </select>
-        {w.searchProfiles.length > 0 && (
+      <div className="simple-job-filters" aria-label="Filtros de vagas">
+        <label>
+          <span>Modalidade</span>
           <select
-            aria-label="Perfil de busca"
-            defaultValue=""
+            aria-label="Modalidade"
+            disabled={a.isPending}
+            value={
+              w.filters.modalities.length === 1 ? w.filters.modalities[0] : ""
+            }
             onChange={(e) =>
-              e.target.value &&
-              a.mutate({ path: `/search-profiles/${e.target.value}/activate` })
+              change({
+                modalities: e.target.value ? [e.target.value] : [],
+                remoteAnywhere: true,
+              })
             }
           >
-            <option value="">Perfis de busca</option>
-            {w.searchProfiles.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
+            <option value="">Todas</option>
+            <option>Remoto</option>
+            <option>Presencial</option>
+            <option>Híbrido</option>
           </select>
-        )}
-        <div className="view-toggle">
-          <button
-            aria-label="Visualização em cards"
-            className={view === "grid" ? "active" : ""}
-            onClick={() => setView("grid")}
+        </label>
+        <label>
+          <span>Publicação</span>
+          <select
+            aria-label="Publicação"
+            disabled={a.isPending}
+            value={w.filters.dateKnownOnly ? w.filters.ageDays : 365}
+            onChange={(e) =>
+              change({
+                ageDays: Number(e.target.value),
+                dateKnownOnly: Number(e.target.value) !== 365,
+              })
+            }
           >
-            <LayoutGrid size={16} />
-          </button>
-          <button
-            aria-label="Visualização em lista"
-            className={view === "list" ? "active" : ""}
-            onClick={() => setView("list")}
-          >
-            <List size={16} />
-          </button>
+            <option value={1}>Últimas 24 horas</option>
+            <option value={3}>Últimos 3 dias</option>
+            <option value={7}>Última semana</option>
+            <option value={30}>Último mês</option>
+            <option value={365}>Qualquer data</option>
+          </select>
+        </label>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            change({
+              locations: city
+                .split(";")
+                .map((part) => part.trim())
+                .filter(Boolean),
+              remoteAnywhere: true,
+            });
+          }}
+        >
+          <label>
+            <span>Cidade (presencial/híbrido)</span>
+            <input
+              aria-label="Cidade para vagas presenciais"
+              value={city}
+              placeholder="Todas as cidades"
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </label>
+          <Button type="submit" disabled={a.isPending}>
+            Aplicar cidade
+          </Button>
+        </form>
+        <details className="salary-filter">
+          <summary>
+            Salário{" "}
+            {w.filters.salaryMin > 0
+              ? `· a partir de R$ ${w.filters.salaryMin.toLocaleString("pt-BR")}`
+              : ""}
+          </summary>
+          <div>
+            <Field label="Mínimo mensal (R$)">
+              <input
+                type="number"
+                min={0}
+                max={10000000}
+                value={salaryMin}
+                disabled={a.isPending}
+                onChange={(e) => setSalaryMin(e.target.value)}
+                onBlur={(e) => {
+                  if (!e.currentTarget.checkValidity()) {
+                    e.currentTarget.reportValidity();
+                    return;
+                  }
+                  if (
+                    !a.isPending &&
+                    Number(e.target.value) !== w.filters.salaryMin
+                  )
+                    change({ salaryMin: Number(e.target.value) });
+                }}
+              />
+            </Field>
+            <label className="checkbox-field">
+              <input
+                type="checkbox"
+                checked={!w.filters.salaryOnly}
+                disabled={a.isPending}
+                onChange={(e) => change({ salaryOnly: !e.target.checked })}
+              />
+              Aceitar salário não anunciado
+            </label>
+          </div>
+        </details>
+        <Button
+          disabled={a.isPending}
+          onClick={() => {
+            setCity("");
+            setSalaryMin("");
+            change({
+              modalities: [],
+              locations: [],
+              salaryMin: 0,
+              salaryMax: 0,
+              salaryOnly: false,
+              dateKnownOnly: false,
+              ageDays: 365,
+              levels: [],
+              skills: [],
+              contracts: [],
+              requiredSkills: [],
+              language: "",
+            });
+          }}
+        >
+          Limpar filtros
+        </Button>
+      </div>
+      <div className="search-input simple-job-search">
+        <Search size={16} />
+        <input
+          aria-label="Buscar vagas"
+          placeholder="Buscar por cargo ou empresa"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+      <DiscoveryStatus />
+      {detail.isError && (
+        <div className="recoverable-error" role="alert">
+          <p>Não conseguimos abrir esta vaga. {detail.error.message}</p>
+          <Button disabled={detail.isFetching} onClick={() => detail.refetch()}>
+            Tentar novamente
+          </Button>
         </div>
-      </div>
-      <div className="filter-summary">
-        {w.filters.skills.map((s) => (
-          <button className="badge" key={s} onClick={() => setFilters(true)}>
-            {s}
-          </button>
-        ))}
-        {w.filters.levels.map((s) => (
-          <Badge key={s}>{s}</Badge>
-        ))}
-        {w.filters.modalities.map((s) => (
-          <Badge key={s}>{s}</Badge>
-        ))}
-        <button className="text-button" onClick={() => setFilters(true)}>
-          Editar filtros
-        </button>
-      </div>
-      <div className="count-caption">
+      )}
+      <p className="count-caption" role="status">
         {result.isPending
-          ? "Consultando suas oportunidades…"
-          : total +
-            (total === 1 ? " oportunidade" : " oportunidades") +
-            " · Compatibilidade com seu perfil"}
-      </div>
+          ? "Carregando vagas…"
+          : result.isError
+            ? "Consulta indisponível"
+            : `${total} ${total === 1 ? "vaga encontrada" : "vagas encontradas"}`}
+      </p>
       {result.isPending ? (
-        <div className="panel loading-reveal" role="status">
+        <div className="panel">
           <Empty
-            title="Preparando suas oportunidades"
+            title="Carregando vagas"
+            description="Aguarde um instante."
             mascot="thinking"
             animated
-            description="Estamos consultando os registros da sua busca."
-            icon={<Search size={28} />}
           />
         </div>
       ) : result.isError ? (
         <div className="panel">
           <Empty
-            title="Não foi possível carregar as vagas"
+            title="Não foi possível carregar"
             mascot="surprised"
             description={result.error.message}
             action={
@@ -303,89 +283,73 @@ export default function Jobs() {
             }
           />
         </div>
-      ) : jobs.length ? (
-        view === "grid" ? (
-          <div className="job-grid">
-            {jobs.map((j) => (
-              <JobCard job={j} key={j.id} onClick={() => setSelected(j)} />
-            ))}
-          </div>
-        ) : (
-          <div className="panel">
-            {jobs.map((j) => (
-              <JobRow job={j} key={j.id} onClick={() => setSelected(j)} />
-            ))}
-          </div>
-        )
+      ) : result.data?.items.length ? (
+        <div className="job-grid">
+          {result.data.items.map((job) => (
+            <JobCard key={job.id} job={job} onClick={() => setSelected(job)} />
+          ))}
+        </div>
       ) : (
         <div className="panel">
           <Empty
-            mascot={search ? "considering" : "thinking"}
             title={
-              search
-                ? "Nenhuma conexão com essa busca"
-                : radar
-                  ? "Seu Radar está pronto para descobrir"
-                  : w.runs.length
-                    ? "Nenhuma vaga corresponde à sua busca"
-                    : "Vamos encontrar suas oportunidades"
+              searching
+                ? "Estamos consultando suas fontes"
+                : sourceFailed
+                  ? "A busca precisa de atenção"
+                  : !w.runs.length
+                    ? "Faça sua primeira busca"
+                    : "Nenhuma vaga com estes critérios"
             }
             description={
-              search
-                ? "Tente outro cargo, habilidade ou empresa."
-                : radar
-                  ? "Confirme suas competências e busque vagas. As conexões com títulos diferentes aparecerão aqui."
-                  : w.runs.length
-                    ? "Confira se as empresas conectadas cobrem sua cidade e profissão. Você pode ajustar seus filtros ou adicionar uma fonte com outra cobertura."
-                    : "Escolha uma empresa em Configurações para consultar oportunidades reais. Você também pode adicionar uma vaga encontrada por conta própria."
+              searching
+                ? "Você pode sair desta página. A busca continua e os resultados aparecerão aqui."
+                : sourceFailed
+                  ? "Uma ou mais fontes não puderam ser consultadas. Confira o relatório da busca acima e tente novamente."
+                  : !w.runs.length
+                    ? "Escolha seus critérios e clique em Buscar vagas para consultar as fontes disponíveis."
+                    : "Nenhum anúncio corresponde aos filtros atuais. Você pode revisar os critérios ou buscar novamente."
             }
-            icon={radar ? <Radar size={28} /> : <Search size={28} />}
+            animated={searching}
             action={
-              <Button
-                onClick={() => navigate(radar ? "perfil" : "configuracoes")}
-              >
-                {radar ? "Confirmar perfil" : "Conectar fontes"}
-              </Button>
+              <div className="empty-actions">
+                <Button
+                  className="primary"
+                  disabled={a.isPending || searching}
+                  onClick={() => a.mutate({ path: "/discover" })}
+                >
+                  <Search size={15} />
+                  {searching ? "Buscando…" : "Buscar novamente"}
+                </Button>
+                <Button onClick={() => navigate("preferencias")}>
+                  Revisar minhas preferências
+                </Button>
+              </div>
             }
           />
         </div>
       )}
-      <div className="pagination">
-        <span>
-          Página {currentPage} de {totalPages}
-        </span>
-        <div>
-          <Button
-            disabled={currentPage <= 1 || result.isFetching}
-            onClick={() => setPage(currentPage - 1)}
-          >
-            <ChevronLeft size={14} />
-            Anterior
-          </Button>
-          <Button
-            disabled={currentPage >= totalPages || result.isFetching}
-            onClick={() => setPage(currentPage + 1)}
-          >
-            Próxima
-            <ChevronRight size={14} />
-          </Button>
+      {totalPages > 1 && (
+        <div className="pagination">
+          <span>
+            Página {page} de {totalPages}
+          </span>
+          <div>
+            <Button disabled={page <= 1} onClick={() => setPage(page - 1)}>
+              <ChevronLeft size={15} />
+              Anterior
+            </Button>
+            <Button
+              disabled={page >= totalPages}
+              onClick={() => setPage(page + 1)}
+            >
+              Próxima
+              <ChevronRight size={15} />
+            </Button>
+          </div>
         </div>
-      </div>
-      {filters && <FiltersModal open close={() => setFilters(false)} />}{" "}
-      {importOpen && <ImportModal open close={() => setImport(false)} />}
-      <JobDetail
-        job={
-          selected ? jobs.find((j) => j.id === selected.id) || selected : null
-        }
-        close={() => {
-          setSelected(null);
-          if (requestedJob) {
-            const url = new URL(location.href);
-            url.searchParams.delete("vaga");
-            history.replaceState({}, "", url.pathname + url.search + url.hash);
-          }
-        }}
-      />
+      )}
+      <JobDetail job={selected} close={() => setSelected(null)} />
     </div>
   );
 }

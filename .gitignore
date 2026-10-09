@@ -9,3 +9,7 @@ test-results/
 playwright-report/
 *.log
 artifacts/persistence-test-db/
+artifacts/frontend-audit-results/
+artifacts/product-test-results/
+artifacts/product-workflow-results/
+artifacts/product-motion-results/

@@ -5,6 +5,7 @@ import { executeRoutine } from "./operations";
 import { db, closeDb } from "./db";
 import { workspaces } from "./schema";
 import { startDiscoveryWorker } from "./discovery-queue";
+import { closePortalBrowsers } from "./portal-sessions";
 if (!connection || !process.env.DATABASE_URL)
   throw new Error("Workers separados exigem DATABASE_URL e REDIS_URL.");
 const worker = new Worker(
@@ -34,6 +35,7 @@ const stopDiscovery = startDiscoveryWorker();
 const stop = async () => {
   await worker.close();
   await stopDiscovery();
+  await closePortalBrowsers();
   await queue?.close();
   await connection?.quit();
   await closeDb();

@@ -1,0 +1,25 @@
+{
+  "source": "Gupy",
+  "status": "completed",
+  "errors": [],
+  "discovered": 99,
+  "applications": 0,
+  "checkedAt": "2026-10-09T18:33:09.968Z",
+  "sample": [
+    {
+      "title": "Auxiliar Administrativo Escolar - PCD",
+      "company": "CULTURA INGLESA",
+      "url": "https://culturainglesa.gupy.io/job/eyJqb2JJZCI6MTI0MzY2ODEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+    },
+    {
+      "title": "Auxiliar Administrativo Unidade - PcD - Contagem/MG | Autoglass",
+      "company": "Grupo Autoglass Lojas e Centros de Distribuição",
+      "url": "https://autoglasslojas.gupy.io/job/eyJqb2JJZCI6MTI2ODMzMjgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+    },
+    {
+      "title": "Auxiliar Administrativo  - Contas a Receber",
+      "company": "Grupo Zaffari",
+      "url": "https://grupozaffari.gupy.io/job/eyJqb2JJZCI6MTI2ODMzNTcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal"
+    }
+  ]
+}

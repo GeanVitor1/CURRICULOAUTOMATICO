@@ -1,61 +1,61 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import {
-  LayoutDashboard,
-  Radar,
+  AnimatePresence,
+  motion,
+  MotionConfig,
+  useReducedMotion,
+} from "motion/react";
+import {
   BriefcaseBusiness,
   Zap,
   FileText,
   UserRound,
-  ChartNoAxesCombined,
-  Bell,
   Settings2,
-  Search,
-  ChevronDown,
-  Command,
   Menu,
   Sun,
   Moon,
   LogOut,
-  HelpCircle,
-  FlaskConical,
-  ArrowUpRight,
   X,
-  AlertCircle,
-  CheckCircle2,
-  Plus,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  ChartNoAxesColumnIncreasing,
+  UsersRound,
+  Mail,
+  LockKeyhole,
 } from "lucide-react";
 import { Context, api } from "./lib";
-import { Logo, Mascot, Button, Modal, Field } from "./components";
-import Dashboard from "./Dashboard";
+import { Logo, Mascot, Button, Field } from "./components";
 import type { Workspace } from "../shared/types";
+import loginAnimation from "../Video/output/NOVOVIDEO.mp4";
 const Landing = lazy(() => import("./Landing"));
-const Onboarding = lazy(() => import("./Onboarding"));
-const GuidedTour = lazy(() => import("./GuidedTour"));
 const pages = {
   vagas: lazy(() => import("./pages/Jobs")),
-  radar: lazy(() => import("./pages/Jobs")),
   candidaturas: lazy(() => import("./pages/Applications")),
-  automacao: lazy(() => import("./pages/Automation")),
-  curriculo: lazy(() => import("./pages/Resume")),
-  perfil: lazy(() => import("./pages/Profile")),
-  analises: lazy(() => import("./pages/Analytics")),
-  notificacoes: lazy(() => import("./pages/Notifications")),
-  configuracoes: lazy(() => import("./pages/Settings")),
-  onboarding: Onboarding,
+  automacao: lazy(() => import("./SimpleAutomation")),
+  curriculo: lazy(() => import("./SimpleResume")),
+  preferencias: lazy(() => import("./CareerInterview")),
+  conta: lazy(() => import("./SimpleAccount")),
 };
 const nav = [
-  { id: "visao-geral", label: "Visão geral", icon: LayoutDashboard },
-  { id: "radar", label: "Radar de oportunidades", icon: Radar },
-  { id: "vagas", label: "Explorar vagas", icon: Search },
-  { id: "candidaturas", label: "Candidaturas", icon: BriefcaseBusiness },
   { id: "automacao", label: "Automação", icon: Zap },
-  { id: "curriculo", label: "Meu currículo", icon: FileText },
-  { id: "perfil", label: "Perfil profissional", icon: UserRound },
-  { id: "analises", label: "Análises", icon: ChartNoAxesCombined },
-  { id: "notificacoes", label: "Notificações", icon: Bell },
+  { id: "curriculo", label: "Currículo", icon: FileText },
+  { id: "preferencias", label: "Preferências", icon: Settings2 },
+  { id: "candidaturas", label: "Candidaturas", icon: BriefcaseBusiness },
 ];
+const canonicalPage = (page: string) =>
+  ({
+    "visao-geral": "automacao",
+    radar: "vagas",
+    perfil: "preferencias",
+    onboarding: "preferencias",
+    analises: "automacao",
+    notificacoes: "candidaturas",
+    configuracoes: "conta",
+  })[page] ||
+  page ||
+  "automacao";
 function Privacy() {
   return (
     <div className="privacy-page">
@@ -80,12 +80,12 @@ function Privacy() {
       </p>
       <h2>Exportação e exclusão</h2>
       <p>
-        Em Configurações → Dados, você pode exportar seu workspace em JSON ou
-        excluir sua conta, seus currículos e o histórico associado. A exportação
-        inclui os dados profissionais armazenados; os PDFs podem ser baixados na
-        página de currículos. A chave do provedor fica no servidor.
+        Em Minha conta, você pode exportar seu workspace em JSON ou excluir sua
+        conta, seus currículos e o histórico associado. A exportação inclui os
+        dados profissionais armazenados; os PDFs podem ser baixados na aba
+        Currículo. A chave do provedor fica no servidor.
       </p>
-      <h2>Fontes de oportunidades</h2>
+      <h2>Sites de vagas</h2>
       <p>
         As fontes retornam anúncios públicos de empresas. Abrir um link oficial
         não confirma uma candidatura. A cobertura varia por organização e
@@ -106,122 +106,299 @@ function Privacy() {
     </div>
   );
 }
-function Auth({
-  onSuccess,
-  toast,
-}: {
-  onSuccess: () => void;
-  toast: (s: string, e?: boolean) => void;
-}) {
+function AuthAnimation({ className }: { className: string }) {
+  const video = useRef<HTMLVideoElement>(null);
+  const reduced = useReducedMotion();
+  const playing = reduced === false;
+  useEffect(() => {
+    const media = video.current;
+    if (!media) return;
+    if (playing) void media.play().catch(() => {});
+    else media.pause();
+  }, [playing]);
+  return (
+    <span className={`auth-video ${className}`}>
+      <video
+        ref={video}
+        className="auth-video-media"
+        src={reduced === true ? undefined : loginAnimation}
+        poster="/login-video-poster.png"
+        autoPlay={playing}
+        muted
+        loop
+        playsInline
+        preload={reduced === false ? "auto" : "none"}
+        width={1280}
+        height={720}
+        aria-label="Mascote da EmpreGatos escrevendo o currículo"
+      />
+    </span>
+  );
+}
+function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
   const register = location.pathname === "/register";
   const [busy, setBusy] = useState(false);
+  const submitting = useRef(false);
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberEmail, setRememberEmail] = useState(() => {
+    try {
+      return !!localStorage.getItem("empregatos:remembered-email");
+    } catch {
+      return false;
+    }
+  });
+  const [email, setEmail] = useState(() => {
+    try {
+      return localStorage.getItem("empregatos:remembered-email") || "";
+    } catch {
+      return "";
+    }
+  });
+  const [compact, setCompact] = useState(
+    () => window.matchMedia("(max-width: 780px)").matches,
+  );
+  useEffect(() => {
+    const screen = window.matchMedia("(max-width: 780px)");
+    const update = () => setCompact(screen.matches);
+    screen.addEventListener("change", update);
+    return () => screen.removeEventListener("change", update);
+  }, []);
   return (
-    <div className="auth-page">
+    <div className={`auth-page${register ? " auth-register" : ""}`}>
       <a href="/" className="auth-brand">
         <Logo />
         <span>EmpreGatos</span>
       </a>
-      <div className="auth-editorial">
-        <div className="eyebrow">UM PASSO DE CADA VEZ</div>
-        <h2>
-          Seu próximo capítulo
-          <br />
-          começa com você.
-        </h2>
-        <Mascot
-          className="auth-mascot"
-          variant={register ? "idea" : "writing-to-you"}
-          eager
-        />
-        <p>
-          Do primeiro emprego ao próximo desafio.
-          <br />
-          Suas oportunidades. Seu ritmo.
-        </p>
-      </div>
-      <div className="auth-card">
-        <Mascot
-          className="auth-card-mascot"
-          variant={register ? "idea" : "writing-to-you"}
-        />
-        <div className="eyebrow">SEU PRÓXIMO PASSO</div>
-        <h1>
-          {register
-            ? "Uma nova direção para sua carreira."
-            : "Bom ter você de volta."}
-        </h1>
-        <p>
-          Encontre oportunidades que combinam com você e acompanhe cada
-          candidatura em um só lugar.
-        </p>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const f = new FormData(e.currentTarget);
-            setBusy(true);
-            try {
-              await api(`/auth/${register ? "register" : "login"}`, {
-                method: "POST",
-                body: JSON.stringify({
-                  name: f.get("name") || undefined,
-                  email: f.get("email"),
-                  password: f.get("password"),
-                }),
-              });
-              onSuccess();
-            } catch (e: any) {
-              toast(e.message, true);
-            } finally {
-              setBusy(false);
-            }
-          }}
-        >
-          {register && (
-            <Field label="Seu nome">
-              <input
-                name="name"
-                placeholder="Como podemos chamar você?"
-                required
-                minLength={2}
-                maxLength={100}
-                autoComplete="name"
-              />
-            </Field>
-          )}
-          <Field label="E-mail">
-            <input
-              name="email"
-              type="email"
-              placeholder="voce@exemplo.com"
-              required
-              autoComplete="email"
-            />
-          </Field>
-          <Field label="Senha" help="Use pelo menos 10 caracteres.">
-            <input
-              name="password"
-              type="password"
-              required
-              minLength={10}
-              maxLength={128}
-              autoComplete={register ? "new-password" : "current-password"}
-            />
-          </Field>
-          <Button type="submit" className="primary full" disabled={busy}>
-            {busy ? "Aguarde…" : register ? "Criar minha conta" : "Entrar"}
-          </Button>
-        </form>
-        <a
-          className="text-button auth-switch"
-          href={register ? "/login" : "/register"}
-        >
-          {register ? "Já tenho uma conta" : "Criar uma conta"}
-        </a>
-        <div className="auth-foot">
-          <BriefcaseBusiness size={14} />
-          Suas oportunidades. Seu ritmo.
+      <main className="auth-layout">
+        <div className="auth-editorial">
+          <div className="eyebrow">UM PASSO DE CADA VEZ</div>
+          <h2>
+            Seu próximo
+            <br />
+            capítulo começa
+            <br />
+            <span>com você.</span>
+          </h2>
+          <p>
+            Do primeiro emprego ao próximo desafio.
+            <br />
+            Suas oportunidades. Seu ritmo.
+          </p>
+          {!compact && <AuthAnimation className="auth-mascot" />}
+          <ul
+            className="auth-benefits"
+            aria-label="Seu próximo passo com a EmpreGatos"
+          >
+            <li>
+              <span>
+                <BriefcaseBusiness size={23} aria-hidden="true" />
+              </span>
+              <p>
+                Mais
+                <br />
+                oportunidades
+              </p>
+            </li>
+            <li>
+              <span>
+                <ChartNoAxesColumnIncreasing size={23} aria-hidden="true" />
+              </span>
+              <p>
+                No seu
+                <br />
+                ritmo
+              </p>
+            </li>
+            <li>
+              <span>
+                <UsersRound size={23} aria-hidden="true" />
+              </span>
+              <p>
+                Conexões
+                <br />
+                reais
+              </p>
+            </li>
+          </ul>
         </div>
-      </div>
+        <div className="auth-card">
+          {compact && <AuthAnimation className="auth-card-mascot" />}
+          <div className="eyebrow">SEU PRÓXIMO PASSO</div>
+          <h1>
+            {register ? (
+              <>
+                Seu próximo capítulo
+                <br />
+                começa aqui.
+              </>
+            ) : (
+              "Bom ter você de volta."
+            )}
+          </h1>
+          <p>
+            {register
+              ? "Crie sua conta e encontre oportunidades que combinam com você. Um passo de cada vez."
+              : "Encontre oportunidades que combinam com você e acompanhe cada candidatura em um só lugar."}
+          </p>
+          <form
+            aria-busy={busy}
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (submitting.current) return;
+              submitting.current = true;
+              const f = new FormData(e.currentTarget);
+              setBusy(true);
+              setError("");
+              try {
+                await api(`/auth/${register ? "register" : "login"}`, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    name: String(f.get("name") || "").trim() || undefined,
+                    email: String(f.get("email") || "").trim(),
+                    password: f.get("password"),
+                  }),
+                });
+                try {
+                  if (rememberEmail) {
+                    localStorage.setItem(
+                      "empregatos:remembered-email",
+                      String(f.get("email") || "").trim(),
+                    );
+                  } else {
+                    localStorage.removeItem("empregatos:remembered-email");
+                  }
+                } catch {
+                  // Email persistence is optional and must not block authentication.
+                }
+                await onSuccess();
+              } catch (failure) {
+                setError(
+                  failure instanceof Error
+                    ? failure.message
+                    : "Não foi possível acessar sua conta.",
+                );
+              } finally {
+                submitting.current = false;
+                setBusy(false);
+              }
+            }}
+          >
+            {register && (
+              <Field label="Seu nome">
+                <div className="auth-input">
+                  <UserRound
+                    className="auth-input-icon"
+                    size={21}
+                    aria-hidden="true"
+                  />
+                  <input
+                    name="name"
+                    placeholder="Como podemos chamar você?"
+                    required
+                    minLength={2}
+                    maxLength={100}
+                    autoComplete="name"
+                    disabled={busy}
+                  />
+                </div>
+              </Field>
+            )}
+            <Field label="E-mail">
+              <div className="auth-input">
+                <Mail
+                  className="auth-input-icon"
+                  size={21}
+                  aria-hidden="true"
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="voce@exemplo.com"
+                  required
+                  autoComplete="email"
+                  maxLength={254}
+                  disabled={busy}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </div>
+            </Field>
+            <Field
+              label="Senha"
+              help={register ? "Use pelo menos 10 caracteres." : undefined}
+            >
+              <div className="password-input auth-input">
+                <LockKeyhole
+                  className="auth-input-icon"
+                  size={21}
+                  aria-hidden="true"
+                />
+                <input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  minLength={10}
+                  maxLength={128}
+                  autoComplete={register ? "new-password" : "current-password"}
+                  disabled={busy}
+                  placeholder={register ? "Crie uma senha segura" : "Sua senha"}
+                />
+                <button
+                  type="button"
+                  className="icon-button"
+                  disabled={busy}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  aria-pressed={showPassword}
+                  onClick={() => setShowPassword((value) => !value)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </Field>
+            <label className="auth-remember">
+              <input
+                type="checkbox"
+                checked={rememberEmail}
+                disabled={busy}
+                onChange={(event) => {
+                  setRememberEmail(event.target.checked);
+                  if (!event.target.checked) {
+                    try {
+                      localStorage.removeItem("empregatos:remembered-email");
+                    } catch {
+                      // Browsers may disable local storage.
+                    }
+                  }
+                }}
+              />
+              <span>Lembrar meu e-mail</span>
+            </label>
+            {error && (
+              <p className="form-error" role="alert">
+                {error}
+              </p>
+            )}
+            <Button type="submit" className="primary full" disabled={busy}>
+              <span>
+                {busy ? "Aguarde…" : register ? "Criar minha conta" : "Entrar"}
+              </span>
+              <ArrowRight size={22} aria-hidden="true" />
+            </Button>
+          </form>
+          <div className="auth-divider">
+            <span>ou</span>
+          </div>
+          <a className="auth-switch" href={register ? "/login" : "/register"}>
+            <UserRound size={22} aria-hidden="true" />
+            {register ? "Já tenho uma conta" : "Criar uma conta"}
+          </a>
+          <div className="auth-foot">
+            <LockKeyhole size={19} aria-hidden="true" />
+            Suas oportunidades. Seu ritmo.
+          </div>
+        </div>
+      </main>
       <span className="auth-version">EmpreGatos · Seu próximo passo</span>
     </div>
   );
@@ -229,93 +406,155 @@ function Auth({
 export default function App() {
   const client = useQueryClient();
   const [route, setRoute] = useState(location.pathname);
-  const [page, setPage] = useState(location.hash.slice(1) || "visao-geral"),
-    [demo, setDemo] = useState(false),
-    [sidebar, setSidebar] = useState(false),
-    [theme, setTheme] = useState(
-      localStorage.getItem("orbita-theme") || "dark",
-    ),
-    [searchOpen, setSearchOpen] = useState(false),
-    [search, setSearch] = useState(""),
-    [help, setHelp] = useState(false),
-    [toastMessage, setToast] = useState<{
-      text: string;
-      error: boolean;
-    } | null>(null);
+  const [page, setPage] = useState(canonicalPage(location.hash.slice(1)));
+  const [sidebar, setSidebar] = useState(false);
+  const [compact, setCompact] = useState(
+    () => window.matchMedia("(max-width: 780px)").matches,
+  );
+  const sidebarRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const loggingOut = useRef(false);
+  const [logoutPending, setLogoutPending] = useState(false);
+  const [theme, setTheme] = useState(
+    localStorage.getItem("orbita-theme") || "dark",
+  );
+  const [toastMessage, setToast] = useState<{
+    text: string;
+    error: boolean;
+  } | null>(null);
   const me = useQuery({
     queryKey: ["me"],
     queryFn: () => api<{ id: string; name: string; email: string }>("/auth/me"),
+    enabled: ["/login", "/register", "/app"].includes(route),
   });
   const workspace = useQuery({
-    queryKey: ["workspace", demo],
-    queryFn: () => api<Workspace>("/workspace?summary=true", {}, demo),
-    enabled: !!me.data,
+    queryKey: ["workspace", false],
+    queryFn: () => api<Workspace>("/workspace?summary=true"),
+    enabled: !!me.data && route === "/app",
     refetchInterval: (q) =>
-      q.state.data?.runs.some((r) => ["running", "queued"].includes(r.status))
+      q.state.data?.routine.enabled ||
+      q.state.data?.applications.some(
+        (application) => application.status === "Enviando",
+      ) ||
+      q.state.data?.runs.some((run) =>
+        ["running", "queued"].includes(run.status),
+      )
         ? 2000
         : false,
   });
   const toast = (text: string, error = false) => setToast({ text, error });
-  const navigate = (p: string) => {
-    setPage(p);
-    location.hash = p;
+  const navigate = (target: string) => {
+    const next = canonicalPage(target);
+    setPage(next);
+    location.hash = next;
     setSidebar(false);
-    setSearchOpen(false);
   };
   useEffect(() => {
-    const change = () => setRoute(location.pathname);
-    window.addEventListener("popstate", change);
-    return () => window.removeEventListener("popstate", change);
+    const screen = window.matchMedia("(max-width: 780px)");
+    const update = () => {
+      setCompact(screen.matches);
+      if (!screen.matches) setSidebar(false);
+    };
+    screen.addEventListener("change", update);
+    return () => screen.removeEventListener("change", update);
   }, []);
   useEffect(() => {
-    if (me.data && ["/login", "/register"].includes(route)) {
-      history.replaceState({}, "", "/app");
-      setRoute("/app");
-    } else if (
-      me.isError &&
-      (me.error as Error & { status?: number }).status === 401 &&
-      route === "/app"
-    ) {
+    if (!sidebar || !compact) return;
+    const panel = sidebarRef.current;
+    if (!panel) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusable = () =>
+      Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          "a[href], button:not(:disabled), [tabindex='0']",
+        ),
+      );
+    (
+      panel.querySelector<HTMLElement>("[aria-current='page']") ||
+      focusable()[0]
+    )?.focus();
+    const keydown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setSidebar(false);
+      }
+      if (event.key === "Tab") {
+        const items = focusable();
+        const first = items[0],
+          last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", keydown);
+    return () => {
+      document.removeEventListener("keydown", keydown);
+      document.body.style.overflow = previousOverflow;
+      if (window.matchMedia("(max-width: 780px)").matches)
+        menuButtonRef.current?.focus();
+    };
+  }, [sidebar, compact]);
+  useEffect(() => {
+    const change = () => {
+      setRoute(location.pathname);
+      setPage(canonicalPage(location.hash.slice(1)));
+    };
+    window.addEventListener("popstate", change);
+    window.addEventListener("hashchange", change);
+    return () => {
+      window.removeEventListener("popstate", change);
+      window.removeEventListener("hashchange", change);
+    };
+  }, []);
+  useEffect(() => {
+    const sessionExpired =
+      (me.isError &&
+        (me.error as Error & { status?: number }).status === 401) ||
+      (workspace.isError &&
+        (workspace.error as Error & { status?: number }).status === 401);
+    if (sessionExpired && route === "/app") {
+      client.clear();
       history.replaceState({}, "", "/login");
       setRoute("/login");
+    } else if (me.data && ["/login", "/register"].includes(route)) {
+      history.replaceState({}, "", "/app");
+      setRoute("/app");
     }
-  }, [me.data, me.isError, route]);
-  useEffect(() => {
-    const f = () => setPage(location.hash.slice(1) || "visao-geral");
-    window.addEventListener("hashchange", f);
-    return () => window.removeEventListener("hashchange", f);
-  }, []);
+  }, [
+    client,
+    me.data,
+    me.isError,
+    me.error,
+    workspace.isError,
+    workspace.error,
+    route,
+  ]);
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("orbita-theme", theme);
   }, [theme]);
   useEffect(() => {
-    if (toastMessage) {
-      const t = setTimeout(() => setToast(null), 6500);
-      return () => clearTimeout(t);
-    }
+    if (!toastMessage) return;
+    const timer = setTimeout(() => setToast(null), 6500);
+    return () => clearTimeout(timer);
   }, [toastMessage]);
-  useEffect(() => {
-    const k = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-        e.preventDefault();
-        setSearchOpen((v) => !v);
-      }
-    };
-    window.addEventListener("keydown", k);
-    return () => window.removeEventListener("keydown", k);
-  }, []);
   const w = workspace.data;
-  const quickJobs = useQuery({
-    queryKey: ["jobs", "quick", search],
-    queryFn: () =>
-      api<{ items: Workspace["jobs"] }>(
-        "/jobs?search=" + encodeURIComponent(search) + "&pageSize=5",
-      ),
-    enabled: !!me.data && searchOpen && search.trim().length >= 2,
-  });
-  const Page = pages[page as keyof typeof pages];
-  const notificationCount = w?.notices.filter((n) => !n.read).length || 0;
+  const Page = pages[page as keyof typeof pages] || pages.automacao;
+  const title =
+    nav.find((item) => item.id === page)?.label ||
+    (page === "vagas" ? "Vagas encontradas" : "Minha conta");
+  useEffect(() => {
+    document.title =
+      route === "/"
+        ? "EmpreGatos · Seu próximo emprego"
+        : `${route === "/app" ? title : route === "/register" ? "Criar conta" : route === "/login" ? "Entrar" : route === "/privacy" ? "Privacidade" : "Página não encontrada"} · EmpreGatos`;
+  }, [route, title]);
   return (
     <MotionConfig reducedMotion="user">
       <AnimatePresence>
@@ -327,11 +566,6 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
           >
-            {toastMessage.error ? (
-              <AlertCircle size={18} />
-            ) : (
-              <CheckCircle2 size={18} />
-            )}
             <span>{toastMessage.text}</span>
             <button aria-label="Fechar mensagem" onClick={() => setToast(null)}>
               <X size={16} />
@@ -340,23 +574,15 @@ export default function App() {
         )}
       </AnimatePresence>
       {route === "/" ? (
-        <Suspense
-          fallback={
-            <div className="app-loading">
-              <Logo />
-              <span>Preparando a EmpreGatos…</span>
-            </div>
-          }
-        >
+        <Suspense fallback={<div className="app-loading">Carregando...</div>}>
           <Landing />
         </Suspense>
       ) : route === "/privacy" ? (
         <Privacy />
       ) : !["/login", "/register", "/app"].includes(route) ? (
         <div className="error-page">
-          <Mascot className="page-state-mascot" variant="surprised" eager />
           <h1>Página não encontrada</h1>
-          <a className="button primary" href="/">
+          <a className="button" href="/">
             Voltar ao início
           </a>
         </div>
@@ -366,18 +592,15 @@ export default function App() {
             className="page-state-mascot"
             variant="thinking"
             animated
-            eager
+            decorative
           />
-          <span>Preparando seu espaço…</span>
+          <span>Carregando sua conta...</span>
         </div>
       ) : me.isError &&
         (me.error as Error & { status?: number }).status !== 401 ? (
         <div className="error-page">
-          <Mascot className="page-state-mascot" variant="surprised" eager />
-          <h2>Não conseguimos verificar sua sessão agora.</h2>
-          <p>
-            O serviço pode estar reiniciando. Seus dados continuam na sua conta.
-          </p>
+          <h2>Não foi possível acessar sua conta agora.</h2>
+          <p>Tente novamente em instantes.</p>
           <Button onClick={() => me.refetch()}>Tentar novamente</Button>
         </div>
       ) : !me.data ? (
@@ -386,203 +609,150 @@ export default function App() {
             await client.invalidateQueries({ queryKey: ["me"] });
             history.replaceState({}, "", "/app");
             setRoute("/app");
+            navigate("automacao");
           }}
-          toast={toast}
         />
       ) : (
-        <div className="app-shell">
+        <div className="app-shell simple-shell">
+          <a
+            className="skip-link"
+            href="#main-content"
+            onClick={(event) => {
+              event.preventDefault();
+              document.getElementById("main-content")?.focus();
+            }}
+          >
+            Ir para o conteúdo
+          </a>
           {sidebar && (
             <button
               className="sidebar-scrim"
               aria-label="Fechar navegação"
+              tabIndex={-1}
               onClick={() => setSidebar(false)}
             />
           )}
-          <aside className={`sidebar ${sidebar ? "open" : ""}`}>
+          <aside
+            ref={sidebarRef}
+            id="app-navigation"
+            className={`sidebar ${sidebar ? "open" : ""}`}
+            inert={compact && !sidebar}
+            aria-hidden={compact && !sidebar ? true : undefined}
+            role={compact && sidebar ? "dialog" : undefined}
+            aria-modal={compact && sidebar ? true : undefined}
+            aria-label={compact && sidebar ? "Navegação" : undefined}
+          >
+            {compact && (
+              <button
+                type="button"
+                className="icon-button sidebar-close"
+                aria-label="Fechar menu"
+                onClick={() => setSidebar(false)}
+              >
+                <X size={20} />
+              </button>
+            )}
             <a
-              href="#visao-geral"
               className="brand"
-              onClick={() => navigate("visao-geral")}
+              href="#automacao"
+              onClick={() => navigate("automacao")}
             >
               <Logo />
-              <span>
-                EmpreGatos<span className="brand-period">.</span>
-              </span>
+              <span>EmpreGatos</span>
             </a>
-            <button
-              className="workspace-picker"
-              onClick={() => navigate("perfil")}
-            >
-              <span className="workspace-avatar">
-                {me.data.name.slice(0, 1).toUpperCase()}
-              </span>
-              <span>
-                Meu espaço
-                <span className="workspace-sub">Busca por oportunidades</span>
-              </span>
-              <ChevronDown size={14} />
-            </button>
-            <button
-              className="sidebar-search"
-              onClick={() => setSearchOpen(true)}
-            >
-              <Search size={15} />
-              <span>Busca rápida</span>
-              <kbd>⌘ K</kbd>
-            </button>
-            <div className="nav-caption">SUAS OPORTUNIDADES</div>
-            <nav>
-              {nav.map((item, i) => (
-                <div key={item.id}>
-                  {i === 5 && (
-                    <div className="nav-caption secondary">
-                      SEU PERFIL E ATIVIDADE
-                    </div>
-                  )}
-                  <button
-                    className={`nav-item ${page === item.id ? "active" : ""}`}
-                    aria-label={item.label}
-                    aria-current={page === item.id ? "page" : undefined}
-                    onClick={() => navigate(item.id)}
-                  >
-                    <item.icon size={17} />
-                    <span>{item.label}</span>
-                    {item.id === "candidaturas" && !!w?.applications.length && (
-                      <span className="nav-count">{w.applications.length}</span>
-                    )}
-                    {item.id === "notificacoes" && notificationCount > 0 && (
-                      <span className="nav-count">{notificationCount}</span>
-                    )}
-                  </button>
-                </div>
+            <nav aria-label="Navegação principal">
+              {nav.map((item) => (
+                <button
+                  key={item.id}
+                  className={`nav-item ${page === item.id ? "active" : ""}`}
+                  aria-current={page === item.id ? "page" : undefined}
+                  onClick={() => navigate(item.id)}
+                >
+                  <item.icon size={18} />
+                  <span>{item.label}</span>
+                </button>
               ))}
             </nav>
             <div className="sidebar-bottom">
               <button
-                className="routine-widget"
-                onClick={() => navigate("automacao")}
+                className={`nav-item ${page === "conta" ? "active" : ""}`}
+                aria-current={page === "conta" ? "page" : undefined}
+                onClick={() => navigate("conta")}
               >
-                <div>
-                  <span
-                    className={`live-dot ${w?.routine.enabled && !demo ? "on" : ""}`}
-                  />
-                  <strong>
-                    {w?.routine.enabled && !demo
-                      ? "Automação ativa"
-                      : "Você está no controle"}
-                  </strong>
-                </div>
-                <span>
-                  {w?.routine.enabled && !demo
-                    ? `Próxima busca às ${w.routine.time}`
-                    : "Configure sua rotina de busca"}
-                </span>
-                <Zap size={15} />
-              </button>
-              <button
-                className={`nav-item ${page === "configuracoes" ? "active" : ""}`}
-                onClick={() => navigate("configuracoes")}
-              >
-                <Settings2 size={17} />
-                <span>Configurações</span>
-              </button>
-              <button className="nav-item" onClick={() => setHelp(true)}>
-                <HelpCircle size={17} />
-                <span>Guia de primeiros passos</span>
+                <UserRound size={17} />
+                <span>Minha conta</span>
               </button>
               <div className="user-block">
                 <div className="avatar">
-                  {me.data.name.slice(0, 2).toUpperCase()}
+                  {me.data.name.slice(0, 1).toUpperCase()}
                 </div>
-                <div>
-                  <strong>{me.data.name}</strong>
-                  <span>Seu espaço pessoal</span>
-                </div>
+                <strong>{me.data.name}</strong>
                 <button
                   className="icon-button"
                   aria-label="Sair da conta"
+                  disabled={logoutPending}
                   onClick={async () => {
-                    await api("/auth/logout", { method: "POST" });
-                    client.clear();
-                    setDemo(false);
-                    history.replaceState({}, "", "/login");
-                    setRoute("/login");
+                    if (loggingOut.current) return;
+                    loggingOut.current = true;
+                    setLogoutPending(true);
+                    try {
+                      await api("/auth/logout", { method: "POST" });
+                      client.clear();
+                      history.replaceState({}, "", "/login");
+                      setRoute("/login");
+                    } catch (error) {
+                      toast(
+                        error instanceof Error
+                          ? error.message
+                          : "Não foi possível sair da conta.",
+                        true,
+                      );
+                    } finally {
+                      loggingOut.current = false;
+                      setLogoutPending(false);
+                    }
                   }}
                 >
-                  <LogOut size={15} />
+                  <LogOut size={16} />
                 </button>
               </div>
             </div>
           </aside>
-          <div className="main-shell">
+          <div
+            className="main-shell"
+            inert={compact && sidebar}
+            aria-hidden={compact && sidebar ? true : undefined}
+          >
             <header className="topbar">
               <div>
                 <button
                   className="icon-button mobile-menu"
+                  ref={menuButtonRef}
                   aria-label="Abrir navegação"
+                  aria-expanded={sidebar}
+                  aria-controls="app-navigation"
                   onClick={() => setSidebar(true)}
                 >
                   <Menu size={20} />
                 </button>
-                <span className="topbar-workspace">Meu espaço</span>
-                <span className="breadcrumb-slash">/</span>
-                <span>
-                  {nav.find((n) => n.id === page)?.label || "Configurações"}
-                </span>
+                <span>{title}</span>
               </div>
-              <div className="topbar-actions">
-                <button
-                  className="icon-button"
-                  aria-label={
-                    theme === "dark"
-                      ? "Ativar tema claro"
-                      : "Ativar tema escuro"
-                  }
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                >
-                  {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
-                </button>
-                <button
-                  className="icon-button bell"
-                  aria-label="Abrir notificações"
-                  onClick={() => navigate("notificacoes")}
-                >
-                  <Bell size={18} />
-                  {notificationCount > 0 && <i />}
-                </button>
-                <span className="avatar mini">
-                  {me.data.name.slice(0, 1).toUpperCase()}
-                </span>
-              </div>
+              <button
+                className="icon-button"
+                aria-label={
+                  theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"
+                }
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+              </button>
             </header>
-            {demo && (
-              <div className="demo-banner">
-                <FlaskConical size={14} />
-                <strong>Modo demonstração</strong>
-                <span>
-                  Vagas e candidaturas fictícias. Nenhum envio é realizado.
-                </span>
-              </div>
-            )}
-            <main>
+            <main id="main-content" tabIndex={-1}>
               {workspace.isPending ? (
-                <div className="skeleton-page">
-                  <div className="skeleton wide-line" />
-                  <div className="skeleton-metrics">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div className="skeleton" key={i} />
-                    ))}
-                  </div>
-                  <div className="skeleton large-block" />
-                </div>
+                <div className="app-loading">Carregando...</div>
               ) : workspace.error ? (
                 <div className="error-page">
-                  <Mascot
-                    className="page-state-mascot"
-                    variant="surprised"
-                    eager
-                  />
-                  <h2>Não conseguimos carregar seu espaço.</h2>
+                  <h2>Não conseguimos carregar sua conta</h2>
                   <p>{workspace.error.message}</p>
                   <Button onClick={() => workspace.refetch()}>
                     Tentar novamente
@@ -590,101 +760,23 @@ export default function App() {
                 </div>
               ) : (
                 w && (
-                  <Context.Provider
-                    key={demo ? "demo" : "live"}
-                    value={{ w, demo, navigate, toast }}
-                  >
+                  <Context.Provider value={{ w, demo: false, navigate, toast }}>
                     <Suspense
-                      fallback={<div className="skeleton large-block" />}
+                      fallback={
+                        <div className="app-loading">Carregando...</div>
+                      }
                     >
-                      {w.onboarding?.completed === false &&
-                      page === "visao-geral" ? (
-                        <Onboarding />
-                      ) : page === "visao-geral" || !Page ? (
-                        <Dashboard />
-                      ) : (
-                        <Page />
-                      )}
-                    </Suspense>
-                    <Suspense fallback={null}>
-                      <GuidedTour
-                        openHelp={help}
-                        onClose={() => setHelp(false)}
-                      />
+                      <Page />
                     </Suspense>
                   </Context.Provider>
                 )
               )}
             </main>
             <footer className="app-footer">
-              <span>
-                <Logo small />
-                EmpreGatos · Cada candidatura, um passo adiante.
-              </span>
-              <span>
-                Horários de Brasília <span className="sep">·</span>{" "}
-                {demo ? "Dados de demonstração" : "Dados do seu espaço"}
-              </span>
+              <span>EmpreGatos</span>
+              <a href="/privacy">Privacidade</a>
             </footer>
           </div>
-          <Modal
-            title="Busca rápida"
-            description="Encontre uma página ou oportunidade no seu espaço."
-            open={searchOpen}
-            onOpenChange={setSearchOpen}
-          >
-            <div className="command-input">
-              <Search size={18} />
-              <input
-                placeholder="Buscar páginas e oportunidades…"
-                aria-label="Busca rápida"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <kbd>ESC</kbd>
-            </div>
-            <div className="command-list">
-              {[
-                ...nav,
-                {
-                  id: "configuracoes",
-                  label: "Configurações",
-                  icon: Settings2,
-                },
-              ]
-                .filter((n) =>
-                  n.label.toLowerCase().includes(search.toLowerCase()),
-                )
-                .map((n) => (
-                  <button key={n.id} onClick={() => navigate(n.id)}>
-                    <n.icon size={17} />
-                    {n.label}
-                    <Command size={13} />
-                  </button>
-                ))}
-              {quickJobs.data?.items.map((j) => (
-                <button
-                  key={j.id}
-                  onClick={() => {
-                    const url = new URL(location.href);
-                    url.searchParams.set("vaga", j.id);
-                    history.replaceState(
-                      {},
-                      "",
-                      url.pathname + url.search + "#vagas",
-                    );
-                    navigate("vagas");
-                  }}
-                >
-                  <BriefcaseBusiness size={16} />
-                  <span>
-                    {j.title}
-                    <small>{j.company}</small>
-                  </span>
-                </button>
-              ))}
-            </div>
-          </Modal>
         </div>
       )}
     </MotionConfig>

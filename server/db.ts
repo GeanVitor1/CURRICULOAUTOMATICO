@@ -8,6 +8,9 @@ import { drizzle as localDrizzle } from "drizzle-orm/pglite";
 import { eq, sql } from "drizzle-orm";
 import * as schema from "./schema";
 import type { Workspace } from "../shared/types";
+import { TARGETS_VERSION } from "./resume-targets";
+import { upgradeResumeTargets } from "./workspace-upgrade";
+import { lockLocalDatabase } from "./local-database-lock";
 export const dataDir = resolve(process.env.DATA_DIR || ".data");
 if (process.env.REDIS_URL && !process.env.DATABASE_URL)
   throw new Error(
@@ -20,6 +23,7 @@ await mkdir(dataDir, { recursive: true });
 const pg = process.env.DATABASE_URL
   ? postgres(process.env.DATABASE_URL, { max: 5 })
   : null;
+const releaseLocalLock = pg ? null : await lockLocalDatabase(dataDir);
 const local = pg ? null : new PGlite(resolve(dataDir, "postgres"));
 export const db = (
   pg ? pgDrizzle(pg, { schema }) : localDrizzle(local!, { schema })
@@ -33,18 +37,27 @@ for (const file of (await readdir(resolve("migrations")))
 }
 export async function closeDb() {
   if (pg) await pg.end();
-  else await local!.close();
+  else {
+    await local!.close();
+    await releaseLocalLock?.();
+  }
 }
 export async function readWorkspace(id: string): Promise<Workspace | null> {
   const [row] = await db
     .select()
     .from(schema.workspaces)
     .where(eq(schema.workspaces.id, id));
-  return row?.data ?? null;
+  if (!row) return null;
+  if (row.data.resumes.some((r) => r.targetsVersion !== TARGETS_VERSION))
+    return mutateWorkspace(id, (w) => structuredClone(w));
+  return row.data;
 }
 export async function mutateWorkspace<T>(
   id: string,
-  fn: (w: Workspace) => Promise<T> | T,
+  fn: (
+    w: Workspace,
+    tx: Parameters<Parameters<typeof db.transaction>[0]>[0],
+  ) => Promise<T> | T,
 ): Promise<T> {
   return db.transaction(async (tx) => {
     const [row] = await tx
@@ -53,7 +66,8 @@ export async function mutateWorkspace<T>(
       .where(eq(schema.workspaces.id, id))
       .for("update");
     if (!row) throw new Error("Workspace não encontrado");
-    const result = await fn(row.data);
+    upgradeResumeTargets(row.data);
+    const result = await fn(row.data, tx);
     await tx
       .update(schema.workspaces)
       .set({ data: row.data, updatedAt: new Date() })

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import { generateGemini, geminiResponseSchema } from "../server/gemini";
 import { resumeTargets } from "../server/resume-targets";
 import { discoverPortal } from "../server/portal-discovery";
@@ -6,6 +6,7 @@ import { createWorkspace } from "../server/workspace";
 import { isJobUrl } from "../shared/portals";
 import type { Source } from "../shared/types";
 import { applicationDraft } from "../server/application-draft";
+beforeEach(() => vi.stubEnv("PORTAL_DISCOVERY_AUTHORIZED", "linkedin"));
 vi.mock("../server/intelligence", () => ({
   getIntelligence: vi.fn(async () => ({
     provider: "gemini",
@@ -47,6 +48,31 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 describe("Gemini, sugestões e anúncios verificáveis", () => {
+  it("a apresentação não converte experiência negada em um fato positivo", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "secret-for-test");
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      response(
+        JSON.stringify({
+          opening: "Interesse no cargo",
+          facts: ["experiência com Angular", "Angular"],
+          closing: "Agradeço",
+        }),
+      ),
+    );
+    const text = await applicationDraft(
+      "test-user",
+      {
+        text: "Competências: C# e .NET.\nNão tenho experiência com\nAngular",
+      } as any,
+      {
+        title: "Desenvolvedor Angular",
+        company: "Empresa de teste",
+        description: "Angular",
+      } as any,
+    );
+    expect(text).not.toContain("• Angular");
+    expect(text).not.toContain("• experiência com Angular");
+  });
   it("prepara apresentação só com fatos conferidos e ignora qualificações inventadas pelo modelo", async () => {
     vi.stubEnv("GEMINI_API_KEY", "secret-for-test");
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
@@ -130,7 +156,7 @@ describe("Gemini, sugestões e anúncios verificáveis", () => {
   });
   it("sugere cargos de qualquer área somente com evidência e remove contato antes da chamada", async () => {
     vi.stubEnv("GEMINI_API_KEY", "secret-for-test");
-    const mock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    const mock = vi.spyOn(globalThis, "fetch").mockImplementation(async () =>
       response(
         JSON.stringify({
           targets: [
@@ -179,7 +205,7 @@ describe("Gemini, sugestões e anúncios verificáveis", () => {
     const real = "https://www.linkedin.com/jobs/view/atendente-at-loja-12345";
     const invented =
       "https://www.linkedin.com/jobs/view/atendente-at-outra-99999";
-    const mock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    const mock = vi.spyOn(globalThis, "fetch").mockImplementation(async () =>
       response(
         JSON.stringify({
           jobs: [real, invented].map((url) => ({
@@ -221,7 +247,7 @@ describe("Gemini, sugestões e anúncios verificáveis", () => {
     vi.stubEnv("GEMINI_API_KEY", "secret-for-test");
     const mock = vi
       .spyOn(globalThis, "fetch")
-      .mockResolvedValue(response('{"jobs":[]}'));
+      .mockImplementation(async () => response('{"jobs":[]}'));
     await expect(discoverPortal(source, workspace())).rejects.toThrow(
       "fontes verificáveis",
     );

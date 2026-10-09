@@ -256,9 +256,9 @@ describe("Produto universal, documentos e isolamento", () => {
     const catalog = (await request("GET", "/api/source-registry")).json();
     expect(catalog.map((s: any) => s.company)).toEqual([
       "LinkedIn",
-      "InfoJobs",
-      "Indeed",
       "Gupy",
+      "Glassdoor",
+      "InfoJobs",
     ]);
     expect(catalog.every((s: any) => s.type === "portal")).toBe(true);
     expect(

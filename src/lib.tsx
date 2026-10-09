@@ -13,28 +13,44 @@ export async function api<T = any>(
   options: RequestInit = {},
   demo = false,
 ): Promise<T> {
-  const response = await fetch(
-    `/api${path}${path.includes("?") ? "&" : "?"}demo=${demo}`,
-    {
-      ...options,
-      headers: {
-        ...(options.body === undefined || options.body instanceof FormData
-          ? {}
-          : { "Content-Type": "application/json" }),
-        "X-Orbita-Request": "1",
-        ...options.headers,
+  let response: Response;
+  try {
+    response = await fetch(
+      `/api${path}${path.includes("?") ? "&" : "?"}demo=${demo}`,
+      {
+        ...options,
+        headers: {
+          ...(options.body === undefined || options.body instanceof FormData
+            ? {}
+            : { "Content-Type": "application/json" }),
+          "X-Orbita-Request": "1",
+          ...options.headers,
+        },
       },
-    },
-  );
-  const data = await response.json().catch(() => {
-    throw new Error(
-      "O serviço está temporariamente indisponível. Tente novamente em instantes.",
     );
-  });
+  } catch (failure) {
+    if (failure instanceof Error && failure.name === "AbortError")
+      throw failure;
+    throw new Error(
+      "Não conseguimos conectar ao serviço. Confira sua conexão e tente novamente.",
+    );
+  }
+  if (response.status === 204) return undefined as T;
+  const data = await response.json().catch(() => null);
   if (!response.ok)
-    throw Object.assign(new Error(data.error || "Não foi possível concluir."), {
-      status: response.status,
-    });
+    throw Object.assign(
+      new Error(
+        data?.error ||
+          "O serviço está temporariamente indisponível. Tente novamente em instantes.",
+      ),
+      {
+        status: response.status,
+      },
+    );
+  if (data === null)
+    throw new Error(
+      "O serviço retornou uma resposta inválida. Tente novamente em instantes.",
+    );
   return data;
 }
 export function useAction() {

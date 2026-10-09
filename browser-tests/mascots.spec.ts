@@ -67,7 +67,9 @@ test("artes da página pública e autenticação carregam no desktop e celular",
   for (const width of [1440, 375]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/");
-    await loaded(page.locator('.hero-mascot[data-mascot="handing-resume"]'));
+    await loaded(page.locator('.hero-mascot[data-mascot="cover-animation"]'));
+    await expect(page.locator(".hero-mascot")).toHaveAttribute("src", /\.gif$/);
+    await expect(page.locator(".hero-animation button")).toHaveCount(0);
     await page.locator(".cta-mascot").scrollIntoViewIfNeeded();
     await loaded(page.locator('.cta-mascot[data-mascot="idea"]'));
     await noOverflow(page);
@@ -81,11 +83,43 @@ test("artes da página pública e autenticação carregam no desktop e celular",
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/register");
-  await loaded(page.locator('.auth-mascot[data-mascot="idea"]'));
+  await expect(page.locator(".auth-video button")).toHaveCount(0);
+  await expect(page.locator(".auth-mascot video")).toBeVisible();
+  await expect
+    .poll(() =>
+      page
+        .locator(".auth-mascot video")
+        .evaluate(
+          (video: HTMLVideoElement) =>
+            video.readyState >= 2 && video.videoWidth === 1280 && !video.paused,
+        ),
+    )
+    .toBe(true);
   await page.goto("/login");
-  await loaded(page.locator('.auth-mascot[data-mascot="writing-to-you"]'));
+  await expect(page.locator(".auth-video button")).toHaveCount(0);
+  await expect(page.locator(".auth-mascot video")).toBeVisible();
+  await expect
+    .poll(() =>
+      page
+        .locator(".auth-mascot video")
+        .evaluate(
+          (video: HTMLVideoElement) =>
+            video.readyState >= 2 && video.videoWidth === 1280 && !video.paused,
+        ),
+    )
+    .toBe(true);
   await page.setViewportSize({ width: 375, height: 900 });
-  await loaded(page.locator('.auth-card-mascot[data-mascot="writing-to-you"]'));
+  await expect(page.locator(".auth-card-mascot video")).toBeVisible();
+  await expect(page.locator(".auth-card-mascot button")).toHaveCount(0);
+  await expect
+    .poll(() =>
+      page
+        .locator(".auth-card-mascot video")
+        .evaluate(
+          (video: HTMLVideoElement) => video.readyState >= 2 && !video.paused,
+        ),
+    )
+    .toBe(true);
   await noOverflow(page);
   await page.screenshot({
     path: testInfo.outputPath("login-celular.png"),
@@ -93,7 +127,7 @@ test("artes da página pública e autenticação carregam no desktop e celular",
   });
 });
 
-test("GIF acompanha a busca, pausa sem interromper a consulta e exibe erro e recuperação", async ({
+test("GIF acompanha a busca em loop e exibe erro e recuperação", async ({
   page,
 }, testInfo) => {
   await account(page, workspace());
@@ -116,17 +150,10 @@ test("GIF acompanha a busca, pausa sem interromper a consulta e exibe erro e rec
   try {
     await loaded(image);
     await expect(image).toHaveAttribute("src", /\.gif$/);
-    await page
-      .getByRole("button", { name: "Pausar animação do mascote" })
-      .click();
-    await expect(image).toHaveAttribute("src", /\.jpeg$/);
+    await expect(page.locator(".mascot-animation button")).toHaveCount(0);
     await expect(
-      page.getByText("Preparando suas oportunidades", { exact: true }),
+      page.getByText("Carregando vagas", { exact: true }),
     ).toBeVisible();
-    await page
-      .getByRole("button", { name: "Reproduzir animação do mascote" })
-      .click();
-    await expect(image).toHaveAttribute("src", /\.gif$/);
     await noOverflow(page);
     await page.screenshot({
       path: testInfo.outputPath("busca-processando.png"),
@@ -190,39 +217,26 @@ test("movimento reduzido usa pose estática e não baixa o GIF durante o process
   }
 });
 
-test("poses acompanham as etapas de preferências e preparação do currículo", async ({
+test("mascote acompanha o envio e a criacao de curriculo", async ({
   page,
 }, testInfo) => {
-  const w = workspace();
-  w.onboarding!.completed = false;
-  await account(page, w);
+  await account(page, workspace());
   await page.setViewportSize({ width: 375, height: 900 });
-  const poses = [
-    "idea",
-    "thinking",
-    "handing-resume",
-    "writing-to-you",
-    "considering",
-    "writing-right",
-  ];
-  for (let step = 0; step < poses.length; step++) {
-    w.onboarding!.step = step;
-    await page.goto("/app");
-    await loaded(page.locator(`.wizard-mascot[data-mascot="${poses[step]}"]`));
-    await noOverflow(page);
-    if (step === 5)
-      await page.screenshot({
-        path: testInfo.outputPath("preferencias-celular.png"),
-      });
-  }
-  await page.goto("/app#curriculo");
-  await loaded(page.locator('.upload-mascot[data-mascot="handing-resume"]'));
-  await loaded(page.locator('.empty-mascot[data-mascot="writing"]'));
+  await page.goto("/app");
+  await loaded(page.locator('.journey-mascot[data-mascot="handing-resume"]'));
   await page
-    .getByRole("button", { name: "Ainda não tenho currículo", exact: true })
+    .getByRole("button", { name: "Enviar curr\u00edculo", exact: true })
+    .click();
+  await loaded(page.locator('.journey-mascot[data-mascot="handing-resume"]'));
+  await page
+    .getByRole("button", {
+      name: "Ainda n\u00e3o tenho curr\u00edculo",
+      exact: true,
+    })
     .click();
   await loaded(page.locator('.wizard-mascot[data-mascot="writing-to-you"]'));
   await noOverflow(page);
+  await page.screenshot({ path: testInfo.outputPath("curriculo-celular.png") });
 });
 
 test("mascote empregado celebra apenas uma contratação registrada", async ({
@@ -281,11 +295,11 @@ test("mascote empregado celebra apenas uma contratação registrada", async ({
   ];
   await account(page, w);
   await page.goto("/app#candidaturas");
-  await page.getByRole("button", { name: /Atendimento QA/ }).click();
+  await page.getByRole("row", { name: /Atendimento QA/ }).click();
   await expect(page.locator('[data-mascot="employed"]')).toHaveCount(0);
   w.applications[0].status = "Contratada";
   await page.reload();
-  await page.getByRole("button", { name: /Atendimento QA/ }).click();
+  await page.getByRole("row", { name: /Atendimento QA/ }).click();
   await loaded(page.locator('.hired-mascot[data-mascot="employed"]'));
   await expect(page.getByRole("dialog")).toHaveCSS("opacity", "1");
   await page.setViewportSize({ width: 375, height: 900 });
@@ -330,7 +344,7 @@ test("busca em segundo plano troca o GIF pela pose do resultado", async ({
   await page.reload();
   await loaded(status.locator('[data-mascot="surprised"]'));
   await expect(
-    status.getByRole("button", { name: "Conferir fontes" }),
+    status.getByRole("button", { name: "Conferir sites" }),
   ).toBeVisible();
 });
 
@@ -342,9 +356,9 @@ test("próxima ação mantém o mascote visível no celular", async ({
   await account(page, w);
   await page.setViewportSize({ width: 375, height: 900 });
   await page.goto("/app");
-  await loaded(page.locator('.next-action-mascot[data-mascot="writing"]'));
+  await loaded(page.locator('.journey-mascot[data-mascot="handing-resume"]'));
   await expect(
-    page.getByRole("button", { name: "Preparar meu currículo", exact: true }),
+    page.getByRole("button", { name: "Enviar currículo", exact: true }),
   ).toBeVisible();
   await noOverflow(page);
   await page.screenshot({

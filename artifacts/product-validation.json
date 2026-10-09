@@ -1,0 +1,44 @@
+{
+  "auditDate": "2026-10-09",
+  "baselineUnitTests": 169,
+  "finalValidation": {
+    "typecheck": "passed, included in final build",
+    "build": "passed",
+    "unitAndApi": {
+      "files": 19,
+      "tests": 190,
+      "failed": 0,
+      "skipped": 0,
+      "durationSeconds": 81.14
+    },
+    "browser": {
+      "files": 12,
+      "tests": 44,
+      "failed": 0,
+      "origin": "http://127.0.0.1:3109",
+      "mode": "production",
+      "database": "isolated temporary PGlite"
+    },
+    "performance": {
+      "report": "artifacts/product-performance.json",
+      "status": "passed",
+      "pairsOfColdAndWarmNavigation": 3
+    },
+    "configuredSecretsInFrontend": false,
+    "frontendFilesScanned": 78,
+    "productionDependencyVulnerabilities": 0,
+    "formatting": "passed for files changed in this audit",
+    "diffCheck": "passed"
+  },
+  "cleanup": {
+    "temporaryServerStopped": true,
+    "userDatabasePreserved": true,
+    "temporaryDataRemoved": false,
+    "reason": "Automatic approval review rejected recursive temporary directory removal as blocked by policy."
+  },
+  "limits": [
+    "No real employer applications were submitted.",
+    "Browser checks used Chromium on Windows; some scenarios used explicit fixtures.",
+    "External PostgreSQL/Redis, production load and payment integrations were not verified."
+  ]
+}

@@ -3,6 +3,86 @@ import { z } from "zod";
 import type { Profile, ResumeTarget } from "../shared/types";
 import { normalize } from "./engine";
 import { geminiJson } from "./gemini";
+import { evidenceLines } from "./professional-evidence";
+
+export const TARGETS_VERSION = 2;
+const softwareRole =
+  /\b(?:desenvolvedor[a]?|programador[a]?|analista de sistemas|engenheir[oa] de software|software (?:engineer|developer)|front.?end|back.?end|full.?stack)\b/;
+export function supportsTarget(title: string, evidence: string, text: string) {
+  const lines = evidenceLines(text).filter((line) => !line.negated);
+  const n = normalize(title);
+  const supporting = lines.filter((line) =>
+    normalize(line.text).includes(normalize(evidence)),
+  );
+  if (!supporting.length) return false;
+  if (
+    /\bmedic[oa]\b|enferm|advogad|psicolog/.test(n) &&
+    /cursando|em andamento|incomplet|estudante|graduand/.test(
+      normalize(evidence),
+    )
+  )
+    return false;
+  if (!softwareRole.test(n) && supporting.every((line) => line.domainOnly))
+    return false;
+  const declared = lines
+    .filter((line) => !line.domainOnly)
+    .map((line) =>
+      normalize(line.text).replace(
+        /^(?:experiencia|objetivo|cargo|funcao)\s*:\s*/,
+        "",
+      ),
+    );
+  const clinical = declared.some((line) =>
+    /^(?:medic[oa]|enfermeir[oa]|tecnico em enfermagem|psicolog[oa]|fisioterapeuta|odontolog[oa]|dentista)\b/.test(
+      line,
+    ),
+  );
+  const operational =
+    /\b(?:repositor|vendedor|assistente comercial|recepcionista|atendente|auxiliar|operador de caixa)\b/.test(
+      n,
+    );
+  if (clinical && operational) {
+    // Incidental duties in clinical work do not imply a new profession.
+    const role = n
+      .replace(/\b(?:de|do|da)\b/g, "")
+      .split(/\s+/)
+      .filter(Boolean);
+    if (
+      !supporting.some((line) => {
+        const claim = normalize(line.text).replace(
+          /^(?:experiencia|objetivo|cargo|funcao)\s*:\s*/,
+          "",
+        );
+        return (
+          claim.startsWith(role[0]) &&
+          role.every((word) => claim.includes(word))
+        );
+      })
+    )
+      return false;
+  }
+  const requirements: [RegExp, RegExp][] = [
+    [/\brepositor/, /\b(?:repositor[ae]?|reposicao de mercadorias)\b/],
+    [
+      /vendedor|comercial/,
+      /\b(?:vendedor[ae]?|vendas|consultor[ae]? comercial)\b/,
+    ],
+    [/recepcionista/, /\b(?:recepcao|recepcionista)\b/],
+    [/professor/, /\b(?:professor[a]?|docencia)\b/],
+    [
+      /\bmedic[oa]\b/,
+      /\bmedic[oa]\b|(?:graduacao|bacharelado|formacao) em medicina.*(?:concluid|complet)/,
+    ],
+  ];
+  if (
+    requirements.some(
+      ([titlePattern, evidencePattern]) =>
+        titlePattern.test(n) && !evidencePattern.test(normalize(evidence)),
+    )
+  )
+    return false;
+  return true;
+}
 
 const schema = z.object({
   targets: z
@@ -21,26 +101,23 @@ export function localResumeTargets(
   text: string,
   profile: Partial<Profile>,
 ): ResumeTarget[] {
-  const lines = text
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
+  const lines = evidenceLines(text).filter((line) => !line.negated);
   const rules: [RegExp, string[]][] = [
     [
       /atendimento (?:ao publico|a clientes)|atendente|balconista/,
       ["Atendente", "Auxiliar de atendimento"],
     ],
     [/operador(?:a)? de caixa|operacao de caixa/, ["Operador de caixa"]],
-    [/repositor|reposicao de mercadorias/, ["Repositor"]],
+    [/\b(?:repositor|repositora|reposicao de mercadorias)\b/, ["Repositor"]],
     [
-      /vendedor|vendas|consultor comercial/,
+      /\b(?:vendedor[ae]?|vendas|consultor[ae]? comercial)\b/,
       ["Vendedor", "Assistente comercial"],
     ],
     [
       /rotinas administrativas|auxiliar administrativo|assistente administrativo/,
       ["Auxiliar administrativo", "Assistente administrativo"],
     ],
-    [/recepcionista|recepcao/, ["Recepcionista"]],
+    [/\b(?:recepcionista|recepcao)\b/, ["Recepcionista"]],
     [
       /estoque|almoxarif|logistica/,
       ["Auxiliar de estoque", "Auxiliar de logística"],
@@ -52,32 +129,50 @@ export function localResumeTargets(
       ["Auxiliar de cozinha"],
     ],
     [
-      /desenvolvedor|programador|desenvolvimento (?:web|de software|de sistemas)/,
+      /\b(?:desenvolvedor[a]?|programador[a]?|desenvolvimento (?:web|de software|de sistemas))\b/,
       ["Desenvolvedor de software"],
     ],
-    [/front.?end|react|angular/, ["Desenvolvedor frontend"]],
-    [/back.?end|asp.net|node.js/, ["Desenvolvedor backend"]],
+    [/\banalista de sistemas\b/, ["Analista de sistemas"]],
+    [/\bfull[ -]?stack\b/, ["Desenvolvedor full stack"]],
+    [/\bc#|\.net\b|\basp\.?net\b/, ["Desenvolvedor .NET"]],
+    [
+      /\b(?:front[ -]?end|react(?:js|\.js)?|angular)\b/,
+      ["Desenvolvedor frontend"],
+    ],
+    [/\bback[ -]?end\b|\basp\.?net\b|\bnode\.?js\b/, ["Desenvolvedor backend"]],
     [/analista de dados|analise de dados|power bi/, ["Analista de dados"]],
     [/tecnico em enfermagem/, ["Técnico de enfermagem"]],
-    [/enfermeiro|enfermeira/, ["Enfermeiro"]],
+    [/\benfermeir[oa]\b/, ["Enfermeiro"]],
+    [
+      /\bmedic[oa]\b|(?:graduacao|bacharelado|formacao) em medicina.*(?:concluid|complet)/,
+      ["Médico"],
+    ],
     [/motorista|conducao de veiculos/, ["Motorista"]],
     [/eletricista|instalacoes eletricas/, ["Eletricista"]],
-    [/professor|docencia/, ["Professor"]],
-    [/designer|design grafico/, ["Designer gráfico"]],
+    [/\b(?:professor[a]?|docencia)\b/, ["Professor"]],
+    [/\bdesigner\b|design grafico/, ["Designer gráfico"]],
     [/jovem aprendiz|primeiro emprego|sem experiencia/, ["Jovem aprendiz"]],
   ];
   const targets: ResumeTarget[] = [];
   for (const [pattern, titles] of rules) {
-    const evidence = lines.find((line) => pattern.test(normalize(line)));
+    const evidence = lines.find(
+      (line) =>
+        pattern.test(normalize(line.text)) &&
+        titles.some((title) => supportsTarget(title, line.text, text)),
+    );
     if (!evidence) continue;
-    for (const title of titles)
+    for (const title of titles) {
+      if (!supportsTarget(title, evidence.text, text)) continue;
       targets.push({
         title,
-        reason: "Há uma atividade ou competência relacionada no currículo.",
-        evidence: evidence.slice(0, 800),
+        reason: softwareRole.test(normalize(title))
+          ? "Seu cargo ou suas competências em desenvolvimento sustentam esta busca."
+          : "Seu currículo declara uma função ou atividade profissional relacionada a este cargo.",
+        evidence: evidence.text.slice(0, 800),
         caution:
           "Sugestão de busca. Confira escolaridade, experiência, registros e requisitos do anúncio.",
       });
+    }
   }
   // An explicit objective can cover professions outside the local vocabulary.
   if (
@@ -96,6 +191,11 @@ export function localResumeTargets(
     .filter(
       (target, index, list) =>
         list.findIndex((t) => t.title === target.title) === index,
+    )
+    .sort(
+      (a, b) =>
+        Number(normalize(b.evidence).includes(normalize(b.title))) -
+        Number(normalize(a.evidence).includes(normalize(a.title))),
     )
     .slice(0, 8);
 }
@@ -116,7 +216,7 @@ export async function resumeTargets(
       );
       const targets = result.targets.filter(
         (target, index, list) =>
-          normalize(text).includes(normalize(target.evidence)) &&
+          supportsTarget(target.title, target.evidence, text) &&
           list.findIndex(
             (item) => normalize(item.title) === normalize(target.title),
           ) === index,

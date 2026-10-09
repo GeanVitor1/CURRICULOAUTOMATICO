@@ -1,6 +1,6 @@
 # API REST · EmpreGatos
 
-Base: `/api`. Todas as respostas são JSON, exceto download de arquivos. Erros retornam `{ "error": "mensagem" }`. Rotas de dados exigem sessão da conta.
+Base: `/api`. Respostas são JSON, exceto download de arquivos e o callback OAuth (HTML). Erros retornam `{ "error": "mensagem" }`. Rotas de dados exigem sessão da conta.
 
 Operações mutativas exigem `X-Orbita-Request: 1` e, quando presente, `Origin` autorizada em `APP_ORIGIN`. O nome técnico histórico do cabeçalho e cookie foi preservado para compatibilidade. Cookies identificam a conta; o cliente não escolhe o ID do proprietário. `?demo=true` é rejeitado: o gerador de demonstrações foi removido.
 
@@ -15,6 +15,15 @@ Operações mutativas exigem `X-Orbita-Request: 1` e, quando presente, `Origin` 
 | POST | `/auth/logout` | Revoga sessão e cookie |
 | GET | `/workspace` | Snapshot do workspace e infraestrutura |
 | GET | `/workspace?summary=true` | Resumo: contagens reais, oito vagas e vagas associadas às candidaturas |
+| GET | `/automation/sites` | Sites da entrevista e disponibilidade de busca/envio por site |
+| POST | `/oauth/linkedin/start` | Cria autorização com estado vinculado à conta; retorna URL OAuth oficial com escopos `openid profile email` |
+| GET | `/oauth/linkedin/callback` | Consome estado uma vez, troca código no servidor e consulta `userinfo`; informa sucesso à janela de origem sem retornar tokens |
+| POST | `/connections/:portal/open` | Abre login privado do site; retorna imagem da janela e campos visíveis, sem valores |
+| POST | `/connections/:portal/action` | Clique, preenchimento, tecla ou rolagem na sessão do proprietário |
+| POST | `/connections/:portal/confirm` | Verifica autenticação e salva sessão cifrada; `profileResumeId` opcional confirma currículo do site |
+| POST | `/connections/:portal/close` | Fecha a janela temporária de login |
+| DELETE | `/connections/:portal` | Fecha login e remove sessão salva do site |
+| PUT | `/interview` | Salva etapa e respostas; ao confirmar aplica critérios, aprova currículo e inicia a primeira busca quando solicitado |
 | PUT | `/onboarding` | Salva etapa/respostas; `complete:true` confirma preferências |
 | PUT | `/guide` | Salva etapa, ativação, pausa e conclusão do guia didático por conta |
 | PUT | `/profile` | Perfil validado, com confirmação explícita |
@@ -72,7 +81,7 @@ Content-Type: application/json
 }
 ```
 
-`profile` inclui o modelo completo confirmado. O adapter recebe texto do currículo; não recebe o PDF/DOCX binário. Se a integração exige arquivo ou perguntas específicas, seu adapter deve implementar esse fluxo antes de habilitar automação. A aplicação não inventa respostas a perguntas ausentes.
+`profile` inclui o modelo completo confirmado. Em fontes do tipo portal, `resume.file` contém o original aprovado com nome, MIME e base64. Em fontes do tipo `authorized`, o contrato histórico envia o texto; o adapter deve implementar suas exigências de arquivo. Perguntas ausentes exigem intervenção, sem inventar respostas.
 
 Resposta de sucesso obrigatória:
 
@@ -81,6 +90,12 @@ Resposta de sucesso obrigatória:
 ```
 
 A confirmação precisa representar envio concluído no serviço receptor. Um `200` sem recibo não confirma candidatura.
+
+Se a resposta incluir `applicationId`, ele deve corresponder à requisição. Recibo vazio ou composto só de espaços não confirma envio. `status: "action_required"` resulta em **Requer ação manual**; `status: "not_submitted"` em HTTP 200 ou 422 resulta em **Falha no envio**. Demais respostas, falhas de rede e ausência de confirmação resultam em **Resultado desconhecido**.
+
+A candidatura passa por **Enviando** antes da chamada externa, com claim atômico no banco. O worker recupera claims interrompidos após 150 segundos como **Resultado desconhecido**, sem reenvio automático. Pausar impede novos envios; uma operação já iniciada pode concluir.
+
+`/automation/sites` separa `identityConnected`, `connected`, `sessionState`, `verifiedAt`, `discovery`, `automatic`, `authMethod`, `applicationMethod` e `limitation`. OAuth de identidade não altera `automatic`. Endpoints de navegador exigem `PORTAL_BROWSER_AUTHORIZED` para aquele provedor; a busca automatizada LinkedIn exige `PORTAL_DISCOVERY_AUTHORIZED`. Não se deve configurar essas permissões sem autorização do serviço.
 
 Recusa definitiva: HTTP 422 com `{ "status": "not_submitted" }`. Demais falhas, timeout de 25 segundos, redirecionamento e respostas ambíguas tornam o resultado desconhecido. O adapter deve honrar a chave de idempotência e nunca duplicar um envio com a mesma chave.
 

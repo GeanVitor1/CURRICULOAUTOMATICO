@@ -1,8 +1,14 @@
+import { RequestError, StaleDiscoveryClaimError } from "./errors";
 import { randomUUID } from "node:crypto";
 import { and, asc, eq, inArray, lt, or } from "drizzle-orm";
 import { db, mutateWorkspace } from "./db";
 import { discoveryTasks, workspaces } from "./schema";
-import { discover, notify } from "./operations";
+import {
+  discover,
+  notify,
+  processAutomaticApplications,
+  recoverInterruptedSends,
+} from "./operations";
 
 export async function enqueueDiscovery(workspaceId: string) {
   return db.transaction(async (tx) => {
@@ -12,9 +18,9 @@ export async function enqueueDiscovery(workspaceId: string) {
       .from(workspaces)
       .where(eq(workspaces.id, workspaceId))
       .for("update");
-    if (!row) throw new Error("Workspace não encontrado.");
+    if (!row) throw new RequestError("Workspace não encontrado.");
     if (row.demo)
-      throw new Error("A demonstração não consulta fontes externas.");
+      throw new RequestError("A demonstração não consulta fontes externas.");
     const [pending] = await tx
       .select()
       .from(discoveryTasks)
@@ -31,7 +37,9 @@ export async function enqueueDiscovery(workspaceId: string) {
         message: "Sua busca já está na fila. Os resultados aparecerão aqui.",
       };
     if (!row.data.sources.some((source) => source.enabled && source.discovery))
-      throw new Error("Configure pelo menos uma fonte antes de pesquisar.");
+      throw new RequestError(
+        "Configure pelo menos uma fonte antes de pesquisar.",
+      );
     const id = randomUUID(),
       at = new Date();
     await tx
@@ -134,8 +142,12 @@ export async function processNextDiscoveryTask() {
   heartbeat?.unref();
   try {
     if (task.exhausted)
-      throw new Error("Busca interrompida duas vezes. Inicie uma nova busca.");
-    const run = await discover(task.workspaceId, task.id);
+      throw new RequestError(
+        "Busca interrompida duas vezes. Inicie uma nova busca.",
+      );
+    const run = await discover(task.workspaceId, task.id, leaseToken);
+    if (run.status !== "failed")
+      await processAutomaticApplications(task.workspaceId);
     await db
       .update(discoveryTasks)
       .set({
@@ -147,12 +159,13 @@ export async function processNextDiscoveryTask() {
       })
       .where(claim);
   } catch (error) {
+    if (error instanceof StaleDiscoveryClaimError) return true;
     const message =
       error instanceof Error
         ? error.message
         : "Não foi possível executar a busca.";
-    if (!task.exhausted)
-      await db
+    if (!task.exhausted) {
+      const failed = await db
         .update(discoveryTasks)
         .set({
           status: "failed",
@@ -161,7 +174,12 @@ export async function processNextDiscoveryTask() {
           leaseUntil: null,
           updatedAt: new Date(),
         })
-        .where(claim);
+        .where(claim)
+        .returning({ id: discoveryTasks.id });
+      // A delayed upstream/database error can arrive after another worker has
+      // recovered the task. Only the current owner may change its history.
+      if (!failed.length) return true;
+    }
     await mutateWorkspace(task.workspaceId, (workspace) => {
       const run = workspace.runs.find((run) => run.id === task.id);
       if (run) {
@@ -182,6 +200,20 @@ export function startDiscoveryWorker() {
   let processing = false,
     stopped = false;
   let activeTask: Promise<boolean> | null = null;
+  let recovery: Promise<void> | null = null;
+  const recover = () => {
+    if (stopped || recovery) return;
+    recovery = recoverInterruptedSends()
+      .catch(() => {
+        console.error(JSON.stringify({ event: "application_recovery_failed" }));
+      })
+      .finally(() => {
+        recovery = null;
+      });
+  };
+  const recoveryTimer = setInterval(recover, 30000);
+  recoveryTimer.unref();
+  recover();
   const tick = async () => {
     if (processing || stopped) return;
     processing = true;
@@ -207,6 +239,8 @@ export function startDiscoveryWorker() {
   return async () => {
     stopped = true;
     clearInterval(timer);
+    clearInterval(recoveryTimer);
     await activeTask;
+    await recovery;
   };
 }

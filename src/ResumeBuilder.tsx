@@ -67,6 +67,8 @@ export default function ResumeBuilder({
   const [confirmed, setConfirmed] = useState(false);
   const [draftStatus, setDraftStatus] = useState("");
   const [finalizing, setFinalizing] = useState(false);
+  const submitting = useRef(false);
+  const [exiting, setExiting] = useState(false);
   const saveQueue = useRef<Promise<unknown>>(Promise.resolve());
   const saveDraft = () => {
     setDraftStatus("Salvando rascunho…");
@@ -95,6 +97,9 @@ export default function ResumeBuilder({
     return () => clearTimeout(timer);
   }, [draft, step, ready, finalizing, action.isPending]);
   const exit = async () => {
+    if (submitting.current) return;
+    submitting.current = true;
+    setExiting(true);
     try {
       await saveDraft();
       onCancel ? onCancel() : navigate("curriculo");
@@ -104,6 +109,9 @@ export default function ResumeBuilder({
           ? failure.message
           : "Não foi possível salvar. Tente novamente.",
       );
+    } finally {
+      submitting.current = false;
+      setExiting(false);
     }
   };
   const update = (key: keyof Draft, value: string) => {
@@ -167,8 +175,11 @@ export default function ResumeBuilder({
         <span>
           <FileText size={16} /> Seu primeiro currículo
         </span>
-        <Button disabled={finalizing || action.isPending} onClick={exit}>
-          Salvar e sair
+        <Button
+          disabled={finalizing || action.isPending || exiting}
+          onClick={exit}
+        >
+          {exiting ? "Salvando…" : "Salvar e sair"}
         </Button>
       </div>
       <div
@@ -206,6 +217,7 @@ export default function ResumeBuilder({
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          if (submitting.current) return;
           if (step < questions.length - 1) {
             next();
             return;
@@ -214,6 +226,7 @@ export default function ResumeBuilder({
             setError("Confirme que as informações representam sua história.");
             return;
           }
+          submitting.current = true;
           setFinalizing(true);
           try {
             await saveDraft();
@@ -236,11 +249,15 @@ export default function ResumeBuilder({
                 : "Não foi possível criar o currículo.",
             );
           } finally {
+            submitting.current = false;
             setFinalizing(false);
           }
         }}
       >
-        <div className="wizard-body">
+        <fieldset
+          className="wizard-body interview-fields"
+          disabled={finalizing || exiting}
+        >
           {step === 0 && (
             <>
               <Field label="Seu nome completo">
@@ -393,7 +410,7 @@ export default function ResumeBuilder({
               </label>
             </>
           )}
-        </div>
+        </fieldset>
         {(error || action.isError) && (
           <p className="wizard-error" role="alert">
             {error || action.error?.message}
@@ -406,13 +423,16 @@ export default function ResumeBuilder({
               setError("");
               step > 0 ? setStep(step - 1) : exit();
             }}
-            disabled={action.isPending || finalizing}
+            disabled={action.isPending || finalizing || exiting}
           >
             <ArrowLeft size={16} />
             Voltar
           </Button>
           <span aria-live="polite">{draftStatus}</span>
-          <Button className="primary" disabled={action.isPending || finalizing}>
+          <Button
+            className="primary"
+            disabled={action.isPending || finalizing || exiting}
+          >
             {action.isPending || finalizing
               ? "Criando seu documento…"
               : step === 5

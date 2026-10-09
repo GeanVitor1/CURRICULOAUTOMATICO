@@ -57,17 +57,12 @@ for (const model of candidates) {
     );
     const payload = await response.json();
     if (!response.ok) {
-      const message = String(
-        payload?.error?.message || payload?.message || "Pedido recusado",
-      )
-        .replace(/oc_sk_[\w-]+/g, "[segredo removido]")
-        .slice(0, 250);
       tests.push({
         model,
         ok: false,
         http: response.status,
         milliseconds: Math.round(performance.now() - started),
-        message,
+        message: `O provedor recusou o pedido (HTTP ${response.status}).`,
       });
       continue;
     }

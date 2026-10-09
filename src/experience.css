@@ -1,0 +1,434 @@
+/* Layout and controls for the search / automation journey. */
+.automation-overview {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  margin-bottom: 24px;
+}
+.automation-overview .automation-summary {
+  border: 0;
+  border-radius: 0;
+  gap: 24px;
+}
+.automation-summary > div {
+  min-width: 0;
+}
+.automation-scope {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 30px;
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
+  font-size: 13px;
+  line-height: 1.7;
+}
+.automation-scope > svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--accent);
+}
+.automation-scope strong {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+}
+.automation-scope p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  max-width: 70ch;
+}
+.career-flow > .interview-extra {
+  margin: 0 0 24px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.career-flow > .interview-extra > summary {
+  padding: 0;
+  min-height: 24px;
+}
+.portal-connections > p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+.connection-list {
+  display: grid;
+  gap: 14px;
+}
+.connection-list > .connection-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+.connection-card > div:first-child {
+  min-width: 0;
+}
+.connection-card strong {
+  font-size: 15px;
+}
+.connection-card > div:first-child > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.connection-capabilities {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.connection-capabilities > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 11px;
+}
+.connection-capabilities > .available {
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+.connection-limitation {
+  max-width: 65ch;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 12px 0 0;
+}
+.connection-list .connection-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 170px;
+}
+.connection-actions .button {
+  justify-content: center;
+  text-decoration: none;
+  min-height: 40px;
+}
+.portal-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-items: end;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-top: 16px;
+}
+.portal-controls .field {
+  grid-column: 1 / -1;
+}
+.portal-controls .button {
+  min-height: 40px;
+  height: auto;
+  align-self: end;
+  white-space: normal;
+}
+.portal-login-guide {
+  margin-block: 20px 16px;
+}
+.portal-login-fields {
+  gap: 16px;
+}
+.portal-input-row input {
+  min-height: 44px;
+}
+.portal-screen {
+  margin-top: 16px;
+}
+.jobs-page .page-head {
+  gap: 24px;
+  align-items: start;
+}
+.jobs-page .page-head p {
+  max-width: 65ch;
+  line-height: 1.7;
+}
+.simple-job-filters {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.7fr) minmax(160px, 0.9fr) minmax(
+      250px,
+      1.6fr
+    );
+  gap: 20px 16px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  align-items: end;
+  margin: 24px 0 18px;
+}
+.simple-job-filters > label,
+.simple-job-filters form label {
+  min-width: 0;
+  width: 100%;
+}
+.simple-job-filters label > span {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.simple-job-filters select,
+.simple-job-filters input {
+  width: 100%;
+  max-width: none;
+  min-height: 44px;
+  border-radius: 9px;
+  padding: 11px 13px;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  transition:
+    border-color 160ms,
+    box-shadow 160ms;
+}
+.simple-job-filters select:hover {
+  border-color: var(--dim);
+}
+.simple-job-filters select {
+  height: 44px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.simple-job-filters select:focus-visible,
+.simple-job-filters input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.simple-job-filters form {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  min-width: 0;
+  align-items: end;
+}
+.simple-job-filters form label {
+  flex: 1;
+}
+.simple-job-filters .button {
+  min-height: 44px;
+  white-space: nowrap;
+}
+.simple-job-filters > .button {
+  justify-self: end;
+  grid-column: 3;
+  align-self: start;
+}
+.salary-filter {
+  grid-column: 1 / 3;
+  min-width: 0;
+  align-self: start;
+}
+.salary-filter summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  min-height: 44px;
+  border-radius: 9px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--bg);
+}
+.salary-filter summary::before {
+  content: "+";
+  color: var(--accent);
+  font-size: 17px;
+}
+.salary-filter[open] summary::before {
+  content: "−";
+}
+.salary-filter > div {
+  position: static;
+  width: 100%;
+  max-width: none;
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+  box-shadow: none;
+  padding: 18px;
+  background: var(--bg);
+}
+.salary-filter .checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.5;
+  font-size: 12px;
+}
+.salary-filter input[type="checkbox"] {
+  width: 17px;
+  min-height: 17px;
+  flex-shrink: 0;
+}
+.empty {
+  padding: 42px 24px;
+}
+.empty .empty-mascot {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 20px;
+  border-radius: 16px;
+}
+.empty h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.empty p {
+  max-width: 52ch;
+  line-height: 1.7;
+  margin: 0 auto;
+}
+.empty-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.empty-actions .button {
+  margin: 0;
+}
+/* Chromium's customizable select preserves native keyboard and form semantics. */
+@supports (appearance: base-select) {
+  .simple-job-filters select,
+  .simple-job-filters select::picker(select) {
+    appearance: base-select;
+  }
+  .simple-job-filters select::picker(select) {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    margin-top: 6px;
+    box-shadow: 0 12px 32px #0003;
+  }
+  .simple-job-filters select option {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 7px;
+    font-size: 13px;
+  }
+  .simple-job-filters select option:hover,
+  .simple-job-filters select option:focus {
+    background: var(--raised);
+  }
+  .simple-job-filters select option:checked {
+    background: var(--accent-bg);
+    color: var(--accent);
+  }
+  .simple-job-filters select::picker-icon {
+    color: var(--muted);
+    transition: rotate 160ms;
+  }
+  .simple-job-filters select:open::picker-icon {
+    rotate: 180deg;
+  }
+}
+@media (max-width: 1100px) {
+  .simple-job-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  .simple-job-filters form {
+    grid-column: 1 / -1;
+  }
+  .salary-filter {
+    grid-column: 1;
+  }
+  .simple-job-filters > .button {
+    grid-column: 2;
+  }
+  .connection-list > .connection-card {
+    grid-template-columns: 1fr;
+  }
+  .connection-list .connection-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 600px) {
+  .automation-overview .automation-summary {
+    padding: 22px;
+  }
+  .automation-scope {
+    padding: 18px 22px;
+  }
+  .career-flow > .interview-extra {
+    padding: 18px;
+  }
+  .connection-list > .connection-card {
+    padding: 16px;
+    gap: 16px;
+  }
+  .connection-actions .button {
+    flex: 1 1 145px;
+  }
+  .simple-job-filters {
+    padding: 18px;
+    gap: 18px 12px;
+  }
+  .simple-job-filters > label:first-child {
+    width: 100%;
+  }
+  .simple-job-filters form input {
+    width: 100%;
+  }
+  .simple-job-filters form .button {
+    padding-inline: 11px;
+  }
+  .simple-job-filters > .button {
+    white-space: normal;
+    font-size: 12px;
+  }
+  .simple-job-filters .salary-filter {
+    grid-column: 1 / -1;
+  }
+  .simple-job-filters > .button {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+  }
+  .portal-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 14px;
+  }
+  .portal-controls .button {
+    font-size: 12px;
+  }
+  .empty {
+    padding: 32px 18px;
+  }
+  .empty h3 {
+    font-size: 18px;
+  }
+  .empty-actions {
+    flex-direction: column;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .automation-counters button:hover {
+    transform: none;
+  }
+}

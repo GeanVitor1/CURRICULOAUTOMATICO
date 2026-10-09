@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-09",
+  "unit": {
+    "passed": 209,
+    "files": 20,
+    "command": "npm test"
+  },
+  "browser": {
+    "distinctPassed": 50,
+    "skipped": 1,
+    "fullSuitePassed": 49,
+    "affectedSuitePassed": 11,
+    "skipReason": "LinkedIn browser authorization not configured"
+  },
+  "build": "passed",
+  "typecheck": "passed",
+  "applicationsSent": 0,
+  "realSearchEvidence": [
+    "artifacts/redesign-live-search.json",
+    "artifacts/redesign-live-workflow.json"
+  ],
+  "oauthLive": "not validated: application credentials not configured",
+  "nativeApplicationsLive": "not validated; local fixtures only"
+}

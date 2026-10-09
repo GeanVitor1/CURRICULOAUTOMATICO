@@ -8,6 +8,7 @@ const link = z.union([
 ]);
 export const profileSchema = z.object({
   name: line,
+  phone: z.string().trim().max(30).optional(),
   headline: line,
   email: z.union([z.literal(""), z.email()]),
   location: line,
@@ -24,23 +25,31 @@ export const profileSchema = z.object({
   experience: z.string().max(10000),
   confirmed: z.boolean(),
 });
-export const filtersSchema = z.object({
-  titles: list,
-  skills: list,
-  levels: list,
-  modalities: list,
-  contracts: list,
-  salaryMin: z.number().min(0),
-  salaryOnly: z.boolean(),
-  maxYears: z.number().min(0).max(70),
-  minScore: z.number().min(0).max(100),
-  blockedCompanies: list,
-  ageDays: z.number().int().min(1).max(365),
-  locations: list,
-  language: line,
-  requiredSkills: list,
-  excludedTerms: list,
-});
+export const filtersSchema = z
+  .object({
+    remoteAnywhere: z.boolean().optional(),
+    dateKnownOnly: z.boolean().optional(),
+    salaryMax: z.number().min(0).max(10000000).optional(),
+    titles: list,
+    skills: list,
+    levels: list,
+    modalities: list,
+    contracts: list,
+    salaryMin: z.number().min(0).max(10000000),
+    salaryOnly: z.boolean(),
+    maxYears: z.number().min(0).max(70),
+    minScore: z.number().min(0).max(100),
+    blockedCompanies: list,
+    ageDays: z.number().int().min(1).max(365),
+    locations: list,
+    language: line,
+    requiredSkills: list,
+    excludedTerms: list,
+  })
+  .refine((f) => !f.salaryMax || f.salaryMax >= f.salaryMin, {
+    path: ["salaryMax"],
+    message: "O salário máximo precisa ser igual ou maior que o mínimo.",
+  });
 export const routineSchema = z.object({
   enabled: z.boolean(),
   mode: z.enum(["discovery", "approval", "automatic"]),

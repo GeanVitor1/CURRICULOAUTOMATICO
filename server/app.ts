@@ -4,15 +4,9 @@ import cookie from "@fastify/cookie";
 import multipart from "@fastify/multipart";
 import rateLimit from "@fastify/rate-limit";
 import staticFiles from "@fastify/static";
-import {
-  randomUUID,
-  randomBytes,
-  createHash,
-  scryptSync,
-  timingSafeEqual,
-} from "node:crypto";
+import { randomUUID, randomBytes, createHash } from "node:crypto";
 import { mkdir, writeFile, readFile, rm, stat } from "node:fs/promises";
-import { resolve, extname } from "node:path";
+import { resolve, extname, relative } from "node:path";
 import { eq, and, lt } from "drizzle-orm";
 import { z } from "zod";
 import { PDFParse } from "pdf-parse";
@@ -36,12 +30,39 @@ import {
   analyze,
   normalize,
   matchesObjectiveFilters,
+  matchesSelectedSites,
 } from "./engine";
-import { supportsAutomatic } from "./connectors";
+import { supportsAutomatic, automaticPortals } from "./connectors";
+import {
+  providerLimits,
+  publicDiscoveryAvailable,
+} from "./provider-capabilities";
+import {
+  linkedinOAuthConfigured,
+  linkedinIdentity,
+  beginLinkedinOAuth,
+  completeLinkedinOAuth,
+  disconnectLinkedinIdentity,
+} from "./linkedin-oauth";
+import { interviewSchema, applyInterview } from "./career-interview";
+import {
+  connectionStatuses,
+  readyPortals,
+  startPortalLogin,
+  portalLoginAction,
+  finishPortalLogin,
+  cancelPortalLogin,
+  disconnectPortal,
+  deletePortalConnections,
+  closePortalBrowsers,
+  closeUserPortalLogins,
+} from "./portal-sessions";
+import { candidatePortals, portals } from "../shared/portals";
+import { geminiConfigured } from "./gemini";
 import { inspectSourceCatalog } from "./source-catalog";
 import { VERIFIED_SOURCES } from "./source-registry";
 import { isPortalId } from "../shared/portals";
-import { resumeTargets } from "./resume-targets";
+import { resumeTargets, TARGETS_VERSION } from "./resume-targets";
 import { applicationDraft } from "./application-draft";
 import {
   analyzeResume,
@@ -56,11 +77,14 @@ import {
 import {
   discover,
   mergeJobs,
+  findExistingJob,
   prepare,
   refreshMatches,
   transition,
   notify,
 } from "./operations";
+import { requireResumeReview } from "./resume-state";
+import { RequestError } from "./errors";
 import { queue, configureSchedule } from "./queue";
 import { enqueueDiscovery } from "./discovery-queue";
 import {
@@ -72,15 +96,8 @@ import {
   statusSchema,
 } from "./validation";
 import type { Job, Workspace } from "../shared/types";
+import { passwordHash, verifyPassword } from "./auth-password";
 const tokenHash = (s: string) => createHash("sha256").update(s).digest("hex");
-const passwordHash = (p: string) => {
-  const salt = randomBytes(16).toString("hex");
-  return `${salt}:${scryptSync(p, salt, 64).toString("hex")}`;
-};
-const verify = (p: string, hash: string) => {
-  const [salt, digest] = hash.split(":");
-  return timingSafeEqual(Buffer.from(digest, "hex"), scryptSync(p, salt, 64));
-};
 export async function buildApp() {
   const app = Fastify({
     logger:
@@ -91,6 +108,7 @@ export async function buildApp() {
               "req.headers.authorization",
               "password",
               "token",
+              "req.url",
             ],
           }
         : false,
@@ -100,7 +118,16 @@ export async function buildApp() {
   await app.register(multipart, {
     limits: { fileSize: 5 * 1024 * 1024, files: 1, fields: 2 },
   });
-  await app.register(rateLimit, { max: 200, timeWindow: "1 minute" });
+  await app.register(rateLimit, {
+    max: 200,
+    timeWindow: "1 minute",
+    // A page loads many fonts, images and chunks. Only API requests consume
+    // this quota; auth routes retain their separate 10/minute limit.
+    allowList: (request) => {
+      const path = request.url.split("?", 1)[0];
+      return path !== "/api" && !path.startsWith("/api/");
+    },
+  });
   app.addHook("onRequest", async (request, reply) => {
     reply
       .header("X-Content-Type-Options", "nosniff")
@@ -142,11 +169,11 @@ export async function buildApp() {
         .send({ error: "Este e-mail já possui uma conta." });
     if (error.statusCode === 413 || error.code === "FST_REQ_FILE_TOO_LARGE")
       return reply.code(413).send({ error: "Arquivo maior que 5 MB." });
-    if (error.statusCode && error.statusCode >= 500)
-      app.log.error({ code: error.code }, "Falha interna");
-    return reply.code(error.statusCode || 400).send({
+    const status = error.statusCode || 500;
+    if (status >= 500) app.log.error({ code: error.code }, "Falha interna");
+    return reply.code(status).send({
       error:
-        error.statusCode >= 500
+        status >= 500
           ? "Não foi possível concluir a solicitação."
           : error.message || "Solicitação inválida.",
     });
@@ -172,11 +199,17 @@ export async function buildApp() {
     const u = await identity(request);
     const demo = (request.query as any)?.demo === "true";
     if (demo)
-      throw new Error(
+      throw new RequestError(
         "O modo de dados demonstrativos foi removido. Use seu espaço real.",
       );
     const id = `${u.id}:${demo ? "demo" : "live"}`;
-    if (!(await readWorkspace(id)))
+    const [workspace] = await db
+      .select({ id: workspaces.id })
+      .from(workspaces)
+      .where(eq(workspaces.id, id));
+    // Most routes read or mutate the workspace themselves. An existence check
+    // must not deserialize its full resume/job history a second time.
+    if (!workspace)
       await db
         .insert(workspaces)
         .values({
@@ -212,28 +245,33 @@ export async function buildApp() {
         const body = authBody.parse(req.body);
         let user;
         if (action === "register") {
-          if (!body.name) throw new Error("Informe seu nome.");
-          [user] = await db
-            .insert(users)
-            .values({
-              id: randomUUID(),
-              email: body.email,
-              name: body.name,
-              password: passwordHash(body.password),
-            })
-            .returning();
-          await db.insert(workspaces).values({
-            id: `${user.id}:live`,
-            userId: user.id,
-            demo: false,
-            data: createWorkspace(user.name, user.email),
+          if (!body.name) throw new RequestError("Informe seu nome.");
+          const name = body.name;
+          const password = await passwordHash(body.password);
+          user = await db.transaction(async (tx) => {
+            const [created] = await tx
+              .insert(users)
+              .values({
+                id: randomUUID(),
+                email: body.email,
+                name,
+                password,
+              })
+              .returning();
+            await tx.insert(workspaces).values({
+              id: `${created.id}:live`,
+              userId: created.id,
+              demo: false,
+              data: createWorkspace(created.name, created.email),
+            });
+            return created;
           });
         } else {
           [user] = await db
             .select()
             .from(users)
             .where(eq(users.email, body.email));
-          if (!user || !verify(body.password, user.password))
+          if (!(await verifyPassword(body.password, user?.password)))
             throw Object.assign(new Error("E-mail ou senha incorretos."), {
               statusCode: 401,
             });
@@ -256,6 +294,8 @@ export async function buildApp() {
       },
     );
   app.post("/api/auth/logout", async (req, reply) => {
+    const u = await identity(req).catch(() => null);
+    if (u) await closeUserPortalLogins(u.id);
     if (req.cookies.orbita_session)
       await db
         .delete(sessions)
@@ -264,7 +304,7 @@ export async function buildApp() {
     return { ok: true };
   });
   app.get("/api/workspace", async (req) => {
-    const { id } = await scope(req);
+    const { id, u } = await scope(req);
     const w = (await readWorkspace(id))!;
     refreshMatches(w);
     const workers = queue ? await queue.getWorkers().catch(() => []) : [];
@@ -274,20 +314,26 @@ export async function buildApp() {
       automatic: supportsAutomatic(),
       worker: queue ? workers.length > 0 : true,
     };
+    const applications = new Map(w.applications.map((a) => [a.jobId, a]));
     w.jobs.forEach((j) => {
-      j.application = w.applications.find((a) => a.jobId === j.id);
+      j.application = applications.get(j.id);
     });
     w.intelligence = w.demo
       ? { provider: "local", model: "", enabled: false, keyConfigured: false }
-      : await getIntelligence((await identity(req)).id);
+      : await getIntelligence(u.id);
     if ((req.query as any).summary === "true") {
       const active = w.jobs.filter(
         (j) => !j.discarded && j.availability !== "closed",
       );
+      const visible = active.filter(
+        (job) =>
+          matchesSelectedSites(job, w) &&
+          matchesObjectiveFilters(job, w.profile, w.filters),
+      );
       w.jobCounts = {
-        total: active.length,
-        saved: active.filter((j) => j.saved).length,
-        recommended: active.filter(
+        total: visible.length,
+        saved: visible.filter((j) => j.saved).length,
+        recommended: visible.filter(
           (j) =>
             matchesObjectiveFilters(j, w.profile, w.filters) &&
             j.match.score >= w.filters.minScore &&
@@ -296,7 +342,7 @@ export async function buildApp() {
         ).length,
       };
       const previewIds = new Set(
-        [...active]
+        [...visible]
           .sort((a, b) => b.match.score - a.match.score)
           .slice(0, 8)
           .map((j) => j.id),
@@ -310,12 +356,14 @@ export async function buildApp() {
     const { id } = await scope(req);
     const w = (await readWorkspace(id))!;
     refreshMatches(w);
+    const applications = new Map(w.applications.map((a) => [a.jobId, a]));
     const q = z
       .object({
         search: z.string().max(200).default(""),
         page: z.coerce.number().int().min(1).default(1),
         pageSize: z.coerce.number().int().min(1).max(100).default(25),
         radar: z.enum(["true", "false"]).default("false"),
+        purpose: z.enum(["search", "manual"]).default("search"),
         tab: z.enum(["all", "compatible", "saved"]).default("all"),
         sort: z.enum(["score", "recent"]).default("score"),
         demo: z.string().optional(),
@@ -324,14 +372,18 @@ export async function buildApp() {
     const jobs = w.jobs
       .filter(
         (j) =>
-          !j.discarded &&
-          j.availability !== "closed" &&
+          (q.purpose === "manual" ||
+            (!j.discarded &&
+              matchesSelectedSites(j, w) &&
+              j.availability !== "closed")) &&
           normalize([j.title, j.company, ...j.skills].join(" ")).includes(
             normalize(q.search),
           ) &&
-          (q.radar === "true"
-            ? j.match.radar
-            : matchesObjectiveFilters(j, w.profile, w.filters)) &&
+          (q.purpose === "manual"
+            ? !applications.has(j.id)
+            : q.radar === "true"
+              ? j.match.radar
+              : matchesObjectiveFilters(j, w.profile, w.filters)) &&
           (q.tab !== "saved" || j.saved) &&
           (q.tab !== "compatible" ||
             (j.match.confidence !== "insufficient" &&
@@ -344,7 +396,12 @@ export async function buildApp() {
           : Date.parse(b.discoveredAt) - Date.parse(a.discoveredAt),
       );
     return {
-      items: jobs.slice((q.page - 1) * q.pageSize, q.page * q.pageSize),
+      items: jobs
+        .slice((q.page - 1) * q.pageSize, q.page * q.pageSize)
+        .map((job) => ({
+          ...job,
+          application: applications.get(job.id),
+        })),
       total: jobs.length,
       page: q.page,
       pageSize: q.pageSize,
@@ -354,7 +411,7 @@ export async function buildApp() {
     const { id } = await scope(req);
     const w = (await readWorkspace(id))!;
     const job = w.jobs.find((j) => j.id === (req.params as any).jobId);
-    if (!job) throw new Error("Vaga não encontrada.");
+    if (!job) throw new RequestError("Vaga não encontrada.");
     job.match = analyze(job, w.profile, w.filters);
     job.application = w.applications.find((a) => a.jobId === job.id);
     return job;
@@ -366,6 +423,194 @@ export async function buildApp() {
       w.profile = p;
       refreshMatches(w);
     });
+    return { ok: true };
+  });
+  app.get("/api/automation/sites", async (req) => {
+    const u = await identity(req);
+    const connections = await connectionStatuses(u.id);
+    const resumeId =
+      (await readWorkspace(`${u.id}:live`))?.resumes[0]?.id || "";
+    const linkedIdentity = await linkedinIdentity(u.id);
+    return candidatePortals.map((site) => ({
+      id: site,
+      name: portals[site].name,
+      discovery: publicDiscoveryAvailable(site, geminiConfigured()),
+      ...connections.find((connection) => connection.id === site),
+      authMethod:
+        site === "linkedin" && linkedinOAuthConfigured()
+          ? "oauth"
+          : connections.find((c) => c.id === site)?.connectable
+            ? "authorized-browser"
+            : "external",
+      identityConnected:
+        site === "linkedin" &&
+        !!linkedIdentity &&
+        linkedIdentity.expiresAt > Date.now(),
+      identityExpired:
+        site === "linkedin" &&
+        !!linkedIdentity &&
+        linkedIdentity.expiresAt <= Date.now(),
+      oauthConfigured: site === "linkedin" && linkedinOAuthConfigured(),
+      limitation: providerLimits[site],
+      applicationMethod: automaticPortals().includes(site)
+        ? "authorized-api"
+        : connections.find((c) => c.id === site)?.connected
+          ? "authorized-browser"
+          : "external",
+      needsResumeApproval:
+        ["gupy", "infojobs"].includes(site) &&
+        connections.some(
+          (connection) =>
+            connection.id === site &&
+            connection.connected &&
+            connection.profileResumeId !== resumeId,
+        ),
+      automatic:
+        automaticPortals().includes(site) ||
+        connections.some(
+          (connection) =>
+            connection.id === site &&
+            connection.connected &&
+            (!["gupy", "infojobs"].includes(site) ||
+              connection.profileResumeId === resumeId),
+        ),
+    }));
+  });
+  app.post("/api/oauth/linkedin/start", async (req) => {
+    const { u, demo } = await scope(req);
+    if (demo)
+      throw new RequestError("A demonstração não conecta contas externas.");
+    return { url: await beginLinkedinOAuth(u.id) };
+  });
+  app.get("/api/oauth/linkedin/callback", async (req, reply) => {
+    let success = false;
+    try {
+      const u = await identity(req);
+      const query = z
+        .object({
+          state: z.string().min(32).max(200),
+          code: z.string().max(4000).optional(),
+          error: z.string().max(200).optional(),
+        })
+        .parse(req.query);
+      await completeLinkedinOAuth(u.id, query.state, query.code, !!query.error);
+      success = true;
+    } catch {
+      /* No provider response, code, token or personal data is rendered. */
+    }
+    return reply
+      .type("text/html")
+      .header(
+        "Content-Security-Policy",
+        "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'",
+      )
+      .send(
+        `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Conexão LinkedIn</title><body style="font:16px system-ui;padding:40px;background:#f7f8f4;color:#17201a"><h1>${success ? "Conta autenticada" : "Não foi possível conectar"}</h1><p>${success ? "Seu LinkedIn foi autenticado. Essa permissão identifica sua conta; busca e candidaturas dependem de integrações próprias." : "A autorização expirou, foi recusada ou não pôde ser verificada. Volte ao Empregatos e tente novamente."}</p><a href="/app#automacao">Voltar ao Empregatos</a><script>if(window.opener){window.opener.postMessage({type:'empregatos:oauth',success:${success}},window.location.origin);window.close();}</script></body></html>`,
+      );
+  });
+  const connectionPortal = z.enum(candidatePortals);
+  const connectionScope = async (req: FastifyRequest) => {
+    const { u, demo } = await scope(req);
+    if (demo) throw new RequestError("Conecte os sites na sua conta real.");
+    return { u, portal: connectionPortal.parse((req.params as any).portal) };
+  };
+  app.post("/api/connections/:portal/open", async (req, reply) => {
+    const { u, portal } = await connectionScope(req);
+    reply.header("Cache-Control", "no-store");
+    return startPortalLogin(u.id, portal);
+  });
+  app.post("/api/connections/:portal/action", async (req, reply) => {
+    const { u, portal } = await connectionScope(req);
+    const action = z
+      .discriminatedUnion("type", [
+        z.object({
+          type: z.literal("submit"),
+          fields: z
+            .array(
+              z.object({
+                index: z.number().int().min(0).max(100),
+                key: z.string().length(64).optional(),
+                value: z.string().max(2000),
+              }),
+            )
+            .min(1)
+            .max(30),
+        }),
+        z.object({
+          type: z.literal("click"),
+          x: z.number().min(0).max(1024),
+          y: z.number().min(0).max(720),
+        }),
+        z.object({ type: z.literal("text"), value: z.string().max(2000) }),
+        z.object({
+          type: z.literal("fill"),
+          index: z.number().int().min(0).max(100),
+          value: z.string().max(2000),
+        }),
+        z.object({
+          type: z.literal("key"),
+          value: z.enum([
+            "Tab",
+            "Shift+Tab",
+            "Enter",
+            "Backspace",
+            "Escape",
+            "ControlOrMeta+A",
+            "ArrowDown",
+            "ArrowUp",
+          ]),
+        }),
+        z.object({
+          type: z.literal("scroll"),
+          delta: z.number().min(-1200).max(1200),
+        }),
+        z.object({ type: z.literal("refresh") }),
+      ])
+      .parse(req.body);
+    reply.header("Cache-Control", "no-store");
+    return portalLoginAction(u.id, portal, action);
+  });
+  app.post("/api/connections/:portal/confirm", async (req) => {
+    const { u, portal } = await connectionScope(req);
+    const { profileResumeId } = z
+      .object({ profileResumeId: z.string().max(100).nullable().default(null) })
+      .parse(req.body || {});
+    if (profileResumeId) {
+      const w = await readWorkspace(`${u.id}:live`);
+      if (!w?.resumes.some((resume) => resume.id === profileResumeId))
+        throw new RequestError("O currículo escolhido não foi encontrado.");
+    }
+    return finishPortalLogin(u.id, portal, profileResumeId);
+  });
+  app.post("/api/connections/:portal/close", async (req) => {
+    const { u, portal } = await connectionScope(req);
+    await cancelPortalLogin(u.id, portal);
+    return { ok: true };
+  });
+  app.delete("/api/connections/:portal", async (req) => {
+    const { u, portal } = await connectionScope(req);
+    await disconnectPortal(u.id, portal);
+    if (portal === "linkedin") await disconnectLinkedinIdentity(u.id);
+    return { ok: true };
+  });
+  app.put("/api/interview", async (req) => {
+    const { id, u, demo } = await scope(req);
+    const body = interviewSchema.parse(req.body);
+    if (demo && body.start !== "save")
+      throw new RequestError("A demonstração não inicia buscas ou envios.");
+    const availableSites = [
+      ...automaticPortals(),
+      ...(await readyPortals(u.id, body.answers.resumeId)),
+    ];
+    await mutateWorkspace(id, (w) => {
+      applyInterview(w, body, availableSites);
+      refreshMatches(w);
+    });
+    if (body.complete) {
+      const w = (await readWorkspace(id))!;
+      await configureSchedule(id, w.routine.enabled, w.routine.time);
+      if (w.routine.enabled) await enqueueDiscovery(id);
+    }
     return { ok: true };
   });
   const onboardingSchema = z.object({
@@ -402,7 +647,9 @@ export async function buildApp() {
     const body = onboardingSchema.parse(req.body);
     const completed = body.complete === true;
     if (completed && !body.answers.goal)
-      throw new Error("Conte qual trabalho você procura antes de começar.");
+      throw new RequestError(
+        "Conte qual trabalho você procura antes de começar.",
+      );
     return mutateWorkspace(id, (w) => {
       w.onboarding = { step: body.step, completed, answers: body.answers };
       if (completed) {
@@ -430,7 +677,9 @@ export async function buildApp() {
   app.put("/api/intelligence", async (req) => {
     const { u, demo } = await scope(req);
     if (demo)
-      throw new Error("Configure inteligência no espaço de dados reais.");
+      throw new RequestError(
+        "Configure inteligência no espaço de dados reais.",
+      );
     return saveIntelligence(u.id, req.body);
   });
   app.get("/api/intelligence/models", async (req) => {
@@ -457,7 +706,7 @@ export async function buildApp() {
     const { id, u } = await scope(req);
     const w = (await readWorkspace(id))!;
     const job = w.jobs.find((j) => j.id === (req.params as any).jobId);
-    if (!job) throw new Error("Vaga não encontrada.");
+    if (!job) throw new RequestError("Vaga não encontrada.");
     const match = await analyzeJobMatch(u.id, w.profile, job, w.filters);
     await mutateWorkspace(id, (current) => {
       const item = current.jobs.find((j) => j.id === job.id);
@@ -485,7 +734,7 @@ export async function buildApp() {
       .parse(req.body);
     return mutateWorkspace(id, (w) => {
       if (w.searchProfiles.length >= 20)
-        throw new Error("Limite de 20 perfis de busca.");
+        throw new RequestError("Limite de 20 perfis de busca.");
       const item = { id: randomUUID(), ...body };
       w.searchProfiles.push(item);
       return item;
@@ -494,28 +743,49 @@ export async function buildApp() {
   app.post("/api/search-profiles/:profileId/activate", async (req) => {
     const { id } = await scope(req);
     const profileId = (req.params as any).profileId;
-    return mutateWorkspace(id, (w) => {
+    await mutateWorkspace(id, (w) => {
       const p = w.searchProfiles.find((p) => p.id === profileId);
-      if (!p) throw new Error("Perfil não encontrado.");
+      if (!p) throw new RequestError("Perfil não encontrado.");
       w.filters = p.filters;
       w.routine.mode = p.mode;
+      // A saved search cannot silently enable submission while a routine is running.
+      w.routine.enabled = false;
+      w.routine.nextRun = null;
       refreshMatches(w);
       return { ok: true };
     });
+    await configureSchedule(id, false, "08:00");
+    return { ok: true };
   });
   app.put("/api/routine", async (req) => {
-    const { id, demo } = await scope(req);
+    const { id, u, demo } = await scope(req);
     const r = routineSchema.parse(req.body);
     if (demo && r.enabled)
-      throw new Error("Rotinas não executam na demonstração.");
-    if (r.mode === "automatic" && !supportsAutomatic())
-      throw new Error(
-        "Configure uma integração autorizada antes de ativar o envio automático.",
-      );
+      throw new RequestError("Rotinas não executam na demonstração.");
+    if (r.enabled && r.mode === "automatic") {
+      const w = (await readWorkspace(id))!;
+      const available = [
+        ...automaticPortals(),
+        ...(await readyPortals(u.id, w.resumes[0]?.id || "")),
+      ];
+      const selected =
+        w.interview?.answers.sites ||
+        w.sources
+          .filter((source) => source.enabled && source.type === "portal")
+          .map((source) => source.board);
+      if (
+        (!selected.length && !supportsAutomatic()) ||
+        (selected.length > 0 &&
+          !selected.some((site) => available.includes(site)))
+      )
+        throw new RequestError(
+          "Conecte suas contas nos sites escolhidos antes de ativar o envio automático.",
+        );
+    }
     if (r.enabled) {
       const w = (await readWorkspace(id))!;
       if (!w.sources.some((s) => s.enabled && s.discovery))
-        throw new Error("Adicione uma fonte antes de ativar a rotina.");
+        throw new RequestError("Adicione uma fonte antes de ativar a rotina.");
     }
     await configureSchedule(id, r.enabled, r.time);
     await mutateWorkspace(id, (w) => {
@@ -533,14 +803,16 @@ export async function buildApp() {
   });
   app.post("/api/sources", async (req) => {
     const { id, demo } = await scope(req);
-    if (demo) throw new Error("Adicione fontes no espaço de dados reais.");
+    if (demo)
+      throw new RequestError("Adicione fontes no espaço de dados reais.");
     const s = sourceSchema.parse(req.body);
     if (s.type === "portal" && !isPortalId(s.board))
-      throw new Error("Escolha um portal disponível.");
+      throw new RequestError("Escolha um portal disponível.");
     if (s.type === "authorized" && !supportsAutomatic())
-      throw new Error("Adapter autorizado não configurado no servidor.");
+      throw new RequestError("Adapter autorizado não configurado no servidor.");
     return mutateWorkspace(id, (w) => {
-      if (w.sources.length >= 20) throw new Error("Limite de 20 fontes.");
+      if (w.sources.length >= 20)
+        throw new RequestError("Limite de 20 fontes.");
       const source = {
         ...s,
         id: randomUUID(),
@@ -550,7 +822,7 @@ export async function buildApp() {
           s.type === "authorized"
             ? "Envio autorizado"
             : s.type === "portal"
-              ? "Busca com Gemini · candidatura no portal"
+              ? "Busca pública · candidatura no portal"
               : "API pública · candidatura assistida",
       };
       w.sources.push(source);
@@ -596,7 +868,12 @@ export async function buildApp() {
       if (!job.skills.length)
         job.skills = extractSkills(j.description, w.filters.skills);
       mergeJobs(w, [job]);
-      return job;
+      const stored = findExistingJob(w, job);
+      if (!stored)
+        throw new RequestError(
+          "Limite de 2.000 vagas atingido. Descarte vagas antigas para liberar espaço.",
+        );
+      return stored;
     });
   });
   app.patch("/api/jobs/:jobId", async (req) => {
@@ -610,7 +887,7 @@ export async function buildApp() {
       .parse(req.body);
     await mutateWorkspace(id, (w) => {
       const j = w.jobs.find((j) => j.id === (req.params as any).jobId);
-      if (!j) throw new Error("Vaga não encontrada.");
+      if (!j) throw new RequestError("Vaga não encontrada.");
       if (body.saved !== undefined) j.saved = body.saved;
       if (body.discarded !== undefined) j.discarded = body.discarded;
       if (body.blockCompany && !w.filters.blockedCompanies.includes(j.company))
@@ -647,12 +924,12 @@ export async function buildApp() {
           timeZone: "America/Sao_Paulo",
         })
     )
-      throw new Error("Data de envio inválida.");
+      throw new RequestError("Data de envio inválida.");
     return mutateWorkspace(id, (w) => {
       const job = w.jobs.find((j) => j.id === body.jobId);
-      if (!job) throw new Error("Vaga não encontrada.");
+      if (!job) throw new RequestError("Vaga não encontrada.");
       if (w.applications.some((a) => a.jobId === job.id))
-        throw new Error("Já existe candidatura para esta vaga.");
+        throw new RequestError("Já existe candidatura para esta vaga.");
       const a = {
         id: randomUUID(),
         jobId: job.id,
@@ -679,7 +956,8 @@ export async function buildApp() {
   });
   app.post("/api/applications/:applicationId/draft", async (req) => {
     const { id, u, demo } = await scope(req);
-    if (demo) throw new Error("Prepare uma candidatura no seu espaço real.");
+    if (demo)
+      throw new RequestError("Prepare uma candidatura no seu espaço real.");
     const w = (await readWorkspace(id))!;
     const application = w.applications.find(
       (a) => a.id === (req.params as any).applicationId,
@@ -689,14 +967,16 @@ export async function buildApp() {
       application &&
       w.resumes.find((r) => r.id === application.resumeId && r.approved);
     if (!application || !job || !resume)
-      throw new Error(
+      throw new RequestError(
         "A candidatura precisa de uma vaga e um currículo aprovado.",
       );
     const draft = await applicationDraft(u.id, resume, job);
     return mutateWorkspace(id, (current) => {
       const a = current.applications.find((a) => a.id === application.id);
       if (!a || !current.resumes.some((r) => r.id === a.resumeId && r.approved))
-        throw new Error("A candidatura mudou. Revise e tente novamente.");
+        throw new RequestError(
+          "A candidatura mudou. Revise e tente novamente.",
+        );
       a.draft = draft;
       return { draft };
     });
@@ -706,7 +986,7 @@ export async function buildApp() {
     const body = statusSchema.parse(req.body);
     return mutateWorkspace(id, (w) => {
       const a = w.applications.find((a) => a.id === (req.params as any).appId);
-      if (!a) throw new Error("Candidatura não encontrada.");
+      if (!a) throw new RequestError("Candidatura não encontrada.");
       transition(a, body.status, body.confirmation);
       if (body.note !== undefined) a.note = body.note;
       return a;
@@ -736,7 +1016,8 @@ export async function buildApp() {
   });
   app.post("/api/resumes/build", async (req) => {
     const { id, u, demo } = await scope(req);
-    if (demo) throw new Error("Crie seu currículo no espaço de dados reais.");
+    if (demo)
+      throw new RequestError("Crie seu currículo no espaço de dados reais.");
     const body = z
       .object({
         name: z.string().trim().min(2).max(100),
@@ -758,7 +1039,8 @@ export async function buildApp() {
     await writeFile(path, await createResumePdf(body));
     try {
       await mutateWorkspace(id, (w) => {
-        if (w.resumes.length >= 20) throw new Error("Limite de 20 currículos.");
+        if (w.resumes.length >= 20)
+          throw new RequestError("Limite de 20 currículos.");
         w.resumes.unshift({
           id: resumeId,
           name: `Currículo · ${body.name}.pdf`,
@@ -771,20 +1053,12 @@ export async function buildApp() {
           suggestion: { ...body, name: body.name, skills: body.skills },
           targets: targets.targets,
           targetsMethod: targets.method,
+          targetsVersion: TARGETS_VERSION,
           targetsMessage: targets.message,
           targetsConfirmed: false,
         });
         delete w.resumeDraft;
-        w.profile.skills = [...new Set([...w.profile.skills, ...body.skills])];
-        for (const field of [
-          "education",
-          "experience",
-          "languages",
-          "headline",
-          "location",
-        ] as const)
-          if (!w.profile[field] && body[field]) w.profile[field] = body[field];
-        w.profile.confirmed = false;
+        requireResumeReview(w);
         refreshMatches(w);
         notify(
           w,
@@ -796,24 +1070,26 @@ export async function buildApp() {
       await rm(path, { force: true });
       throw error;
     }
+    await configureSchedule(id, false, "08:00");
     return { resumeId };
   });
   app.post("/api/resumes", async (req) => {
     const { id, u, demo } = await scope(req);
-    if (demo) throw new Error("Envie seu currículo no espaço de dados reais.");
+    if (demo)
+      throw new RequestError("Envie seu currículo no espaço de dados reais.");
     if ((await readWorkspace(id))!.resumes.length >= 20)
-      throw new Error("Limite de 20 currículos.");
+      throw new RequestError("Limite de 20 currículos.");
     const file = await req.file();
-    if (!file) throw new Error("Selecione um arquivo PDF ou DOCX.");
+    if (!file) throw new RequestError("Selecione um arquivo PDF ou DOCX.");
     const buffer = await file.toBuffer();
     const ext = extname(file.filename).toLowerCase();
     if (![".pdf", ".docx"].includes(ext))
-      throw new Error("Apenas PDF ou DOCX são aceitos.");
+      throw new RequestError("Apenas PDF ou DOCX são aceitos.");
     if (ext === ".pdf" && buffer.subarray(0, 5).toString() !== "%PDF-")
-      throw new Error("O arquivo não é um PDF válido.");
+      throw new RequestError("O arquivo não é um PDF válido.");
     if (ext === ".docx") {
       if (buffer.length < 46 || buffer.readUInt32LE(0) !== 0x04034b50)
-        throw new Error("O arquivo não é um DOCX válido.");
+        throw new RequestError("O arquivo não é um DOCX válido.");
       // Inspect central directory before decompression; reject zip bombs and non-document archives.
       let bytes = 0,
         entries = 0,
@@ -827,7 +1103,7 @@ export async function buildApp() {
           if (name === "word/document.xml") document = true;
         }
       if (!document || bytes > 30 * 1024 * 1024 || entries > 500)
-        throw new Error(
+        throw new RequestError(
           "DOCX inválido ou excessivamente grande após descompactação.",
         );
     }
@@ -843,13 +1119,13 @@ export async function buildApp() {
         }
       } else text = extractDocx(buffer);
     } catch {
-      throw new Error(
+      throw new RequestError(
         "Não foi possível ler este documento. Tente um PDF com texto selecionável ou DOCX.",
       );
     }
     text = text.slice(0, 100000);
     if (text.trim().length < 40)
-      throw new Error(
+      throw new RequestError(
         "Texto insuficiente. PDFs digitalizados precisam de OCR antes do envio.",
       );
     const resumeId = randomUUID();
@@ -863,13 +1139,14 @@ export async function buildApp() {
     );
     const dir = resolve(dataDir, "resumes", u.id);
     await mkdir(dir, { recursive: true });
-    const name = file.filename
-      .replace(/[\\/\u0000-\u001f]/g, "_")
-      .slice(0, 200);
+    const sanitizedName = file.filename.replace(/[\\/\u0000-\u001f]/g, "_");
+    const name =
+      sanitizedName.slice(0, -ext.length).slice(0, 200 - ext.length) + ext;
     await writeFile(resolve(dir, resumeId + ext), buffer);
     try {
       await mutateWorkspace(id, (w) => {
-        if (w.resumes.length >= 20) throw new Error("Limite de 20 currículos.");
+        if (w.resumes.length >= 20)
+          throw new RequestError("Limite de 20 currículos.");
         const extracted = analyzed.profile;
         w.resumes.unshift({
           id: resumeId,
@@ -882,22 +1159,11 @@ export async function buildApp() {
           suggestion: extracted,
           targets: targets.targets,
           targetsMethod: targets.method,
+          targetsVersion: TARGETS_VERSION,
           targetsMessage: targets.message,
           targetsConfirmed: false,
         });
-        w.profile.skills = [
-          ...new Set([...w.profile.skills, ...(extracted.skills ?? [])]),
-        ];
-        if (!w.profile.github) w.profile.github = extracted.github ?? "";
-        for (const [key, value] of Object.entries(extracted))
-          if (
-            key !== "skills" &&
-            key !== "confirmed" &&
-            value !== undefined &&
-            !(w.profile as any)[key]
-          )
-            (w.profile as any)[key] = value;
-        w.profile.confirmed = false;
+        requireResumeReview(w);
         refreshMatches(w);
         notify(
           w,
@@ -909,14 +1175,16 @@ export async function buildApp() {
       await rm(resolve(dir, resumeId + ext), { force: true });
       throw error;
     }
+    await configureSchedule(id, false, "08:00");
     return { id: resumeId, name, skills: extractSkills(text) };
   });
   app.post("/api/resumes/:resumeId/analyze", async (req) => {
     const { id, u, demo } = await scope(req);
-    if (demo) throw new Error("Analise um currículo no seu espaço real.");
+    if (demo)
+      throw new RequestError("Analise um currículo no seu espaço real.");
     const resumeId = (req.params as any).resumeId;
     const r = (await readWorkspace(id))!.resumes.find((r) => r.id === resumeId);
-    if (!r) throw new Error("Currículo não encontrado.");
+    if (!r) throw new RequestError("Currículo não encontrado.");
     const analyzed = await analyzeResume(u.id, r.text);
     const config = await getIntelligence(u.id);
     const targets = await resumeTargets(
@@ -925,20 +1193,29 @@ export async function buildApp() {
       analyzed.method,
       config.model,
     );
-    return mutateWorkspace(id, (w) => {
+    const active = await mutateWorkspace(id, (w) => {
       const resume = w.resumes.find((r) => r.id === resumeId);
-      if (!resume) throw new Error("Currículo não encontrado.");
+      if (!resume) throw new RequestError("Currículo não encontrado.");
       Object.assign(resume, {
         analysis: analyzed.message,
         suggestion: analyzed.profile,
         skills: analyzed.profile.skills || [],
         targets: targets.targets,
         targetsMethod: targets.method,
+        targetsVersion: TARGETS_VERSION,
         targetsMessage: targets.message,
         targetsConfirmed: false,
+        approved: false,
       });
-      return { ok: true };
+      if (w.resumes[0]?.id === resumeId) {
+        requireResumeReview(w);
+        refreshMatches(w);
+        return true;
+      }
+      return false;
     });
+    if (active) await configureSchedule(id, false, "08:00");
+    return { ok: true };
   });
   app.put("/api/resumes/:resumeId/targets", async (req) => {
     const { id } = await scope(req);
@@ -951,7 +1228,7 @@ export async function buildApp() {
         !r ||
         titles.some((title) => !r.targets?.some((t) => t.title === title))
       )
-        throw new Error("Escolha cargos sugeridos para este currículo.");
+        throw new RequestError("Escolha cargos sugeridos para este currículo.");
       w.resumes.forEach((resume) => {
         resume.targetsConfirmed = false;
       });
@@ -967,7 +1244,7 @@ export async function buildApp() {
     const { approved } = z.object({ approved: z.boolean() }).parse(req.body);
     await mutateWorkspace(id, (w) => {
       const r = w.resumes.find((r) => r.id === (req.params as any).resumeId);
-      if (!r) throw new Error("Currículo não encontrado.");
+      if (!r) throw new RequestError("Currículo não encontrado.");
       r.approved = approved;
     });
     return { ok: true };
@@ -980,7 +1257,7 @@ export async function buildApp() {
       .parse((req.params as any).resumeId);
     const w = (await readWorkspace(id))!;
     if (demo || !w.resumes.some((r) => r.id === resumeId))
-      throw new Error("Arquivo não encontrado.");
+      throw new RequestError("Arquivo não encontrado.");
     const dir = resolve(dataDir, "resumes", u.id);
     let found: Buffer | null = null;
     let ext = ".pdf";
@@ -991,7 +1268,7 @@ export async function buildApp() {
         break;
       } catch {}
     }
-    if (!found) throw new Error("Arquivo não encontrado.");
+    if (!found) throw new RequestError("Arquivo não encontrado.");
     return reply
       .type(
         ext === ".pdf"
@@ -1024,13 +1301,18 @@ export async function buildApp() {
   });
   app.delete("/api/account", async (req, reply) => {
     const u = await identity(req);
-    const { password } = z.object({ password: z.string() }).parse(req.body);
-    if (!verify(password, u.password)) throw new Error("Senha incorreta.");
+    const { password } = z
+      .object({ password: z.string().min(1).max(128) })
+      .parse(req.body);
+    if (!(await verifyPassword(password, u.password)))
+      throw new RequestError("Senha incorreta.");
     for (const row of await db
       .select()
       .from(workspaces)
       .where(eq(workspaces.userId, u.id)))
       await configureSchedule(row.id, false, "08:00");
+    await deletePortalConnections(u.id);
+    await disconnectLinkedinIdentity(u.id);
     await db.delete(users).where(eq(users.id, u.id));
     clearAnalysisCache(u.id);
     const dir = resolve(dataDir, "resumes", u.id);
@@ -1040,7 +1322,7 @@ export async function buildApp() {
           (process.platform === "win32" ? "\\" : "/"),
       )
     )
-      throw new Error("Caminho inválido.");
+      throw new RequestError("Caminho inválido.");
     await rm(dir, { recursive: true, force: true });
     reply.clearCookie("orbita_session", { path: "/" });
     return { ok: true };
@@ -1055,6 +1337,19 @@ export async function buildApp() {
       root: dist,
       prefix: "/",
       wildcard: false,
+      preCompressed: true,
+      cacheControl: false,
+      setHeaders(reply, path) {
+        const asset = relative(dist, path).replace(/\\/g, "/");
+        reply.header(
+          "Cache-Control",
+          /^assets\/.+-[a-zA-Z0-9_-]{8,}\.[a-zA-Z0-9]+(?:\.(?:br|gz))?$/.test(
+            asset,
+          )
+            ? "public, max-age=31536000, immutable"
+            : "no-cache",
+        );
+      },
     });
     app.setNotFoundHandler((req, reply) =>
       req.url.startsWith("/api")
@@ -1062,5 +1357,6 @@ export async function buildApp() {
         : reply.sendFile("index.html"),
     );
   }
+  app.addHook("onClose", closePortalBrowsers);
   return app;
 }

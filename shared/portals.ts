@@ -26,7 +26,19 @@ export const portals = {
     coverage:
       "Processos seletivos de empresas brasileiras, do primeiro emprego a vagas especializadas.",
   },
+  glassdoor: {
+    name: "Glassdoor",
+    url: "https://www.glassdoor.com.br/",
+    host: "glassdoor.com.br",
+    coverage: "Vagas e informações sobre empresas no Brasil.",
+  },
 } as const;
+export const candidatePortals = [
+  "linkedin",
+  "gupy",
+  "glassdoor",
+  "infojobs",
+] as const;
 export type PortalId = keyof typeof portals;
 export function isPortalId(value: string): value is PortalId {
   return Object.hasOwn(portals, value);
@@ -39,6 +51,8 @@ export function portalSearchUrl(id: PortalId, title: string, location: string) {
     return `https://www.infojobs.com.br/empregos.aspx?${new URLSearchParams({ Palabra: terms })}`;
   if (id === "indeed")
     return `https://br.indeed.com/jobs?${new URLSearchParams({ q: title, l: location })}`;
+  if (id === "glassdoor")
+    return `https://www.glassdoor.com.br/Job/jobs.htm?${new URLSearchParams({ sc: "0", keyword: terms })}`;
   return `https://portal.gupy.io/job-search/term=${encodeURIComponent(terms)}`;
 }
 export function isJobUrl(id: PortalId, value: string) {
@@ -50,7 +64,13 @@ export function isJobUrl(id: PortalId, value: string) {
       url.username ||
       url.password ||
       (url.port && url.port !== "443") ||
-      !(url.hostname === host || url.hostname.endsWith(`.${host}`))
+      !(
+        url.hostname === host ||
+        url.hostname.endsWith(`.${host}`) ||
+        (id === "glassdoor" &&
+          (url.hostname === "glassdoor.com" ||
+            url.hostname.endsWith(".glassdoor.com")))
+      )
     )
       return false;
     if (id === "linkedin") return /^\/jobs\/view\/[^/]+/.test(url.pathname);
@@ -58,7 +78,15 @@ export function isJobUrl(id: PortalId, value: string) {
       return /\/vaga-de-.+__\d+\.aspx$/i.test(url.pathname);
     if (id === "indeed")
       return url.pathname === "/viewjob" && !!url.searchParams.get("jk");
-    return /^\/jobs\/\d+/.test(url.pathname);
+    if (id === "glassdoor")
+      return (
+        url.pathname.startsWith("/job-listing/") &&
+        /^\d+$/.test(url.searchParams.get("jl") || "")
+      );
+    return (
+      /^\/jobs\/\d+\/?$/.test(url.pathname) ||
+      /^\/job\/[a-zA-Z0-9_+=-]+\/?$/.test(url.pathname)
+    );
   } catch {
     return false;
   }

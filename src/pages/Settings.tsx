@@ -33,7 +33,7 @@ const labels: Record<string, string> = {
   authorized: "Envio autorizado",
   manual: "Registro manual",
   gemini: "Gemini",
-  portal: "Busca com Gemini",
+  portal: "Portal de vagas",
   local: "Análise local",
   openai: "OpenAI",
   ollama: "Ollama",
@@ -60,7 +60,8 @@ export default function Settings() {
       "gemini-2.5-flash",
     enabled:
       w.intelligence?.provider !== "zen" && (w.intelligence?.enabled || false),
-    consent: w.intelligence?.provider !== "zen" && (w.intelligence?.consent || false),
+    consent:
+      w.intelligence?.provider !== "zen" && (w.intelligence?.consent || false),
     apiKey: "",
     clearKey: false,
   });
@@ -165,9 +166,10 @@ export default function Settings() {
               >
                 <div className="integration-info">
                   <p>
-                    Procure no LinkedIn, InfoJobs, Indeed e Gupy. O Gemini
-                    consulta anúncios públicos desses portais com base nos
-                    cargos e na cidade que você escolher.
+                    A Gupy e o LinkedIn têm consulta de páginas públicas, sem
+                    depender da análise por IA. InfoJobs e Indeed usam a busca
+                    Gemini. Escolha os cargos e mantenha seus filtros de cidade
+                    e modalidade.
                   </p>
                   <p>
                     Ao selecionar <strong>Adicionar e pesquisar</strong>,
@@ -238,7 +240,10 @@ export default function Settings() {
                             Abrir busca no portal <ExternalLink size={12} />
                           </a>
                           <small>
-                            Busca pública com Gemini · você finaliza no portal
+                            {s.board === "gupy" || s.board === "linkedin"
+                              ? "Consulta pública de vagas"
+                              : "Busca com Gemini"}{" "}
+                            · você finaliza no portal
                           </small>
                           <Button
                             className={exists ? "" : "primary"}
@@ -341,8 +346,8 @@ export default function Settings() {
                 ) : (
                   <div className="integration-info">
                     <p>
-                      Ainda não há fontes conectadas. Escolha um portal na
-                      lista acima para começar.
+                      Ainda não há fontes conectadas. Escolha um portal na lista
+                      acima para começar.
                     </p>
                   </div>
                 )}

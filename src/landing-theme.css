@@ -1,0 +1,416 @@
+/* The public page shares the forest-green palette of login and registration. */
+.landing {
+  --ink: #f3f6f3;
+  --quiet: #abbab4;
+  --paper: #15291f;
+  --rule: #394c43;
+  --accent: #a2dfa0;
+  --text: #f3f6f3;
+  --muted: #abbab4;
+  --dim: #a0b2a8;
+  --border: #394c43;
+  --surface: #182720;
+  position: relative;
+  isolation: isolate;
+  color: var(--ink);
+  color-scheme: dark;
+  background:
+    radial-gradient(ellipse 1100px 850px at 10% 0%, #355b4590, transparent 72%),
+    radial-gradient(
+      ellipse 950px 900px at 100% 550px,
+      #486a4550,
+      transparent 72%
+    ),
+    var(--paper);
+}
+.landing::before,
+.landing::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border: 80px solid #a1c09a0b;
+  border-radius: 50%;
+  transform: rotate(-32deg);
+}
+.landing::before {
+  width: 940px;
+  height: 500px;
+  left: -350px;
+  top: 390px;
+}
+.landing::after {
+  width: 850px;
+  height: 1150px;
+  right: -630px;
+  top: -200px;
+}
+.landing :is(.landing-nav, .hero, .flow-strip) {
+  --ink: #172b1d;
+  --quiet: #586d53;
+  --rule: #cbd8c3;
+  --accent: #427f50;
+  --text: #172b1d;
+  --muted: #586d53;
+  --dim: #617458;
+  --border: #cbd8c3;
+  position: relative;
+  isolation: isolate;
+  color: var(--ink);
+  color-scheme: light;
+}
+.landing :is(.landing-nav, .hero, .flow-strip)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-block: -1px;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  background: #e4eddd;
+  pointer-events: none;
+}
+.landing .landing-nav .landing-brand > span > span {
+  color: #42734c;
+}
+.landing
+  :is(.how-section, .preferences-section, .organization-section, .faq-section) {
+  --ink: #17201a;
+  --quiet: #657269;
+  --rule: #dce3d8;
+  --accent: #427f50;
+  --text: #17201a;
+  --muted: #657269;
+  --dim: #657269;
+  --border: #dce3d8;
+  position: relative;
+  isolation: isolate;
+  color: var(--ink);
+  color-scheme: light;
+}
+.landing
+  :is(
+    .how-section,
+    .preferences-section,
+    .organization-section,
+    .faq-section
+  )::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -1px;
+  bottom: -1px;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  background: #fafbf8;
+  pointer-events: none;
+}
+.landing :is(.preferences-section, .organization-section)::before {
+  background: #f6f8f3;
+}
+.landing
+  :is(.how-section, .preferences-section, .organization-section, .faq-section)
+  .landing-kicker {
+  color: #527d55;
+}
+.landing
+  :is(
+    .hero-profile-card,
+    .hero-sticker,
+    .step-preview,
+    .preference-preview,
+    .organization-card,
+    .final-cta
+  ) {
+  --ink: #17201a;
+  --quiet: #657269;
+  --rule: #dce3d8;
+  --accent: #427f50;
+  --text: #17201a;
+  --muted: #657269;
+  --dim: #657269;
+  --border: #dce3d8;
+  color: var(--ink);
+  color-scheme: light;
+}
+.landing .reading-progress {
+  background: #a2dfa0;
+}
+.landing .landing-brand > span > span {
+  color: #a2dfa0;
+}
+.landing .landing-nav nav a {
+  color: #50674b;
+}
+.landing .landing-nav nav a:hover,
+.landing .landing-nav .landing-login:hover {
+  color: #315f3b;
+}
+.landing .landing-footer a:hover {
+  color: #a2dfa0;
+}
+.landing .landing-button.primary {
+  background: linear-gradient(110deg, #a2dda0, #a9e19b);
+  border-color: #b2e5ad;
+  color: #102016;
+}
+.landing .landing-button.primary:hover {
+  background: #b5e7ac;
+  border-color: #b5e7ac;
+}
+.landing .hero .landing-kicker {
+  color: #52745a;
+}
+.landing .hero .landing-kicker > span {
+  background: #74a55e;
+}
+.landing .hero-heading-main {
+  color: #172b1d;
+}
+.landing .hero h1 > .hero-heading-accent {
+  color: #42734c;
+}
+.landing .hero-actions .plain {
+  color: #243d28;
+  background: #ffffff5e;
+  border-color: #bacaaf;
+}
+.landing .hero-actions .plain:hover {
+  background: #d8e6cf;
+  border-color: #84a775;
+}
+.landing .hero-play-icon {
+  color: #427f50;
+  background: #d5e5cb;
+}
+.landing .hero-artwork {
+  background: #eef3e9;
+  border-color: #dce6d5;
+  box-shadow: 0 16px 45px #071b1620;
+}
+.landing .hero-animation {
+  background: #6dce80;
+}
+.landing .hero-mascot {
+  filter: none;
+}
+.landing .hero-visual::before {
+  inset: 14px -8px 35px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #edf3e7, #e0ead8);
+}
+.landing .hero-profile-card,
+.landing .hero-sticker {
+  border-color: #e4ebe0;
+  box-shadow: 0 16px 38px #23391b18;
+}
+.landing .flow-strip i {
+  color: #427f50;
+}
+.landing .flow-icon,
+.landing .flow-arrow {
+  color: #597150;
+}
+.landing .flow-strip .flow-end {
+  color: #617458;
+}
+.landing .flow-dot {
+  background: #74a55e;
+}
+.landing .landing-kicker {
+  color: #a4b7ad;
+}
+.landing .step-button {
+  color: #657269;
+}
+.landing .step-button h3 {
+  color: #38483d;
+}
+.landing .step-button.active {
+  color: #17201a;
+}
+.landing .step-button.active h3,
+.landing .step-button.active .step-number {
+  color: #356b43;
+}
+.landing .step-number {
+  color: #657269;
+}
+.landing .step-active {
+  background: #427f50;
+}
+.landing .step-preview {
+  background: #eef3e9;
+  border: 1px solid #e1e7dc;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px #23351f0c;
+}
+.landing .step-preview .preview-label {
+  color: #657269;
+}
+.landing .how-section {
+  padding-top: 64px;
+}
+.landing .profession-section {
+  background: linear-gradient(125deg, #1c3024, #14231b);
+  border-block: 1px solid #354c3b;
+  color: #f3f6f3;
+}
+.landing .profession-section h2 em {
+  color: #a2dfa0;
+}
+.landing .profession-section p {
+  color: #b5c3b8;
+}
+.landing .profession-list > div {
+  border-color: #405644;
+}
+.landing .profession-list svg {
+  color: #b3cbb7;
+}
+.landing .profession-index {
+  color: #a5b8a9;
+}
+.landing .landing-text-link {
+  color: #a2dfa0;
+  border-color: #739675;
+}
+.landing .landing-text-link:hover {
+  color: #c1edb6;
+  border-color: #c1edb6;
+}
+.landing .preference-preview {
+  box-shadow: 0 16px 45px #314b2510;
+}
+.landing .preference-preview .preview-label,
+.landing .preference-preview .preference-foot,
+.landing .preference-preview .preference-input input::placeholder {
+  color: #657269;
+}
+.landing .preference-copy .landing-kicker {
+  color: #527d55;
+}
+.landing .preference-copy > p,
+.landing .preference-principle p {
+  color: #657269;
+}
+.landing .preference-principle {
+  border-color: #dce3d8;
+}
+.landing .preference-principle strong {
+  color: #17201a;
+}
+.landing .preference-shield {
+  color: #477553;
+  background: linear-gradient(135deg, #eaf2e8, #f1f6ed);
+}
+.landing .preference-copy .landing-text-link {
+  color: #42734c;
+  border-color: #93ae8c;
+}
+.landing .preference-copy .landing-text-link:hover {
+  color: #315f3b;
+  border-color: #527d48;
+}
+.landing .organization-toggle {
+  background: #edf3e8;
+  border-color: #d5e2ce;
+}
+.landing .organization-toggle button {
+  color: #536750;
+}
+.landing .organization-toggle button[aria-selected="true"] {
+  color: #16251a;
+}
+.landing .organization-toggle button > span {
+  background: #fff;
+  box-shadow: 0 2px 6px #26402012;
+}
+.landing .organization-visual {
+  color: #27442e;
+  background: linear-gradient(145deg, #eef5e8, #e3eedc);
+  border-color: #d5e2cc;
+  border-radius: 18px;
+}
+.landing .organization-visual.dispersed {
+  background: #f4f0e7;
+  border-color: #e3dccd;
+}
+.landing .organization-visual-head > span:last-child {
+  color: #65765d;
+}
+.landing .organization-visual-foot {
+  color: #526e4b;
+  border-color: #cdddc3;
+}
+.landing .organization-card {
+  box-shadow: 0 8px 22px #2b44210a;
+}
+.landing .faq-section > div > p,
+.landing .faq-item p {
+  color: #657269;
+}
+.landing .faq-item {
+  border-color: #dce3d8;
+}
+.landing .faq-item h3 > button {
+  color: #17201a;
+}
+.landing .faq-item h3 svg {
+  color: #427f50;
+}
+.landing .final-cta {
+  background: #f7faf4;
+  border-color: #dfe8da;
+  border-radius: 16px;
+  box-shadow: 0 20px 55px #00000030;
+  margin-top: 56px;
+}
+.landing .final-cta .landing-kicker {
+  color: #527d55;
+}
+.landing .final-cta p {
+  color: #657269;
+}
+.landing .landing-footer p,
+.landing .landing-footer > div,
+.landing .landing-footer > span {
+  color: #a0b2a8;
+}
+.landing
+  :is(
+    .step-button,
+    .organization-toggle button,
+    .faq-item h3 > button
+  ):focus-visible {
+  outline-color: #a2dfa0;
+}
+@media (max-width: 800px) {
+  .landing .landing-nav nav.visible {
+    background: #f2f7ee;
+    border-color: #cbd8c3;
+    box-shadow: 0 16px 32px #23391b18;
+  }
+}
+.landing :is(.how-section .step-button, .faq-item h3 > button):focus-visible {
+  outline-color: #427f50;
+}
+.landing .organization-toggle button:focus-visible {
+  outline-color: #427f50;
+}
+@media (min-width: 1101px) {
+  .landing .hero {
+    min-height: calc(100svh - 151px);
+  }
+}
+@media (max-width: 600px) {
+  .landing .hero-visual::before {
+    inset: 18px -2px 35px;
+    border-radius: 24px;
+  }
+  .landing .how-section {
+    padding-top: 48px;
+  }
+  .landing .final-cta {
+    margin-top: 32px;
+  }
+}

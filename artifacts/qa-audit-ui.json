@@ -1,0 +1,29 @@
+{
+  "findings": [
+    {
+      "id": "QA-04-UI",
+      "reproduced": true,
+      "evidence": {
+        "routineEnabled": true,
+        "pauseButtons": 0
+      }
+    },
+    {
+      "id": "QA-07",
+      "reproduced": true,
+      "evidence": {
+        "enabled": true,
+        "resumeConsentControls": 0,
+        "legacySettingsOpens": "Minha conta"
+      }
+    },
+    {
+      "id": "QA-08",
+      "reproduced": true,
+      "evidence": {
+        "clickOnEmailLabelFocusesInput": false
+      }
+    }
+  ],
+  "pageErrors": []
+}

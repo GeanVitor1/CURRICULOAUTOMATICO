@@ -6,6 +6,7 @@
   background: var(--paper);
   color: var(--ink);
   color-scheme: light;
+  --accent: #427f50;
   font-family: "Inter Variable", Inter, "Segoe UI", sans-serif;
   overflow: clip;
 }
@@ -64,10 +65,10 @@
   background: transparent;
   color: #42644a;
   border: 0;
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 18px;
   padding: 10px;
-  min-height: 35px;
+  min-height: 44px;
 }
 .hero-visual {
   isolation: isolate;
@@ -151,6 +152,12 @@
   font-size: 13px;
   font-weight: 500;
   color: #4c5a50;
+}
+.landing-nav nav a,
+.landing-login {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 .landing-nav nav a:hover,
 .landing-footer a:hover {
@@ -284,8 +291,43 @@
   height: auto;
 }
 .hero-mascot {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  image-rendering: pixelated;
+}
+.hero-animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
   width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
   border-radius: 3px;
+  background: #6dce80;
+}
+.hero-visual.hero-visual-native {
+  max-width: 400px;
+}
+.hero-visual-native .hero-sticker {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  transform: none;
+}
+.hero-visual-native .hero-caption > span:last-child {
+  display: none;
 }
 .preview-companion {
   display: flex;
@@ -907,7 +949,7 @@
   gap: 15px;
   text-align: left;
   color: #17201a;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 }
 .faq-item h3 svg {
@@ -922,7 +964,8 @@
 }
 .faq-item p {
   color: #657269;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.8;
   padding: 0 25px 24px 0;
 }
 .final-cta {
@@ -981,6 +1024,19 @@
   font-size: 8px;
   letter-spacing: 1.2px;
   color: #657269;
+}
+.landing-footer > div a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.landing .step-button:focus-visible,
+.landing .organization-toggle button:focus-visible,
+.landing .morph-select button:focus-visible,
+.landing .faq-item h3 > button:focus-visible {
+  outline: 2px solid #427f50;
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 .skip-link {
   position: absolute;
@@ -1388,11 +1444,11 @@
     padding-block: 60px;
   }
   .faq-item h3 > button {
-    font-size: 12px;
+    font-size: 14px;
     min-height: 60px;
   }
   .faq-item p {
-    font-size: 12px;
+    font-size: 14px;
   }
   .final-cta {
     padding: 32px 26px;

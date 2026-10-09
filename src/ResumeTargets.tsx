@@ -27,9 +27,10 @@ export default function ResumeTargets({ resume }: { resume: Resume }) {
       {!!resume.targets?.length && (
         <>
           <div className="resume-target-list">
-            {resume.targets.map((target) => (
-              <label className="resume-target" key={target.title}>
+            {resume.targets.map((target, index) => (
+              <div className="resume-target" key={target.title}>
                 <input
+                  id={`target-${resume.id}-${index}`}
                   type="checkbox"
                   checked={selected.includes(target.title)}
                   onChange={(e) =>
@@ -41,12 +42,17 @@ export default function ResumeTargets({ resume }: { resume: Resume }) {
                   }
                 />
                 <div>
-                  <strong>{target.title}</strong>
-                  <p>{target.reason}</p>
-                  <blockquote>“{target.evidence}”</blockquote>
-                  {target.caution && <small>{target.caution}</small>}
+                  <label htmlFor={`target-${resume.id}-${index}`}>
+                    <strong>{target.title}</strong>
+                  </label>
+                  <details className="target-evidence">
+                    <summary>Entenda a sugestão</summary>
+                    <p>{target.reason}</p>
+                    <blockquote>“{target.evidence}”</blockquote>
+                    {target.caution && <small>{target.caution}</small>}
+                  </details>
                 </div>
-              </label>
+              </div>
             ))}
           </div>
           <p>

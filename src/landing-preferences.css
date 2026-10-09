@@ -1,0 +1,311 @@
+/* Preference preview on the public page. */
+.preferences-section {
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr);
+  gap: clamp(48px, 7vw, 100px);
+  padding-block: 88px;
+  scroll-margin-top: 24px;
+}
+.preference-preview {
+  padding: 32px 36px 25px;
+  border: 1px solid #e0e6dc;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #fff, #fdfefb);
+  box-shadow:
+    0 16px 45px #314b2510,
+    inset 0 1px 0 #fff;
+}
+.preference-preview .preview-label {
+  gap: 13px;
+  margin-bottom: 23px;
+  font-size: 10px;
+  font-weight: 550;
+  letter-spacing: 1.8px;
+  color: #78837a;
+}
+.preference-heading-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #edf0e8;
+  border-radius: 10px;
+  background: #f7f9f3;
+  color: #52745a;
+  box-shadow: 0 2px 5px #273b2010;
+}
+.preference-preview h3 {
+  font-family: "Manrope Variable", var(--font-sans);
+  font-size: clamp(25px, 2.25vw, 31px);
+  font-weight: 650;
+  letter-spacing: -0.8px;
+  line-height: 1.25;
+  max-width: 440px;
+  margin: 0 0 27px;
+}
+.preference-field {
+  margin-top: 19px;
+}
+.preference-field > span:not(.preference-input) {
+  margin-bottom: 9px;
+  color: #46544b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.preference-field .morph-select {
+  border-color: #dce3d8;
+  border-radius: 9px;
+  background: #f8faf5;
+}
+.preference-field .morph-select button {
+  min-height: 48px;
+  padding: 11px 16px;
+  gap: 13px;
+  font-size: 13px;
+  color: #38483d;
+}
+.preference-field .morph-select > button > svg:first-child {
+  color: #577b60;
+}
+.preference-field .morph-select > button > svg {
+  flex-shrink: 0;
+}
+.preference-field .morph-select > div button:hover {
+  background: #edf5e7;
+}
+.preference-field > .preference-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+.preference-input > svg {
+  position: absolute;
+  left: 16px;
+  color: #577b60;
+  pointer-events: none;
+}
+.preference-field .preference-input input {
+  min-height: 48px;
+  padding: 11px 14px 11px 49px;
+  border: 1px solid #dce3d8;
+  border-radius: 9px;
+  background: #fff;
+  color: #38483d;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.preference-field .preference-input input::placeholder {
+  color: #929c94;
+}
+.preference-field .preference-input input:focus {
+  outline: none;
+  border-color: #86b576;
+  box-shadow: 0 0 0 3px #a5d69224;
+}
+.preference-foot {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 17px;
+  border-top: 1px solid #e8ede3;
+  color: #869088;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.preference-foot > svg {
+  flex-shrink: 0;
+  color: #6c8871;
+}
+.preference-copy .landing-kicker {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: #62876a;
+  margin-bottom: 24px;
+}
+.preference-copy h2 {
+  font-size: clamp(32px, 3.2vw, 44px);
+  font-weight: 700;
+  line-height: 1.17;
+  letter-spacing: -1.5px;
+  margin: 0;
+}
+.preference-copy > p {
+  max-width: 500px;
+  margin-top: 28px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #778279;
+}
+.preference-principle {
+  gap: 18px;
+  margin-top: 32px;
+  padding-top: 25px;
+  border-color: #dce5d7;
+  align-items: flex-start;
+}
+.preference-shield {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: #477553;
+  background: linear-gradient(135deg, #eaf2e8, #f1f6ed);
+}
+.preference-principle > div {
+  padding-top: 5px;
+  min-width: 0;
+}
+.preference-principle strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+.preference-principle p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #7b867c;
+  max-width: 390px;
+  margin-top: 9px;
+}
+.preference-copy .landing-text-link {
+  min-height: 44px;
+  margin-top: 30px;
+  padding-bottom: 7px;
+  font-size: 14px;
+  font-weight: 650;
+  gap: 18px;
+  color: #4e7757;
+  border-color: #93ae8c;
+}
+.preference-copy .landing-text-link:hover {
+  color: #315f3b;
+  border-color: #527d48;
+}
+@media (max-width: 1100px) {
+  .preferences-section {
+    gap: 48px;
+    padding-block: 70px;
+  }
+  .preference-preview {
+    padding: 28px;
+  }
+  .preference-preview h3 {
+    font-size: 26px;
+  }
+  .preference-copy h2 {
+    font-size: 36px;
+  }
+  .preference-copy > p {
+    font-size: 14px;
+  }
+  .preference-principle {
+    gap: 13px;
+  }
+  .preference-shield {
+    width: 47px;
+    height: 47px;
+  }
+  .preference-principle strong {
+    font-size: 13px;
+  }
+  .preference-principle p {
+    font-size: 12px;
+  }
+}
+@media (min-width: 601px) and (max-width: 800px) {
+  .preferences-section {
+    gap: 30px;
+  }
+  .preference-preview {
+    padding: 22px;
+  }
+  .preference-preview h3 {
+    font-size: 23px;
+  }
+  .preference-copy h2 {
+    font-size: 30px;
+  }
+  .preference-copy > p {
+    font-size: 13px;
+  }
+  .preference-field > span:not(.preference-input) {
+    font-size: 12px;
+  }
+  .preference-field .morph-select button,
+  .preference-field .preference-input input {
+    font-size: 12px;
+  }
+  .preference-shield {
+    width: 39px;
+    height: 39px;
+  }
+  .preference-shield svg {
+    width: 23px;
+    height: 23px;
+  }
+}
+@media (max-width: 600px) {
+  .preferences-section {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-block: 54px;
+  }
+  .preference-copy {
+    grid-row: 1;
+  }
+  .preference-copy h2 {
+    font-size: clamp(28px, 7.8vw, 34px);
+    letter-spacing: -1px;
+  }
+  .preference-copy .landing-kicker {
+    font-size: 9px;
+    letter-spacing: 1.4px;
+    margin-bottom: 18px;
+  }
+  .preference-copy > p {
+    margin-top: 22px;
+    font-size: 14px;
+  }
+  .preference-principle {
+    margin-top: 23px;
+    padding-top: 20px;
+  }
+  .preference-copy .landing-text-link {
+    margin-top: 20px;
+    font-size: 13px;
+  }
+  .preference-preview {
+    padding: 24px 22px 20px;
+  }
+  .preference-preview .preview-label {
+    gap: 11px;
+    font-size: 9px;
+    letter-spacing: 1.4px;
+    margin-bottom: 21px;
+  }
+  .preference-preview h3 {
+    font-size: 25px;
+    margin-bottom: 24px;
+  }
+  .preference-field {
+    margin-top: 17px;
+  }
+  .preference-field .preference-input input {
+    padding-left: 44px;
+    font-size: 12px;
+  }
+  .preference-input > svg {
+    left: 14px;
+    width: 18px;
+    height: 18px;
+  }
+  .preference-foot {
+    gap: 9px;
+    font-size: 9px;
+    margin-top: 21px;
+  }
+}

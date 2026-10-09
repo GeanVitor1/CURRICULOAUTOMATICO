@@ -442,3 +442,12 @@ export const supportsAutomatic = () =>
   process.env.APPLICATION_WEBHOOK_AUTHORIZED === "true" &&
   !!process.env.APPLICATION_WEBHOOK_URL &&
   !!process.env.APPLICATION_WEBHOOK_TOKEN;
+export function automaticPortals(): string[] {
+  if (!supportsAutomatic()) return [];
+  return (process.env.APPLICATION_WEBHOOK_PORTALS || "")
+    .split(",")
+    .map((portal) => portal.trim().toLowerCase())
+    .filter((portal) =>
+      ["linkedin", "gupy", "glassdoor", "infojobs"].includes(portal),
+    );
+}

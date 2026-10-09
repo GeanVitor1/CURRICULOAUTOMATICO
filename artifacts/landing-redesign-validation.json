@@ -1,0 +1,126 @@
+﻿{
+  "report": [
+    {
+      "width": 1903,
+      "overflow": false,
+      "frame": {
+        "x": 1063.140625,
+        "y": 226.5,
+        "width": 480,
+        "height": 480
+      },
+      "stripBottom": 900,
+      "heroHeight": 749
+    },
+    {
+      "width": 1600,
+      "overflow": false,
+      "frame": {
+        "x": 911.640625,
+        "y": 226.5,
+        "width": 480,
+        "height": 480
+      },
+      "stripBottom": 900,
+      "heroHeight": 749
+    },
+    {
+      "width": 1440,
+      "overflow": false,
+      "frame": {
+        "x": 831.640625,
+        "y": 226.5,
+        "width": 480,
+        "height": 480
+      },
+      "stripBottom": 900,
+      "heroHeight": 749
+    },
+    {
+      "width": 1280,
+      "overflow": false,
+      "frame": {
+        "x": 736.484375,
+        "y": 226.5,
+        "width": 480,
+        "height": 480
+      },
+      "stripBottom": 900,
+      "heroHeight": 749
+    },
+    {
+      "width": 1024,
+      "overflow": false,
+      "frame": {
+        "x": 577.21875,
+        "y": 191,
+        "width": 404.78125,
+        "height": 404.78125
+      },
+      "stripBottom": 759.78125,
+      "heroHeight": 608.78125
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "frame": {
+        "x": 417.9375,
+        "y": 217.4375,
+        "width": 313.0625,
+        "height": 313.0625
+      },
+      "stripBottom": 728.9375,
+      "heroHeight": 585.9375
+    },
+    {
+      "width": 600,
+      "overflow": false,
+      "frame": {
+        "x": 110,
+        "y": 680.265625,
+        "width": 380,
+        "height": 380
+      },
+      "stripBottom": 1315.265625,
+      "heroHeight": 1082.265625
+    },
+    {
+      "width": 430,
+      "overflow": false,
+      "frame": {
+        "x": 30,
+        "y": 697.890625,
+        "width": 370,
+        "height": 370
+      },
+      "stripBottom": 1322.890625,
+      "heroHeight": 1089.890625
+    },
+    {
+      "width": 375,
+      "overflow": false,
+      "frame": {
+        "x": 30,
+        "y": 668.28125,
+        "width": 315,
+        "height": 315
+      },
+      "stripBottom": 1238.28125,
+      "heroHeight": 1005.28125
+    },
+    {
+      "width": 320,
+      "overflow": false,
+      "frame": {
+        "x": 30,
+        "y": 658.671875,
+        "width": 260,
+        "height": 260
+      },
+      "stripBottom": 1173.671875,
+      "heroHeight": 940.671875
+    }
+  ],
+  "errors": [],
+  "animation": "passed"
+}

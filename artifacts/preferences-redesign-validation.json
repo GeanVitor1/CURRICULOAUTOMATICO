@@ -1,0 +1,37 @@
+﻿{
+  "report": [
+    {
+      "viewport": 1440,
+      "width": 1240,
+      "height": 727,
+      "overflow": false
+    },
+    {
+      "viewport": 1024,
+      "width": 960,
+      "height": 677.5,
+      "overflow": false
+    },
+    {
+      "viewport": 768,
+      "width": 704,
+      "height": 653.5,
+      "overflow": false
+    },
+    {
+      "viewport": 375,
+      "width": 335,
+      "height": 1047.609375,
+      "overflow": false
+    },
+    {
+      "viewport": 320,
+      "width": 280,
+      "height": 1107.5,
+      "overflow": false
+    }
+  ],
+  "preview": "passed",
+  "apiRequests": [],
+  "errors": []
+}

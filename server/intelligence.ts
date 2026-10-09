@@ -1,3 +1,4 @@
+import { RequestError } from "./errors";
 import { minimizeResume } from "./resume-privacy";
 import {
   createCipheriv,
@@ -104,15 +105,15 @@ export async function saveIntelligence(userId: string, input: unknown) {
   const body = settingsSchema.parse(input);
   if (body.provider === "gemini") {
     if (body.apiKey)
-      throw new Error(
+      throw new RequestError(
         "A chave Gemini deve ser configurada no ambiente do servidor.",
       );
     if (!body.model) body.model = geminiModel();
     if (body.enabled && !geminiConfigured())
-      throw new Error("Configure a chave Gemini no servidor.");
+      throw new RequestError("Configure a chave Gemini no servidor.");
   }
   if (body.provider === "zen" && body.apiKey)
-    throw new Error(
+    throw new RequestError(
       "A chave Zen deve ser configurada no ambiente do servidor.",
     );
   if (body.provider === "zen" && !body.model)
@@ -127,9 +128,9 @@ export async function saveIntelligence(userId: string, input: unknown) {
       ? encryptSecret(body.apiKey)
       : (existing?.encryptedKey ?? null);
   if (body.provider !== "local" && !body.model)
-    throw new Error("Informe um modelo disponível no seu provedor.");
+    throw new RequestError("Informe um modelo disponível no seu provedor.");
   if (body.enabled && body.provider === "openai" && !encryptedKey)
-    throw new Error(
+    throw new RequestError(
       "Configure sua chave de API antes de ativar a análise OpenAI.",
     );
   if (
@@ -137,15 +138,15 @@ export async function saveIntelligence(userId: string, input: unknown) {
     ["gemini", "zen", "openai"].includes(body.provider) &&
     !body.consent
   )
-    throw new Error(
+    throw new RequestError(
       "Autorize o envio dos dados profissionais ao provedor externo antes de ativar a análise.",
     );
   if (body.enabled && body.provider === "zen") {
     if (!zenKey())
-      throw new Error("Configure OPENCODE_ZEN_API_KEY no servidor.");
+      throw new RequestError("Configure OPENCODE_ZEN_API_KEY no servidor.");
     const models = await listZenModels();
     if (!models.some((m) => m.id === body.model && m.resumeEligible))
-      throw new Error(
+      throw new RequestError(
         "Selecione um modelo gratuito disponível e permitido para currículos no catálogo Zen.",
       );
   }
@@ -571,6 +572,9 @@ export function verifyEvidence(input: unknown, text: string): Partial<Profile> {
   for (const skill of result.skills)
     if (
       isQuote(skill.evidence) &&
+      extractSkills(text, [skill.name]).some(
+        (name) => normalize(name) === normalize(skill.name),
+      ) &&
       (normalize(skill.evidence).includes(normalize(skill.name)) ||
         extractSkills(skill.evidence).some(
           (s) => normalize(s) === normalize(skill.name),

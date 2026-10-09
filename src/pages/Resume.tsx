@@ -142,7 +142,7 @@ export default function Resume() {
                     ))}
                   </div>
                   <ResumeTargets
-                    key={`${r.id}:${r.targetsMethod}:${r.targets?.map((t) => t.title).join(",")}`}
+                    key={`${r.id}:${r.targetsConfirmed}:${r.targetsMethod}:${r.targets?.map((t) => t.title).join(",")}`}
                     resume={r}
                   />
                   <div className="resume-actions">

@@ -1,0 +1,34 @@
+{
+  "auditDate": "2026-10-09",
+  "environment": {
+    "node": "v24.15.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "cpu": "Intel(R) Core(TM) i5-14500HX",
+    "logicalCpus": 20
+  },
+  "method": {
+    "hashesPerMode": 8,
+    "execution": "Sequential scrypt calls using the same 64-byte key length and Node defaults as the application; a 1 ms interval observes event-loop availability.",
+    "source": "Executed locally through PowerShell stdin piped into node. Synthetic password and salt only.",
+    "script": "const { scrypt, scryptSync } = require('node:crypto');\nconst { performance } = require('node:perf_hooks');\nconst { promisify } = require('node:util');\nasync function measure(kind) {\n  let firstHeartbeat = null;\n  const started = performance.now();\n  const beat = setInterval(() => { if (firstHeartbeat === null) firstHeartbeat = performance.now() - started; }, 1);\n  if (kind === 'sync') {\n    for (let i = 0; i < 8; i++) scryptSync('Synthetic-test-password-123', '12'.repeat(16), 64);\n  } else {\n    for (let i = 0; i < 8; i++) await promisify(scrypt)('Synthetic-test-password-123', '12'.repeat(16), 64);\n  }\n  const elapsed = performance.now() - started;\n  await new Promise(resolve => setTimeout(resolve, 10));\n  clearInterval(beat);\n  return { mode: kind, elapsedMs: Number(elapsed.toFixed(1)), firstHeartbeatMs: Number(firstHeartbeat.toFixed(1)) };\n}\n(async () => { console.log(JSON.stringify([await measure('sync'), await measure('async')])); })();"
+  },
+  "observations": [
+    {
+      "mode": "scryptSync",
+      "totalHashTimeMs": 206.8,
+      "firstHeartbeatMs": 207.5
+    },
+    {
+      "mode": "scrypt async",
+      "totalHashTimeMs": 196.4,
+      "firstHeartbeatMs": 0.8
+    }
+  ],
+  "interpretation": "Async password derivation keeps the event loop available while retaining the existing hash format and cryptographic parameters.",
+  "limitations": [
+    "One local sample per mode; timings vary with machine load.",
+    "This is an event-loop availability measurement, not a production HTTP throughput benchmark.",
+    "External PostgreSQL, Redis and production load were not exercised by this measurement."
+  ]
+}
