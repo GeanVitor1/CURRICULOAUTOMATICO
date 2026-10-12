@@ -438,10 +438,27 @@ export const connectors: Record<string, Connector> = {
     },
   },
 };
-export const supportsAutomatic = () =>
-  process.env.APPLICATION_WEBHOOK_AUTHORIZED === "true" &&
-  !!process.env.APPLICATION_WEBHOOK_URL &&
-  !!process.env.APPLICATION_WEBHOOK_TOKEN;
+export const supportsAutomatic = () => {
+  if (
+    process.env.APPLICATION_WEBHOOK_AUTHORIZED !== "true" ||
+    !process.env.APPLICATION_WEBHOOK_TOKEN?.trim()
+  )
+    return false;
+  try {
+    const url = new URL(process.env.APPLICATION_WEBHOOK_URL || "");
+    return (
+      !url.username &&
+      !url.password &&
+      !url.hash &&
+      (url.protocol === "https:" ||
+        (process.env.NODE_ENV !== "production" &&
+          url.protocol === "http:" &&
+          ["127.0.0.1", "localhost", "[::1]"].includes(url.hostname)))
+    );
+  } catch {
+    return false;
+  }
+};
 export function automaticPortals(): string[] {
   if (!supportsAutomatic()) return [];
   return (process.env.APPLICATION_WEBHOOK_PORTALS || "")

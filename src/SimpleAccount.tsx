@@ -1,12 +1,28 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Download, ShieldCheck, Trash2 } from "lucide-react";
 import { Button, Field, Modal, PageHead } from "./components";
 import { api, useApp } from "./lib";
 import IntelligenceControl from "./IntelligenceControl";
+import {
+  GoogleMark,
+  googleErrorMessage,
+  useAuthProviders,
+  type AuthIdentity,
+} from "./GoogleSignIn";
 export default function SimpleAccount() {
-  const { w } = useApp();
+  const { w, toast } = useApp();
+  const me = useQuery({
+    queryKey: ["me"],
+    queryFn: () => api<AuthIdentity>("/auth/me"),
+    refetchInterval: 30000,
+  });
+  const providers = useAuthProviders();
+  const [googleBusy, setGoogleBusy] = useState(false);
+  const [googleError, setGoogleError] = useState("");
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const deleting = useRef(false);
   const [error, setError] = useState("");
@@ -14,7 +30,48 @@ export default function SimpleAccount() {
     if (deleting.current) return;
     setOpen(false);
     setPassword("");
+    setConfirmEmail("");
     setError("");
+  };
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const error = query.get("google_error");
+    if (error) setGoogleError(googleErrorMessage(error));
+    const success = query.get("google");
+    if (success)
+      toast(
+        success === "linked"
+          ? "Google conectado à sua conta."
+          : "Identidade confirmada com Google.",
+      );
+    if (error || success) {
+      query.delete("google_error");
+      query.delete("google");
+      history.replaceState(
+        {},
+        "",
+        `${location.pathname}${query.size ? `?${query}` : ""}${location.hash}`,
+      );
+    }
+  }, []);
+  const startGoogle = async (intent: "link" | "reauthenticate") => {
+    if (googleBusy) return;
+    setGoogleBusy(true);
+    setGoogleError("");
+    try {
+      const result = await api<{ url: string }>("/auth/google/start", {
+        method: "POST",
+        body: JSON.stringify({ intent }),
+      });
+      location.assign(result.url);
+    } catch (error) {
+      setGoogleError(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível acessar o Google.",
+      );
+      setGoogleBusy(false);
+    }
   };
   return (
     <div className="career-flow">
@@ -35,6 +92,35 @@ export default function SimpleAccount() {
             Baixar meus dados
           </a>
         </div>
+      </section>
+      <section className="interview-card">
+        <h2>Acesso com Google</h2>
+        <p>
+          {me.data?.googleConnected
+            ? "Sua conta Google está conectada. Você pode usá-la para entrar no EmpreGatos."
+            : "Conecte o Google com o mesmo e-mail para entrar sem digitar sua senha."}
+        </p>
+        {!me.data?.googleConnected && (
+          <Button
+            type="button"
+            className="google-button"
+            disabled={googleBusy || !me.data || !providers.data?.google}
+            onClick={() => void startGoogle("link")}
+          >
+            <GoogleMark />
+            {googleBusy ? "Conectando…" : "Conectar Google"}
+          </Button>
+        )}
+        {!providers.isPending && !providers.data?.google && (
+          <p className="interview-help">
+            O acesso com Google ainda não está disponível nesta instalação.
+          </p>
+        )}
+        {googleError && (
+          <p className="form-error" role="alert">
+            {googleError}
+          </p>
+        )}
       </section>
       <section className="account-privacy">
         <ShieldCheck size={22} aria-hidden="true" />
@@ -77,7 +163,9 @@ export default function SimpleAccount() {
             try {
               await api("/account", {
                 method: "DELETE",
-                body: JSON.stringify({ password }),
+                body: JSON.stringify(
+                  me.data?.hasPassword ? { password } : { confirmEmail },
+                ),
               });
               location.href = "/";
             } catch (error) {
@@ -91,17 +179,49 @@ export default function SimpleAccount() {
             }
           }}
         >
-          <Field label="Confirme sua senha">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-              maxLength={128}
-              disabled={busy}
-            />
-          </Field>
+          {me.data?.hasPassword ? (
+            <Field label="Confirme sua senha">
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                maxLength={128}
+                disabled={busy}
+              />
+            </Field>
+          ) : (
+            <>
+              {!me.data?.recentGoogleAuthentication && (
+                <div>
+                  <p>
+                    Confirme sua identidade com Google antes de excluir a conta.
+                  </p>
+                  <Button
+                    type="button"
+                    className="google-button"
+                    disabled={googleBusy || !providers.data?.google}
+                    onClick={() => void startGoogle("reauthenticate")}
+                  >
+                    <GoogleMark />
+                    Confirmar com Google
+                  </Button>
+                </div>
+              )}
+              <Field label="Digite o e-mail da sua conta para confirmar">
+                <input
+                  type="email"
+                  value={confirmEmail}
+                  onChange={(e) => setConfirmEmail(e.target.value)}
+                  required
+                  maxLength={254}
+                  disabled={busy}
+                  autoComplete="email"
+                />
+              </Field>
+            </>
+          )}
           {error && (
             <p className="form-error" role="alert">
               {error}
@@ -111,7 +231,14 @@ export default function SimpleAccount() {
             <Button type="button" disabled={busy} onClick={close}>
               Manter minha conta
             </Button>
-            <Button className="danger" disabled={busy}>
+            <Button
+              className="danger"
+              disabled={
+                busy ||
+                !me.data ||
+                (!me.data.hasPassword && !me.data.recentGoogleAuthentication)
+              }
+            >
               {busy ? "Excluindo…" : "Excluir definitivamente"}
             </Button>
           </div>

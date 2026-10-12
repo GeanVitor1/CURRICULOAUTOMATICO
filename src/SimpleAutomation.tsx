@@ -29,34 +29,38 @@ export default function SimpleAutomation() {
     w.interview!.answers.sites.every((site) =>
       sites.data?.some((item) => item.id === site && item.automatic),
     );
-  const saveRoutine = () => {
+  const saveRoutine = (upgrade = false) => {
     if (saving.current || a.isPending) return;
     saving.current = true;
+    const enabled = upgrade || !w.routine.enabled;
+    const mode = upgrade
+      ? "automatic"
+      : w.routine.enabled
+        ? w.routine.mode
+        : available
+          ? "automatic"
+          : "approval";
     a.mutate(
       {
         path: "/routine",
         method: "PUT",
         body: {
           ...w.routine,
-          enabled: !w.routine.enabled,
-          mode: w.routine.enabled
-            ? w.routine.mode
-            : available
-              ? "automatic"
-              : "approval",
+          enabled,
+          mode,
         },
       },
       {
         onSuccess: () => {
           saving.current = false;
           toast(
-            w.routine.enabled
+            !enabled
               ? "Automação pausada."
-              : available
+              : mode === "automatic"
                 ? "Envio automático ativado."
                 : "Busca e preparação ativadas. O envio ainda depende de você.",
           );
-          if (!w.routine.enabled) a.mutate({ path: "/discover" });
+          if (enabled) a.mutate({ path: "/discover" });
         },
         onSettled: () => {
           saving.current = false;
@@ -101,7 +105,7 @@ export default function SimpleAutomation() {
               <p>
                 A rotina está ativa. Revise seu currículo e suas preferências.
               </p>
-              <Button disabled={a.isPending} onClick={saveRoutine}>
+              <Button disabled={a.isPending} onClick={() => saveRoutine()}>
                 <Pause size={16} />
                 Pausar
               </Button>
@@ -149,7 +153,7 @@ export default function SimpleAutomation() {
                   a.isPending ||
                   (!w.routine.enabled && (sites.isPending || sites.isError))
                 }
-                onClick={saveRoutine}
+                onClick={() => saveRoutine()}
               >
                 {w.routine.enabled ? <Pause size={16} /> : <Play size={16} />}
                 {w.routine.enabled
@@ -158,6 +162,18 @@ export default function SimpleAutomation() {
                     ? "Ativar envio automático"
                     : "Iniciar busca e preparação"}
               </Button>
+              {w.routine.enabled &&
+                w.routine.mode !== "automatic" &&
+                available && (
+                  <Button
+                    className="primary"
+                    disabled={a.isPending}
+                    onClick={() => saveRoutine(true)}
+                  >
+                    <Play size={16} />
+                    Ativar envio automático
+                  </Button>
+                )}
             </section>
             {sites.isError && (
               <div className="recoverable-error" role="alert">

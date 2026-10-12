@@ -12,7 +12,8 @@ export const users = pgTable("users", {
   id: text("id").primaryKey(),
   email: text("email").notNull().unique(),
   name: text("name").notNull(),
-  password: text("password").notNull(),
+  password: text("password"),
+  googleSub: text("google_sub").unique(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -38,9 +39,26 @@ export const sessions = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    googleAuthenticatedAt: timestamp("google_authenticated_at", {
+      withTimezone: true,
+    }),
   },
   (t) => [index("sessions_user_idx").on(t.userId)],
 );
+export const googleOAuthStates = pgTable("google_oauth_states", {
+  stateHash: text("state_hash").primaryKey(),
+  browserHash: text("browser_hash").notNull(),
+  nonce: text("nonce").notNull(),
+  codeVerifier: text("code_verifier").notNull(),
+  intent: text("intent").notNull(),
+  userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+  sessionHash: text("session_hash").references(() => sessions.token, {
+    onDelete: "cascade",
+  }),
+  clientId: text("client_id").notNull(),
+  redirectUri: text("redirect_uri").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+});
 export const workspaces = pgTable(
   "workspaces",
   {

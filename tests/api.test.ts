@@ -63,7 +63,7 @@ describe("Fluxos de ponta a ponta na API", () => {
     });
     expect(r.statusCode).toBe(200);
     expect(r.headers["set-cookie"]).toContain("HttpOnly");
-    expect(r.headers["set-cookie"]).toContain("SameSite=Strict");
+    expect(r.headers["set-cookie"]).toContain("SameSite=Lax");
     cookie = String(r.headers["set-cookie"]).split(";")[0];
     userId = r.json().id;
   });

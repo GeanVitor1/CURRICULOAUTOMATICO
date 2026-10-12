@@ -38,6 +38,7 @@ import {
   type CandidatePortal,
 } from "./portal-browser-policy";
 import { browserAuthorized } from "./provider-capabilities";
+import { portalBrowserRuntime } from "./browser-runtime";
 
 type SavedConnection = {
   connectedAt: string;
@@ -67,7 +68,13 @@ async function getBrowser() {
   if (!nativeConnectionsEnabled())
     throw new RequestError("As conexões estão desativadas neste servidor.");
   if (!browser) {
+    const runtime = portalBrowserRuntime();
+    if (!runtime.available)
+      throw new RequestError(
+        "O navegador de candidaturas está indisponível. Instale o Chromium em um sistema compatível ou configure um navegador compatível no servidor.",
+      );
     browser = chromium.launch({
+      executablePath: runtime.executablePath,
       headless: true,
       chromiumSandbox: process.platform === "linux",
       timeout: 20000,
@@ -84,7 +91,7 @@ async function getBrowser() {
   }
   return browser.catch(() => {
     throw new RequestError(
-      "O navegador de candidaturas não está instalado. O administrador precisa executar npx playwright install --with-deps chromium no servidor.",
+      "O navegador de candidaturas não conseguiu iniciar. Verifique a instalação e a compatibilidade com o sistema operacional do servidor.",
     );
   });
 }
@@ -156,6 +163,7 @@ async function context(portal: CandidatePortal, saved: SavedConnection | null) {
   return c;
 }
 export async function connectionStatuses(userId: string) {
+  const runtime = portalBrowserRuntime();
   return Promise.all(
     candidatePortals.map(async (portal) => {
       const saved = await load(userId, portal);
@@ -172,11 +180,11 @@ export async function connectionStatuses(userId: string) {
       const allowed = browserAuthorized(portal);
       return {
         id: portal,
-        connected: !!saved && allowed && !expired,
+        connected: !!saved && allowed && runtime.available && !expired,
         sessionState: saved
           ? expired
             ? "expired"
-            : allowed
+            : allowed && runtime.available
               ? "verified"
               : "unavailable"
           : "disconnected",
@@ -184,7 +192,8 @@ export async function connectionStatuses(userId: string) {
         verifiedAt: verifiedAt || null,
         connectedAt: saved?.connectedAt || null,
         profileResumeId: saved?.profileResumeId || null,
-        connectable: allowed,
+        connectable: allowed && runtime.available,
+        browserAvailable: runtime.available,
       };
     }),
   );

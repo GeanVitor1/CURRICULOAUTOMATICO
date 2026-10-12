@@ -1,5 +1,5 @@
 import "dotenv/config";
-import Fastify, { type FastifyRequest } from "fastify";
+import Fastify, { type FastifyRequest, type FastifyReply } from "fastify";
 import cookie from "@fastify/cookie";
 import multipart from "@fastify/multipart";
 import rateLimit from "@fastify/rate-limit";
@@ -46,7 +46,6 @@ import {
 } from "./linkedin-oauth";
 import { interviewSchema, applyInterview } from "./career-interview";
 import {
-  connectionStatuses,
   readyPortals,
   startPortalLogin,
   portalLoginAction,
@@ -82,6 +81,7 @@ import {
   refreshMatches,
   transition,
   notify,
+  queuePreparedApplications,
 } from "./operations";
 import { requireResumeReview } from "./resume-state";
 import { RequestError } from "./errors";
@@ -97,6 +97,16 @@ import {
 } from "./validation";
 import type { Job, Workspace } from "../shared/types";
 import { passwordHash, verifyPassword } from "./auth-password";
+import {
+  beginGoogleOAuth,
+  completeGoogleOAuth,
+  googleOAuthConfigured,
+  googleSignInUrl,
+  GoogleOAuthError,
+  GOOGLE_COOKIE,
+  GOOGLE_COOKIE_PATH,
+} from "./google-oauth";
+import { applicationCapabilities } from "./automation-capabilities";
 const tokenHash = (s: string) => createHash("sha256").update(s).digest("hex");
 export async function buildApp() {
   const app = Fastify({
@@ -178,7 +188,7 @@ export async function buildApp() {
           : error.message || "Solicitação inválida.",
     });
   });
-  async function identity(request: FastifyRequest) {
+  async function sessionIdentity(request: FastifyRequest) {
     const session = request.cookies.orbita_session;
     if (!session)
       throw Object.assign(new Error("Entre na sua conta para continuar."), {
@@ -193,7 +203,32 @@ export async function buildApp() {
       throw Object.assign(new Error("Sua sessão expirou."), {
         statusCode: 401,
       });
-    return result.user;
+    return result;
+  }
+  async function identity(request: FastifyRequest) {
+    return (await sessionIdentity(request)).user;
+  }
+  async function createSession(
+    reply: FastifyReply,
+    userId: string,
+    google = false,
+  ) {
+    await db.delete(sessions).where(lt(sessions.expiresAt, new Date()));
+    const token = randomBytes(32).toString("hex");
+    await db.insert(sessions).values({
+      token: tokenHash(token),
+      userId,
+      expiresAt: new Date(Date.now() + 7 * 86400000),
+      googleAuthenticatedAt: google ? new Date() : null,
+    });
+    // Lax lets the session accompany the Google redirect. Mutations also require the CSRF header.
+    reply.setCookie("orbita_session", token, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 86400,
+    });
   }
   async function scope(request: FastifyRequest) {
     const u = await identity(request);
@@ -226,8 +261,116 @@ export async function buildApp() {
     return { status: "ok", database: databaseKind };
   });
   app.get("/api/auth/me", async (req) => {
-    const u = await identity(req);
-    return { id: u.id, name: u.name, email: u.email };
+    const { user: u, session } = await sessionIdentity(req);
+    return {
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      googleConnected: !!u.googleSub,
+      hasPassword: !!u.password,
+      recentGoogleAuthentication:
+        !!session.googleAuthenticatedAt &&
+        Date.now() - session.googleAuthenticatedAt.getTime() < 5 * 60000,
+    };
+  });
+  app.get("/api/auth/providers", async () => ({
+    google: googleOAuthConfigured(),
+    googleSignInUrl: googleSignInUrl(),
+  }));
+  async function startGoogle(
+    req: FastifyRequest,
+    reply: FastifyReply,
+    intent: "signin" | "link" | "reauthenticate",
+  ) {
+    if (!googleOAuthConfigured())
+      throw new RequestError(
+        "O acesso com Google ainda não está disponível nesta instalação.",
+      );
+    const callback = new URL(process.env.GOOGLE_REDIRECT_URI!);
+    if (
+      intent !== "signin" &&
+      req.headers.origin &&
+      req.headers.origin !== callback.origin
+    )
+      throw new RequestError(
+        `Acesse ${callback.origin} e entre na sua conta para conectar o Google.`,
+      );
+    const challenge = await beginGoogleOAuth(
+      intent,
+      req.cookies.orbita_session,
+    );
+    reply.setCookie(GOOGLE_COOKIE, challenge.browserToken, {
+      path: GOOGLE_COOKIE_PATH,
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 600,
+    });
+    return challenge.url;
+  }
+  const googleRateLimit = {
+    config: { rateLimit: { max: 10, timeWindow: "1 minute" } },
+  };
+  app.get("/api/auth/google/start", googleRateLimit, async (req, reply) => {
+    if (
+      googleOAuthConfigured() &&
+      req.headers.host !== new URL(process.env.GOOGLE_REDIRECT_URI!).host
+    )
+      return reply.redirect(googleSignInUrl()!);
+    try {
+      return reply.redirect(await startGoogle(req, reply, "signin"));
+    } catch {
+      return reply.redirect("/login?google_error=unavailable");
+    }
+  });
+  app.post("/api/auth/google/start", googleRateLimit, async (req, reply) => {
+    const { intent } = z
+      .object({ intent: z.enum(["link", "reauthenticate"]) })
+      .parse(req.body);
+    const { session } = await sessionIdentity(req);
+    // Existing sessions created before OAuth used Strict; let this one survive the redirect.
+    reply.setCookie("orbita_session", req.cookies.orbita_session!, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      expires: session.expiresAt,
+    });
+    return { url: await startGoogle(req, reply, intent) };
+  });
+  app.get("/api/auth/google/callback", async (req, reply) => {
+    reply.clearCookie(GOOGLE_COOKIE, { path: GOOGLE_COOKIE_PATH });
+    try {
+      const query = z
+        .object({
+          state: z.string().max(256).optional(),
+          code: z.string().max(4096).optional(),
+          error: z.string().max(256).optional(),
+        })
+        .parse(req.query);
+      const result = await completeGoogleOAuth({
+        state: query.state,
+        code: query.code,
+        denied: !!query.error,
+        browserToken: req.cookies[GOOGLE_COOKIE],
+        sessionToken: req.cookies.orbita_session,
+      });
+      if (result.intent === "signin") {
+        await createSession(reply, result.user.id, true);
+        return reply.redirect("/app");
+      }
+      return reply.redirect(
+        `/app?google=${result.intent === "link" ? "linked" : "reauthenticated"}#conta`,
+      );
+    } catch (error) {
+      const failure =
+        error instanceof GoogleOAuthError
+          ? error
+          : new GoogleOAuthError("failed");
+      return reply.redirect(
+        `${failure.intent === "signin" ? "/login" : "/app"}?google_error=${encodeURIComponent(failure.reason)}${failure.intent === "signin" ? "" : "#conta"}`,
+      );
+    }
   });
   const authBody = z.object({
     email: z
@@ -276,20 +419,7 @@ export async function buildApp() {
               statusCode: 401,
             });
         }
-        await db.delete(sessions).where(lt(sessions.expiresAt, new Date()));
-        const token = randomBytes(32).toString("hex");
-        await db.insert(sessions).values({
-          token: tokenHash(token),
-          userId: user.id,
-          expiresAt: new Date(Date.now() + 7 * 86400000),
-        });
-        reply.setCookie("orbita_session", token, {
-          path: "/",
-          httpOnly: true,
-          sameSite: "strict",
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 7 * 86400,
-        });
+        await createSession(reply, user.id);
         return { id: user.id, name: user.name, email: user.email };
       },
     );
@@ -307,11 +437,29 @@ export async function buildApp() {
     const { id, u } = await scope(req);
     const w = (await readWorkspace(id))!;
     refreshMatches(w);
+    const sending = await applicationCapabilities(u.id, w.resumes[0]?.id || "");
     const workers = queue ? await queue.getWorkers().catch(() => []) : [];
     w.infrastructure = {
       database: databaseKind,
       queue: queue ? "BullMQ + Redis" : "Agendador local persistente",
-      automatic: supportsAutomatic(),
+      automatic:
+        sending.some(
+          (site) =>
+            site.automatic &&
+            w.sources.some(
+              (source) =>
+                source.enabled &&
+                source.type === "portal" &&
+                source.board === site.id,
+            ),
+        ) ||
+        (supportsAutomatic() &&
+          w.sources.some(
+            (source) =>
+              source.enabled &&
+              source.type === "authorized" &&
+              source.application,
+          )),
       worker: queue ? workers.length > 0 : true,
     };
     const applications = new Map(w.applications.map((a) => [a.jobId, a]));
@@ -427,9 +575,9 @@ export async function buildApp() {
   });
   app.get("/api/automation/sites", async (req) => {
     const u = await identity(req);
-    const connections = await connectionStatuses(u.id);
     const resumeId =
       (await readWorkspace(`${u.id}:live`))?.resumes[0]?.id || "";
+    const connections = await applicationCapabilities(u.id, resumeId);
     const linkedIdentity = await linkedinIdentity(u.id);
     return candidatePortals.map((site) => ({
       id: site,
@@ -465,15 +613,8 @@ export async function buildApp() {
             connection.connected &&
             connection.profileResumeId !== resumeId,
         ),
-      automatic:
-        automaticPortals().includes(site) ||
-        connections.some(
-          (connection) =>
-            connection.id === site &&
-            connection.connected &&
-            (!["gupy", "infojobs"].includes(site) ||
-              connection.profileResumeId === resumeId),
-        ),
+      automatic: connections.find((connection) => connection.id === site)!
+        .automatic,
     }));
   });
   app.post("/api/oauth/linkedin/start", async (req) => {
@@ -760,14 +901,13 @@ export async function buildApp() {
   app.put("/api/routine", async (req) => {
     const { id, u, demo } = await scope(req);
     const r = routineSchema.parse(req.body);
+    let nativeSites: string[] = [];
     if (demo && r.enabled)
       throw new RequestError("Rotinas não executam na demonstração.");
     if (r.enabled && r.mode === "automatic") {
       const w = (await readWorkspace(id))!;
-      const available = [
-        ...automaticPortals(),
-        ...(await readyPortals(u.id, w.resumes[0]?.id || "")),
-      ];
+      nativeSites = await readyPortals(u.id, w.resumes[0]?.id || "");
+      const available = [...automaticPortals(), ...nativeSites];
       const selected =
         w.interview?.answers.sites ||
         w.sources
@@ -777,10 +917,23 @@ export async function buildApp() {
         (!selected.length && !supportsAutomatic()) ||
         (selected.length > 0 &&
           !selected.some((site) => available.includes(site)))
-      )
-        throw new RequestError(
-          "Conecte suas contas nos sites escolhidos antes de ativar o envio automático.",
+      ) {
+        const capabilities = await applicationCapabilities(
+          u.id,
+          w.resumes[0]?.id || "",
         );
+        throw new RequestError(
+          selected
+            .map(
+              (site) =>
+                capabilities.find((item) => item.id === site)
+                  ?.applicationMessage,
+            )
+            .filter(Boolean)
+            .join(" ") ||
+            "Nenhuma integração de envio foi configurada para esta conta.",
+        );
+      }
     }
     if (r.enabled) {
       const w = (await readWorkspace(id))!;
@@ -794,6 +947,8 @@ export async function buildApp() {
         ...r,
         nextRun: r.enabled ? nextExecution(r.time) : null,
       };
+      if (r.enabled && r.mode === "automatic")
+        queuePreparedApplications(w, nativeSites);
     });
     return { ok: true };
   });
@@ -1300,12 +1455,26 @@ export async function buildApp() {
       });
   });
   app.delete("/api/account", async (req, reply) => {
-    const u = await identity(req);
-    const { password } = z
-      .object({ password: z.string().min(1).max(128) })
+    const { user: u, session } = await sessionIdentity(req);
+    const { password, confirmEmail } = z
+      .object({
+        password: z.string().min(1).max(128).optional(),
+        confirmEmail: z.email().optional(),
+      })
       .parse(req.body);
-    if (!(await verifyPassword(password, u.password)))
-      throw new RequestError("Senha incorreta.");
+    if (u.password) {
+      if (!(await verifyPassword(password || "", u.password)))
+        throw new RequestError("Senha incorreta.");
+    } else if (
+      !u.googleSub ||
+      !session.googleAuthenticatedAt ||
+      Date.now() - session.googleAuthenticatedAt.getTime() >= 5 * 60000 ||
+      confirmEmail?.toLowerCase() !== u.email
+    ) {
+      throw new RequestError(
+        "Confirme sua identidade com Google e informe o e-mail da conta para excluir.",
+      );
+    }
     for (const row of await db
       .select()
       .from(workspaces)

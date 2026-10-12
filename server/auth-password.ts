@@ -15,7 +15,10 @@ export async function passwordHash(password: string) {
   return `${salt}:${(await derive(password, salt)).toString("hex")}`;
 }
 
-export async function verifyPassword(password: string, storedHash?: string) {
+export async function verifyPassword(
+  password: string,
+  storedHash?: string | null,
+) {
   const valid = !!storedHash && /^[a-f0-9]{32}:[a-f0-9]{128}$/.test(storedHash);
   const [salt, digest] = (valid ? storedHash! : dummyHash).split(":");
   const actual = await derive(password, salt);

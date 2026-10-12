@@ -8,7 +8,15 @@ export default defineConfig(({ command }) => {
     server: {
       port: 5173,
       strictPort: true,
-      proxy: { "/api": "http://127.0.0.1:3001" },
+      fs: {
+        deny: [
+          ".env", ".env.*", "*.{crt,pem}", "**/.git/**",
+          "**/google-client.local.json", "**/client_secret*.json", "**/.data/**",
+        ],
+      },
+      proxy: {
+        "/api": { target: "http://127.0.0.1:3001", changeOrigin: false },
+      },
     },
     build: { chunkSizeWarningLimit: 650 },
     test: { include: ["tests/**/*.test.ts"], fileParallelism: false },

@@ -517,3 +517,36 @@
     transition: none;
   }
 }
+.google-button {
+  background: #fff;
+  color: #1f1f1f;
+  border: 1px solid #747775;
+  min-height: 44px;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.google-button > svg {
+  flex-shrink: 0;
+}
+.google-button:hover:not(:disabled) {
+  background: #f2f5fa;
+}
+.google-signin-help {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 8px 0 0;
+  color: var(--muted, #626a65);
+}
+.google-signin-help button {
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  color: inherit;
+  margin-left: 6px;
+  cursor: pointer;
+}
+.auth-switch {
+  margin-top: 18px;
+}

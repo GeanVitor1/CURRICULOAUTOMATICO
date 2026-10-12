@@ -2,6 +2,8 @@ node_modules/
 dist/
 dist-server/
 .env
+google-client.local.json
+client_secret*.json
 .data/
 .sites-runtime/
 coverage/

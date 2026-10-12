@@ -26,6 +26,9 @@ export type SiteCapability = {
   identityExpired?: boolean;
   limitation?: string;
   applicationMethod?: "authorized-api" | "authorized-browser" | "external";
+  applicationBlocker?: string | null;
+  applicationMessage?: string;
+  browserAvailable?: boolean;
 };
 export function Choices({
   options,

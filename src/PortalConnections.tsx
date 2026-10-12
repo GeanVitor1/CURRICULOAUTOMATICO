@@ -378,6 +378,11 @@ export default function PortalConnections({
                   </span>
                 </div>
                 <p className="connection-limitation">{status?.limitation}</p>
+                {!status?.automatic && status?.applicationMessage && (
+                  <p className="connection-limitation" role="status">
+                    {status.applicationMessage}
+                  </p>
+                )}
               </div>
               <div className="connection-actions">
                 {status?.oauthConfigured && (

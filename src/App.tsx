@@ -29,6 +29,10 @@ import { Context, api } from "./lib";
 import { Logo, Mascot, Button, Field } from "./components";
 import type { Workspace } from "../shared/types";
 import loginAnimation from "../Video/output/NOVOVIDEO.mp4";
+import GoogleSignIn, {
+  googleErrorMessage,
+  type AuthIdentity,
+} from "./GoogleSignIn";
 const Landing = lazy(() => import("./Landing"));
 const pages = {
   vagas: lazy(() => import("./pages/Jobs")),
@@ -139,7 +143,11 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
   const register = location.pathname === "/register";
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(() =>
+    googleErrorMessage(
+      new URLSearchParams(location.search).get("google_error"),
+    ),
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [rememberEmail, setRememberEmail] = useState(() => {
     try {
@@ -241,6 +249,10 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
               ? "Crie sua conta e encontre oportunidades que combinam com você. Um passo de cada vez."
               : "Encontre oportunidades que combinam com você e acompanhe cada candidatura em um só lugar."}
           </p>
+          <GoogleSignIn disabled={busy} />
+          <div className="auth-divider">
+            <span>ou use seu e-mail</span>
+          </div>
           <form
             aria-busy={busy}
             onSubmit={async (e) => {
@@ -386,9 +398,6 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
               <ArrowRight size={22} aria-hidden="true" />
             </Button>
           </form>
-          <div className="auth-divider">
-            <span>ou</span>
-          </div>
           <a className="auth-switch" href={register ? "/login" : "/register"}>
             <UserRound size={22} aria-hidden="true" />
             {register ? "Já tenho uma conta" : "Criar uma conta"}
@@ -424,7 +433,7 @@ export default function App() {
   } | null>(null);
   const me = useQuery({
     queryKey: ["me"],
-    queryFn: () => api<{ id: string; name: string; email: string }>("/auth/me"),
+    queryFn: () => api<AuthIdentity>("/auth/me"),
     enabled: ["/login", "/register", "/app"].includes(route),
   });
   const workspace = useQuery({

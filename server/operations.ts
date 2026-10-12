@@ -13,10 +13,14 @@ import {
   matchesObjectiveFilters,
   matchesSelectedSites,
 } from "./engine";
-import { supportsAutomatic, automaticPortals, SourceError } from "./connectors";
-import { connectedPortals, sendNativeApplication } from "./portal-sessions";
+import { supportsAutomatic, SourceError } from "./connectors";
+import {
+  connectedPortals,
+  readyPortals,
+  sendNativeApplication,
+} from "./portal-sessions";
+import { submissionRoute, dailySubmissionAttempts } from "./submission-routing";
 import type { CandidatePortal } from "./portal-browser-policy";
-import { isPortalId, isJobUrl } from "../shared/portals";
 import { discoverCachedSource } from "./source-catalog";
 import { discoverPortal } from "./portal-discovery";
 import { db, dataDir, mutateWorkspace, readWorkspace } from "./db";
@@ -313,6 +317,13 @@ export async function discover(
       });
     }
   }
+  const [owner] = await db
+    .select({ userId: workspaces.userId })
+    .from(workspaces)
+    .where(eq(workspaces.id, id));
+  const nativeSites = owner
+    ? await readyPortals(owner.userId, searchWorkspace.resumes[0]?.id || "")
+    : [];
   return mutateWorkspace(id, async (w, tx) => {
     await checkClaim(tx);
     // ATS returns published board snapshots; Jobicy's rolling feed never implies closure by absence.
@@ -369,12 +380,24 @@ export async function discover(
       const today = new Date().toLocaleDateString("en-CA", {
         timeZone: "America/Sao_Paulo",
       });
-      const used = w.applications.filter(
+      const preparedToday = w.applications.filter(
         (a) =>
           new Date(a.createdAt).toLocaleDateString("en-CA", {
             timeZone: "America/Sao_Paulo",
           }) === today,
-      ).length;
+      );
+      const automatic = w.routine.mode === "automatic";
+      const used = automatic
+        ? dailySubmissionAttempts(w) +
+          preparedToday.filter(
+            (a) =>
+              a.status === "Aguardando aprovação" &&
+              w.jobs.some(
+                (job) =>
+                  job.id === a.jobId && submissionRoute(w, job, nativeSites),
+              ),
+          ).length
+        : preparedToday.length;
       const eligible = w.jobs.filter(
         (j) =>
           !j.discarded &&
@@ -385,7 +408,10 @@ export async function discover(
           !j.match.blockers.length &&
           !w.applications.some((a) => a.jobId === j.id),
       );
-      for (const j of eligible.slice(
+      const deliverable = automatic
+        ? eligible.filter((job) => submissionRoute(w, job, nativeSites))
+        : eligible;
+      for (const j of deliverable.slice(
         0,
         Math.max(0, w.routine.dailyLimit - used),
       )) {
@@ -396,6 +422,24 @@ export async function discover(
           run.processed++;
         } catch {
           /* Missing confirmed profile/resume: preserve discovery without claiming a submission. */
+        }
+      }
+      if (automatic) {
+        const manualUsed = preparedToday.filter(
+          (a) => a.status === "Requer ação manual",
+        ).length;
+        for (const job of eligible
+          .filter((job) => !submissionRoute(w, job, nativeSites))
+          .slice(0, Math.max(0, w.routine.dailyLimit - manualUsed))) {
+          try {
+            const application = prepare(w, job.id);
+            application.history[0].actor = "Sistema";
+            application.history[0].message =
+              "Candidatura preparada. Este site não tem envio disponível para sua conta; conclua no anúncio oficial.";
+            run.processed++;
+          } catch {
+            /* A resume/profile still requiring review must not be submitted. */
+          }
         }
       }
     }
@@ -421,33 +465,16 @@ export async function automaticSend(
   const nativeSites = workspaceOwner
     ? await connectedPortals(workspaceOwner.userId)
     : [];
-  const availableSites = [...automaticPortals(), ...nativeSites];
   if (!supportsAutomatic() && !nativeSites.length)
     throw new RequestError(
-      "Conecte sua conta no site da vaga antes de enviar candidaturas.",
+      "Nenhuma integração de envio está disponível. Configure uma integração ou conecte uma sessão de navegador habilitada para o site da vaga.",
     );
-  const payload = await mutateWorkspace(id, async (w) => {
+  const { delivery, ...payload } = await mutateWorkspace(id, async (w) => {
     if (w.demo)
       throw new RequestError("Não é possível enviar dados na demonstração.");
     if (!w.routine.enabled || w.routine.mode !== "automatic")
       throw new RequestError("Modo automático não está ativo.");
-    const day = new Date().toLocaleDateString("en-CA", {
-      timeZone: "America/Sao_Paulo",
-    });
-    const attempts = w.applications.filter(
-      (a) =>
-        a.history.some(
-          (e) =>
-            e.message.startsWith("Envio iniciado.") &&
-            new Date(e.at).toLocaleDateString("en-CA", {
-              timeZone: "America/Sao_Paulo",
-            }) === day,
-        ) ||
-        (a.submittedAt &&
-          new Date(a.submittedAt).toLocaleDateString("en-CA", {
-            timeZone: "America/Sao_Paulo",
-          }) === day),
-    ).length;
+    const attempts = dailySubmissionAttempts(w);
     if (attempts >= w.routine.dailyLimit) throw new DailyLimitError();
     const a = w.applications.find((a) => a.id === appId);
     if (!a || a.status !== "Aguardando aprovação")
@@ -459,23 +486,12 @@ export async function automaticSend(
       throw new RequestError(
         "A vaga está fora dos sites escolhidos na entrevista.",
       );
-    const source = w.sources.find(
-      (s) =>
-        s.enabled &&
-        ((s.type === "authorized" &&
-          s.application &&
-          s.company === job.company) ||
-          (s.type === "portal" &&
-            availableSites.includes(s.board) &&
-            isPortalId(s.board) &&
-            isJobUrl(s.board, job.url) &&
-            (!w.interview?.completed ||
-              w.interview.answers.sites.includes(s.board)))),
-    );
-    if (!source)
+    const route = submissionRoute(w, job, nativeSites);
+    if (!route)
       throw new RequestError(
         "A vaga não pertence a uma fonte com envio autorizado.",
       );
+    const source = route.source;
     job.match = analyze(job, w.profile, w.filters);
     if (
       !matchesObjectiveFilters(job, w.profile, w.filters) ||
@@ -494,7 +510,7 @@ export async function automaticSend(
         "Revise esta candidatura: o currículo mudou desde a preparação.",
       );
     let file: { name: string; mimeType: string; data: string } | undefined;
-    if (source.type === "portal") {
+    {
       const extension = extname(resume.name).toLowerCase();
       if (
         !workspaceOwner ||
@@ -537,6 +553,7 @@ export async function automaticSend(
       message: "Envio iniciado. Aguardando recibo verificável da integração.",
     });
     return {
+      delivery: route.method,
       applicationId: a.id,
       workspaceId: id,
       resumeId: resume.id,
@@ -551,11 +568,7 @@ export async function automaticSend(
     actionRequired = false,
     detail = "";
   try {
-    if (
-      payload.portal &&
-      nativeSites.includes(payload.portal as CandidatePortal) &&
-      workspaceOwner
-    ) {
+    if (delivery === "browser" && payload.portal && workspaceOwner) {
       const result = await sendNativeApplication(
         workspaceOwner.userId,
         payload.portal as CandidatePortal,
@@ -683,9 +696,9 @@ export async function executeRoutine(id: string) {
 export async function processAutomaticApplications(id: string) {
   const state = await readWorkspace(id);
   if (state?.routine.mode === "automatic") {
-    for (const a of state.applications
-      .filter((a) => a.status === "Aguardando aprovação")
-      .slice(0, state.routine.dailyLimit)) {
+    for (const a of state.applications.filter(
+      (a) => a.status === "Aguardando aprovação",
+    )) {
       const current = await readWorkspace(id);
       if (!current?.routine.enabled) break;
       try {
@@ -710,4 +723,48 @@ export async function processAutomaticApplications(id: string) {
       }
     }
   }
+}
+export function queuePreparedApplications(w: Workspace, nativeSites: string[]) {
+  let count = 0;
+  for (const application of w.applications) {
+    if (
+      application.status !== "Requer ação manual" ||
+      application.history.some((event) =>
+        event.message.startsWith("Envio iniciado."),
+      ) ||
+      application.submittedAt ||
+      application.receipt
+    )
+      continue;
+    const resume = w.resumes.find(
+      (resume) => resume.id === application.resumeId && resume.approved,
+    );
+    const job = w.jobs.find(
+      (job) =>
+        job.id === application.jobId &&
+        !job.discarded &&
+        job.availability !== "closed",
+    );
+    if (
+      !resume ||
+      !job ||
+      !w.profile.confirmed ||
+      !matchesSelectedSites(job, w) ||
+      (w.interview &&
+        (!w.interview.completed ||
+          w.interview.answers.resumeId !== resume.id)) ||
+      !submissionRoute(w, job, nativeSites)
+    )
+      continue;
+    application.status = "Aguardando aprovação";
+    application.updatedAt = now();
+    application.history.push({
+      at: now(),
+      actor: "Sistema",
+      message:
+        "Envio automático ativado. A candidatura preparada foi adicionada à fila de envio.",
+    });
+    count++;
+  }
+  return count;
 }
