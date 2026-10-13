@@ -28,6 +28,22 @@ async function start(build: () => Promise<FastifyInstance>) {
   return `http://127.0.0.1:${address.port}`;
 }
 describe("API da Vercel", () => {
+  it("registra somente posições de arquivos para falhas sem código, sem a mensagem nem valores privados", async () => {
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    const origin = await start(async () => {
+      const error = new Error("postgres://private-password@database");
+      error.stack =
+        "Error: postgres://private-password@database\n    at load (/var/task/node_modules/example/index.js:8:2)\n    at run (node:vm:1:1)";
+      throw error;
+    });
+    expect((await fetch(`${origin}/api/health`)).status).toBe(503);
+    const entry = JSON.parse(log.mock.calls[0][0]);
+    expect(entry.locations).toEqual([
+      "/var/task/node_modules/example/index.js:8:2",
+      "node:vm:1:1",
+    ]);
+    expect(JSON.stringify(entry)).not.toContain("private-password");
+  });
   it("identifica falhas de carregamento ESM e códigos PostgreSQL encapsulados sem registrar mensagens", async () => {
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
     const build = vi

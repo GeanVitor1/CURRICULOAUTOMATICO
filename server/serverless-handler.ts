@@ -52,6 +52,33 @@ function initializationReason(error: unknown): string {
   return "UNEXPECTED_INITIALIZATION_FAILURE";
 }
 
+function startupLocations(error: unknown): string[] {
+  const stack = (error as { stack?: unknown } | null)?.stack;
+  if (typeof stack !== "string") return [];
+  // Only fixed runtime file locations, never the error message or SQL values.
+  return (
+    stack
+      .split("\n")
+      .slice(1)
+      .join("\n")
+      .match(
+        /(?:file:\/\/)?\/var\/task\/[A-Za-z0-9_./@-]+:\d+:\d+|node:[A-Za-z0-9_./@-]+:\d+:\d+/g,
+      ) || []
+  ).slice(0, 5);
+}
+
+function startupModules(error: unknown): string[] {
+  const message = (error as { message?: unknown } | null)?.message;
+  if (typeof message !== "string") return [];
+  return [
+    ...new Set(
+      message.match(
+        /\/var\/task\/(?:node_modules|dist-server|api)\/[A-Za-z0-9_./@-]+\.(?:mjs|cjs|js|json)/g,
+      ) || [],
+    ),
+  ].slice(0, 5);
+}
+
 export function createServerlessHandler(build: () => Promise<FastifyInstance>) {
   let ready: Promise<FastifyInstance> | undefined;
   return async (request: IncomingMessage, response: ServerResponse) => {
@@ -64,10 +91,18 @@ export function createServerlessHandler(build: () => Promise<FastifyInstance>) {
       app = await ready;
     } catch (error) {
       ready = undefined;
+      const reason = initializationReason(error);
       console.error(
         JSON.stringify({
           event: "api_initialization_failed",
-          reason: initializationReason(error),
+          reason,
+          ...(reason === "UNEXPECTED_INITIALIZATION_FAILURE" ||
+          reason.startsWith("ERR_REQUIRE_")
+            ? {
+                locations: startupLocations(error),
+                modules: startupModules(error),
+              }
+            : {}),
         }),
       );
       response.writeHead(503, {
