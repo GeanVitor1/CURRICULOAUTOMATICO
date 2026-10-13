@@ -16,5 +16,4 @@ artifacts/
 test-results/
 playwright-report/
 coverage/
-Video/output/
 **/*.log
