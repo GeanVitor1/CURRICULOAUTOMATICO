@@ -1,6 +1,24 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { FastifyInstance } from "fastify";
 
+const startupReasons = new Set([
+  "DATABASE_URL_MISSING",
+  "APP_ORIGIN_MISSING",
+  "APP_ORIGIN_INVALID",
+  "ENCRYPTION_KEY_INVALID",
+  "ECONNREFUSED",
+  "ECONNRESET",
+  "ENOTFOUND",
+  "ETIMEDOUT",
+  "CONNECT_TIMEOUT",
+  "28P01",
+  "3D000",
+  "ENOENT",
+  "ERR_MODULE_NOT_FOUND",
+  "MODULE_NOT_FOUND",
+  "ERR_INVALID_URL",
+]);
+
 export function createServerlessHandler(build: () => Promise<FastifyInstance>) {
   let ready: Promise<FastifyInstance> | undefined;
   return async (request: IncomingMessage, response: ServerResponse) => {
@@ -11,9 +29,18 @@ export function createServerlessHandler(build: () => Promise<FastifyInstance>) {
         return app;
       });
       app = await ready;
-    } catch {
+    } catch (error) {
       ready = undefined;
-      console.error(JSON.stringify({ event: "api_initialization_failed" }));
+      const code = (error as { code?: unknown } | null)?.code;
+      console.error(
+        JSON.stringify({
+          event: "api_initialization_failed",
+          reason:
+            typeof code === "string" && startupReasons.has(code)
+              ? code
+              : "UNEXPECTED_INITIALIZATION_FAILURE",
+        }),
+      );
       response.writeHead(503, {
         "Content-Type": "application/json; charset=utf-8",
         "Cache-Control": "no-store",

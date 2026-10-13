@@ -595,7 +595,7 @@ export default function App() {
             Voltar ao início
           </a>
         </div>
-      ) : me.isPending ? (
+      ) : route === "/app" && me.isPending ? (
         <div className="app-loading">
           <Mascot
             className="page-state-mascot"
@@ -605,7 +605,8 @@ export default function App() {
           />
           <span>Carregando sua conta...</span>
         </div>
-      ) : me.isError &&
+      ) : route === "/app" &&
+        me.isError &&
         (me.error as Error & { status?: number }).status !== 401 ? (
         <div className="error-page">
           <h2>Não foi possível acessar sua conta agora.</h2>

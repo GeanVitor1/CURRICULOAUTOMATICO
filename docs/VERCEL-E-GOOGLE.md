@@ -53,6 +53,21 @@ Faça um novo deploy depois de alterar as variáveis. Para acesso público, conf
 
 Cookies de sessão e do desafio são `HttpOnly`, `Secure` e `SameSite=Lax` em produção. O estado OAuth pertence ao navegador que iniciou o acesso, mas fica no banco compartilhado: o callback pode ser atendido por outra instância da API. O servidor valida assinatura, emissor, audiência, validade, nonce e e-mail verificado. A identidade permanente é o `sub` do Google.
 
+## Diagnosticar falha de inicialização
+
+Se a página abre, mas `/api/health` falha, consulte **Vercel → projeto → Logs**. O evento `api_initialization_failed` registra apenas um código, sem valores de variáveis ou credenciais:
+
+| Código | O que conferir em Production |
+| --- | --- |
+| `DATABASE_URL_MISSING` | Configure a conexão PostgreSQL em `DATABASE_URL` |
+| `ENCRYPTION_KEY_INVALID` | Configure uma chave fixa de 32 bytes em base64 em `ENCRYPTION_KEY` |
+| `APP_ORIGIN_MISSING` / `APP_ORIGIN_INVALID` | Use `https://curriculoautomatico.vercel.app` ou o domínio real do projeto |
+| `28P01` / `3D000` | Confira credenciais e nome do banco PostgreSQL |
+| `ENOTFOUND` / `ECONNREFUSED` / `CONNECT_TIMEOUT` | Confira host, porta, disponibilidade e acesso ao banco |
+| `ENOENT` / `ERR_MODULE_NOT_FOUND` | Confira o build da função e a inclusão das migrations no deployment |
+
+Depois de ajustar variáveis, faça um novo deployment. O login e o cadastro exibem o formulário mesmo quando a consulta inicial da sessão falha; isso não substitui o servidor disponível para autenticar. `/app` continua bloqueado enquanto a API falha. O retorno esperado de `/api/auth/me` para um navegador sem sessão é **401**, não 500/503.
+
 ## Limites das outras funções do aplicativo
 
 A integração da Vercel adicionada aqui atende a API e o login. Ela não inicia os workers de busca/candidaturas. Essas rotinas precisam de um serviço Node persistente com PostgreSQL/Redis. Os uploads de currículo, as conexões LinkedIn e as sessões dos portais ainda usam arquivos no servidor; antes de oferecer esses recursos na Vercel, migre-os para armazenamento persistente privado ou hospede a API completa em um serviço com volume persistente. `/tmp` não preserva esses arquivos entre instâncias/deploys.

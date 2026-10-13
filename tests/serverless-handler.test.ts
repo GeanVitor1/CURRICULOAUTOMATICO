@@ -79,4 +79,26 @@ describe("API da Vercel", () => {
     expect((await fetch(`${origin}/api/health`)).status).toBe(200);
     expect(build).toHaveBeenCalledTimes(2);
   });
+  it("registra o código de configuração sem expor a mensagem ou os segredos", async () => {
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    const build = vi
+      .fn()
+      .mockRejectedValue(
+        Object.assign(new Error("private-connection-string"), {
+          code: "DATABASE_URL_MISSING",
+        }),
+      );
+    const origin = await start(build);
+    const failed = await fetch(`${origin}/api/health`);
+    expect(failed.status).toBe(503);
+    expect(log).toHaveBeenCalledWith(
+      JSON.stringify({
+        event: "api_initialization_failed",
+        reason: "DATABASE_URL_MISSING",
+      }),
+    );
+    expect(await failed.text()).not.toMatch(
+      /private-connection-string|DATABASE_URL_MISSING/,
+    );
+  });
 });

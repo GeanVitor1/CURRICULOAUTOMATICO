@@ -1,5 +1,14 @@
 type Environment = Record<string, string | undefined>;
 
+export class RuntimeConfigurationError extends Error {
+  constructor(
+    public code: string,
+    message: string,
+  ) {
+    super(message);
+  }
+}
+
 export const hostedOnVercel = (env: Environment = process.env) =>
   env.VERCEL === "1" && env.VERCEL_ENV !== "development";
 
@@ -21,7 +30,10 @@ function publicOrigin(value: string, env: Environment) {
       : url.protocol !== "https:" &&
         !(url.protocol === "http:" && loopback.has(url.hostname)))
   )
-    throw new Error("Configure APP_ORIGIN com a origem pública HTTPS do site.");
+    throw new RuntimeConfigurationError(
+      "APP_ORIGIN_INVALID",
+      "Configure APP_ORIGIN com a origem pública HTTPS do site.",
+    );
   return url.origin;
 }
 
@@ -73,7 +85,8 @@ export function googleOAuthConfig(env: Environment = process.env) {
 
 export function requirePersistentDatabase(env: Environment = process.env) {
   if (hostedOnVercel(env) && !env.DATABASE_URL?.trim())
-    throw new Error(
+    throw new RuntimeConfigurationError(
+      "DATABASE_URL_MISSING",
       "Configure DATABASE_URL com PostgreSQL na Vercel para persistir contas e sessões.",
     );
 }
@@ -82,12 +95,16 @@ export function validateHostedRuntime(env: Environment = process.env) {
   requirePersistentDatabase(env);
   if (!hostedOnVercel(env)) return;
   if (!appOrigins(env).length)
-    throw new Error("Configure APP_ORIGIN com o domínio público da aplicação.");
+    throw new RuntimeConfigurationError(
+      "APP_ORIGIN_MISSING",
+      "Configure APP_ORIGIN com o domínio público da aplicação.",
+    );
   if (
     !env.ENCRYPTION_KEY ||
     Buffer.from(env.ENCRYPTION_KEY, "base64").length !== 32
   )
-    throw new Error(
+    throw new RuntimeConfigurationError(
+      "ENCRYPTION_KEY_INVALID",
       "Configure ENCRYPTION_KEY com uma chave fixa de 32 bytes em base64 na Vercel.",
     );
 }
