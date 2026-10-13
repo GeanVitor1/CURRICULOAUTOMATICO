@@ -1,9 +1,11 @@
 import { createServerlessHandler } from "./serverless-handler";
 import { proxyApi, upstreamOrigin } from "./upstream";
+import { validateHostedRuntime } from "./auth-config";
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 // Vercel serves the Vite build through its CDN. No background scheduler starts here.
 const localHandler = createServerlessHandler(async () => {
+  validateHostedRuntime();
   // Load database/configuration inside the handler so startup failures are caught.
   const { buildApp } = await import("./app.js");
   return buildApp({ serveStatic: false });

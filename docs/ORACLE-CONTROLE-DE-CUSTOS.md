@@ -1,6 +1,6 @@
 # Oracle: conta gratuita e controles de custo
 
-Estado de 13/10/2026: o usuário criou a conta e informou que a página de pagamentos exibe “O provisionamento da sua conta está em andamento”. O plano e os recursos da conta ainda não foram verificados. A ferramenta de navegador também falhou antes de acessar as abas; nenhuma configuração foi aplicada no painel Oracle.
+Estado de 13/10/2026: o usuário informou que o painel Oracle já foi liberado após o provisionamento. O plano e os recursos da conta ainda não foram verificados. A ferramenta de navegador também falhou antes de acessar as abas; nenhuma configuração foi aplicada no painel Oracle.
 
 ## Controle principal
 

@@ -1,0 +1,55 @@
+# Oracle VM with the existing Neon database: preserves accounts created on Vercel.
+# docker compose --env-file .env.production.local -f compose.neon.yaml up -d --build
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    env_file: .env.production.local
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?Configure a URL privada do banco Neon existente}
+      DATA_DIR: /var/lib/empregatos
+      HOST: 0.0.0.0
+      PORT: "3001"
+      NODE_ENV: production
+      SERVE_STATIC: "false"
+      REDIS_URL: ""
+      API_UPSTREAM_ORIGIN: ""
+    volumes:
+      - private-data:/var/lib/empregatos
+    healthcheck:
+      test:
+        [
+          CMD,
+          node,
+          -e,
+          "fetch('http://127.0.0.1:3001/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    mem_limit: 640m
+    stop_grace_period: 60s
+    logging:
+      driver: json-file
+      options: { max-size: 10m, max-file: "3" }
+  https:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      BACKEND_HOSTNAME: ${BACKEND_HOSTNAME:?Configure o hostname publico do backend}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      api: { condition: service_healthy }
+    mem_limit: 128m
+    logging:
+      driver: json-file
+      options: { max-size: 10m, max-file: "3" }
+volumes:
+  private-data:
+  caddy-data:
+  caddy-config:

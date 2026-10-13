@@ -2,6 +2,10 @@
 
 A página já está hospedada em https://curriculoautomatico.vercel.app. A API retornava HTTP 503 nesta sessão. O site publicado e o servidor que executa as buscas são partes diferentes: a Vercel continua servindo as telas; um backend permanente precisa guardar os dados, receber pagamentos e executar a fila.
 
+Atualização: o projeto Vercel foi autenticado e vinculado ao espaço `geans-projects-da7db03c`. As variáveis de produção estavam vazias; Google, criptografia e Stripe de teste foram configurados. O banco `curriculoautomatico-db` foi provisionado pelo Marketplace Neon no plano `free_v3` (Free), somente em Production. O esquema foi aplicado por conexão TLS direta. A API Vercel pode usar esse banco para contas e sessões enquanto a máquina Oracle é instalada; a validação pública do novo deploy é registrada na entrega.
+
+Para instalar a VM **preservando essas contas**, use `compose.neon.yaml`, que recebe o `DATABASE_URL` privado existente e guarda currículos em disco. `compose.production.yaml` é a alternativa com banco PostgreSQL local; usar esse banco vazio sem migração não preserva automaticamente as contas criadas no Neon.
+
 ## Opções verificadas
 
 | Opção | Memória | Armazenamento | Custo e adequação |
@@ -36,7 +40,7 @@ Faça backup fora da VM: recursos gratuitos podem ser retomados por ociosidade e
 
 ## 2. Backend preparado para VM
 
-Arquivos: `Dockerfile`, `compose.production.yaml` e `deploy/Caddyfile`. O container publica somente a API e a automação; imagens, vídeos e arquivos do frontend ficam na Vercel. A execução usa um único processo Node para API/fila/agendamento, PostgreSQL local e Caddy para HTTPS, com dados em volumes persistentes. Redis e Chromium não são instalados nessa opção; integrações de navegador continuam dependentes de autorização e infraestrutura própria.
+Arquivos: `Dockerfile`, `compose.neon.yaml` e `deploy/Caddyfile`. O container publica somente a API e a automação; imagens, vídeos e arquivos do frontend ficam na Vercel. A execução usa um único processo Node para API/fila/agendamento, o banco Neon existente e Caddy para HTTPS, com arquivos em volumes persistentes. Redis e Chromium não são instalados nessa opção; integrações de navegador continuam dependentes de autorização e infraestrutura própria. A alternativa `compose.production.yaml` usa banco local e exige migração dos dados se substituir o Neon.
 
 1. Gere o arquivo privado, preservando as credenciais já configuradas:
 
@@ -57,10 +61,10 @@ Arquivos: `Dockerfile`, `compose.production.yaml` e `deploy/Caddyfile`. O contai
 5. Na pasta do projeto, execute:
 
    ```sh
-   docker compose --env-file .env.production.local -f compose.production.yaml up -d --build
+   docker compose --env-file .env.production.local -f compose.neon.yaml up -d --build
    ```
 
-6. Confira `docker compose --env-file .env.production.local -f compose.production.yaml ps` e a saúde do banco/API. Caddy obtém e renova certificados automaticamente quando o hostname resolve para a VM e 80/443 estão liberadas.
+6. Confira `docker compose --env-file .env.production.local -f compose.neon.yaml ps` e a saúde da API. Caddy obtém e renova certificados automaticamente quando o hostname resolve para a VM e 80/443 estão liberadas.
 7. No projeto Vercel, configure `API_UPSTREAM_ORIGIN=https://HOSTNAME-DO-BACKEND` e `API_PROXY_SECRET` com o mesmo segredo do arquivo privado. Faça novo deploy. A integração Vercel sugerida nesta conversa pode permitir configurar esses campos e consultar logs depois de conectada.
 8. Verifique https://curriculoautomatico.vercel.app/api/health: precisa retornar HTTP 200 e `status: ok`.
 

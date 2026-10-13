@@ -19,7 +19,7 @@ describe("Ambiente privado da VM", () => {
   it("preserva credenciais, gera segredos fortes uma vez e nunca os imprime", async () => {
     await writeFile(
       join(directory, ".env"),
-      'STRIPE_SECRET_KEY="sk_test_private-fixture"\nGEMINI_API_KEY="private-ai-fixture"\nAPP_ORIGIN="http://127.0.0.1:5173"\n',
+      'STRIPE_SECRET_KEY="sk_test_private-fixture"\nGEMINI_API_KEY="private-ai-fixture"\nAPP_ORIGIN="http://127.0.0.1:5173"\nDATABASE_URL="postgresql://fixture:private-db-password@db.example.test/app"\n',
     );
     const result = await execute(
       process.execPath,
@@ -34,6 +34,8 @@ describe("Ambiente privado da VM", () => {
       STRIPE_SECRET_KEY: "sk_test_private-fixture",
       GEMINI_API_KEY: "private-ai-fixture",
       BACKEND_HOSTNAME: "api.example.test",
+      DATABASE_URL:
+        "postgresql://fixture:private-db-password@db.example.test/app",
     });
     expect(Buffer.from(initial.ENCRYPTION_KEY, "base64")).toHaveLength(32);
     expect(initial.API_PROXY_SECRET).toHaveLength(64);
@@ -50,6 +52,7 @@ describe("Ambiente privado da VM", () => {
       initial.POSTGRES_PASSWORD,
       initial.STRIPE_SECRET_KEY,
       initial.GEMINI_API_KEY,
+      initial.DATABASE_URL,
     ])
       expect(result.stdout + repeated.stdout).not.toContain(secret);
   });

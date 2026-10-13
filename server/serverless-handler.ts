@@ -32,13 +32,22 @@ export function createServerlessHandler(build: () => Promise<FastifyInstance>) {
     } catch (error) {
       ready = undefined;
       const code = (error as { code?: unknown } | null)?.code;
+      const name = (error as { name?: unknown } | null)?.name;
+      const nativeReason =
+        name === "ReferenceError"
+          ? "REFERENCE_ERROR"
+          : name === "SyntaxError"
+            ? "SYNTAX_ERROR"
+            : name === "TypeError"
+              ? "TYPE_ERROR"
+              : "UNEXPECTED_INITIALIZATION_FAILURE";
       console.error(
         JSON.stringify({
           event: "api_initialization_failed",
           reason:
             typeof code === "string" && startupReasons.has(code)
               ? code
-              : "UNEXPECTED_INITIALIZATION_FAILURE",
+              : nativeReason,
         }),
       );
       response.writeHead(503, {

@@ -7,6 +7,7 @@ const destination = resolve(".env.production.local");
 const source = parse(await readFile(resolve(".env"), "utf8").catch(() => ""));
 const existing = parse(await readFile(destination, "utf8").catch(() => ""));
 const names = [
+  "DATABASE_URL",
   "GOOGLE_CLIENT_ID",
   "GOOGLE_CLIENT_SECRET",
   "STRIPE_SECRET_KEY",

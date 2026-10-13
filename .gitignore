@@ -10,6 +10,10 @@ client_secret*.json
 ssh-key*.key
 .data/
 .sites-runtime/
+.vercel/
+.agents/skills/neon/
+.agents/skills/neon-postgres/
+skills-lock.json
 coverage/
 test-results/
 playwright-report/

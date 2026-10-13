@@ -10,7 +10,6 @@ import { mkdir, readFile, rm, stat } from "node:fs/promises";
 import { resolve, extname, relative } from "node:path";
 import { eq, and, lt } from "drizzle-orm";
 import { z } from "zod";
-import { PDFParse } from "pdf-parse";
 import { extractDocx } from "./documents";
 import { createResumePdf, resumeText } from "./resume-pdf";
 import {
@@ -1373,6 +1372,8 @@ export async function buildApp({ serveStatic = true } = {}) {
     let text = "";
     try {
       if (ext === ".pdf") {
+        // PDF native dependencies are needed only when reading a PDF upload.
+        const { PDFParse } = await import("pdf-parse");
         const parser = new PDFParse({ data: buffer });
         try {
           const result = await parser.getText();

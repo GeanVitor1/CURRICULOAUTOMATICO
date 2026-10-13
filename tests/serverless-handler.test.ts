@@ -81,13 +81,11 @@ describe("API da Vercel", () => {
   });
   it("registra o código de configuração sem expor a mensagem ou os segredos", async () => {
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
-    const build = vi
-      .fn()
-      .mockRejectedValue(
-        Object.assign(new Error("private-connection-string"), {
-          code: "DATABASE_URL_MISSING",
-        }),
-      );
+    const build = vi.fn().mockRejectedValue(
+      Object.assign(new Error("private-connection-string"), {
+        code: "DATABASE_URL_MISSING",
+      }),
+    );
     const origin = await start(build);
     const failed = await fetch(`${origin}/api/health`);
     expect(failed.status).toBe(503);
@@ -99,6 +97,23 @@ describe("API da Vercel", () => {
     );
     expect(await failed.text()).not.toMatch(
       /private-connection-string|DATABASE_URL_MISSING/,
+    );
+  });
+  it("identifica erros nativos sem registrar mensagens que possam conter credenciais", async () => {
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    const origin = await start(async () => {
+      throw new ReferenceError("private-module-error-with-credentials");
+    });
+    const failed = await fetch(`${origin}/api/auth/providers`);
+    expect(failed.status).toBe(503);
+    expect(log).toHaveBeenCalledWith(
+      JSON.stringify({
+        event: "api_initialization_failed",
+        reason: "REFERENCE_ERROR",
+      }),
+    );
+    expect(await failed.text()).not.toContain(
+      "private-module-error-with-credentials",
     );
   });
 });
