@@ -44,7 +44,7 @@ Arquivos: `Dockerfile`, `compose.production.yaml` e `deploy/Caddyfile`. O contai
    npm run configure:vm
    ```
 
-   Ele cria `.env.production.local`, fora do Git, sem imprimir chaves. Google ainda precisa do cliente OAuth. Stripe de teste já foi configurado nesta sessão.
+   Ele cria `.env.production.local`, fora do Git, sem imprimir chaves. O cliente OAuth Google já foi importado para esse arquivo; Stripe de teste também foi configurado. A instalação desse ambiente no backend hospedado está pendente.
 
 2. Configure um hostname público do backend que resolva para o IP da VM. Pode ser um subdomínio seu; para um teste inicial, um serviço DNS por IP como `sslip.io` permite usar `api.SEUSERVERIP.sslip.io`. Substitua pelo endereço real, confirme a resolução e a disponibilidade desse serviço externo. Não use o endereço da Vercel como hostname do backend.
 
@@ -75,7 +75,7 @@ Projeto informado: **My First Project**, ID `daring-tracer-466614-v4`, número `
    Para o lançamento público, use o status **In production/Em produção** em Audience. O Google documenta uma exceção para esses escopos básicos: mesmo em Testing, eles não exigem inclusão individual na lista de usuários de teste. Contas de organizações podem ter restrições definidas pelo administrador. Referência: https://support.google.com/cloud/answer/15549945.
 3. Abra https://console.cloud.google.com/auth/clients?project=daring-tracer-466614-v4 e crie um cliente **Aplicativo da Web**.
 4. Cadastre exatamente `https://curriculoautomatico.vercel.app/api/auth/google/callback` nos retornos autorizados.
-5. Baixe o JSON e salve como `google-client.local.json` na pasta deste projeto. Para importar no ambiente privado de produção:
+5. Baixe o JSON no momento de criar o cliente: o Google não disponibiliza o segredo completo novamente depois de fechar essa janela. Salve como `google-client.local.json` na pasta deste projeto, ou passe o nome original do arquivo ao comando. O JSON fornecido nesta sessão já foi importado no ambiente privado de produção. Comando para uma futura importação:
 
    ```powershell
    npm run configure:google -- google-client.local.json --output-env .env.production.local --origin https://curriculoautomatico.vercel.app
