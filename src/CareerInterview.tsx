@@ -6,6 +6,7 @@ import { api, useAction, useApp } from "./lib";
 import { candidatePortals, portals } from "../shared/portals";
 import type { InterviewAnswers } from "../shared/types";
 import PortalConnections from "./PortalConnections";
+import { useBilling } from "./Billing";
 
 export type SiteCapability = {
   id: string;
@@ -65,6 +66,8 @@ export function Choices({
 export default function CareerInterview() {
   const { w, navigate, toast } = useApp();
   const a = useAction();
+  const billing = useBilling();
+  const planLimit = billing.data?.dailyLimit || 5;
   const resume = w.resumes[0];
   const saved =
     w.interviewDraft?.answers.resumeId === resume?.id
@@ -117,6 +120,13 @@ export default function CareerInterview() {
     queryKey: ["automation-sites"],
     queryFn: () => api<SiteCapability[]>("/automation/sites"),
   });
+  useEffect(() => {
+    if (billing.data)
+      setAnswers((current) => ({
+        ...current,
+        dailyLimit: Math.min(current.dailyLimit, billing.data.dailyLimit),
+      }));
+  }, [billing.data?.dailyLimit]);
   const automaticReady =
     answers.sites.length > 0 &&
     answers.sites.some((site) =>
@@ -177,9 +187,11 @@ export default function CareerInterview() {
       complete &&
       (!Number.isInteger(answers.dailyLimit) ||
         answers.dailyLimit < 1 ||
-        answers.dailyLimit > 50)
+        answers.dailyLimit > planLimit)
     ) {
-      setError("Escolha um limite de 1 a 50 candidaturas por dia.");
+      setError(
+        `Escolha um limite de 1 a ${planLimit} candidaturas por dia, conforme seu plano.`,
+      );
       return;
     }
     saving.current = true;
@@ -483,7 +495,7 @@ export default function CareerInterview() {
                 <input
                   type="number"
                   min={1}
-                  max={50}
+                  max={planLimit}
                   value={answers.dailyLimit}
                   onChange={(e) => update("dailyLimit", Number(e.target.value))}
                 />

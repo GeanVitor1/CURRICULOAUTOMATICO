@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+# Um processo permanente executa API, agendamento e fila no mesmo servidor.
+# Não configure REDIS_URL neste modelo. Não escale com disco local compartilhado.
+services:
+  - type: web
+    name: empregatos
+    runtime: node
+    plan: starter
+    region: virginia
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    disk:
+      name: private-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 22.22.0
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: DATA_DIR
+        value: /var/data/empregatos
+      - key: DATABASE_URL
+        fromDatabase:
+          name: empregatos-db
+          property: connectionString
+      - key: APP_ORIGIN
+        sync: false
+      - key: API_PROXY_SECRET
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRICE_PLUS
+        sync: false
+      - key: STRIPE_PRICE_PRO
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: APPLICATION_WEBHOOK_URL
+        sync: false
+      - key: APPLICATION_WEBHOOK_TOKEN
+        sync: false
+      - key: APPLICATION_WEBHOOK_AUTHORIZED
+        value: "false"
+      - key: APPLICATION_WEBHOOK_PORTALS
+        value: ""
+      - key: PORTAL_BROWSER_AUTHORIZED
+        value: ""
+databases:
+  - name: empregatos-db
+    region: virginia
+    plan: basic-256mb
+    diskSizeGB: 1
+    databaseName: empregatos
+    user: empregatos
+    ipAllowList: []

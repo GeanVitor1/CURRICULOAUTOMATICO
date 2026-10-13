@@ -5,7 +5,8 @@ import multipart from "@fastify/multipart";
 import rateLimit from "@fastify/rate-limit";
 import staticFiles from "@fastify/static";
 import { randomUUID, randomBytes, createHash } from "node:crypto";
-import { mkdir, writeFile, readFile, rm, stat } from "node:fs/promises";
+import { isIP } from "node:net";
+import { mkdir, readFile, rm, stat } from "node:fs/promises";
 import { resolve, extname, relative } from "node:path";
 import { eq, and, lt } from "drizzle-orm";
 import { z } from "zod";
@@ -108,10 +109,22 @@ import {
 } from "./google-oauth";
 import { applicationCapabilities } from "./automation-capabilities";
 import {
+  accountPlan,
+  billingSummary,
+  cancelAccountSubscription,
+  createBillingPortal,
+  createCheckout,
+  processBillingEvent,
+  verifyBillingEvent,
+} from "./billing";
+import { plans } from "../shared/plans";
+import { readPrivateResume, writePrivateResume } from "./resume-storage";
+import {
   appOrigins,
   googleOAuthConfig,
   hostedOnVercel,
   secureAuthCookies,
+  proxyAuthorized,
 } from "./auth-config";
 const tokenHash = (s: string) => createHash("sha256").update(s).digest("hex");
 export async function buildApp({ serveStatic = true } = {}) {
@@ -123,6 +136,7 @@ export async function buildApp({ serveStatic = true } = {}) {
             redact: [
               "req.headers.cookie",
               "req.headers.authorization",
+              "req.headers.x-empregatos-proxy-secret",
               "password",
               "token",
               "req.url",
@@ -138,6 +152,14 @@ export async function buildApp({ serveStatic = true } = {}) {
   await app.register(rateLimit, {
     max: 200,
     timeWindow: "1 minute",
+    keyGenerator: (request) => {
+      const clientIp = request.headers["x-empregatos-client-ip"];
+      return proxyAuthorized(request.headers["x-empregatos-proxy-secret"]) &&
+        typeof clientIp === "string" &&
+        isIP(clientIp)
+        ? clientIp
+        : request.ip;
+    },
     // A page loads many fonts, images and chunks. Only API requests consume
     // this quota; auth routes retain their separate 10/minute limit.
     allowList: (request) => {
@@ -150,9 +172,37 @@ export async function buildApp({ serveStatic = true } = {}) {
       .header("X-Content-Type-Options", "nosniff")
       .header("Referrer-Policy", "strict-origin-when-cross-origin")
       .header("X-Frame-Options", "DENY");
+    reply.header(
+      "Permissions-Policy",
+      "camera=(), microphone=(), geolocation=(), payment=()",
+    );
+    if (secureAuthCookies()) {
+      reply.header(
+        "Strict-Transport-Security",
+        "max-age=31536000; includeSubDomains",
+      );
+      reply.header(
+        "Content-Security-Policy",
+        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+      );
+    }
     if (request.url.startsWith("/api"))
       reply.header("Cache-Control", "no-store");
+    if (
+      process.env.API_PROXY_SECRET &&
+      request.url.startsWith("/api/") &&
+      request.url.split("?", 1)[0] !== "/api/health"
+    ) {
+      if (!proxyAuthorized(request.headers["x-empregatos-proxy-secret"]))
+        return reply.code(403).send({ error: "Acesso não autorizado." });
+    }
     if (!["GET", "HEAD", "OPTIONS"].includes(request.method)) {
+      // This one machine-to-machine route uses Stripe's signature over the raw body.
+      if (
+        request.method === "POST" &&
+        request.url.split("?", 1)[0] === "/api/billing/webhook"
+      )
+        return;
       const allowed = new Set(appOrigins());
       if (!secureAuthCookies()) {
         allowed.add("http://127.0.0.1:5173");
@@ -279,6 +329,41 @@ export async function buildApp({ serveStatic = true } = {}) {
     google: googleOAuthConfigured(),
     googleSignInUrl: googleSignInUrl(),
   }));
+  app.get("/api/plans", async () => plans);
+  app.get("/api/billing", async (req) =>
+    billingSummary((await identity(req)).id),
+  );
+  app.post(
+    "/api/billing/checkout",
+    { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } },
+    async (req) => {
+      const user = await identity(req);
+      const { plan } = z
+        .object({ plan: z.enum(["plus", "pro"]) })
+        .strict()
+        .parse(req.body);
+      return createCheckout(user.id, plan);
+    },
+  );
+  app.post(
+    "/api/billing/portal",
+    { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } },
+    async (req) => createBillingPortal((await identity(req)).id),
+  );
+  await app.register(async (webhooks) => {
+    webhooks.removeContentTypeParser("application/json");
+    webhooks.addContentTypeParser(
+      "application/json",
+      { parseAs: "buffer" },
+      (_request, body, done) => done(null, body),
+    );
+    webhooks.post("/api/billing/webhook", async (req) => {
+      const signature = req.headers["stripe-signature"];
+      if (typeof signature !== "string" || !Buffer.isBuffer(req.body))
+        throw new RequestError("Webhook inválido.");
+      return processBillingEvent(verifyBillingEvent(req.body, signature));
+    });
+  });
   async function startGoogle(
     req: FastifyRequest,
     reply: FastifyReply,
@@ -461,7 +546,7 @@ export async function buildApp({ serveStatic = true } = {}) {
               source.type === "authorized" &&
               source.application,
           )),
-      worker: queue ? workers.length > 0 : true,
+      worker: queue ? workers.length > 0 : !hostedOnVercel(),
     };
     const applications = new Map(w.applications.map((a) => [a.jobId, a]));
     w.jobs.forEach((j) => {
@@ -738,6 +823,15 @@ export async function buildApp({ serveStatic = true } = {}) {
   app.put("/api/interview", async (req) => {
     const { id, u, demo } = await scope(req);
     const body = interviewSchema.parse(req.body);
+    if (body.complete && body.start !== "save" && hostedOnVercel() && !queue)
+      throw new RequestError(
+        "A automação está indisponível. A configuração do serviço precisa ser concluída antes de iniciar buscas e envios.",
+      );
+    const plan = await accountPlan(u.id);
+    body.answers.dailyLimit = Math.min(
+      body.answers.dailyLimit,
+      plan.dailyLimit,
+    );
     if (demo && body.start !== "save")
       throw new RequestError("A demonstração não inicia buscas ou envios.");
     const availableSites = [
@@ -902,6 +996,11 @@ export async function buildApp({ serveStatic = true } = {}) {
   app.put("/api/routine", async (req) => {
     const { id, u, demo } = await scope(req);
     const r = routineSchema.parse(req.body);
+    if (r.enabled && hostedOnVercel() && !queue)
+      throw new RequestError(
+        "A automação está indisponível. A configuração do serviço precisa ser concluída antes de ativar a rotina.",
+      );
+    r.dailyLimit = Math.min(r.dailyLimit, (await accountPlan(u.id)).dailyLimit);
     let nativeSites: string[] = [];
     if (demo && r.enabled)
       throw new RequestError("Rotinas não executam na demonstração.");
@@ -953,10 +1052,18 @@ export async function buildApp({ serveStatic = true } = {}) {
     });
     return { ok: true };
   });
-  app.post("/api/discover", async (req) => {
-    const { id } = await scope(req);
-    return enqueueDiscovery(id);
-  });
+  app.post(
+    "/api/discover",
+    { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } },
+    async (req) => {
+      const { id } = await scope(req);
+      if (hostedOnVercel() && !queue)
+        throw new RequestError(
+          "A busca está indisponível. A configuração do serviço precisa ser concluída antes de iniciar uma pesquisa.",
+        );
+      return enqueueDiscovery(id);
+    },
+  );
   app.post("/api/sources", async (req) => {
     const { id, demo } = await scope(req);
     if (demo)
@@ -1192,7 +1299,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     const path = resolve(dir, resumeId + ".pdf");
     const text = resumeText(body);
     const targets = await resumeTargets(text, body, "local");
-    await writeFile(path, await createResumePdf(body));
+    await writePrivateResume(path, await createResumePdf(body));
     try {
       await mutateWorkspace(id, (w) => {
         if (w.resumes.length >= 20)
@@ -1298,7 +1405,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     const sanitizedName = file.filename.replace(/[\\/\u0000-\u001f]/g, "_");
     const name =
       sanitizedName.slice(0, -ext.length).slice(0, 200 - ext.length) + ext;
-    await writeFile(resolve(dir, resumeId + ext), buffer);
+    await writePrivateResume(resolve(dir, resumeId + ext), buffer);
     try {
       await mutateWorkspace(id, (w) => {
         if (w.resumes.length >= 20)
@@ -1419,7 +1526,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     let ext = ".pdf";
     for (const e of [".pdf", ".docx"]) {
       try {
-        found = await readFile(resolve(dir, resumeId + e));
+        found = await readPrivateResume(resolve(dir, resumeId + e));
         ext = e;
         break;
       } catch {}
@@ -1453,6 +1560,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       .send({
         ...(await readWorkspace(id)),
         intelligence: await getIntelligence(u.id),
+        billing: await billingSummary(u.id),
       });
   });
   app.delete("/api/account", async (req, reply) => {
@@ -1483,7 +1591,22 @@ export async function buildApp({ serveStatic = true } = {}) {
       await configureSchedule(row.id, false, "08:00");
     await deletePortalConnections(u.id);
     await disconnectLinkedinIdentity(u.id);
-    await db.delete(users).where(eq(users.id, u.id));
+    await db.transaction(async (tx) => {
+      // Lock in the same order as send claims and billing updates.
+      await tx
+        .select({ id: workspaces.id })
+        .from(workspaces)
+        .where(eq(workspaces.userId, u.id))
+        .orderBy(workspaces.id)
+        .for("update");
+      await tx
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.id, u.id))
+        .for("update");
+      await cancelAccountSubscription(u.id, tx);
+      await tx.delete(users).where(eq(users.id, u.id));
+    });
     clearAnalysisCache(u.id);
     const dir = resolve(dataDir, "resumes", u.id);
     if (

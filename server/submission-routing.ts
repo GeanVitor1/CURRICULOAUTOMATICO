@@ -40,7 +40,8 @@ export function dailySubmissionAttempts(w: Workspace, timestamp = new Date()) {
           event.message.startsWith("Envio iniciado.") &&
           day(new Date(event.at)) === today,
       ) ||
-      (application.submittedAt &&
+      (application.mode === "automatic" &&
+        application.submittedAt &&
         day(new Date(application.submittedAt)) === today),
   ).length;
 }

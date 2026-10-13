@@ -1,51 +1,51 @@
 {
-  "checkedAt": "2026-10-09T18:20:15.023Z",
+  "checkedAt": "2026-10-13T13:13:10.139Z",
   "applicationsSent": 0,
   "results": [
     {
       "provider": "gupy",
       "status": "ok",
-      "count": 99,
-      "matching": 99,
+      "count": 95,
+      "matching": 95,
       "sample": [
         {
-          "title": "Auxiliar Administrativo Aprendiz",
-          "company": "Solar Coca-Cola",
-          "url": "https://solarcocacola.gupy.io/job/eyJqb2JJZCI6MTI3MDI0NzcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "title": "AUXILIAR ADMINISTRATIVO (VAGA INCLUSIVA PARA PCD) - SEDE - DF",
+          "company": "Vem ser CASSI",
+          "url": "https://cassi.gupy.io/job/eyJqb2JJZCI6MTI3MDQ4NzYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
           "modality": "Presencial",
-          "location": "Fortaleza, Ceará",
-          "publishedAt": "2026-10-09T17:45:54.018Z"
+          "location": "Brasília, Distrito Federal",
+          "publishedAt": "2026-10-13T13:07:05.780Z"
         },
         {
-          "title": "APRENDIZ - AUXILIAR ADMINISTRATIVO",
-          "company": "Movida Aluguel de Carros",
-          "url": "https://movida.gupy.io/job/eyJqb2JJZCI6MTI2ODE3MDAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "title": "Auxiliar Administrativo - E-commerce (SAC)",
+          "company": "Farmácias São João",
+          "url": "https://farmaciasaojoao.gupy.io/job/eyJqb2JJZCI6MTI3MTQyMTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
           "modality": "Presencial",
-          "location": "Mogi das Cruzes, São Paulo",
-          "publishedAt": "2026-10-09T17:45:15.728Z"
+          "location": "Passo Fundo, Rio Grande do Sul",
+          "publishedAt": "2026-10-13T12:28:26.917Z"
         },
         {
-          "title": "Auxiliar Administrativo Aprendiz",
-          "company": "Solar Coca-Cola",
-          "url": "https://solarcocacola.gupy.io/job/eyJqb2JJZCI6MTI3MDI0NzUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "title": "AUXILIAR ADMINISTRATIVO - VAGA EXCLUSIVA PARA PESSOA PCD",
+          "company": "YDUQS",
+          "url": "https://yduqs.gupy.io/job/eyJqb2JJZCI6MTI2OTgxNjIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
           "modality": "Presencial",
-          "location": "Fortaleza, Ceará",
-          "publishedAt": "2026-10-09T17:44:36.329Z"
+          "location": "Teresina, Piauí",
+          "publishedAt": "2026-10-13T12:26:05.633Z"
         }
       ]
     },
     {
       "provider": "greenhouse",
       "status": "ok",
-      "count": 733,
+      "count": 721,
       "sample": [
         {
           "title": "Abuse Investigator",
           "company": "Stripe",
-          "url": "https://stripe.com/jobs/search?gh_jid=8172508",
+          "url": "https://stripe.com/jobs/search?gh_jid=8172487",
           "modality": "Não especificado",
           "location": "Dublin",
-          "publishedAt": "2026-09-03T17:32:53.000Z"
+          "publishedAt": "2026-09-03T17:30:34.000Z"
         },
         {
           "title": "Abuse Investigator",
@@ -58,17 +58,17 @@
         {
           "title": "Abuse Investigator",
           "company": "Stripe",
-          "url": "https://stripe.com/jobs/search?gh_jid=8172487",
+          "url": "https://stripe.com/jobs/search?gh_jid=8172508",
           "modality": "Não especificado",
           "location": "Dublin",
-          "publishedAt": "2026-09-03T17:30:34.000Z"
+          "publishedAt": "2026-09-03T17:32:53.000Z"
         }
       ]
     },
     {
       "provider": "lever",
       "status": "ok",
-      "count": 309,
+      "count": 310,
       "sample": [
         {
           "title": "Administrative Business Partner",
@@ -99,7 +99,7 @@
     {
       "provider": "ashby",
       "status": "ok",
-      "count": 134,
+      "count": 129,
       "sample": [
         {
           "title": "Software Engineer, Developer Platform",

@@ -25,6 +25,7 @@ await run(
   ["build"],
 );
 await run(resolve("scripts/precompress.mjs"), []);
+await run(resolve("scripts/verify-secrets.mjs"), []);
 await build({
   entryPoints: [
     "server/index.ts",

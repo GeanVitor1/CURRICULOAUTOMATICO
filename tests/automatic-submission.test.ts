@@ -15,6 +15,7 @@ import { zipSync, strToU8 } from "fflate";
 import type { FastifyInstance } from "fastify";
 import type { Job, Resume } from "../shared/types";
 import { createWorkspace } from "../server/workspace";
+import { eq } from "drizzle-orm";
 
 let app: FastifyInstance,
   directory = "",
@@ -74,17 +75,15 @@ const prepare = async (jobs: Job[], waiting = true) =>
     return prepared.map((a) => a.id);
   });
 const sender = () =>
-  vi
-    .spyOn(globalThis, "fetch")
-    .mockImplementation(
-      async () =>
-        new Response(
-          JSON.stringify({
-            status: "sent",
-            receipt: "controlled-test-receipt",
-          }),
-        ),
-    );
+  vi.spyOn(globalThis, "fetch").mockImplementation(
+    async () =>
+      new Response(
+        JSON.stringify({
+          status: "sent",
+          receipt: "controlled-test-receipt",
+        }),
+      ),
+  );
 beforeAll(async () => {
   directory = await mkdtemp(join(tmpdir(), "empregatos-send-"));
   process.env.DATA_DIR = directory;
@@ -131,6 +130,10 @@ beforeAll(async () => {
   );
 }, 30000);
 beforeEach(async () => {
+  const { applicationUsage } = await import("../server/schema");
+  await database.db
+    .delete(applicationUsage)
+    .where(eq(applicationUsage.userId, workspaceId.split(":")[0]));
   vi.stubEnv("APPLICATION_WEBHOOK_AUTHORIZED", "true");
   vi.stubEnv(
     "APPLICATION_WEBHOOK_URL",

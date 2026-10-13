@@ -38,7 +38,7 @@ export const interviewSchema = z.object({
       .array(z.enum(["CLT", "PJ", "Estágio", "Aprendiz", "Temporário"]))
       .max(5),
     sites: z.array(z.enum(candidatePortals)).max(4),
-    dailyLimit: z.number().int().min(1).max(50),
+    dailyLimit: z.number().int().min(1).max(100),
   }),
 });
 export function applyInterview(

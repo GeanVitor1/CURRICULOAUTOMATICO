@@ -54,7 +54,7 @@ export const routineSchema = z.object({
   enabled: z.boolean(),
   mode: z.enum(["discovery", "approval", "automatic"]),
   time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
-  dailyLimit: z.number().int().min(1).max(50),
+  dailyLimit: z.number().int().min(1).max(100),
   minScore: z.number().min(0).max(100),
 });
 export const sourceSchema = z

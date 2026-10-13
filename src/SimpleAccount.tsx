@@ -4,6 +4,7 @@ import { Download, ShieldCheck, Trash2 } from "lucide-react";
 import { Button, Field, Modal, PageHead } from "./components";
 import { api, useApp } from "./lib";
 import IntelligenceControl from "./IntelligenceControl";
+import Billing from "./Billing";
 import {
   GoogleMark,
   googleErrorMessage,
@@ -122,6 +123,7 @@ export default function SimpleAccount() {
           </p>
         )}
       </section>
+      <Billing />
       <section className="account-privacy">
         <ShieldCheck size={22} aria-hidden="true" />
         <div>

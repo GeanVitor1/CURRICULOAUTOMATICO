@@ -46,6 +46,7 @@ import "./landing-preferences.css";
 import "./landing-theme.css";
 import WorkflowDemo, { demoStages } from "./WorkflowDemo";
 import OrganizationDemo from "./OrganizationDemo";
+import Pricing from "./Pricing";
 
 const professions = [
   ["Primeiro emprego", Users],
@@ -242,6 +243,9 @@ export default function Landing() {
           </a>
           <a href="#para-voce" onClick={() => setMenu(false)}>
             Feito para você
+          </a>
+          <a href="#planos" onClick={() => setMenu(false)}>
+            Planos
           </a>
           <a href="#perguntas" onClick={() => setMenu(false)}>
             Perguntas frequentes
@@ -775,6 +779,28 @@ export default function Landing() {
           </motion.div>
         </section>
 
+        <section
+          id="planos"
+          className="pricing-section landing-width"
+          aria-labelledby="pricing-title"
+        >
+          <div className="landing-kicker">
+            UM PLANO PARA O SEU PRÓXIMO PASSO
+          </div>
+          <h2 id="pricing-title">Comece grátis. Amplie suas oportunidades.</h2>
+          <p className="pricing-intro">
+            Escolha quantas candidaturas automáticas você quer enviar por dia.
+            Você controla o currículo, os sites e suas preferências.
+          </p>
+          <Pricing />
+          <p className="pricing-note">
+            Planos pagos por mês, com renovação automática e cancelamento em
+            Minha conta. O envio depende de vagas compatíveis, currículo
+            aprovado e integração de envio disponível. Vagas que exigem
+            respostas ou verificações ficam pendentes. Limites não utilizados
+            não acumulam; o dia segue o horário de Brasília.
+          </p>
+        </section>
         <section id="perguntas" className="faq-section landing-width">
           <motion.div {...reveal}>
             <div className="landing-kicker">PODE PERGUNTAR</div>

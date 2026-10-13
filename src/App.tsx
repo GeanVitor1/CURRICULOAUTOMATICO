@@ -33,6 +33,7 @@ import GoogleSignIn, {
   googleErrorMessage,
   type AuthIdentity,
 } from "./GoogleSignIn";
+import { selectedPlan } from "./Pricing";
 const Landing = lazy(() => import("./Landing"));
 const pages = {
   vagas: lazy(() => import("./pages/Jobs")),
@@ -95,6 +96,17 @@ function Privacy() {
         não confirma uma candidatura. A cobertura varia por organização e
         região; confira requisitos e elegibilidade antes de enviar dados ao
         empregador.
+      </p>
+      <h2>Assinaturas e pagamentos</h2>
+      <p>
+        Os planos pagos são assinaturas mensais com renovação automática. O
+        Stripe processa o cartão em sua própria página de pagamento; a
+        EmpreGatos não armazena o número do cartão. Dados de identificação e o
+        estado da assinatura são utilizados para gerenciar a cobrança. Em Minha
+        conta, você pode gerenciar o pagamento e cancelar a renovação. Ao
+        excluir a conta, o sistema cancela as assinaturas ativas; registros
+        financeiros podem ser mantidos pelo processador conforme suas
+        obrigações.
       </p>
       <h2>Operação desta instalação</h2>
       <p>
@@ -532,7 +544,9 @@ export default function App() {
       history.replaceState({}, "", "/login");
       setRoute("/login");
     } else if (me.data && ["/login", "/register"].includes(route)) {
-      history.replaceState({}, "", "/app");
+      const destination = selectedPlan() ? "conta" : "automacao";
+      history.replaceState({}, "", `/app#${destination}`);
+      setPage(destination);
       setRoute("/app");
     }
   }, [
@@ -619,7 +633,7 @@ export default function App() {
             await client.invalidateQueries({ queryKey: ["me"] });
             history.replaceState({}, "", "/app");
             setRoute("/app");
-            navigate("automacao");
+            navigate(selectedPlan() ? "conta" : "automacao");
           }}
         />
       ) : (

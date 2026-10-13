@@ -353,7 +353,7 @@ export const defaultRoutine: Routine = {
   enabled: false,
   mode: "discovery",
   time: "08:00",
-  dailyLimit: 10,
+  dailyLimit: 5,
   minScore: 80,
   lastRun: null,
   nextRun: null,

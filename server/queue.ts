@@ -1,6 +1,7 @@
 import { Queue } from "bullmq";
 import Redis from "ioredis";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
+import type { Routine } from "../shared/types";
 import { db, mutateWorkspace } from "./db";
 import { workspaces } from "./schema";
 import { executeRoutine, notify } from "./operations";
@@ -39,45 +40,64 @@ export async function configureSchedule(
     );
   }
 }
-export async function startLocalScheduler() {
-  if (queue) return null;
-  // Local persisted due time, no browser timers. PGlite is a single-process local database.
-  const timer = setInterval(async () => {
-    const rows = await db
-      .select()
-      .from(workspaces)
-      .where(eq(workspaces.demo, false));
-    for (const row of rows) {
-      const r = row.data.routine;
-      if (r.enabled && r.nextRun && Date.parse(r.nextRun) <= Date.now()) {
-        try {
-          await executeRoutine(row.id);
-        } catch (error) {
-          // Configuration/claim failures happen before a discovery run exists.
-          // Persist them and advance the schedule so they do not silently retry each minute.
-          await mutateWorkspace(row.id, (w) => {
-            if (
-              w.runs.some(
-                (run) =>
-                  run.status === "running" &&
-                  Date.now() - Date.parse(run.at) < 300000,
-              )
+export async function enqueueDueRoutines() {
+  // Read only scheduling data, rather than every user's resume and job history.
+  const rows = await db
+    .select({
+      id: workspaces.id,
+      routine: sql<Routine>`${workspaces.data}->'routine'`,
+    })
+    .from(workspaces)
+    .where(eq(workspaces.demo, false));
+  for (const row of rows) {
+    const r = row.routine;
+    if (r.enabled && r.nextRun && Date.parse(r.nextRun) <= Date.now()) {
+      try {
+        await executeRoutine(row.id);
+      } catch (error) {
+        // Configuration/claim failures happen before a discovery run exists.
+        // Persist them and advance the schedule so they do not silently retry each minute.
+        await mutateWorkspace(row.id, (w) => {
+          if (
+            w.runs.some(
+              (run) =>
+                run.status === "running" &&
+                Date.now() - Date.parse(run.at) < 300000,
             )
-              return;
-            const message =
-              error instanceof Error
-                ? error.message
-                : "A rotina não pôde iniciar.";
-            notify(w, "A busca automática precisa de atenção", message);
-            w.routine.lastRun = new Date().toISOString();
-            w.routine.nextRun = w.routine.enabled
-              ? nextExecution(w.routine.time)
-              : null;
-          });
-        }
+          )
+            return;
+          const message =
+            error instanceof Error
+              ? error.message
+              : "A rotina não pôde iniciar.";
+          notify(w, "A busca automática precisa de atenção", message);
+          w.routine.lastRun = new Date().toISOString();
+          w.routine.nextRun = w.routine.enabled
+            ? nextExecution(w.routine.time)
+            : null;
+        });
       }
     }
-  }, 60000);
+  }
+}
+export async function startLocalScheduler() {
+  if (queue) return null;
+  let processing = false;
+  const tick = async () => {
+    if (processing) return;
+    processing = true;
+    try {
+      await enqueueDueRoutines();
+    } catch {
+      console.error(JSON.stringify({ event: "routine_scheduler_failed" }));
+    } finally {
+      processing = false;
+    }
+  };
+  // Start overdue routines immediately after a restart. Transient database errors
+  // are logged and retried on the next tick instead of terminating the process.
+  const timer = setInterval(() => void tick(), 60000);
   timer.unref();
+  void tick();
   return timer;
 }

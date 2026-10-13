@@ -8,6 +8,43 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import type { Job, Workspace } from "../shared/types";
+export const subscriptions = pgTable("subscriptions", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  customerId: text("customer_id").notNull().unique(),
+  subscriptionId: text("subscription_id").unique(),
+  plan: text("plan").notNull().default("free"),
+  status: text("status").notNull().default("inactive"),
+  currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
+  checkoutId: text("checkout_id"),
+  checkoutUrl: text("checkout_url"),
+  checkoutExpiresAt: timestamp("checkout_expires_at", { withTimezone: true }),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+export const billingEvents = pgTable("billing_events", {
+  id: text("id").primaryKey(),
+  processedAt: timestamp("processed_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+export const applicationUsage = pgTable(
+  "application_usage",
+  {
+    applicationId: text("application_id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    day: text("day").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("application_usage_user_day_idx").on(t.userId, t.day)],
+);
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
   email: text("email").notNull().unique(),

@@ -1,4 +1,15 @@
+import { createHash, timingSafeEqual } from "node:crypto";
 type Environment = Record<string, string | undefined>;
+export function proxyAuthorized(
+  value: unknown,
+  secret = process.env.API_PROXY_SECRET,
+) {
+  if (!secret || typeof value !== "string") return false;
+  return timingSafeEqual(
+    createHash("sha256").update(value).digest(),
+    createHash("sha256").update(secret).digest(),
+  );
+}
 
 export class RuntimeConfigurationError extends Error {
   constructor(

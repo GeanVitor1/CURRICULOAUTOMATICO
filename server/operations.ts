@@ -1,5 +1,4 @@
 import { randomUUID } from "node:crypto";
-import { readFile } from "node:fs/promises";
 import { resolve, extname } from "node:path";
 import { and, eq, sql } from "drizzle-orm";
 import { discoveryTasks, workspaces } from "./schema";
@@ -25,6 +24,8 @@ import { discoverCachedSource } from "./source-catalog";
 import { discoverPortal } from "./portal-discovery";
 import { db, dataDir, mutateWorkspace, readWorkspace } from "./db";
 import { localApplicationDraft } from "./application-draft";
+import { reserveApplication, workspaceDailyLimit } from "./billing";
+import { readPrivateResume } from "./resume-storage";
 import {
   RequestError,
   DailyLimitError,
@@ -377,6 +378,11 @@ export async function discover(
       ? nextExecution(w.routine.time)
       : null;
     if (w.routine.enabled && w.routine.mode !== "discovery") {
+      const dailyLimit = await workspaceDailyLimit(
+        tx,
+        id,
+        w.routine.dailyLimit,
+      );
       const today = new Date().toLocaleDateString("en-CA", {
         timeZone: "America/Sao_Paulo",
       });
@@ -411,10 +417,7 @@ export async function discover(
       const deliverable = automatic
         ? eligible.filter((job) => submissionRoute(w, job, nativeSites))
         : eligible;
-      for (const j of deliverable.slice(
-        0,
-        Math.max(0, w.routine.dailyLimit - used),
-      )) {
+      for (const j of deliverable.slice(0, Math.max(0, dailyLimit - used))) {
         try {
           const a = prepare(w, j.id);
           a.status = "Aguardando aprovação";
@@ -430,7 +433,7 @@ export async function discover(
         ).length;
         for (const job of eligible
           .filter((job) => !submissionRoute(w, job, nativeSites))
-          .slice(0, Math.max(0, w.routine.dailyLimit - manualUsed))) {
+          .slice(0, Math.max(0, dailyLimit - manualUsed))) {
           try {
             const application = prepare(w, job.id);
             application.history[0].actor = "Sistema";
@@ -469,13 +472,14 @@ export async function automaticSend(
     throw new RequestError(
       "Nenhuma integração de envio está disponível. Configure uma integração ou conecte uma sessão de navegador habilitada para o site da vaga.",
     );
-  const { delivery, ...payload } = await mutateWorkspace(id, async (w) => {
+  const { delivery, ...payload } = await mutateWorkspace(id, async (w, tx) => {
     if (w.demo)
       throw new RequestError("Não é possível enviar dados na demonstração.");
     if (!w.routine.enabled || w.routine.mode !== "automatic")
       throw new RequestError("Modo automático não está ativo.");
     const attempts = dailySubmissionAttempts(w);
-    if (attempts >= w.routine.dailyLimit) throw new DailyLimitError();
+    if (attempts >= (await workspaceDailyLimit(tx, id, w.routine.dailyLimit)))
+      throw new DailyLimitError();
     const a = w.applications.find((a) => a.id === appId);
     if (!a || a.status !== "Aguardando aprovação")
       throw new RequestError("Candidatura não elegível para envio.");
@@ -520,7 +524,7 @@ export async function automaticSend(
         throw new RequestError(
           "O currículo original precisa estar disponível para o envio.",
         );
-      const bytes = await readFile(
+      const bytes = await readPrivateResume(
         resolve(
           dataDir,
           "resumes",
@@ -544,6 +548,13 @@ export async function automaticSend(
       };
     }
     // Claim once before external I/O. Interrupted claims are recovered as unknown, never retried.
+    await reserveApplication(
+      tx,
+      workspaceOwner!.userId,
+      a.id,
+      w.routine.dailyLimit,
+      attempts,
+    );
     a.status = "Enviando";
     a.updatedAt = now();
     a.mode = "automatic";

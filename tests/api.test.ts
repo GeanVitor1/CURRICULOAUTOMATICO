@@ -422,6 +422,17 @@ describe("Fluxos de ponta a ponta na API", () => {
     ).toBe(400);
   });
   it("timeout de envio autorizado deixa resultado desconhecido e não repete", async () => {
+    // This integration scenario exercises multiple sends on a paid account.
+    const { subscriptions } = await import("../server/schema");
+    await dbModule.db
+      .insert(subscriptions)
+      .values({
+        userId,
+        customerId: "cus_controlled_api_fixture",
+        plan: "pro",
+        status: "active",
+        currentPeriodEnd: new Date(Date.now() + 86400000),
+      });
     const { automaticSend } = await import("../server/operations");
     process.env.APPLICATION_WEBHOOK_URL =
       "https://adapter.example.test/applications";
@@ -789,6 +800,12 @@ describe("Fluxos de ponta a ponta na API", () => {
     }
   });
   it("exporta dados e exclusão elimina a sessão", async () => {
+    const { subscriptions } = await import("../server/schema");
+    const { eq } = await import("drizzle-orm");
+    // Remove the local paid-plan fixture; no Stripe account exists in this test.
+    await dbModule.db
+      .delete(subscriptions)
+      .where(eq(subscriptions.userId, userId));
     const r = await request("GET", "/api/export");
     expect(r.json().jobs.length).toBeGreaterThan(0);
     expect(

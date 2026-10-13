@@ -4,11 +4,18 @@ Base: `/api`. Respostas são JSON, exceto download de arquivos e o callback OAut
 
 Operações mutativas exigem `X-Orbita-Request: 1` e, quando presente, `Origin` autorizada em `APP_ORIGIN`. O nome técnico histórico do cabeçalho e cookie foi preservado para compatibilidade. Cookies identificam a conta; o cliente não escolhe o ID do proprietário. `?demo=true` é rejeitado: o gerador de demonstrações foi removido.
 
+Exceção: `/billing/webhook` recebe JSON em bytes originais e exige assinatura Stripe válida, sem cookie nem cabeçalho CSRF. Quando `API_PROXY_SECRET` está configurado, as chamadas ao backend também exigem o segredo do encaminhamento Vercel; `/health` é a única exceção para monitoramento.
+
 ## Endpoints
 
 | Método | Rota | Comportamento |
 |---|---|---|
 | GET | `/health` | Verificação de banco e serviço |
+| GET | `/plans` | Planos públicos: gratuito/5, R$20/50 e R$50/100 candidaturas automáticas por dia |
+| GET | `/billing` | Plano da conta, cota diária, vigência e disponibilidade da cobrança |
+| POST | `/billing/checkout` | `{plan:"plus"\|"pro"}`; cria/retoma checkout mensal Stripe, com preço validado pelo servidor |
+| POST | `/billing/portal` | Abre gestão de pagamento/cancelamento apenas do cliente autenticado |
+| POST | `/billing/webhook` | Verifica assinatura, consulta assinatura atual e aplica pagamento/vigência; eventos duplicados são ignorados |
 | POST | `/auth/register` | Nome, e-mail e senha (10–128 caracteres); cria sessão |
 | POST | `/auth/login` | E-mail e senha; cria sessão |
 | GET | `/auth/me` | Identidade da sessão |

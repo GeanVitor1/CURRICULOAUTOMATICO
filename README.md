@@ -32,7 +32,7 @@ Para login Google público na Vercel, siga [Vercel e Google](docs/VERCEL-E-GOOGL
 
 A navegação principal tem apenas **Automação, Currículo, Preferências e Candidaturas**. A entrevista salva cada etapa e continua após recarregar a página. Perfil, radar, análises, notificações e fontes não são telas do fluxo. Minha conta permite exportar dados ou excluir a conta. Nenhuma vaga, salário, pagamento ou candidatura enviada é fabricada para preencher telas.
 
-A cobrança do plano ainda depende da escolha/configuração do serviço de pagamento e do valor do plano; não há checkout real ou pagamento aprovado nesta instalação. Os detalhes do fluxo e das conexões de envio estão em [docs/FLUXO-SIMPLES.md](docs/FLUXO-SIMPLES.md).
+Os planos mensais são Gratuito (até 5 candidaturas automáticas/dia), Essencial (R$ 20, até 50/dia) e Pro (R$ 50, até 100/dia). Checkout Stripe, portal de gestão, confirmação assinada do pagamento e cotas no servidor estão implementados. O pagamento real só fica disponível após configurar sua conta Stripe, preços e webhook. O guia com links e instruções para hospedagem, Google e cobrança está em [docs/CONFIGURACAO-PUBLICA.md](docs/CONFIGURACAO-PUBLICA.md).
 
 ## Gemini e tipos de vaga
 
