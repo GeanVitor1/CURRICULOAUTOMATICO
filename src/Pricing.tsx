@@ -50,14 +50,16 @@ export default function Pricing({
   disabled,
   onChoose,
   testMode = false,
+  compact = false,
 }: {
   current?: PlanId;
   disabled?: boolean;
   onChoose?: (plan: PlanId) => void;
   testMode?: boolean;
+  compact?: boolean;
 }) {
   return (
-    <div className="pricing-comparison">
+    <div className={`pricing-comparison${compact ? " pricing-compact" : ""}`}>
       <div className="pricing-grid">
         {plans.map((plan) => (
           <article
@@ -87,14 +89,16 @@ export default function Pricing({
               </strong>
               {plan.price > 0 && <span>/mês</span>}
             </p>
-            <ul>
-              {descriptions[plan.id].benefits.map((benefit) => (
-                <li key={benefit}>
-                  <Check size={16} aria-hidden="true" />
-                  {benefit}
-                </li>
-              ))}
-            </ul>
+            {!compact && (
+              <ul>
+                {descriptions[plan.id].benefits.map((benefit) => (
+                  <li key={benefit}>
+                    <Check size={16} aria-hidden="true" />
+                    {benefit}
+                  </li>
+                ))}
+              </ul>
+            )}
             {onChoose ? (
               <button
                 type="button"
@@ -132,11 +136,13 @@ export default function Pricing({
           · Suas preferências
         </p>
       </div>
-      <p className="pricing-capacity-note">
-        A capacidade em 30 dias é uma referência do limite diário. Os envios
-        dependem de vagas compatíveis e integração disponível; a cota não
-        acumula.
-      </p>
+      {!compact && (
+        <p className="pricing-capacity-note">
+          A capacidade em 30 dias é uma referência do limite diário. Os envios
+          dependem de vagas compatíveis e integração disponível; a cota não
+          acumula.
+        </p>
+      )}
     </div>
   );
 }

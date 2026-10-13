@@ -4,7 +4,7 @@
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--surface);
-  margin-bottom: 24px;
+  margin-bottom: 0;
 }
 .automation-overview .automation-summary {
   border: 0;
@@ -40,7 +40,7 @@
   max-width: 70ch;
 }
 .career-flow > .interview-extra {
-  margin: 0 0 24px;
+  margin: 0;
   padding: 22px;
   border: 1px solid var(--border);
   border-radius: 14px;

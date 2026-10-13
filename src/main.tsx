@@ -8,6 +8,7 @@ import "./product.css";
 import "./audit.css";
 import "./experience.css";
 import "./auth.css";
+import "./account.css";
 const client = new QueryClient({
   defaultOptions: {
     queries: { retry: false, staleTime: 30000, refetchOnWindowFocus: false },

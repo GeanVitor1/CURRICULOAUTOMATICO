@@ -1,0 +1,188 @@
+.account-page {
+  max-width: none;
+}
+.account-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.account-access {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.account-page .interview-card {
+  min-width: 0;
+  padding: 28px;
+  border-radius: 16px;
+}
+.account-page .interview-card h2 {
+  margin: 0;
+  font-size: 23px;
+  line-height: 1.35;
+}
+.account-identity {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.account-identity > div {
+  min-width: 0;
+}
+.account-identity h2,
+.account-identity p {
+  overflow-wrap: anywhere;
+}
+.account-identity p {
+  margin: 6px 0 0;
+  font-size: 14px;
+}
+.account-avatar {
+  flex-shrink: 0;
+}
+.account-profile > .integration-info {
+  display: grid;
+  gap: 12px;
+  padding: 20px 0 0;
+  margin-top: 20px;
+}
+.account-profile .integration-info h3 {
+  margin: 0;
+  font-size: 15px;
+}
+.account-profile .integration-info p {
+  margin: 0;
+  max-width: 70ch;
+  line-height: 1.65;
+}
+.account-profile .integration-info > a {
+  width: fit-content;
+  color: var(--accent);
+  font-size: 13px;
+  line-height: 1.6;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.account-profile .checkbox-field {
+  font-size: 13px;
+}
+.account-profile .interview-actions {
+  margin-top: 20px;
+  padding-top: 18px;
+}
+.account-google {
+  display: grid;
+  gap: 16px;
+}
+.account-google p {
+  margin: 0;
+  font-size: 14px;
+}
+.account-google .button {
+  justify-self: start;
+}
+.account-page .account-privacy {
+  gap: 14px;
+}
+.account-privacy > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.account-page .account-privacy h2 {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+.account-page .account-privacy p,
+.account-page .account-danger p {
+  margin: 0;
+}
+.account-billing {
+  display: grid;
+  gap: 20px;
+}
+.account-billing > p,
+.account-billing .billing-status {
+  margin: 0;
+}
+.account-billing .billing-status {
+  font-size: 13px;
+  padding: 14px 18px;
+  background: var(--bg);
+}
+.account-billing .billing-summary {
+  gap: 18px;
+}
+.account-billing .billing-summary h3 {
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+.account-billing .billing-summary span {
+  font-size: 14px;
+  line-height: 1.65;
+}
+.account-billing .billing-usage {
+  padding: 0;
+  font-size: 13px;
+}
+.account-billing .pricing-note {
+  max-width: 100%;
+  font-size: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.account-danger h2 {
+  margin: 0 0 8px;
+}
+
+@media (max-width: 1100px) {
+  .account-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .account-access {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+@media (max-width: 600px) {
+  .career-flow {
+    gap: 20px;
+  }
+  .account-overview,
+  .account-access {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .account-page .interview-card {
+    padding: 22px 18px;
+  }
+  .account-page .interview-card h2 {
+    font-size: 21px;
+  }
+  .account-identity {
+    gap: 14px;
+  }
+  .account-identity .account-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    font-size: 21px;
+  }
+  .account-identity p {
+    font-size: 12px;
+  }
+  .account-profile .interview-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+  .account-billing {
+    gap: 18px;
+  }
+  .account-billing .billing-status {
+    padding: 12px 14px;
+  }
+  .account-billing .billing-summary .button {
+    width: 100%;
+    justify-content: center;
+  }
+}

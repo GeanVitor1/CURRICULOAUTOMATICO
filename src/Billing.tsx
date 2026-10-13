@@ -55,7 +55,7 @@ export default function Billing() {
     }
   };
   return (
-    <section className="interview-card" aria-label="Assinatura">
+    <section className="interview-card account-billing" aria-label="Assinatura">
       <h2>Seu plano e assinatura</h2>
       {billing.isPending ? (
         <p>Consultando seu plano…</p>
@@ -134,6 +134,7 @@ export default function Billing() {
               </p>
             )}
             <Pricing
+              compact
               testMode={billing.data.paymentMode === "test"}
               current={billing.data.plan}
               disabled={

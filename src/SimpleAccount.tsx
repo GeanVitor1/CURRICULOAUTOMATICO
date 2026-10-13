@@ -75,66 +75,74 @@ export default function SimpleAccount() {
     }
   };
   return (
-    <div className="career-flow">
+    <div className="career-flow account-page">
       <PageHead
         title="Minha conta"
         description="Seus dados e sua privacidade."
       />
-      <section className="interview-card account-profile">
-        <span className="account-avatar" aria-hidden="true">
-          {w.profile.name.slice(0, 1).toUpperCase()}
-        </span>
-        <h2>{w.profile.name}</h2>
-        <p>{w.profile.email}</p>
-        <IntelligenceControl />
-        <div className="interview-actions">
-          <a className="button" href="/api/export" download>
-            <Download size={16} />
-            Baixar meus dados
-          </a>
+      <div className="account-overview">
+        <section className="interview-card account-profile">
+          <div className="account-identity">
+            <span className="account-avatar" aria-hidden="true">
+              {w.profile.name.slice(0, 1).toUpperCase()}
+            </span>
+            <div>
+              <h2>{w.profile.name}</h2>
+              <p>{w.profile.email}</p>
+            </div>
+          </div>
+          <IntelligenceControl />
+          <div className="interview-actions">
+            <a className="button" href="/api/export" download>
+              <Download size={16} />
+              Baixar meus dados
+            </a>
+          </div>
+        </section>
+        <div className="account-access">
+          <section className="interview-card account-google">
+            <h2>Acesso com Google</h2>
+            <p>
+              {me.data?.googleConnected
+                ? "Sua conta Google está conectada. Você pode usá-la para entrar no EmpreGatos."
+                : "Conecte o Google com o mesmo e-mail para entrar sem digitar sua senha."}
+            </p>
+            {!me.data?.googleConnected && (
+              <Button
+                type="button"
+                className="google-button"
+                disabled={googleBusy || !me.data || !providers.data?.google}
+                onClick={() => void startGoogle("link")}
+              >
+                <GoogleMark />
+                {googleBusy ? "Conectando…" : "Conectar Google"}
+              </Button>
+            )}
+            {!providers.isPending && !providers.data?.google && (
+              <p className="interview-help">
+                O acesso com Google ainda não está disponível nesta instalação.
+              </p>
+            )}
+            {googleError && (
+              <p className="form-error" role="alert">
+                {googleError}
+              </p>
+            )}
+          </section>
+          <section className="interview-card account-privacy">
+            <ShieldCheck size={22} aria-hidden="true" />
+            <div>
+              <h2>Você controla seus dados</h2>
+              <p>
+                Baixe uma cópia do seu perfil e histórico. Para entender como
+                seus dados são usados, consulte nossa{" "}
+                <a href="/privacy">política de privacidade</a>.
+              </p>
+            </div>
+          </section>
         </div>
-      </section>
-      <section className="interview-card">
-        <h2>Acesso com Google</h2>
-        <p>
-          {me.data?.googleConnected
-            ? "Sua conta Google está conectada. Você pode usá-la para entrar no EmpreGatos."
-            : "Conecte o Google com o mesmo e-mail para entrar sem digitar sua senha."}
-        </p>
-        {!me.data?.googleConnected && (
-          <Button
-            type="button"
-            className="google-button"
-            disabled={googleBusy || !me.data || !providers.data?.google}
-            onClick={() => void startGoogle("link")}
-          >
-            <GoogleMark />
-            {googleBusy ? "Conectando…" : "Conectar Google"}
-          </Button>
-        )}
-        {!providers.isPending && !providers.data?.google && (
-          <p className="interview-help">
-            O acesso com Google ainda não está disponível nesta instalação.
-          </p>
-        )}
-        {googleError && (
-          <p className="form-error" role="alert">
-            {googleError}
-          </p>
-        )}
-      </section>
+      </div>
       <Billing />
-      <section className="account-privacy">
-        <ShieldCheck size={22} aria-hidden="true" />
-        <div>
-          <h2>Você controla seus dados</h2>
-          <p>
-            Baixe uma cópia do seu perfil e histórico. Para entender como seus
-            dados são usados, consulte nossa{" "}
-            <a href="/privacy">política de privacidade</a>.
-          </p>
-        </div>
-      </section>
       <section className="account-danger">
         <div>
           <h2>Excluir conta</h2>
