@@ -3,7 +3,6 @@ import Fastify, { type FastifyRequest, type FastifyReply } from "fastify";
 import cookie from "@fastify/cookie";
 import multipart from "@fastify/multipart";
 import rateLimit from "@fastify/rate-limit";
-import staticFiles from "@fastify/static";
 import { randomUUID, randomBytes, createHash } from "node:crypto";
 import { isIP } from "node:net";
 import { mkdir, readFile, rm, stat } from "node:fs/promises";
@@ -1628,6 +1627,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       .then((s) => s.isDirectory())
       .catch(() => false))
   ) {
+    const { default: staticFiles } = await import("@fastify/static");
     await app.register(staticFiles, {
       root: dist,
       prefix: "/",

@@ -10,6 +10,14 @@ const pdfLoader = vi.hoisted(() =>
   }),
 );
 vi.mock("pdf-parse", pdfLoader);
+const staticLoader = vi.hoisted(() =>
+  vi.fn(() => {
+    throw Object.assign(new Error("Static frontend dependency unavailable"), {
+      code: "ERR_REQUIRE_ESM",
+    });
+  }),
+);
+vi.mock("@fastify/static", staticLoader);
 let directory = "";
 let app: FastifyInstance | undefined;
 let database: typeof import("../server/db") | undefined;
@@ -41,7 +49,7 @@ afterAll(async () => {
     await rm(directory, { recursive: true, force: true });
 });
 
-it("mantém saúde e início do login Google disponíveis quando o leitor nativo de PDF não pode carregar", async () => {
+it("mantém saúde e início do login Google disponíveis sem carregar dependências de frontend ou PDF", async () => {
   expect((await app!.inject("/api/health")).statusCode).toBe(200);
   expect((await app!.inject("/api/auth/providers")).json().google).toBe(true);
   const start = await app!.inject({
@@ -53,4 +61,5 @@ it("mantém saúde e início do login Google disponíveis quando o leitor nativo
     "https://accounts.google.com",
   );
   expect(pdfLoader).not.toHaveBeenCalled();
+  expect(staticLoader).not.toHaveBeenCalled();
 });
