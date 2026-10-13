@@ -28,6 +28,31 @@ async function start(build: () => Promise<FastifyInstance>) {
   return `http://127.0.0.1:${address.port}`;
 }
 describe("API da Vercel", () => {
+  it("identifica falhas de carregamento ESM e códigos PostgreSQL encapsulados sem registrar mensagens", async () => {
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    const build = vi
+      .fn()
+      .mockRejectedValueOnce(
+        Object.assign(new Error("private-esm-detail"), {
+          code: "ERR_REQUIRE_ASYNC_MODULE",
+        }),
+      )
+      .mockRejectedValueOnce(
+        new Error("private-query-detail", {
+          cause: Object.assign(new Error("private-db-password"), {
+            code: "28P01",
+          }),
+        }),
+      );
+    const origin = await start(build);
+    expect((await fetch(`${origin}/api/health`)).status).toBe(503);
+    expect((await fetch(`${origin}/api/health`)).status).toBe(503);
+    expect(log.mock.calls.map(([entry]) => JSON.parse(entry).reason)).toEqual([
+      "ERR_REQUIRE_ASYNC_MODULE",
+      "28P01",
+    ]);
+    expect(JSON.stringify(log.mock.calls)).not.toContain("private-");
+  });
   it("mantém caminhos, query, JSON e cookies em requisições simultâneas com uma inicialização", async () => {
     const build = vi.fn(async () => {
       app = Fastify();

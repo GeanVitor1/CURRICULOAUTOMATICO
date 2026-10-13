@@ -17,7 +17,40 @@ const startupReasons = new Set([
   "ERR_MODULE_NOT_FOUND",
   "MODULE_NOT_FOUND",
   "ERR_INVALID_URL",
+  "ERR_REQUIRE_ASYNC_MODULE",
+  "ERR_REQUIRE_ESM",
+  "ERR_UNKNOWN_FILE_EXTENSION",
+  "ERR_PACKAGE_PATH_NOT_EXPORTED",
+  "ERR_UNSUPPORTED_DIR_IMPORT",
+  "ERR_DLOPEN_FAILED",
 ]);
+
+function initializationReason(error: unknown): string {
+  let current = error;
+  for (
+    let depth = 0;
+    depth < 4 && current && typeof current === "object";
+    depth++
+  ) {
+    const { code, cause, name } = current as {
+      code?: unknown;
+      cause?: unknown;
+      name?: unknown;
+    };
+    if (
+      typeof code === "string" &&
+      (startupReasons.has(code) ||
+        /^[0-9A-Z]{5}$/.test(code) ||
+        /^FST_ERR_[A-Z_]{1,70}$/.test(code))
+    )
+      return code;
+    if (name === "ReferenceError") return "REFERENCE_ERROR";
+    if (name === "SyntaxError") return "SYNTAX_ERROR";
+    if (name === "TypeError") return "TYPE_ERROR";
+    current = cause;
+  }
+  return "UNEXPECTED_INITIALIZATION_FAILURE";
+}
 
 export function createServerlessHandler(build: () => Promise<FastifyInstance>) {
   let ready: Promise<FastifyInstance> | undefined;
@@ -31,23 +64,10 @@ export function createServerlessHandler(build: () => Promise<FastifyInstance>) {
       app = await ready;
     } catch (error) {
       ready = undefined;
-      const code = (error as { code?: unknown } | null)?.code;
-      const name = (error as { name?: unknown } | null)?.name;
-      const nativeReason =
-        name === "ReferenceError"
-          ? "REFERENCE_ERROR"
-          : name === "SyntaxError"
-            ? "SYNTAX_ERROR"
-            : name === "TypeError"
-              ? "TYPE_ERROR"
-              : "UNEXPECTED_INITIALIZATION_FAILURE";
       console.error(
         JSON.stringify({
           event: "api_initialization_failed",
-          reason:
-            typeof code === "string" && startupReasons.has(code)
-              ? code
-              : nativeReason,
+          reason: initializationReason(error),
         }),
       );
       response.writeHead(503, {
