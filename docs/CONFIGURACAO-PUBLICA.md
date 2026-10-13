@@ -91,6 +91,22 @@ O Google identifica a pessoa no EmpreGatos. A conexão com sites de emprego é i
 
 O cartão é informado diretamente no checkout hospedado pelo Stripe. O EmpreGatos não recebe nem armazena os números do cartão. Abrir a página de sucesso não libera um plano: o servidor valida a assinatura do webhook, consulta a assinatura atual e exige fatura paga. Eventos duplicados não são processados novamente. Assinatura vencida ou com pagamento pendente volta à cota gratuita.
 
+### Estado confirmado em 13/10/2026
+
+Os dois preços mensais, portal e destino público de eventos estão configurados no sandbox. No site publicado, os dois checkouts abriram com R$ 20/R$ 50 mensais. Uma assinatura com cartão fictício foi criada pela API de teste da Stripe: os eventos reais desse sandbox chegaram ao destino público e o site exibiu os limites Pro (100/dia) e Essencial (50/dia), incluindo troca de plano e cancelamento ao fim do período. A conta temporária, o cliente e a assinatura de teste foram removidos/cancelados. Nenhum dinheiro real foi movimentado.
+
+O titular informou que a Stripe solicita verificação de identidade com documento e que irá concluí-la posteriormente. Portanto, o modo real segue pendente. Escolher o tipo de checkout ou editar sua aparência não substitui essa ativação.
+
+Quando a conta estiver ativada, salve a chave real diretamente no arquivo privado `.env.stripe.live.local`, com a variável `STRIPE_SECRET_KEY`. Não envie a chave pelo chat. Então execute:
+
+```powershell
+npm run configure:stripe -- --live --from-env
+```
+
+O comando valida que cobranças, recebimentos e cadastro estão habilitados, prepara os recursos reais e salva suas credenciais juntas no arquivo privado. Ele recusa misturar recursos/segredos de teste e produção e **não altera a configuração do site publicado nem cria cobranças**. O modo padrão continua sendo teste; para reconferi-lo, use `npm run configure:stripe -- --production-env --from-env`.
+
+Antes de publicar as credenciais reais, verificar e encerrar os vínculos de cobrança de teste no banco: IDs de clientes do sandbox não funcionam em produção. Preservar contas, perfis e currículos; não apagar dados de pessoas para trocar o ambiente. Só depois instalar conjuntamente chave, preços, portal e segredo real do webhook na Vercel, fazer novo deploy e conferir o checkout real sem efetuar uma cobrança automática.
+
 ## 4. Busca e envio automático
 
 A Gupy consulta anúncios públicos. InfoJobs/Glassdoor dependem da busca externa configurada; LinkedIn exige acesso de busca autorizado. Prefira selecionar fontes cuja busca esteja disponível na entrevista.

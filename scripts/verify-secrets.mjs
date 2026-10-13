@@ -7,6 +7,9 @@ const environments = [
   parse(
     await readFile(resolve(".env.production.local"), "utf8").catch(() => ""),
   ),
+  parse(
+    await readFile(resolve(".env.stripe.live.local"), "utf8").catch(() => ""),
+  ),
 ];
 const privateNames = [
   "GEMINI_API_KEY",

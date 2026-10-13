@@ -1,0 +1,29 @@
+{
+  "mode": "test",
+  "realMoneyMoved": false,
+  "checkoutPlans": [
+    {
+      "plan": "plus",
+      "amount": 2000,
+      "currency": "brl",
+      "interval": "month"
+    },
+    {
+      "plan": "pro",
+      "amount": 5000,
+      "currency": "brl",
+      "interval": "month"
+    }
+  ],
+  "webhookDelivered": true,
+  "temporaryAccountRemoved": true,
+  "webhookConfigured": true,
+  "freeBeforePayment": true,
+  "portalCreated": true,
+  "invalidSignatureRejected": true,
+  "proDailyLimit": 100,
+  "essentialDailyLimit": 50,
+  "cancelAtPeriodEndPreservedAccess": true,
+  "testPaymentSimulated": true,
+  "temporaryCustomerRemoved": true
+}

@@ -19,6 +19,9 @@ export default defineConfig(({ command }) => {
       },
     },
     build: { chunkSizeWarningLimit: 650 },
-    test: { include: ["tests/**/*.test.ts"], fileParallelism: false },
+    test: {
+      include: ["tests/**/*.test.ts", "tests/**/*.test.mjs"],
+      fileParallelism: false,
+    },
   };
 });
