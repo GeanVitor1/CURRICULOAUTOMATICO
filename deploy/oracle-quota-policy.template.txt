@@ -1,0 +1,9 @@
+zero compute-core quotas in tenancy
+zero compute-memory quotas in tenancy
+zero block-storage quotas in tenancy
+zero auto-scaling quotas in tenancy
+zero compute-management quotas in tenancy
+set compute-core quota standard-a1-core-count to 2 in tenancy where request.ad = '__HOME_AD__'
+set compute-memory quota standard-a1-memory-count to 12 in tenancy where request.ad = '__HOME_AD__'
+set block-storage quota total-storage-gb to 50 in tenancy where request.ad = '__HOME_AD__'
+set block-storage quota backup-count to 5 in tenancy where request.region = '__HOME_REGION__'

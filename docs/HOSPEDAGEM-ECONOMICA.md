@@ -22,6 +22,8 @@ Fontes oficiais:
 
 ## 1. Criar a máquina Oracle
 
+Antes de criar recursos, confirmar que a conta permanece Free Tier e revisar [ORACLE-CONTROLE-DE-CUSTOS.md](ORACLE-CONTROLE-DE-CUSTOS.md). O usuário já criou a conta; o painel informou provisionamento em andamento. As regras de cotas foram preparadas, mas ainda não aplicadas.
+
 1. Abra https://signup.cloud.oracle.com/. O cadastro e a verificação do titular são feitos por você.
 2. Escolha a região principal da conta com cuidado: os recursos Always Free precisam estar nessa região. Prefira uma região próxima aos usuários quando houver disponibilidade.
 3. Em **Compute > Instances > Create instance**, selecione imagem **Ubuntu** e tipo **VM.Standard.A1.Flex**, com selo **Always Free Eligible**.
