@@ -1,6 +1,6 @@
 # Hospedagem com custo mínimo — pesquisa de 13/10/2026
 
-A página já está hospedada em https://curriculoautomatico.vercel.app. A API retornava HTTP 503 nesta sessão. O site publicado e o servidor que executa as buscas são partes diferentes: a Vercel continua servindo as telas; um backend permanente precisa guardar os dados, receber pagamentos e executar a fila.
+A página e a API estão hospedadas em https://curriculoautomatico.vercel.app. A falha HTTP 503 foi corrigida e o titular confirmou o login Google. A Vercel serve as telas, contas e pagamentos; um backend permanente ainda precisa guardar os arquivos de currículos e executar a fila continuamente.
 
 Atualização: o projeto Vercel foi autenticado e vinculado ao espaço `geans-projects-da7db03c`. As variáveis de produção estavam vazias; Google, criptografia e Stripe de teste foram configurados. O banco `curriculoautomatico-db` foi provisionado pelo Marketplace Neon no plano `free_v3` (Free), somente em Production. O esquema foi aplicado por conexão TLS direta. A API Vercel pode usar esse banco para contas e sessões enquanto a máquina Oracle é instalada; a validação pública do novo deploy é registrada na entrega.
 
@@ -26,7 +26,7 @@ Fontes oficiais:
 
 ## 1. Criar a máquina Oracle
 
-Antes de criar recursos, confirmar que a conta permanece Free Tier e revisar [ORACLE-CONTROLE-DE-CUSTOS.md](ORACLE-CONTROLE-DE-CUSTOS.md). O usuário já criou a conta; o painel informou provisionamento em andamento. As regras de cotas foram preparadas, mas ainda não aplicadas.
+Antes de criar recursos, confirmar que a conta permanece Free Tier e revisar [ORACLE-CONTROLE-DE-CUSTOS.md](ORACLE-CONTROLE-DE-CUSTOS.md). O usuário já criou a conta, confirmou a liberação do painel e informou São Paulo como região selecionada. A região principal ainda precisa de confirmação autenticada. As regras de cotas foram preparadas, mas ainda não aplicadas.
 
 1. Abra https://signup.cloud.oracle.com/. O cadastro e a verificação do titular são feitos por você.
 2. Escolha a região principal da conta com cuidado: os recursos Always Free precisam estar nessa região. Prefira uma região próxima aos usuários quando houver disponibilidade.
