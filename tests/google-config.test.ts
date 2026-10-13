@@ -67,6 +67,28 @@ describe("Configuração privada do cliente Google", () => {
     });
     expect(await readFile(target, "utf8")).toBe(original);
   });
+  it("configura o cliente do domínio público em arquivo separado do desenvolvimento", async () => {
+    const source = join(directory, "production-client.json"),
+      target = join(directory, "production.env"),
+      origin = "https://curriculoautomatico.vercel.app";
+    await writeFile(
+      source,
+      JSON.stringify(credentials([`${origin}/api/auth/google/callback`])),
+    );
+    const result = await execute(process.execPath, [
+      script,
+      source,
+      "--output-env",
+      target,
+      "--origin",
+      origin,
+    ]);
+    expect(parse(await readFile(target, "utf8"))).toMatchObject({
+      APP_ORIGIN: origin,
+      GOOGLE_REDIRECT_URI: `${origin}/api/auth/google/callback`,
+    });
+    expect(result.stdout + result.stderr).not.toContain("private-test-secret");
+  });
   it("não inclui conteúdo do JSON inválido em erros ou cria ambiente com credenciais inválidas", async () => {
     const source = join(directory, "invalid-client.json"),
       target = join(directory, "invalid.env");

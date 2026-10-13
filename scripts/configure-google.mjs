@@ -8,6 +8,9 @@ const envFile =
   envFlag >= 0
     ? resolve(args.splice(envFlag, 2)[1] || ".env")
     : resolve(".env");
+const originFlag = args.indexOf("--origin");
+const explicitOrigin =
+  originFlag >= 0 ? args.splice(originFlag, 2)[1] : undefined;
 try {
   const input = args[0] || "google-client.local.json";
   const raw = await readFile(resolve(input), "utf8").catch((error) => {
@@ -33,11 +36,15 @@ try {
     readFile(resolve(".env.example"), "utf8").catch(() => ""),
   );
   const current = parse(content);
-  const origin = (current.APP_ORIGIN || "http://127.0.0.1:5173")
+  const origin = (
+    explicitOrigin ||
+    current.APP_ORIGIN ||
+    "http://127.0.0.1:5173"
+  )
     .split(",")[0]
     .trim();
   const callback =
-    current.GOOGLE_REDIRECT_URI ||
+    (!explicitOrigin && current.GOOGLE_REDIRECT_URI) ||
     new URL("/api/auth/google/callback", origin).href;
   const callbackUrl = new URL(callback);
   if (
@@ -56,6 +63,7 @@ try {
       `Adicione este URI de redirecionamento no cliente Google Cloud e baixe o JSON novamente: ${callback}`,
     );
   const updates = {
+    ...(explicitOrigin ? { APP_ORIGIN: origin } : {}),
     GOOGLE_CLIENT_ID: credentials.client_id.trim(),
     GOOGLE_CLIENT_SECRET: credentials.client_secret.trim(),
     GOOGLE_REDIRECT_URI: callback,

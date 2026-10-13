@@ -2,7 +2,7 @@ import { buildApp } from "./app";
 import { startLocalScheduler, connection, queue } from "./queue";
 import { closeDb } from "./db";
 import { startDiscoveryWorker } from "./discovery-queue";
-const app = await buildApp();
+const app = await buildApp({ serveStatic: process.env.SERVE_STATIC !== "false" });
 const timer = await startLocalScheduler();
 const stopDiscovery = process.env.REDIS_URL ? null : startDiscoveryWorker();
 await app.listen({

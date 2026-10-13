@@ -90,6 +90,11 @@ export async function billingSummary(userId: string): Promise<BillingSummary> {
   );
   const usedToday = Math.max(used, historical);
   return {
+    paymentMode: process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")
+      ? "test"
+      : process.env.STRIPE_SECRET_KEY?.startsWith("sk_live_")
+        ? "live"
+        : "unconfigured",
     plan: plan.id,
     name: plan.name,
     dailyLimit: plan.dailyLimit,
@@ -267,6 +272,9 @@ export async function createBillingPortal(userId: string) {
   if (!billing) throw new RequestError("Você ainda não possui uma assinatura.");
   const session = await stripeClient().billingPortal.sessions.create({
     customer: billing.customerId,
+    ...(process.env.STRIPE_PORTAL_CONFIGURATION
+      ? { configuration: process.env.STRIPE_PORTAL_CONFIGURATION }
+      : {}),
     return_url: `${appOrigins()[0]}/app#conta`,
   });
   return { url: session.url };

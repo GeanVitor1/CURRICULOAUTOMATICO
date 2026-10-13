@@ -59,6 +59,17 @@ test("escolher plano leva à conta e mostra confirmação segura antes da cobran
     ).toBeVisible();
     const summary = await page.request.get("/api/billing");
     expect((await summary.json()).plan).toBe("free");
+    for (const width of [1024, 375]) {
+      await page.setViewportSize({ width, height: 1000 });
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      await page
+        .getByRole("region", { name: "Assinatura" })
+        .screenshot({ path: `artifacts/plans-account-${width}.png` });
+    }
   } finally {
     if (registered)
       expect(

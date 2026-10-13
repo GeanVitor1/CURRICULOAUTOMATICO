@@ -1,7 +1,6 @@
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
-import { build } from "esbuild";
 const require = createRequire(import.meta.url);
 const productionEnv = { ...process.env, NODE_ENV: "production" };
 async function run(file, args) {
@@ -26,18 +25,4 @@ await run(
 );
 await run(resolve("scripts/precompress.mjs"), []);
 await run(resolve("scripts/verify-secrets.mjs"), []);
-await build({
-  entryPoints: [
-    "server/index.ts",
-    "server/worker.ts",
-    "server/vercel.ts",
-    "server/app.ts",
-  ],
-  bundle: true,
-  platform: "node",
-  format: "esm",
-  packages: "external",
-  external: ["./app.js"],
-  outdir: "dist-server",
-  logLevel: "info",
-});
+await run(resolve("scripts/build-api.mjs"), []);

@@ -66,6 +66,12 @@ export default function Billing() {
       ) : (
         billing.data && (
           <>
+            {billing.data.paymentMode === "test" && (
+              <p className="billing-status" role="status">
+                Pagamento em modo de teste. Nenhuma cobrança real será feita; as
+                assinaturas aqui servem para validar o funcionamento.
+              </p>
+            )}
             <div className="billing-summary">
               <div>
                 <h3>{billing.data.name}</h3>
@@ -128,6 +134,7 @@ export default function Billing() {
               </p>
             )}
             <Pricing
+              testMode={billing.data.paymentMode === "test"}
               current={billing.data.plan}
               disabled={
                 busy ||

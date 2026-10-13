@@ -118,6 +118,7 @@ beforeEach(async () => {
   vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_fixture");
   vi.stubEnv("STRIPE_PRICE_PLUS", "price_plus");
   vi.stubEnv("STRIPE_PRICE_PRO", "price_pro");
+  vi.stubEnv("STRIPE_PORTAL_CONFIGURATION", "");
   vi.stubEnv("APP_ORIGIN", "http://127.0.0.1:5173");
   vi.stubEnv("API_PROXY_SECRET", "");
   userId = randomUUID();
@@ -180,6 +181,7 @@ describe("Planos, pagamento e cota protegida", () => {
     expect(
       (await app.inject({ url: "/api/billing", headers: headers() })).json(),
     ).toMatchObject({
+      paymentMode: "test",
       plan: "free",
       dailyLimit: 5,
       usedToday: 0,

@@ -2,6 +2,8 @@
 
 Os planos são mensais: Gratuito (5 candidaturas automáticas/dia), Essencial (R$ 20, 50/dia) e Pro (R$ 50, 100/dia). O código de cobrança está implementado; pagamentos reais exigem sua conta Stripe ativa, as credenciais do servidor e um webhook público.
 
+**Atualização de 13/10/2026:** para o orçamento mínimo solicitado, o caminho principal agora é [hospedagem econômica com VM Oracle Always Free](HOSPEDAGEM-ECONOMICA.md), mantendo a Vercel. O Stripe de teste já tem produtos, preços, portal e webhook configurados. A opção Render paga abaixo permanece como alternativa.
+
 ## 1. Hospedagem e endereço público
 
 A fila de buscas precisa de um processo permanente. Uma função Vercel sozinha não executa o agendamento nem consome a fila. Não publique a aplicação apenas como site estático.

@@ -5,6 +5,7 @@ export const plans = [
 ] as const;
 export type PlanId = (typeof plans)[number]["id"];
 export type BillingSummary = {
+  paymentMode: "test" | "live" | "unconfigured";
   plan: PlanId;
   name: string;
   dailyLimit: number;

@@ -1,20 +1,31 @@
 import "dotenv/config";
+import { parse } from "dotenv";
 import { readdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-const keys = [
-  process.env.GEMINI_API_KEY,
-  process.env.OPENCODE_ZEN_API_KEY,
-  process.env.OPENCODE_API_KEY,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.LINKEDIN_CLIENT_SECRET,
-  process.env.STRIPE_SECRET_KEY,
-  process.env.STRIPE_WEBHOOK_SECRET,
-  process.env.API_PROXY_SECRET,
-  process.env.APPLICATION_WEBHOOK_TOKEN,
-  process.env.ENCRYPTION_KEY,
-  process.env.DATABASE_URL,
-  process.env.REDIS_URL,
-].filter(Boolean);
+const environments = [
+  process.env,
+  parse(
+    await readFile(resolve(".env.production.local"), "utf8").catch(() => ""),
+  ),
+];
+const privateNames = [
+  "GEMINI_API_KEY",
+  "OPENCODE_ZEN_API_KEY",
+  "OPENCODE_API_KEY",
+  "GOOGLE_CLIENT_SECRET",
+  "LINKEDIN_CLIENT_SECRET",
+  "STRIPE_SECRET_KEY",
+  "STRIPE_WEBHOOK_SECRET",
+  "API_PROXY_SECRET",
+  "APPLICATION_WEBHOOK_TOKEN",
+  "ENCRYPTION_KEY",
+  "DATABASE_URL",
+  "REDIS_URL",
+  "POSTGRES_PASSWORD",
+];
+const keys = environments
+  .flatMap((environment) => privateNames.map((name) => environment[name]))
+  .filter(Boolean);
 let checked = 0,
   leaked = false;
 async function check(dir) {
