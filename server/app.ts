@@ -107,9 +107,16 @@ import {
   GOOGLE_COOKIE_PATH,
 } from "./google-oauth";
 import { applicationCapabilities } from "./automation-capabilities";
+import {
+  appOrigins,
+  googleOAuthConfig,
+  hostedOnVercel,
+  secureAuthCookies,
+} from "./auth-config";
 const tokenHash = (s: string) => createHash("sha256").update(s).digest("hex");
-export async function buildApp() {
+export async function buildApp({ serveStatic = true } = {}) {
   const app = Fastify({
+    trustProxy: hostedOnVercel(),
     logger:
       process.env.NODE_ENV !== "test"
         ? {
@@ -146,13 +153,8 @@ export async function buildApp() {
     if (request.url.startsWith("/api"))
       reply.header("Cache-Control", "no-store");
     if (!["GET", "HEAD", "OPTIONS"].includes(request.method)) {
-      const allowed = new Set(
-        (
-          process.env.APP_ORIGIN ||
-          "http://127.0.0.1:5173,http://localhost:5173"
-        ).split(","),
-      );
-      if (process.env.NODE_ENV !== "production") {
+      const allowed = new Set(appOrigins());
+      if (!secureAuthCookies()) {
         allowed.add("http://127.0.0.1:5173");
         allowed.add("http://localhost:5173");
       }
@@ -226,7 +228,7 @@ export async function buildApp() {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: secureAuthCookies(),
       maxAge: 7 * 86400,
     });
   }
@@ -282,11 +284,12 @@ export async function buildApp() {
     reply: FastifyReply,
     intent: "signin" | "link" | "reauthenticate",
   ) {
-    if (!googleOAuthConfigured())
+    const config = googleOAuthConfig();
+    if (!config)
       throw new RequestError(
         "O acesso com Google ainda não está disponível nesta instalação.",
       );
-    const callback = new URL(process.env.GOOGLE_REDIRECT_URI!);
+    const callback = new URL(config.redirectUri);
     if (
       intent !== "signin" &&
       req.headers.origin &&
@@ -303,7 +306,7 @@ export async function buildApp() {
       path: GOOGLE_COOKIE_PATH,
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: secureAuthCookies(),
       maxAge: 600,
     });
     return challenge.url;
@@ -312,10 +315,8 @@ export async function buildApp() {
     config: { rateLimit: { max: 10, timeWindow: "1 minute" } },
   };
   app.get("/api/auth/google/start", googleRateLimit, async (req, reply) => {
-    if (
-      googleOAuthConfigured() &&
-      req.headers.host !== new URL(process.env.GOOGLE_REDIRECT_URI!).host
-    )
+    const config = googleOAuthConfig();
+    if (config && req.headers.host !== new URL(config.origin).host)
       return reply.redirect(googleSignInUrl()!);
     try {
       return reply.redirect(await startGoogle(req, reply, "signin"));
@@ -333,7 +334,7 @@ export async function buildApp() {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: secureAuthCookies(),
       expires: session.expiresAt,
     });
     return { url: await startGoogle(req, reply, intent) };
@@ -1498,9 +1499,10 @@ export async function buildApp() {
   });
   const dist = resolve("dist");
   if (
-    await stat(dist)
+    serveStatic &&
+    (await stat(dist)
       .then((s) => s.isDirectory())
-      .catch(() => false)
+      .catch(() => false))
   ) {
     await app.register(staticFiles, {
       root: dist,

@@ -26,7 +26,7 @@ await run(
 );
 await run(resolve("scripts/precompress.mjs"), []);
 await build({
-  entryPoints: ["server/index.ts", "server/worker.ts"],
+  entryPoints: ["server/index.ts", "server/worker.ts", "server/vercel.ts"],
   bundle: true,
   platform: "node",
   format: "esm",

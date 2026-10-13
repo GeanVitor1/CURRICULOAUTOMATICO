@@ -248,6 +248,96 @@ describe("Cadastro e acesso Google com identidade verificada", () => {
     expect(sender).not.toHaveBeenCalled();
     expect((await callback(challenge)).headers.location).toBe("/app");
   });
+  it("conclui o login HTTPS em outra instância e usa cookies seguros no domínio público", async () => {
+    const publicOrigin = "https://empregatos.example";
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("APP_ORIGIN", ` ${publicOrigin}/ `);
+    vi.stubEnv("GOOGLE_REDIRECT_URI", "");
+    const headers = { host: "empregatos.example", origin: publicOrigin };
+    expect((await request("/api/auth/providers", { headers })).json()).toEqual({
+      google: true,
+      googleSignInUrl: `${publicOrigin}/api/auth/google/start`,
+    });
+    const result = await request("/api/auth/google/start", { headers });
+    const url = new URL(String(result.headers.location));
+    expect(url.searchParams.get("redirect_uri")).toBe(
+      `${publicOrigin}/api/auth/google/callback`,
+    );
+    expect(result.headers["set-cookie"]).toContain("Secure");
+    const challenge = {
+      result,
+      url,
+      state: url.searchParams.get("state")!,
+      nonce: url.searchParams.get("nonce")!,
+      browser: cookie(result.headers, "orbita_google_state"),
+    };
+    exchange(challenge);
+    const otherApp = await (
+      await import("../server/app")
+    ).buildApp({ serveStatic: false });
+    try {
+      const finished = await otherApp.inject({
+        url: `/api/auth/google/callback?state=${challenge.state}&code=fixture-code`,
+        headers: { ...headers, cookie: challenge.browser },
+      });
+      expect(finished.headers.location).toBe("/app");
+      expect(cookie(finished.headers, "orbita_session")).toBeTruthy();
+      const cookies = finished.headers["set-cookie"];
+      expect(
+        (Array.isArray(cookies) ? cookies : [cookies]).find((value) =>
+          value?.startsWith("orbita_session="),
+        ),
+      ).toContain("Secure");
+      const identity = await otherApp.inject({
+        url: "/api/auth/me",
+        headers: {
+          ...headers,
+          cookie: cookie(finished.headers, "orbita_session"),
+        },
+      });
+      expect(identity.json()).toMatchObject({
+        id: googleUser,
+        googleConnected: true,
+      });
+      const canonical = await request("/api/auth/google/start", {
+        headers: {
+          host: "another.example",
+          "x-forwarded-host": "attacker.example",
+        },
+      });
+      expect(canonical.headers.location).toBe(
+        `${publicOrigin}/api/auth/google/start`,
+      );
+      expect(canonical.headers["set-cookie"]).toBeUndefined();
+      const blocked = await otherApp.inject({
+        url: "/api/auth/google/start",
+        method: "POST",
+        headers: {
+          ...headers,
+          origin: "https://attacker.example",
+          "x-orbita-request": "1",
+        },
+        payload: { intent: "link" },
+      });
+      expect(blocked.statusCode).toBe(403);
+      const linked = await otherApp.inject({
+        url: "/api/auth/google/start",
+        method: "POST",
+        headers: {
+          ...headers,
+          "x-orbita-request": "1",
+          cookie: cookie(finished.headers, "orbita_session"),
+        },
+        payload: { intent: "reauthenticate" },
+      });
+      expect(linked.statusCode).toBe(200);
+      expect(new URL(linked.json().url).searchParams.get("redirect_uri")).toBe(
+        `${publicOrigin}/api/auth/google/callback`,
+      );
+    } finally {
+      await otherApp.close();
+    }
+  });
   it("consome uma única vez em callbacks concorrentes", async () => {
     const challenge = await begin();
     const sender = exchange(challenge);

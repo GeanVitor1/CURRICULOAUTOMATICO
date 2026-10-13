@@ -43,7 +43,9 @@ describe("Configuração privada do cliente Google", () => {
     expect(env.GOOGLE_CLIENT_SECRET).toBe("GOCSPX-private-test-secret");
     expect(env.GOOGLE_REDIRECT_URI).toBe(callback);
     expect(env.GEMINI_API_KEY).toBe("existing-private-key");
-    expect((await stat(target)).mode & 0o777).toBe(0o600);
+    // Windows uses ACLs; chmod/stat do not represent POSIX private permissions.
+    if (process.platform !== "win32")
+      expect((await stat(target)).mode & 0o777).toBe(0o600);
     expect(result.stdout + result.stderr).not.toMatch(
       /private-test-secret|existing-private-key/,
     );

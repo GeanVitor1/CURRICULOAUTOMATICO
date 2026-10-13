@@ -1,10 +1,12 @@
 # Login Google e envio de candidaturas
 
+Para publicação e login em qualquer computador, veja [Login Google público na Vercel](VERCEL-E-GOOGLE.md). A configuração abaixo é de desenvolvimento local. Credenciais de uma instalação não são transferidas pelo Git e precisam ser configuradas no servidor de produção.
+
 ## Configurar o Google Cloud
 
 Esta instalação precisa de um cliente OAuth próprio. O código não pode emitir credenciais do Google nem usar o OAuth de outro aplicativo.
 
-Nesta instalação local, o cliente **EmpreGatos Local** já foi criado no Google Cloud, suas credenciais foram importadas no `.env` e a conta responsável foi adicionada aos usuários de teste. O projeto continua em modo de teste. O login solicita apenas `openid email profile`; pela exceção documentada pelo Google para autenticação básica, outras contas não precisam ser adicionadas à lista de usuários de teste para esse fluxo. No primeiro acesso, uma pessoa sem conta no EmpreGatos recebe uma conta nova automaticamente. Quem já possui uma conta local com o mesmo e-mail precisa conectar o Google após entrar com sua senha.
+O login solicita apenas `openid email profile`; pela exceção documentada pelo Google para autenticação básica, outras contas não precisam ser adicionadas à lista de usuários de teste para esse fluxo. No primeiro acesso, uma pessoa sem conta no EmpreGatos recebe uma conta nova automaticamente. Quem já possui uma conta local com o mesmo e-mail precisa conectar o Google após entrar com sua senha.
 
 1. Acesse [Google Auth Platform](https://console.cloud.google.com/auth/overview) com a conta responsável pelo EmpreGatos. Selecione ou crie o projeto.
 2. Em **Branding**, configure nome EmpreGatos, e-mail de suporte e contato do responsável. Em **Audience**, use público externo. Se adicionar permissões além da autenticação básica, durante os testes será necessário incluir os e-mails autorizados em **Test users**.

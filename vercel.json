@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/server.mjs": {
+      "includeFiles": "migrations/**",
+      "maxDuration": 60
+    }
+  },
+  "routes": [
+    { "src": "/api(?:/.*)?", "dest": "/api/server" },
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
+  ]
+}

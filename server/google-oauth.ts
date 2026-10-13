@@ -6,6 +6,7 @@ import { db } from "./db";
 import { googleOAuthStates, sessions, users, workspaces } from "./schema";
 import { createWorkspace } from "./workspace";
 import { RequestError } from "./errors";
+import { googleOAuthConfig } from "./auth-config";
 
 export type GoogleIntent = "signin" | "link" | "reauthenticate";
 export class GoogleOAuthError extends RequestError {
@@ -22,46 +23,19 @@ const random = () => randomBytes(32).toString("base64url");
 export const GOOGLE_COOKIE = "orbita_google_state";
 export const GOOGLE_COOKIE_PATH = "/api/auth/google";
 export function googleOAuthConfigured() {
-  try {
-    if (
-      !process.env.GOOGLE_CLIENT_ID?.trim() ||
-      !process.env.GOOGLE_CLIENT_SECRET?.trim()
-    )
-      return false;
-    const callback = new URL(process.env.GOOGLE_REDIRECT_URI || "");
-    const origins = (
-      process.env.APP_ORIGIN || "http://127.0.0.1:5173,http://localhost:5173"
-    )
-      .split(",")
-      .map((value) => value.trim());
-    return (
-      origins.includes(callback.origin) &&
-      callback.pathname === "/api/auth/google/callback" &&
-      !callback.username &&
-      !callback.password &&
-      !callback.search &&
-      !callback.hash &&
-      (callback.protocol === "https:" ||
-        (process.env.NODE_ENV !== "production" &&
-          callback.protocol === "http:" &&
-          ["localhost", "127.0.0.1", "[::1]"].includes(callback.hostname)))
-    );
-  } catch {
-    return false;
-  }
+  return googleOAuthConfig() !== null;
 }
 export function googleSignInUrl() {
-  return googleOAuthConfigured()
-    ? new URL("/api/auth/google/start", process.env.GOOGLE_REDIRECT_URI!).href
-    : null;
+  const config = googleOAuthConfig();
+  return config ? new URL("/api/auth/google/start", config.origin).href : null;
 }
 
 export async function beginGoogleOAuth(
   intent: GoogleIntent = "signin",
   sessionToken?: string,
 ) {
-  if (!googleOAuthConfigured())
-    throw new GoogleOAuthError("unavailable", intent);
+  const config = googleOAuthConfig();
+  if (!config) throw new GoogleOAuthError("unavailable", intent);
   let userId: string | undefined;
   const sessionHash = sessionToken ? hash(sessionToken) : undefined;
   if (intent !== "signin") {
@@ -82,8 +56,7 @@ export async function beginGoogleOAuth(
     browserToken = random(),
     nonce = random();
   const codeVerifier = randomBytes(48).toString("base64url");
-  const clientId = process.env.GOOGLE_CLIENT_ID!.trim();
-  const redirectUri = process.env.GOOGLE_REDIRECT_URI!;
+  const { clientId, redirectUri } = config;
   await db
     .delete(googleOAuthStates)
     .where(lt(googleOAuthStates.expiresAt, new Date()));
@@ -141,10 +114,11 @@ export async function completeGoogleOAuth(input: {
   const intent = challenge.intent as GoogleIntent;
   if (input.denied) throw new GoogleOAuthError("denied", intent);
   if (!input.code) throw new GoogleOAuthError("failed", intent);
+  const config = googleOAuthConfig();
   if (
-    !googleOAuthConfigured() ||
-    challenge.clientId !== process.env.GOOGLE_CLIENT_ID?.trim() ||
-    challenge.redirectUri !== process.env.GOOGLE_REDIRECT_URI
+    !config ||
+    challenge.clientId !== config.clientId ||
+    challenge.redirectUri !== config.redirectUri
   )
     throw new GoogleOAuthError("unavailable", intent);
   if (
@@ -162,7 +136,7 @@ export async function completeGoogleOAuth(input: {
         grant_type: "authorization_code",
         code: input.code,
         client_id: challenge.clientId,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET!.trim(),
+        client_secret: config.clientSecret,
         redirect_uri: challenge.redirectUri,
         code_verifier: challenge.codeVerifier,
       }),
