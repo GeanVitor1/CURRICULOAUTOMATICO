@@ -1,4 +1,6 @@
 .git/
+# The build's secret check reads the repository's environment ignore rules.
+!.gitignore
 .vercel/
 .agents/
 skills-lock.json

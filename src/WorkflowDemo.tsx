@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import {
   Check,
   Search,
@@ -60,151 +60,159 @@ export default function WorkflowDemo({
         <span>SEU ESPAÇO</span>
         <span>Exemplo ilustrativo</span>
       </div>
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={stage}
-          className="demo-stage-body"
-          initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : -6 }}
-          transition={{ duration: reduced ? 0 : 0.25 }}
-        >
-          <h3>
-            {
-              [
-                "Suas preferências, salvas",
-                "Buscando oportunidades",
-                "Novas oportunidades",
-                "O que combina com você",
-                "Cada envio tem uma etapa",
-                "Tudo em um só lugar",
-              ][stage]
-            }
-          </h3>
-          {stage === 0 ? (
-            <>
-              <div className="demo-resume">
-                <FileText size={22} />
-                <div>
-                  <strong>Currículo revisado</strong>
-                  <span>Informações confirmadas por você</span>
-                </div>
-                <Check size={17} />
-              </div>
-              <div className="demo-chips">
-                <span>Administrativo</span>
-                <span>Remoto</span>
-                <span>Salário em aberto</span>
-              </div>
-              <div className="demo-saved">
-                <Check size={15} />
-                Preferências prontas para a busca
-              </div>
-            </>
-          ) : stage === 1 ? (
-            <>
-              <div className="demo-search-pulse">
-                <Search size={24} />
-                <span>Consultando fontes disponíveis…</span>
-              </div>
-              {[
-                "Listagens públicas",
-                "Anúncios de empresas",
-                "Links originais",
-              ].map((label, i) => (
-                <motion.div
-                  className="demo-source"
-                  key={label}
-                  initial={{ opacity: reduced ? 1 : 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: reduced ? 0 : i * 0.3 }}
-                >
-                  <span>{label}</span>
-                  <Check size={14} />
-                </motion.div>
-              ))}
-            </>
-          ) : stage === 2 || stage === 3 ? (
-            <div className="demo-jobs">
-              {names.map((name, i) => (
-                <motion.div
-                  className="demo-job"
-                  key={name}
-                  initial={{ opacity: reduced ? 1 : 0, x: reduced ? 0 : 8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: reduced ? 0 : i * 0.12 }}
-                >
+      {/* Overlapping stages reserve the tallest content at every screen width. */}
+      <div className="demo-stage-viewport">
+        {demoStages.map((_, index) => (
+          <motion.div
+            key={index}
+            className="demo-stage-body"
+            aria-hidden={index !== stage}
+            inert={index !== stage}
+            initial={false}
+            animate={{
+              opacity: index === stage ? 1 : 0,
+              y: reduced || index === stage ? 0 : 8,
+            }}
+            transition={{ duration: reduced ? 0 : 0.25 }}
+          >
+            <h3>
+              {
+                [
+                  "Suas preferências, salvas",
+                  "Buscando oportunidades",
+                  "Novas oportunidades",
+                  "O que combina com você",
+                  "Cada envio tem uma etapa",
+                  "Tudo em um só lugar",
+                ][index]
+              }
+            </h3>
+            {index === 0 ? (
+              <>
+                <div className="demo-resume">
+                  <FileText size={22} />
                   <div>
-                    <strong>{name}</strong>
-                    <span>
-                      Empresa exemplo {i + 1} · {i === 1 ? "Híbrido" : "Remoto"}
-                    </span>
+                    <strong>Currículo revisado</strong>
+                    <span>Informações confirmadas por você</span>
                   </div>
-                  <span
-                    className={
-                      stage === 3 && i !== 1 ? "demo-match" : "demo-neutral"
-                    }
-                  >
-                    {stage === 2
-                      ? "Encontrada"
-                      : i === 1
-                        ? "Rever local"
-                        : "Compatível"}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          ) : stage === 4 ? (
-            <div className="demo-application">
-              <strong>Assistente administrativo</strong>
-              <ol>
+                  <Check size={17} />
+                </div>
+                <div className="demo-chips">
+                  <span>Administrativo</span>
+                  <span>Remoto</span>
+                  <span>Salário em aberto</span>
+                </div>
+                <div className="demo-saved">
+                  <Check size={15} />
+                  Preferências prontas para a busca
+                </div>
+              </>
+            ) : index === 1 ? (
+              <>
+                <div className="demo-search-pulse">
+                  <Search size={24} />
+                  <span>Consultando fontes disponíveis…</span>
+                </div>
                 {[
-                  "Dados e currículo conferidos",
-                  "Envio pela integração autorizada",
-                  "Recibo recebido da fonte",
-                ].map((label) => (
-                  <li key={label}>
+                  "Listagens públicas",
+                  "Anúncios de empresas",
+                  "Links originais",
+                ].map((label, i) => (
+                  <motion.div
+                    className="demo-source"
+                    key={label}
+                    initial={{ opacity: reduced ? 1 : 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: reduced ? 0 : i * 0.3 }}
+                  >
+                    <span>{label}</span>
                     <Check size={14} />
-                    {label}
-                  </li>
+                  </motion.div>
                 ))}
-              </ol>
-              <p>
-                <Clock3 size={14} />
-                Outra vaga pediu uma resposta sua
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className="demo-metrics">
-                <div>
-                  <strong>3</strong>
-                  <span>Encontradas</span>
-                </div>
-                <div>
-                  <strong>1</strong>
-                  <span>Confirmada</span>
-                </div>
-                <div>
-                  <strong>1</strong>
-                  <span>Requer ação</span>
-                </div>
+              </>
+            ) : index === 2 || index === 3 ? (
+              <div className="demo-jobs">
+                {names.map((name, i) => (
+                  <motion.div
+                    className="demo-job"
+                    key={name}
+                    initial={{ opacity: reduced ? 1 : 0, x: reduced ? 0 : 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: reduced ? 0 : i * 0.12 }}
+                  >
+                    <div>
+                      <strong>{name}</strong>
+                      <span>
+                        Empresa exemplo {i + 1} ·{" "}
+                        {i === 1 ? "Híbrido" : "Remoto"}
+                      </span>
+                    </div>
+                    <span
+                      className={
+                        index === 3 && i !== 1 ? "demo-match" : "demo-neutral"
+                      }
+                    >
+                      {index === 2
+                        ? "Encontrada"
+                        : i === 1
+                          ? "Rever local"
+                          : "Compatível"}
+                    </span>
+                  </motion.div>
+                ))}
               </div>
-              <div className="demo-job">
-                <div>
-                  <strong>Próximo passo</strong>
-                  <span>Responder à pergunta da candidatura</span>
+            ) : index === 4 ? (
+              <div className="demo-application">
+                <strong>Assistente administrativo</strong>
+                <ol>
+                  {[
+                    "Dados e currículo conferidos",
+                    "Envio pela integração autorizada",
+                    "Recibo recebido da fonte",
+                  ].map((label) => (
+                    <li key={label}>
+                      <Check size={14} />
+                      {label}
+                    </li>
+                  ))}
+                </ol>
+                <p>
+                  <Clock3 size={14} />
+                  Outra vaga pediu uma resposta sua
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="demo-metrics">
+                  <div>
+                    <strong>3</strong>
+                    <span>Encontradas</span>
+                  </div>
+                  <div>
+                    <strong>1</strong>
+                    <span>Confirmada</span>
+                  </div>
+                  <div>
+                    <strong>1</strong>
+                    <span>Requer ação</span>
+                  </div>
                 </div>
-                <ArrowRight size={18} />
-              </div>
-              <div className="demo-saved">
-                <Check size={15} />
-                Histórico e recibo organizados
-              </div>
-            </>
-          )}
-        </motion.div>
-      </AnimatePresence>
+                <div className="demo-job">
+                  <div>
+                    <strong>Próximo passo</strong>
+                    <span>Responder à pergunta da candidatura</span>
+                  </div>
+                  <ArrowRight size={18} />
+                </div>
+                <div className="demo-saved">
+                  <Check size={15} />
+                  Histórico e recibo organizados
+                </div>
+              </>
+            )}
+          </motion.div>
+        ))}
+      </div>
       <div
         className="demo-progress"
         role="progressbar"

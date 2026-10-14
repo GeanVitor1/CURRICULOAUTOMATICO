@@ -11,6 +11,11 @@
   position: sticky;
   top: 110px;
 }
+.step-preview,
+.organization-visual {
+  /* Autoplay content must not become the browser's scroll anchor. */
+  overflow-anchor: none;
+}
 .workflow-demo {
   border: 1px solid #dce3d8;
   border-radius: 14px;
@@ -38,9 +43,18 @@
   background: #f1f4ec;
   border-radius: 5px;
 }
+.demo-stage-viewport {
+  display: grid;
+}
 .demo-stage-body {
+  grid-area: 1 / 1;
+  min-width: 0;
   min-height: 295px;
   padding: 24px 20px;
+}
+.demo-stage-body[aria-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
 }
 .demo-stage-body h3 {
   font-size: 17px;
