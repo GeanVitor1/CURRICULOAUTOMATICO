@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { discoveryBudgetExpired, discoverySignal } from "./discovery-budget";
 import { resolve, extname } from "node:path";
 import { and, eq, sql } from "drizzle-orm";
 import { discoveryTasks, workspaces } from "./schema";
@@ -280,6 +281,10 @@ export async function discover(
     [];
   for (const source of sources) {
     try {
+      if (discoveryBudgetExpired())
+        throw new SourceError(
+          "O tempo desta busca terminou. Os resultados já encontrados foram preservados; tente consultar esta fonte novamente.",
+        );
       const result =
         source.type === "portal"
           ? await discoverPortal(source, searchWorkspace)
@@ -593,7 +598,7 @@ export async function automaticSend(
       const response = await fetcher(process.env.APPLICATION_WEBHOOK_URL!, {
         method: "POST",
         redirect: "error",
-        signal: AbortSignal.timeout(25000),
+        signal: discoverySignal(25000),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.APPLICATION_WEBHOOK_TOKEN}`,
@@ -711,7 +716,7 @@ export async function processAutomaticApplications(id: string) {
       (a) => a.status === "Aguardando aprovação",
     )) {
       const current = await readWorkspace(id);
-      if (!current?.routine.enabled) break;
+      if (!current?.routine.enabled || discoveryBudgetExpired()) break;
       try {
         await automaticSend(id, a.id);
       } catch (error) {

@@ -7,8 +7,24 @@
     "api/server.mjs": {
       "includeFiles": "migrations/**",
       "maxDuration": 60
+    },
+    "api/search-worker.mjs": {
+      "includeFiles": "migrations/**",
+      "maxDuration": 300,
+      "experimentalTriggers": [
+        {
+          "type": "queue/v2beta",
+          "topic": "empregatos-discovery",
+          "retryAfterSeconds": 420
+        }
+      ]
+    },
+    "api/daily-routine.mjs": {
+      "includeFiles": "migrations/**",
+      "maxDuration": 300
     }
   },
+  "crons": [{ "path": "/api/daily-routine", "schedule": "0 11 * * *" }],
   "routes": [
     {
       "src": "/(.*)",
@@ -22,6 +38,8 @@
       },
       "continue": true
     },
+    { "src": "/api/search-worker", "dest": "/api/search-worker" },
+    { "src": "/api/daily-routine", "dest": "/api/daily-routine" },
     { "src": "/api(?:/.*)?", "dest": "/api/server" },
     { "handle": "filesystem" },
     { "src": "/.*", "dest": "/index.html" }

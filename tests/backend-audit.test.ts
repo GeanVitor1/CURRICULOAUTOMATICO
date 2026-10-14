@@ -17,6 +17,16 @@ import type { FastifyInstance } from "fastify";
 import { eq } from "drizzle-orm";
 import { createWorkspace } from "../server/workspace";
 import type { Job } from "../shared/types";
+import { send } from "@vercel/queue";
+import {
+  withDiscoveryBudget,
+  discoverySignal,
+} from "../server/discovery-budget";
+import { cronAuthorized } from "../server/vercel-cron";
+
+vi.mock("@vercel/queue", () => ({
+  send: vi.fn().mockResolvedValue({ messageId: "test-message" }),
+}));
 
 let directory = "";
 let app: FastifyInstance;
@@ -155,6 +165,151 @@ const staleJob = (): Job => ({
 });
 
 describe("Confiabilidade do backend durante concorrência e deploy", () => {
+  it("a entrega processa somente a tarefa indicada e ignora uma entrega repetida", async () => {
+    const first = await queuedWorkspace();
+    const second = await queuedWorkspace();
+    const discover = vi
+      .spyOn(catalog, "discoverCachedSource")
+      .mockResolvedValue(result());
+    expect(await tasks.processNextDiscoveryTask(second.task.id)).toBe(true);
+    expect((await database.readWorkspace(first.id))!.runs[0].status).toBe(
+      "queued",
+    );
+    expect(await tasks.processNextDiscoveryTask(second.task.id)).toBe(false);
+    expect(discover).toHaveBeenCalledTimes(1);
+    await tasks.processNextDiscoveryTask(first.task.id);
+  });
+
+  it("uma entrega concorrente é adiada enquanto a primeira mantém a lease", async () => {
+    const { task } = await queuedWorkspace();
+    const entered = deferred<void>();
+    const waiting = deferred<ReturnType<typeof result>>();
+    vi.spyOn(catalog, "discoverCachedSource").mockImplementation(async () => {
+      entered.resolve();
+      return waiting.promise;
+    });
+    const processing = tasks.processNextDiscoveryTask(task.id);
+    await entered.promise;
+    await expect(
+      tasks.processNextDiscoveryTask(task.id),
+    ).rejects.toBeInstanceOf(tasks.DiscoveryTaskBusyError);
+    waiting.resolve(result());
+    await processing;
+  });
+
+  it("falha de publicação preserva a tarefa e uma nova tentativa publica o mesmo ID", async () => {
+    const { id, task } = await queuedWorkspace();
+    vi.stubEnv("VERCEL", "1");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("API_UPSTREAM_ORIGIN", "");
+    vi.mocked(send).mockRejectedValueOnce(
+      new Error("private provider failure"),
+    );
+    await expect(tasks.enqueueDiscovery(id)).rejects.toThrow(
+      "Suas preferências foram salvas",
+    );
+    const retried = await tasks.enqueueDiscovery(id);
+    expect(retried.id).toBe(task.id);
+    expect(send).toHaveBeenLastCalledWith(
+      "empregatos-discovery",
+      { taskId: task.id },
+      expect.objectContaining({ idempotencyKey: task.id }),
+    );
+    vi.unstubAllEnvs();
+    vi.spyOn(catalog, "discoverCachedSource").mockResolvedValue(result());
+    await tasks.processNextDiscoveryTask(task.id);
+  });
+
+  it("a rotina diária exige um segredo e a busca respeita seu orçamento de tempo", async () => {
+    expect(cronAuthorized(undefined, "test-secret")).toBe(false);
+    expect(cronAuthorized("Bearer test-secret", "")).toBe(false);
+    expect(cronAuthorized("Bearer incorrect", "test-secret")).toBe(false);
+    expect(cronAuthorized("Bearer test-secret", "test-secret")).toBe(true);
+    await withDiscoveryBudget(5, async () => {
+      const signal = discoverySignal(1000);
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      expect(signal.aborted).toBe(true);
+      expect(() => discoverySignal(1000)).toThrow();
+    });
+    expect(discoverySignal(1000).aborted).toBe(false);
+  });
+  it("conclui as preferências na Vercel e entrega uma busca em vez de rejeitar a automação", async () => {
+    const headers = {
+      cookie,
+      "x-orbita-request": "1",
+      origin: "http://127.0.0.1:5173",
+    };
+    const me = (await app.inject({ url: "/api/auth/me", headers })).json();
+    const workspaceId = `${me.id}:live`;
+    await database.mutateWorkspace(workspaceId, (w) => {
+      w.resumes = [
+        {
+          id: "interview-resume",
+          name: "Fictício.txt",
+          uploadedAt: new Date().toISOString(),
+          text: "Objetivo: Desenvolvedor .NET. Projeto em C# e SQL Server.",
+          skills: ["C#", "SQL Server"],
+          approved: false,
+          analysis: "",
+        },
+      ];
+    });
+    vi.stubEnv("VERCEL", "1");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("APP_ORIGIN", "https://automation.example.test");
+    headers.origin = "https://automation.example.test";
+    vi.stubEnv("API_UPSTREAM_ORIGIN", "");
+    try {
+      const response = await app.inject({
+        method: "PUT",
+        url: "/api/interview",
+        headers,
+        payload: {
+          step: 5,
+          complete: true,
+          start: "prepare",
+          answers: {
+            resumeId: "interview-resume",
+            titles: ["Desenvolvedor .NET"],
+            modalities: ["Remoto"],
+            city: "",
+            sameCityOnly: false,
+            salaryMin: 0,
+            salaryMax: 0,
+            includeUnknownSalary: true,
+            ageDays: 365,
+            contracts: [],
+            sites: ["gupy"],
+            dailyLimit: 5,
+          },
+        },
+      });
+      expect(response.statusCode, response.body).toBe(200);
+      const workspace = (await database.readWorkspace(workspaceId))!;
+      expect(workspace.interview?.completed).toBe(true);
+      expect(workspace.routine).toMatchObject({
+        enabled: true,
+        mode: "approval",
+        time: "08:00",
+      });
+      expect(workspace.runs[0].status).toBe("queued");
+      expect(send).toHaveBeenLastCalledWith(
+        "empregatos-discovery",
+        { taskId: workspace.runs[0].id },
+        expect.anything(),
+      );
+    } finally {
+      vi.unstubAllEnvs();
+      await database.db
+        .delete(schema.discoveryTasks)
+        .where(eq(schema.discoveryTasks.workspaceId, workspaceId));
+      await database.mutateWorkspace(workspaceId, (w) => {
+        w.routine.enabled = false;
+        w.routine.nextRun = null;
+      });
+    }
+  });
+
   it("worker com lease substituída não publica anúncios antigos nem dispara envio", async () => {
     const { id, task } = await queuedWorkspace();
     const entered = deferred<void>();

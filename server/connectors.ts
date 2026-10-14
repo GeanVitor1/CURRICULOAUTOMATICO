@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { setTimeout as delay } from "node:timers/promises";
 import { decode } from "./html";
+import { discoverySignal, discoveryBudgetExpired } from "./discovery-budget";
 import { classify, extractSkills } from "./engine";
 import type { Job, Source } from "../shared/types";
 
@@ -24,14 +25,14 @@ async function get(url: string, retries = 1): Promise<any> {
     try {
       response = await fetch(url, {
         redirect: "error",
-        signal: AbortSignal.timeout(20000),
+        signal: discoverySignal(20000),
         headers: {
           Accept: "application/json",
           "User-Agent": "OrbitaCareers/1.0 (job-discovery)",
         },
       });
     } catch {
-      if (attempt < retries) {
+      if (attempt < retries && !discoveryBudgetExpired()) {
         await delay(400 * (attempt + 1));
         continue;
       }

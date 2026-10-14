@@ -271,6 +271,9 @@ export default function SimpleAutomation() {
             </div>
           </section>
           <DiscoveryStatus />
+          {w.routine.enabled && w.infrastructure.scheduleWindow && (
+            <p className="interview-help">{w.infrastructure.scheduleWindow}</p>
+          )}
         </>
       )}
     </div>

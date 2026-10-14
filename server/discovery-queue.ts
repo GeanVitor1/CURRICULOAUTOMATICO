@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { and, asc, eq, inArray, lt, or } from "drizzle-orm";
 import { db, mutateWorkspace } from "./db";
 import { discoveryTasks, workspaces } from "./schema";
+import { dispatchDiscovery } from "./vercel-dispatch";
 import {
   discover,
   notify,
@@ -11,7 +12,7 @@ import {
 } from "./operations";
 
 export async function enqueueDiscovery(workspaceId: string) {
-  return db.transaction(async (tx) => {
+  const result = await db.transaction(async (tx) => {
     // The workspace lock makes the uniqueness check/queue marker atomic across API processes.
     const [row] = await tx
       .select()
@@ -67,27 +68,48 @@ export async function enqueueDiscovery(workspaceId: string) {
         "Busca na fila. Os resultados serão atualizados automaticamente.",
     };
   });
+  // Commit first: delivery may start immediately in another Vercel invocation.
+  // A publish failure leaves a durable task; retrying this action publishes it again.
+  await dispatchDiscovery(result.id);
+  return result;
 }
 
-export async function processNextDiscoveryTask() {
+export class DiscoveryTaskBusyError extends Error {}
+
+export async function processNextDiscoveryTask(taskId?: string) {
   const leaseToken = randomUUID();
   const task = await db.transaction(async (tx) => {
     const [task] = await tx
       .select()
       .from(discoveryTasks)
       .where(
-        or(
-          eq(discoveryTasks.status, "queued"),
-          and(
-            eq(discoveryTasks.status, "running"),
-            lt(discoveryTasks.leaseUntil, new Date()),
+        and(
+          taskId ? eq(discoveryTasks.id, taskId) : undefined,
+          or(
+            eq(discoveryTasks.status, "queued"),
+            and(
+              eq(discoveryTasks.status, "running"),
+              lt(discoveryTasks.leaseUntil, new Date()),
+            ),
           ),
         ),
       )
       .orderBy(asc(discoveryTasks.createdAt))
       .limit(1)
       .for("update", { skipLocked: true });
-    if (!task) return null;
+    if (!task) {
+      if (taskId) {
+        const [existing] = await tx
+          .select({ status: discoveryTasks.status })
+          .from(discoveryTasks)
+          .where(eq(discoveryTasks.id, taskId));
+        if (existing?.status === "running")
+          throw new DiscoveryTaskBusyError(
+            "A busca ainda pertence a outro processo.",
+          );
+      }
+      return null;
+    }
     // At most one restart recovery; completed/failed tasks are never automatically repeated.
     if (task.attempts >= 2) {
       await tx

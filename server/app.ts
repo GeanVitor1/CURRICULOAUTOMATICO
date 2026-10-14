@@ -89,6 +89,11 @@ import { RequestError } from "./errors";
 import { queue, configureSchedule } from "./queue";
 import { enqueueDiscovery } from "./discovery-queue";
 import {
+  automationAvailable,
+  scheduledTime,
+  vercelQueueEnabled,
+} from "./automation-runtime";
+import {
   filtersSchema,
   jobSchema,
   profileSchema,
@@ -527,7 +532,11 @@ export async function buildApp({ serveStatic = true } = {}) {
     const workers = queue ? await queue.getWorkers().catch(() => []) : [];
     w.infrastructure = {
       database: databaseKind,
-      queue: queue ? "BullMQ + Redis" : "Agendador local persistente",
+      queue: queue
+        ? "BullMQ + Redis"
+        : vercelQueueEnabled()
+          ? "Vercel Queues + PostgreSQL"
+          : "Agendador local persistente",
       automatic:
         sending.some(
           (site) =>
@@ -546,7 +555,10 @@ export async function buildApp({ serveStatic = true } = {}) {
               source.type === "authorized" &&
               source.application,
           )),
-      worker: queue ? workers.length > 0 : !hostedOnVercel(),
+      worker: queue ? workers.length > 0 : automationAvailable(),
+      scheduleWindow: vercelQueueEnabled()
+        ? "Todos os dias, entre 8h e 9h (horário de Brasília)."
+        : undefined,
     };
     const applications = new Map(w.applications.map((a) => [a.jobId, a]));
     w.jobs.forEach((j) => {
@@ -823,7 +835,7 @@ export async function buildApp({ serveStatic = true } = {}) {
   app.put("/api/interview", async (req) => {
     const { id, u, demo } = await scope(req);
     const body = interviewSchema.parse(req.body);
-    if (body.complete && body.start !== "save" && hostedOnVercel() && !queue)
+    if (body.complete && body.start !== "save" && !automationAvailable())
       throw new RequestError(
         "A automação está indisponível. A configuração do serviço precisa ser concluída antes de iniciar buscas e envios.",
       );
@@ -839,6 +851,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       ...(await readyPortals(u.id, body.answers.resumeId)),
     ];
     await mutateWorkspace(id, (w) => {
+      w.routine.time = scheduledTime(w.routine.time);
       applyInterview(w, body, availableSites);
       refreshMatches(w);
     });
@@ -996,10 +1009,11 @@ export async function buildApp({ serveStatic = true } = {}) {
   app.put("/api/routine", async (req) => {
     const { id, u, demo } = await scope(req);
     const r = routineSchema.parse(req.body);
-    if (r.enabled && hostedOnVercel() && !queue)
+    if (r.enabled && !automationAvailable())
       throw new RequestError(
         "A automação está indisponível. A configuração do serviço precisa ser concluída antes de ativar a rotina.",
       );
+    r.time = scheduledTime(r.time);
     r.dailyLimit = Math.min(r.dailyLimit, (await accountPlan(u.id)).dailyLimit);
     let nativeSites: string[] = [];
     if (demo && r.enabled)
@@ -1057,7 +1071,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } },
     async (req) => {
       const { id } = await scope(req);
-      if (hostedOnVercel() && !queue)
+      if (!automationAvailable())
         throw new RequestError(
           "A busca está indisponível. A configuração do serviço precisa ser concluída antes de iniciar uma pesquisa.",
         );

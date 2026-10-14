@@ -547,6 +547,13 @@ export default function CareerInterview() {
                 Ao confirmar, você aprova este currículo e as preferências para
                 suas candidaturas.
               </p>
+              {w.infrastructure.scheduleWindow && (
+                <p className="interview-help">
+                  A primeira busca começa agora.{" "}
+                  {w.infrastructure.scheduleWindow} Você também pode usar
+                  “Buscar agora” quando quiser.
+                </p>
+              )}
             </>
           )}
           {error && (

@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { discoverySignal } from "./discovery-budget";
 import { z } from "zod";
 import {
   portals,
@@ -75,7 +76,7 @@ async function citedUrl(
     try {
       const response = await fetch(url, {
         redirect: "manual",
-        signal: AbortSignal.timeout(10000),
+        signal: discoverySignal(10000),
       });
       const location = response.headers.get("location");
       await response.body?.cancel();

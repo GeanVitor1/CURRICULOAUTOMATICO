@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { discoverySignal } from "./discovery-budget";
 import { z } from "zod";
 import type { Job, Workspace } from "../shared/types";
 import { isJobUrl, type PortalId } from "../shared/portals";
@@ -34,7 +35,7 @@ async function publicHtml(url: string, accept = "text/html") {
   try {
     response = await fetch(url, {
       redirect: "error",
-      signal: AbortSignal.timeout(15000),
+      signal: discoverySignal(15000),
       headers: {
         Accept: accept,
         "User-Agent": "EmpreGatos/1.0 (public-job-search)",

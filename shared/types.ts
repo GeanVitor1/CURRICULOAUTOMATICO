@@ -319,6 +319,7 @@ export type Workspace = {
     queue: string;
     automatic: boolean;
     worker: boolean;
+    scheduleWindow?: string;
   };
   searchProfiles: {
     id: string;

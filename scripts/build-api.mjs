@@ -4,6 +4,8 @@ await build({
     "server/index.ts",
     "server/worker.ts",
     "server/vercel.ts",
+    "server/vercel-worker.ts",
+    "server/vercel-cron.ts",
     "server/app.ts",
   ],
   bundle: true,

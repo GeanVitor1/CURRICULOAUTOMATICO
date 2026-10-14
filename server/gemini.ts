@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { discoverySignal } from "./discovery-budget";
 
 export const geminiModel = () => process.env.GEMINI_MODEL || "gemini-2.5-flash";
 export const geminiConfigured = () => !!process.env.GEMINI_API_KEY;
@@ -58,7 +59,7 @@ export async function generateGemini(
           "Content-Type": "application/json",
           "x-goog-api-key": process.env.GEMINI_API_KEY!,
         },
-        signal: AbortSignal.timeout(60000),
+        signal: discoverySignal(60000),
         body: JSON.stringify({
           contents: [{ role: "user", parts: [{ text: prompt }] }],
           ...(options.instructions
