@@ -284,7 +284,7 @@ export default function CareerInterview() {
               />
               <details className="interview-extra">
                 <summary>Quero incluir outro cargo</summary>
-                <div className="form-grid">
+                <div className="interview-custom-title">
                   <Field label="Outro cargo">
                     <input
                       value={customTitle}
