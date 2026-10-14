@@ -10,6 +10,7 @@ import { resolve, extname, relative } from "node:path";
 import { eq, and, lt } from "drizzle-orm";
 import { z } from "zod";
 import { extractDocx } from "./documents";
+import { extractPdfText, PdfReaderUnavailableError } from "./pdf-text";
 import { createResumePdf, resumeText } from "./resume-pdf";
 import {
   db,
@@ -1373,17 +1374,10 @@ export async function buildApp({ serveStatic = true } = {}) {
     let text = "";
     try {
       if (ext === ".pdf") {
-        // PDF native dependencies are needed only when reading a PDF upload.
-        const { PDFParse } = await import("pdf-parse");
-        const parser = new PDFParse({ data: buffer });
-        try {
-          const result = await parser.getText();
-          text = result.text;
-        } finally {
-          await parser.destroy();
-        }
+        text = await extractPdfText(buffer);
       } else text = extractDocx(buffer);
-    } catch {
+    } catch (error) {
+      if (error instanceof PdfReaderUnavailableError) throw error;
       throw new RequestError(
         "Não foi possível ler este documento. Tente um PDF com texto selecionável ou DOCX.",
       );
