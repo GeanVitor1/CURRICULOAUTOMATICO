@@ -7,6 +7,8 @@ import {
   antigravitySettings,
   authorizationUrl,
   parseAntigravitySearch,
+  antigravityJobsSchema,
+  selectSearchModel,
 } from "./antigravity-protocol";
 
 const name = () =>
@@ -22,6 +24,7 @@ type Connection = {
   expiresAt?: number;
   url?: string;
   busyUntil?: number;
+  model?: string;
 };
 
 export function antigravityAvailable(userId?: string) {
@@ -272,8 +275,15 @@ export async function searchAntigravity(userId: string, prompt: string) {
     );
   }
   const signal = discoverySignal(65000);
+  let model = process.env.ANTIGRAVITY_SEARCH_MODEL || connection.model;
+  if (!model) {
+    const catalog = await s.runCommand({ cmd: wrapper, args: ["models"] });
+    if (catalog.exitCode === 0)
+      model = selectSearchModel(await catalog.stdout());
+  }
   await writeConnection(s, { ...connection, busyUntil: Date.now() + 75000 });
   let command;
+  let phase = "execution";
   try {
     command = await s.runCommand({
       cmd: wrapper,
@@ -283,6 +293,11 @@ export async function searchAntigravity(userId: string, prompt: string) {
         "--output-format",
         "stream-json",
         "--disable-slash-commands",
+        ...(model ? ["--model", model] : []),
+        "--effort",
+        "low",
+        "--json-schema",
+        JSON.stringify(z.toJSONSchema(antigravityJobsSchema)),
         "--print-timeout",
         "55s",
       ],
@@ -292,14 +307,22 @@ export async function searchAntigravity(userId: string, prompt: string) {
     if (result.exitCode !== 0) throw new Error("CLI_FAILED");
     const output = await result.stdout({ signal });
     if (output.length > 2_000_000) throw new Error("CLI_OUTPUT_TOO_LARGE");
+    phase = "results";
     return parseAntigravitySearch(output);
-  } catch {
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        event: "antigravity_search_failed",
+        phase,
+        type: error instanceof Error ? error.name : "UnknownError",
+      }),
+    );
     await command?.kill().catch(() => undefined);
     throw new RequestError(
       "Antigravity não concluiu a busca. Confira a conexão e a cota da sua conta Google.",
     );
   } finally {
-    await writeConnection(s, { connected: true });
+    await writeConnection(s, { connected: true, model });
     await s.stop();
   }
 }

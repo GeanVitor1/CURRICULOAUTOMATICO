@@ -4,6 +4,8 @@ import {
   antigravitySettings,
   authorizationUrl,
   parseAntigravitySearch,
+  isGoogleCitation,
+  selectSearchModel,
 } from "../server/antigravity-protocol";
 
 afterEach(() => vi.unstubAllEnvs());
@@ -94,5 +96,57 @@ describe("Antigravity remoto", () => {
       expect.arrayContaining(["command(*)", "read_file(*)", "execute_url(*)"]),
     );
     expect(antigravitySettings).not.toHaveProperty("modelProvider");
+  });
+  it("reconhece as referências opacas do Google mesmo quando o CLI omite a saída de search_web", () => {
+    const citation =
+      "https://vertexaisearch.cloud.google.com/grounding-api-redirect/" +
+      "AUZIYQ" +
+      "a".repeat(30);
+    const candidate = { ...job, citationUrl: citation };
+    const native = JSON.stringify({
+      event: "step_update",
+      step_update: {
+        state: "DONE",
+        step_type: "tool",
+        tool_info: { name: "search_web", parameters: { query: "vagas" } },
+      },
+    });
+    const parsed = parseAntigravitySearch(native + "\n" + result([candidate]));
+    expect(parsed.searchPerformed).toBe(true);
+    expect(parsed.verifiedUrls.size).toBe(0);
+    expect([...parsed.googleCitationUrls]).toEqual([citation]);
+    expect(
+      parseAntigravitySearch(result([candidate])).googleCitationUrls.size,
+    ).toBe(0);
+  });
+  it("não considera redirecionamentos genéricos ou outros hosts como referências Google verificáveis", () => {
+    expect(
+      isGoogleCitation(
+        "https://vertexaisearch.cloud.google.com/grounding-api-redirect/" +
+          "a".repeat(30),
+      ),
+    ).toBe(true);
+    expect(
+      isGoogleCitation("https://www.google.com/url?q=https://evil.test"),
+    ).toBe(false);
+    expect(
+      isGoogleCitation(
+        "https://vertexaisearch.cloud.google.com.evil.test/grounding-api-redirect/" +
+          "a".repeat(30),
+      ),
+    ).toBe(false);
+    expect(
+      isGoogleCitation(
+        "https://vertexaisearch.cloud.google.com/grounding-api-redirect/short",
+      ),
+    ).toBe(false);
+  });
+  it("escolhe um modelo Flash Low do catálogo atual, sem fixar uma versão que pode desaparecer", () => {
+    expect(
+      selectSearchModel(
+        "gemini-3.8-flash-high\tHigh\ngemini-3.8-flash-low\tLow",
+      ),
+    ).toBe("gemini-3.8-flash-low");
+    expect(selectSearchModel("claude-opus-model\tModel")).toBeUndefined();
   });
 });

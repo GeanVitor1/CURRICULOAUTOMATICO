@@ -7,12 +7,38 @@ export const antigravityJobsSchema = z.object({
         title: z.string().min(2).max(200),
         company: z.string().min(2).max(200),
         url: z.string().url().max(2000),
+        citationUrl: z.string().url().max(3000).optional(),
         location: z.string().max(200),
         description: z.string().min(20).max(8000),
       }),
     )
     .max(10),
 });
+
+export function isGoogleCitation(value: string) {
+  try {
+    const url = new URL(value);
+    return (
+      url.protocol === "https:" &&
+      url.hostname === "vertexaisearch.cloud.google.com" &&
+      !url.username &&
+      !url.password &&
+      !url.port &&
+      /^\/grounding-api-redirect\/[A-Za-z0-9_=-]{20,}$/.test(url.pathname) &&
+      !url.search &&
+      !url.hash
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function selectSearchModel(catalog: string) {
+  return catalog
+    .split(/\r?\n/)
+    .map((line) => line.split(/\s/)[0])
+    .find((slug) => /^gemini-[\w.-]*flash[\w.-]*-low$/.test(slug));
+}
 
 export function authorizationUrl(text: string) {
   for (const match of text.matchAll(
@@ -39,6 +65,7 @@ export function authorizationUrl(text: string) {
 export function parseAntigravitySearch(output: string) {
   const verifiedUrls = new Set<string>();
   let result: any;
+  let searchPerformed = false;
   for (const line of output.split(/\r?\n/)) {
     if (!line.trim()) continue;
     const event = JSON.parse(line);
@@ -57,6 +84,7 @@ export function parseAntigravitySearch(output: string) {
       ].includes(tool?.name)
     )
       continue;
+    searchPerformed = true;
     const evidence =
       typeof tool.output === "string"
         ? tool.output
@@ -78,7 +106,17 @@ export function parseAntigravitySearch(output: string) {
         .replace(/^```(?:json)?\s*/i, "")
         .replace(/\s*```$/, ""),
     );
-  return { ...antigravityJobsSchema.parse(response), verifiedUrls };
+  const parsed = antigravityJobsSchema.parse(response);
+  const googleCitationUrls = new Set<string>();
+  // CLI 1.3.5 omits native search output from its event stream. The opaque
+  // Google references it returns can instead be verified by resolving them
+  // on Google's service. A claimed plain URL remains insufficient evidence.
+  if (searchPerformed)
+    for (const job of parsed.jobs) {
+      for (const url of [job.url, job.citationUrl])
+        if (url && isGoogleCitation(url)) googleCitationUrls.add(url);
+    }
+  return { ...parsed, verifiedUrls, googleCitationUrls, searchPerformed };
 }
 
 export const antigravitySettings = {
