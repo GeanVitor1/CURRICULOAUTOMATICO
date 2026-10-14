@@ -11,7 +11,7 @@ import { eq, and, lt } from "drizzle-orm";
 import { z } from "zod";
 import { extractDocx } from "./documents";
 import { extractPdfText, PdfReaderUnavailableError } from "./pdf-text";
-import { createResumePdf, resumeText } from "./resume-pdf";
+import { createResumePdf, createResumeTextPdf, resumeText } from "./resume-pdf";
 import {
   db,
   dataDir,
@@ -123,7 +123,13 @@ import {
   verifyBillingEvent,
 } from "./billing";
 import { plans } from "../shared/plans";
-import { readPrivateResume, writePrivateResume } from "./resume-storage";
+import {
+  readPrivateResume,
+  writePrivateResume,
+  archiveResumeFile,
+  restoreResumeFile,
+  publicWorkspace,
+} from "./resume-storage";
 import {
   appOrigins,
   googleOAuthConfig,
@@ -577,6 +583,10 @@ export async function buildApp({ serveStatic = true } = {}) {
           matchesObjectiveFilters(job, w.profile, w.filters),
       );
       w.jobCounts = {
+        collected: active.filter((job) => matchesSelectedSites(job, w)).length,
+        excludedByFilters:
+          active.filter((job) => matchesSelectedSites(job, w)).length -
+          visible.length,
         total: visible.length,
         saved: visible.filter((j) => j.saved).length,
         recommended: visible.filter(
@@ -596,7 +606,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       w.applications.forEach((a) => previewIds.add(a.jobId));
       w.jobs = w.jobs.filter((j) => previewIds.has(j.id));
     }
-    return w;
+    return publicWorkspace(w);
   });
   app.get("/api/jobs", async (req) => {
     const { id } = await scope(req);
@@ -1313,7 +1323,8 @@ export async function buildApp({ serveStatic = true } = {}) {
     const path = resolve(dir, resumeId + ".pdf");
     const text = resumeText(body);
     const targets = await resumeTargets(text, body, "local");
-    await writePrivateResume(path, await createResumePdf(body));
+    const generatedPdf = await createResumePdf(body);
+    await writePrivateResume(path, generatedPdf);
     try {
       await mutateWorkspace(id, (w) => {
         if (w.resumes.length >= 20)
@@ -1321,6 +1332,7 @@ export async function buildApp({ serveStatic = true } = {}) {
         w.resumes.unshift({
           id: resumeId,
           name: `Currículo · ${body.name}.pdf`,
+          storedFile: archiveResumeFile(generatedPdf, ".pdf"),
           uploadedAt: new Date().toISOString(),
           text,
           skills: body.skills,
@@ -1424,6 +1436,10 @@ export async function buildApp({ serveStatic = true } = {}) {
         w.resumes.unshift({
           id: resumeId,
           name,
+          storedFile: archiveResumeFile(
+            buffer,
+            ext === ".pdf" ? ".pdf" : ".docx",
+          ),
           uploadedAt: new Date().toISOString(),
           text,
           skills: extracted.skills ?? [],
@@ -1533,18 +1549,37 @@ export async function buildApp({ serveStatic = true } = {}) {
     const w = (await readWorkspace(id))!;
     if (demo || !w.resumes.some((r) => r.id === resumeId))
       throw new RequestError("Arquivo não encontrado.");
+    const resume = w.resumes.find((r) => r.id === resumeId)!;
     const dir = resolve(dataDir, "resumes", u.id);
     let found: Buffer | null = null;
     let ext = ".pdf";
+    if (resume.storedFile) {
+      found = restoreResumeFile(resume.storedFile);
+      ext = resume.storedFile.extension;
+    }
     for (const e of [".pdf", ".docx"]) {
+      if (found) break;
       try {
         found = await readPrivateResume(resolve(dir, resumeId + e));
         ext = e;
         break;
       } catch {}
     }
-    if (!found) throw new RequestError("Arquivo não encontrado.");
+    if (!found) {
+      if (!resume.text.trim())
+        throw new RequestError("Arquivo não encontrado.");
+      return reply
+        .type("application/pdf")
+        .header("Cache-Control", "private, no-store")
+        .header("X-Resume-Reconstructed", "true")
+        .header(
+          "Content-Disposition",
+          'attachment; filename="copia-texto-curriculo.pdf"',
+        )
+        .send(await createResumeTextPdf(resume.text));
+    }
     return reply
+      .header("Cache-Control", "private, no-store")
       .type(
         ext === ".pdf"
           ? "application/pdf"
@@ -1570,7 +1605,7 @@ export async function buildApp({ serveStatic = true } = {}) {
         'attachment; filename="empregatos-dados.json"',
       )
       .send({
-        ...(await readWorkspace(id)),
+        ...publicWorkspace((await readWorkspace(id))!),
         intelligence: await getIntelligence(u.id),
         billing: await billingSummary(u.id),
       });

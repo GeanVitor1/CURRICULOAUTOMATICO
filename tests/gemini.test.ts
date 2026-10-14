@@ -152,7 +152,64 @@ describe("Gemini, sugestões e anúncios verificáveis", () => {
     mock.mockResolvedValue(
       new Response("secret upstream payload", { status: 429 }),
     );
-    await expect(generateGemini("teste")).rejects.toThrow("cota");
+    await expect(generateGemini("teste")).rejects.toThrow("Limite temporário");
+  });
+  it("distingue a cota diária de um limite temporário sem divulgar a resposta privada", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "secret-for-test");
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          error: {
+            message: "secret upstream response",
+            details: [
+              {
+                violations: [
+                  {
+                    quotaId:
+                      "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+                    quotaValue: "20",
+                  },
+                ],
+              },
+            ],
+          },
+        }),
+        { status: 429 },
+      ),
+    );
+    await expect(generateGemini("consulta fictícia")).rejects.toThrow(
+      "cota diária",
+    );
+  });
+  it("busca referências públicas do LinkedIn via Google sem consultar o portal sem autorização", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "secret-for-test");
+    vi.stubEnv("PORTAL_DISCOVERY_AUTHORIZED", "");
+    const url = "https://www.linkedin.com/jobs/view/test-role-12345";
+    const mock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      response(
+        JSON.stringify({
+          jobs: [
+            {
+              title: "Atendente",
+              company: "Empresa fictícia",
+              url,
+              location: "Recife",
+              description: "Atendimento ao público na empresa.",
+            },
+          ],
+        }),
+        {
+          webSearchQueries: ["site:linkedin.com atendente"],
+          groundingChunks: [{ web: { uri: url } }],
+        },
+      ),
+    );
+    const found = await discoverPortal(source, workspace());
+    expect(found.jobs).toHaveLength(1);
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(String(mock.mock.calls[0][0])).toContain(
+      "generativelanguage.googleapis.com",
+    );
   });
   it("sugere cargos de qualquer área somente com evidência e remove contato antes da chamada", async () => {
     vi.stubEnv("GEMINI_API_KEY", "secret-for-test");

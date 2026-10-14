@@ -58,6 +58,26 @@ try {
   if (!uploaded.ok) throw new Error(`PDF upload returned ${uploaded.status}`);
   const workspace = await (await request("/api/workspace")).json();
   if (
+    workspace.resumes[0].storedFile ||
+    workspace.resumes[0].originalFileAvailable !== true
+  )
+    throw new Error(
+      "Original file availability or private archive serialization failed",
+    );
+  const original = await request(
+    `/api/resumes/${workspace.resumes[0].id}/download`,
+  );
+  const originalBytes = Buffer.from(await original.arrayBuffer());
+  if (!original.ok || !originalBytes.equals(resumePdf()))
+    throw new Error("Original PDF download was not preserved");
+  console.log(
+    JSON.stringify({
+      originalPdfDownload: original.status,
+      originalBytesPreserved: true,
+      privateArchiveHidden: true,
+    }),
+  );
+  if (
     !workspace.infrastructure.worker ||
     !workspace.infrastructure.scheduleWindow
   )

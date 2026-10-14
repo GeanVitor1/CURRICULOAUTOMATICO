@@ -21,13 +21,13 @@ export function publicDiscoveryAvailable(
         .split(",")
         .map((v) => v.trim())
         .includes(portal)) ||
-    (portal !== "linkedin" && groundedSearch)
+    groundedSearch
   );
 }
 export const providerLimits: Record<(typeof candidatePortals)[number], string> =
   {
     linkedin:
-      "OAuth identifica sua conta. Busca e envio exigem acesso aprovado pelo LinkedIn; o login sozinho não libera essas funções.",
+      "Busca por referências públicas com Google Search quando configurada. OAuth identifica sua conta; consulta direta e envio pelo LinkedIn exigem acesso aprovado.",
     gupy: "Busca em anúncios públicos. A API de candidatura rápida exige credenciais e permissão da empresa ou parceiro; nem toda vaga aceita esse fluxo.",
     glassdoor:
       "Busca por referências públicas quando configurada. Não há envio oficial de candidato configurado; vagas podem direcionar a outro site.",

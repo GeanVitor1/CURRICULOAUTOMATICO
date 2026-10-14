@@ -310,6 +310,93 @@ describe("Confiabilidade do backend durante concorrência e deploy", () => {
     }
   });
 
+  it("a preparação assistida deixa a candidatura pronta para concluir no site sem uma aprovação de envio automático", async () => {
+    const me = (
+      await app.inject({ url: "/api/auth/me", headers: { cookie } })
+    ).json();
+    const id = `${me.id}:live`;
+    const make = () => ({
+      ...staleJob(),
+      id: randomUUID(),
+      title: "Desenvolvedor .NET",
+      description: "Desenvolvimento C# SQL Server. Remote.",
+      modality: "Remoto",
+      publishedAt: new Date().toISOString(),
+    });
+    await database.mutateWorkspace(id, (w) => {
+      w.routine = {
+        ...w.routine,
+        enabled: true,
+        mode: "approval",
+        minScore: 0,
+      };
+      delete w.interview;
+      w.profile = {
+        ...w.profile,
+        headline: "Desenvolvedor .NET",
+        skills: ["C#", ".NET", "SQL Server"],
+        confirmed: true,
+      };
+      w.resumes = [
+        {
+          id: "assisted-resume",
+          name: "Fictício.pdf",
+          text: "Desenvolvedor .NET com C# e SQL Server em projetos.",
+          skills: ["C#", ".NET", "SQL Server"],
+          uploadedAt: new Date().toISOString(),
+          approved: true,
+          analysis: "",
+          targetsVersion: 3,
+        },
+      ];
+      w.sources = [
+        {
+          id: "assisted-source",
+          board: "assisted",
+          company: "Empresa fictícia",
+          type: "greenhouse",
+          enabled: true,
+          discovery: true,
+          application: false,
+          status: "",
+        },
+      ];
+      const prior = make();
+      w.jobs = [prior];
+      const application = operations.prepare(w, prior.id);
+      application.status = "Aguardando aprovação";
+    });
+    vi.spyOn(catalog, "discoverCachedSource").mockResolvedValue(
+      result([
+        {
+          ...make(),
+          url: "https://example.test/new",
+          origins: [
+            {
+              source: "greenhouse",
+              id: "assisted:new",
+              url: "https://example.test/new",
+            },
+          ],
+        },
+      ]),
+    );
+    await operations.discover(id);
+    const w = (await database.readWorkspace(id))!;
+    expect(w.applications).toHaveLength(2);
+    expect(
+      w.applications.every(
+        (application) =>
+          application.status === "Requer ação manual" &&
+          !application.submittedAt &&
+          !!application.draft,
+      ),
+    ).toBe(true);
+    await database.mutateWorkspace(id, (current) => {
+      current.routine.enabled = false;
+    });
+  });
+
   it("worker com lease substituída não publica anúncios antigos nem dispara envio", async () => {
     const { id, task } = await queuedWorkspace();
     const entered = deferred<void>();

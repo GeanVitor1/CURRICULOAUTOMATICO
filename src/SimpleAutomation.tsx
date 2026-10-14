@@ -148,7 +148,7 @@ export default function SimpleAutomation() {
                   {w.routine.enabled
                     ? w.routine.mode === "automatic"
                       ? "Envio automático ativo"
-                      : "Busca e preparação ativas"
+                      : "Busca diária ativa · envio pelo site"
                     : "Automação pausada"}
                 </h2>
                 <p>
@@ -208,25 +208,27 @@ export default function SimpleAutomation() {
                   <strong>
                     {available
                       ? "Envio automático nas fontes autorizadas"
-                      : "Busca e preparação, com envio conforme cada fonte"}
+                      : "Você conclui o envio no site da empresa"}
                   </strong>
                   <p>
-                    Há sites sem integração de envio disponível. Nesses sites,
-                    as candidaturas preparadas ficam pendentes para você
-                    concluir no site oficial.
+                    {available
+                      ? "Nos sites sem integração de envio, você conclui a candidatura no anúncio oficial."
+                      : "Buscamos as vagas e preparamos as candidaturas compatíveis. Abra uma vaga para revisar o currículo e a apresentação, depois conclua o envio no portal. A candidatura só aparece como enviada após sua confirmação."}
                   </p>
                 </div>
               </div>
             )}
           </section>
-          <details className="interview-extra" open={!allAvailable}>
+          <details className="interview-extra">
             <summary>Contas dos sites</summary>
             <PortalConnections selected={w.interview!.answers.sites} />
           </details>
           <div className="automation-counters">
             <button onClick={() => navigate("vagas")}>
-              <strong>{w.jobCounts?.total || 0}</strong>
-              <span>Vagas encontradas</span>
+              <strong>
+                {w.jobCounts?.collected ?? w.jobCounts?.total ?? 0}
+              </strong>
+              <span>Anúncios encontrados</span>
             </button>
             <button onClick={() => navigate("candidaturas")}>
               <strong>{sent}</strong>
@@ -266,6 +268,10 @@ export default function SimpleAutomation() {
               </Button>
               <Button onClick={() => navigate("vagas")}>
                 Ver vagas encontradas
+                <ArrowRight size={16} />
+              </Button>
+              <Button onClick={() => navigate("candidaturas")}>
+                Revisar candidaturas
                 <ArrowRight size={16} />
               </Button>
             </div>

@@ -171,6 +171,9 @@ export type Application = {
   draft?: string;
 };
 export type Resume = {
+  /** Server-only encrypted original. Never included in workspace/API exports. */
+  storedFile?: { extension: ".pdf" | ".docx"; ciphertext: string };
+  originalFileAvailable?: boolean;
   id: string;
   name: string;
   uploadedAt: string;
@@ -254,7 +257,13 @@ export type Workspace = {
     dismissed: boolean;
     active: boolean;
   };
-  jobCounts?: { total: number; saved: number; recommended: number };
+  jobCounts?: {
+    total: number;
+    saved: number;
+    recommended: number;
+    collected?: number;
+    excludedByFilters?: number;
+  };
   resumeDraft?: {
     step: number;
     data: {

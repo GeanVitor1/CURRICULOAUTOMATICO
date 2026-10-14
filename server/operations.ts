@@ -26,7 +26,7 @@ import { discoverPortal } from "./portal-discovery";
 import { db, dataDir, mutateWorkspace, readWorkspace } from "./db";
 import { localApplicationDraft } from "./application-draft";
 import { reserveApplication, workspaceDailyLimit } from "./billing";
-import { readPrivateResume } from "./resume-storage";
+import { readPrivateResume, restoreResumeFile } from "./resume-storage";
 import {
   RequestError,
   DailyLimitError,
@@ -398,6 +398,22 @@ export async function discover(
           }) === today,
       );
       const automatic = w.routine.mode === "automatic";
+      if (!automatic) {
+        for (const application of w.applications) {
+          if (
+            application.mode !== "assisted" ||
+            application.status !== "Aguardando aprovação"
+          )
+            continue;
+          application.status = "Requer ação manual";
+          application.updatedAt = now();
+          application.history.push({
+            at: now(),
+            actor: "Sistema",
+            message: "Candidatura pronta para revisão e envio no site oficial.",
+          });
+        }
+      }
       const used = automatic
         ? dailySubmissionAttempts(w) +
           preparedToday.filter(
@@ -425,7 +441,7 @@ export async function discover(
       for (const j of deliverable.slice(0, Math.max(0, dailyLimit - used))) {
         try {
           const a = prepare(w, j.id);
-          a.status = "Aguardando aprovação";
+          a.status = automatic ? "Aguardando aprovação" : "Requer ação manual";
           a.history[a.history.length - 1].actor = "Sistema";
           run.processed++;
         } catch {
@@ -529,18 +545,20 @@ export async function automaticSend(
         throw new RequestError(
           "O currículo original precisa estar disponível para o envio.",
         );
-      const bytes = await readPrivateResume(
-        resolve(
-          dataDir,
-          "resumes",
-          workspaceOwner.userId,
-          resume.id + extension,
-        ),
-      ).catch(() => {
-        throw new RequestError(
-          "O arquivo original do currículo não está disponível. Envie o currículo novamente.",
-        );
-      });
+      const bytes = resume.storedFile
+        ? restoreResumeFile(resume.storedFile)
+        : await readPrivateResume(
+            resolve(
+              dataDir,
+              "resumes",
+              workspaceOwner.userId,
+              resume.id + extension,
+            ),
+          ).catch(() => {
+            throw new RequestError(
+              "O arquivo original do currículo não está disponível. Envie o currículo novamente.",
+            );
+          });
       if (bytes.length > 5 * 1024 * 1024)
         throw new RequestError("O currículo excedeu o limite para envio.");
       file = {

@@ -94,12 +94,23 @@ export async function generateGemini(
     break;
   }
   if (!response.ok) {
+    if (response.status === 429) {
+      const limited = await response.json().catch(() => null);
+      const daily = limited?.error?.details?.some((detail: any) =>
+        detail.violations?.some((violation: any) =>
+          /PerDay/.test(violation.quotaId || ""),
+        ),
+      );
+      throw new Error(
+        daily
+          ? "A cota diária de busca com IA foi esgotada. A busca direta da Gupy continua disponível; use os links de busca dos outros portais enquanto a cota é renovada."
+          : "Limite temporário do Gemini atingido. Aguarde antes de buscar novamente.",
+      );
+    }
     throw new Error(
-      response.status === 429
-        ? "Limite ou cota do Gemini atingido. Confira a cota do projeto e tente novamente."
-        : [400, 401, 403].includes(response.status)
-          ? "Gemini recusou a solicitação. Confira a chave, as permissões e o modelo no servidor."
-          : "Gemini indisponível. Tente novamente mais tarde.",
+      [400, 401, 403].includes(response.status)
+        ? "Gemini recusou a solicitação. Confira a chave, as permissões e o modelo no servidor."
+        : "Gemini indisponível. Tente novamente mais tarde.",
     );
   }
   const raw = await response.text();

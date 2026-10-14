@@ -165,6 +165,40 @@ describe("Fluxos de ponta a ponta na API", () => {
         .headers["content-type"],
     ).toContain("application/pdf");
   });
+  it("mantém o PDF original no banco quando o arquivo temporário desaparece", async () => {
+    const w = (await request("GET", "/api/workspace")).json();
+    const resumeId = w.resumes[0].id;
+    const stored = (await dbModule.readWorkspace(`${userId}:live`))!.resumes[0];
+    expect(stored.storedFile?.ciphertext).toBeTruthy();
+    expect(w.resumes[0].storedFile).toBeUndefined();
+    expect((await request("GET", "/api/export")).body).not.toContain(
+      "ciphertext",
+    );
+    await rm(join(dir, "resumes", userId, resumeId + ".pdf"));
+    const download = await request("GET", `/api/resumes/${resumeId}/download`);
+    expect(download.statusCode).toBe(200);
+    expect(download.rawPayload).toEqual(resumePdf());
+    const archive = stored.storedFile;
+    await dbModule.mutateWorkspace(`${userId}:live`, (state) => {
+      delete state.resumes[0].storedFile;
+    });
+    try {
+      const copy = await request("GET", `/api/resumes/${resumeId}/download`);
+      expect(copy.statusCode).toBe(200);
+      expect(copy.headers["x-resume-reconstructed"]).toBe("true");
+      expect(copy.headers["content-disposition"]).toContain(
+        "copia-texto-curriculo.pdf",
+      );
+      const { extractPdfText } = await import("../server/pdf-text");
+      expect(await extractPdfText(copy.rawPayload)).toContain(
+        "Verified projects",
+      );
+    } finally {
+      await dbModule.mutateWorkspace(`${userId}:live`, (state) => {
+        state.resumes[0].storedFile = archive;
+      });
+    }
+  });
   it("protege chaves de IA e não inclui segredos na exportação", async () => {
     const result = await request("PUT", "/api/intelligence", {
       provider: "openai",

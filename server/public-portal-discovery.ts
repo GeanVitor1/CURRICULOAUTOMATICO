@@ -108,6 +108,7 @@ function makeJob(
     description: string;
     publishedAt?: string | null;
     modality?: string;
+    contract?: string;
   },
 ): Job {
   return {
@@ -117,6 +118,7 @@ function makeJob(
     ...classify(data.title + "\n" + data.description),
     level: classify(data.title).level,
     ...(data.modality ? { modality: data.modality } : {}),
+    ...(data.contract ? { contract: data.contract } : {}),
     salaryMin: null,
     salaryMax: null,
     currency: "",
@@ -157,6 +159,7 @@ const gupyJob = z.object({
   city: z.string().optional(),
   state: z.string().optional(),
   workplaceType: z.string().optional(),
+  type: z.string().optional(),
   publishedDate: z.string().optional(),
   applicationDeadline: z.string().nullish(),
 });
@@ -307,6 +310,15 @@ async function readPublicPortal(
             hybrid: "Híbrido",
           } as Record<string, string>
         )[data.workplaceType || ""];
+        const contract = (
+          {
+            vacancy_type_effective: "CLT",
+            vacancy_legal_entity: "PJ",
+            vacancy_type_internship: "Estágio",
+            vacancy_type_apprentice: "Aprendiz",
+            vacancy_type_temporary: "Temporário",
+          } as Record<string, string>
+        )[data.type || ""];
         const location =
           [data.city, data.state].filter(Boolean).join(", ") ||
           "Localização não informada";
@@ -321,6 +333,7 @@ async function readPublicPortal(
           description: decode(data.description),
           location,
           modality,
+          contract,
           publishedAt,
         });
         jobs.set(String(data.id), job);

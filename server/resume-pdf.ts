@@ -1,5 +1,23 @@
 import PDFDocument from "pdfkit";
 
+/** Legacy uploads may have lost their temporary original. This copies only saved text. */
+export async function createResumeTextPdf(text: string): Promise<Buffer> {
+  const doc = new PDFDocument({
+    size: "A4",
+    margin: 54,
+    info: { Title: "Cópia do texto do currículo" },
+  });
+  const chunks: Buffer[] = [];
+  const result = new Promise<Buffer>((resolve, reject) => {
+    doc.on("data", (chunk: Buffer) => chunks.push(chunk));
+    doc.on("end", () => resolve(Buffer.concat(chunks)));
+    doc.on("error", reject);
+  });
+  doc.font("Helvetica").fontSize(11).text(text, { lineGap: 3 });
+  doc.end();
+  return result;
+}
+
 export type ResumeInput = {
   name: string;
   email: string;

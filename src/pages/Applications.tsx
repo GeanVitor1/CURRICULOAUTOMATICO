@@ -346,6 +346,15 @@ export default function Applications() {
                   1. Revise a apresentação e baixe seu currículo. 2. Abra o
                   anúncio e envie no portal. 3. Confirme o envio nesta tela.
                 </p>
+                {w.resumes.find((resume) => resume.id === current.resumeId)
+                  ?.originalFileAvailable === false && (
+                  <p>
+                    O arquivo original deste upload antigo não está disponível.
+                    Você pode baixar uma cópia do texto salvo em PDF e revisar
+                    antes de enviar. Para manter a formatação original, reenvie
+                    o arquivo em “Seu currículo”.
+                  </p>
+                )}
                 <Button
                   disabled={a.isPending}
                   onClick={() =>
@@ -373,7 +382,10 @@ export default function Applications() {
                   href={`/api/resumes/${current.resumeId}/download?demo=false`}
                 >
                   <Download size={14} />
-                  Baixar currículo desta candidatura
+                  {w.resumes.find((resume) => resume.id === current.resumeId)
+                    ?.originalFileAvailable === false
+                    ? "Baixar cópia do texto em PDF"
+                    : "Baixar currículo desta candidatura"}
                 </a>
               </div>
             )}

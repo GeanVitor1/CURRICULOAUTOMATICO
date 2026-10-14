@@ -109,7 +109,7 @@ test("preferences start a search and explain the daily schedule without promisin
   ).toBeVisible();
   await expect(
     page.getByRole("heading", {
-      name: "Busca e preparação ativas",
+      name: "Busca diária ativa · envio pelo site",
       exact: true,
     }),
   ).toBeVisible();

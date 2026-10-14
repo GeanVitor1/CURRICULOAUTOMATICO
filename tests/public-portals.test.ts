@@ -44,6 +44,40 @@ afterEach(() => {
   clearPublicPortalCache();
 });
 describe("Consulta pública sem Gemini", () => {
+  it("usa o tipo de contratação publicado pela Gupy mesmo quando a descrição não diz CLT", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "");
+    vi.spyOn(globalThis, "fetch").mockImplementation(
+      async () =>
+        new Response(
+          html([
+            {
+              ...item,
+              description: "Trabalho remoto no desenvolvimento de sistemas.",
+              workplaceType: "remote",
+              type: "vacancy_type_effective",
+            },
+            {
+              ...item,
+              id: 124,
+              jobUrl: "https://empresa.gupy.io/jobs/124",
+              type: "vacancy_legal_entity",
+            },
+            {
+              ...item,
+              id: 125,
+              jobUrl: "https://empresa.gupy.io/jobs/125",
+              type: "vacancy_type_internship",
+            },
+          ]),
+        ),
+    );
+    const result = await discoverPortal(source, workspace());
+    expect(result.jobs.map((job) => job.contract)).toEqual([
+      "CLT",
+      "PJ",
+      "Estágio",
+    ]);
+  });
   it("lê anúncios publicados na Gupy, preserva requisitos e rejeita links alheios e expirados", async () => {
     vi.stubEnv("GEMINI_API_KEY", "");
     const mock = vi

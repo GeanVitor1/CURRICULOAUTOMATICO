@@ -9,6 +9,7 @@ import {
   type ReactElement,
 } from "react";
 import * as RDialog from "@radix-ui/react-dialog";
+import { isPortalId, portals, portalSearchUrl } from "../shared/portals";
 import {
   X,
   Radar,
@@ -73,9 +74,7 @@ export function Mascot({
   );
   if (!canAnimate) return illustration;
   return (
-    <span className={`mascot-animation ${className}`}>
-      {illustration}
-    </span>
+    <span className={`mascot-animation ${className}`}>{illustration}</span>
   );
 }
 export function DiscoveryStatus() {
@@ -112,18 +111,56 @@ export function DiscoveryStatus() {
               : run.status === "failed"
                 ? "A busca precisa de atenção"
                 : run.status === "partial"
-                  ? "Busca concluída com um site pendente"
+                  ? `Busca concluída com ${run.errors.length} ${run.errors.length === 1 ? "site pendente" : "sites pendentes"}`
                   : "Busca concluída"}
         </strong>
         <p>
           {!working && run.status !== "failed" && w.jobCounts
-            ? `${w.jobCounts.total} vagas atendem às suas preferências.`
+            ? `${w.jobCounts.collected ?? w.jobCounts.total} anúncios encontrados. ${w.jobCounts.total} vagas atendem às suas preferências.`
             : run.message}
         </p>
+        {!working && !!w.jobCounts?.excludedByFilters && (
+          <p>
+            Os filtros de contratação, data, modalidade e salário podem ocultar
+            anúncios. Confira os filtros para ver os resultados desejados.
+          </p>
+        )}
         {run.errors.length > 0 && <p>{run.errors.join(" · ")}</p>}
+        {run.errors.length > 0 && (
+          <div className="interview-actions">
+            {w.sources
+              .filter(
+                (source) =>
+                  source.enabled &&
+                  source.lastError &&
+                  isPortalId(source.board),
+              )
+              .map((source) => (
+                <a
+                  className="button"
+                  key={source.id}
+                  href={portalSearchUrl(
+                    source.board as keyof typeof portals,
+                    w.filters.titles[0] || w.profile.headline,
+                    w.filters.locations.join(" ") || "Brasil",
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Buscar no {portals[source.board as keyof typeof portals].name}
+                  <ExternalLink size={14} />
+                </a>
+              ))}
+          </div>
+        )}
       </div>
       {run.errors.length > 0 && (
         <Button onClick={() => navigate("preferencias")}>Conferir sites</Button>
+      )}
+      {!working && !!w.jobCounts?.excludedByFilters && (
+        <Button onClick={() => navigate("vagas")}>
+          Revisar filtros de vagas
+        </Button>
       )}
     </motion.div>
   );
