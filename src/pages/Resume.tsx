@@ -21,6 +21,7 @@ import { date, useAction, useApp } from "../lib";
 import type { Resume as ResumeType } from "../../shared/types";
 import ResumeBuilder from "../ResumeBuilder";
 import ResumeTargets from "../ResumeTargets";
+import ResumeReviewPanel from "../ResumeReviewPanel";
 export default function Resume() {
   const { w, demo, navigate, toast } = useApp();
   const a = useAction();
@@ -136,6 +137,7 @@ export default function Resume() {
                     </Badge>
                   </div>
                   <p className="resume-analysis">{r.analysis}</p>
+                  <ResumeReviewPanel resume={r} />
                   <div className="skill-tags">
                     {r.skills.map((s) => (
                       <span key={s}>{s}</span>

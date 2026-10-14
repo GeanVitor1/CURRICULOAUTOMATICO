@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import type { Filters, Job, Match, Profile } from "../shared/types";
 import { evidenceLines } from "./professional-evidence";
+import { resumeSections } from "./resume-sections";
 import { isJobUrl, isPortalId } from "../shared/portals";
 import type { Workspace } from "../shared/types";
 export function matchesSelectedSites(job: Job, workspace: Workspace): boolean {
@@ -32,7 +33,7 @@ const vocabulary: Record<string, RegExp> = {
   Recepção: /recepcionista|recepcao|receptionist/i,
   "Rotinas administrativas":
     /rotinas? administrativas?|auxiliar administrativo|assistente administrativo/i,
-  Excel: /\bexcel\b|planilhas/i,
+  Excel: /\bexcel\b/i,
   Enfermagem: /enfermagem|enfermeir|nursing/i,
   "Cuidados com pacientes": /cuidados? (?:com |aos? )?pacientes|patient care/i,
   Educação: /professor|pedagogia|docencia|ensino de|teacher/i,
@@ -113,6 +114,7 @@ export function extractSkills(text: string, custom: string[] = []): string[] {
   ];
 }
 export function parseResume(text: string): Partial<Profile> {
+  const sections = resumeSections(text);
   const lines = text
     .split(/\r?\n/)
     .map((s) => s.trim())
@@ -157,13 +159,38 @@ export function parseResume(text: string): Partial<Profile> {
     skills: extractSkills(text),
     email: text.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i)?.[0] ?? "",
     github: text.match(/https?:\/\/(?:www\.)?github\.com\/[\w-]+/i)?.[0] ?? "",
-    ...(education.length
-      ? { education: education.join("\n").slice(0, 5000) }
+    ...(sections.education || sections.courses || education.length
+      ? {
+          education: [
+            sections.education || education.join("\n"),
+            sections.courses,
+          ]
+            .filter(Boolean)
+            .join("\n")
+            .slice(0, 5000),
+        }
       : {}),
-    ...(experience.length
-      ? { experience: experience.join("\n").slice(0, 10000) }
+    ...(sections.experience || sections.projects || experience.length
+      ? {
+          experience: [
+            sections.experience || experience.join("\n"),
+            sections.projects,
+          ]
+            .filter(Boolean)
+            .join("\n")
+            .slice(0, 10000),
+        }
       : {}),
-    ...(headline ? { headline: headline.slice(0, 200) } : {}),
+    ...(sections.objective || headline
+      ? {
+          headline: (sections.objective || headline!)
+            .split("\n")[0]
+            .slice(0, 200),
+        }
+      : {}),
+    ...(sections.languages
+      ? { languages: sections.languages.slice(0, 200) }
+      : {}),
     confirmed: false,
   };
 }

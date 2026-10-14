@@ -1,0 +1,357 @@
+{
+  "version": 3,
+  "evaluatedAt": "2026-10-14T13:55:34.111Z",
+  "mode": "local",
+  "model": null,
+  "scope": "Small authored synthetic benchmark. Measures specified extraction and validation cases, not real-world hiring outcomes or a percentage improvement.",
+  "cases": 7,
+  "passed": 7,
+  "results": [
+    {
+      "id": "software-domain-confusion",
+      "passed": true,
+      "checks": [
+        {
+          "check": "response-schema",
+          "passed": true
+        },
+        {
+          "check": "identified:C#",
+          "passed": true
+        },
+        {
+          "check": "identified:.NET",
+          "passed": true
+        },
+        {
+          "check": "identified:Angular",
+          "passed": true
+        },
+        {
+          "check": "excluded:Vendas",
+          "passed": true
+        },
+        {
+          "check": "excluded:Recepção",
+          "passed": true
+        },
+        {
+          "check": "excluded:Reposição de mercadorias",
+          "passed": true
+        },
+        {
+          "check": "target:Desenvolvedor .NET",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Repositor",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Vendedor",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Professor",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Recepcionista",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Desenvolvedor sênior",
+          "passed": true
+        },
+        {
+          "check": "literal-strengths",
+          "passed": true
+        },
+        {
+          "check": "coaching-evidence",
+          "passed": true
+        }
+      ],
+      "coachingItems": 0,
+      "skills": [
+        "C#",
+        ".NET",
+        "Angular"
+      ]
+    },
+    {
+      "id": "retail-experience",
+      "passed": true,
+      "checks": [
+        {
+          "check": "response-schema",
+          "passed": true
+        },
+        {
+          "check": "identified:Atendimento ao público",
+          "passed": true
+        },
+        {
+          "check": "identified:Operação de caixa",
+          "passed": true
+        },
+        {
+          "check": "identified:Reposição de mercadorias",
+          "passed": true
+        },
+        {
+          "check": "excluded:C#",
+          "passed": true
+        },
+        {
+          "check": "excluded:Enfermagem",
+          "passed": true
+        },
+        {
+          "check": "target:Operador de caixa",
+          "passed": true
+        },
+        {
+          "check": "target:Repositor",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Médico",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Diretor executivo",
+          "passed": true
+        },
+        {
+          "check": "literal-strengths",
+          "passed": true
+        },
+        {
+          "check": "coaching-evidence",
+          "passed": true
+        }
+      ],
+      "coachingItems": 0,
+      "skills": [
+        "Atendimento ao público",
+        "Operação de caixa",
+        "Reposição de mercadorias"
+      ]
+    },
+    {
+      "id": "first-job-informal",
+      "passed": true,
+      "checks": [
+        {
+          "check": "response-schema",
+          "passed": true
+        },
+        {
+          "check": "identified:Atendimento ao público",
+          "passed": true
+        },
+        {
+          "check": "identified:Organização de estoque",
+          "passed": true
+        },
+        {
+          "check": "excluded:Python",
+          "passed": true
+        },
+        {
+          "check": "target:Atendente",
+          "passed": true
+        },
+        {
+          "check": "target:Auxiliar de estoque",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Gerente de loja",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Diretor executivo",
+          "passed": true
+        },
+        {
+          "check": "literal-strengths",
+          "passed": true
+        },
+        {
+          "check": "coaching-evidence",
+          "passed": true
+        }
+      ],
+      "coachingItems": 0,
+      "skills": [
+        "Atendimento ao público",
+        "Organização de estoque"
+      ]
+    },
+    {
+      "id": "student-regulated-profession",
+      "passed": true,
+      "checks": [
+        {
+          "check": "response-schema",
+          "passed": true
+        },
+        {
+          "check": "excluded:Cuidados com pacientes",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Enfermeiro",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Médico",
+          "passed": true
+        },
+        {
+          "check": "literal-strengths",
+          "passed": true
+        },
+        {
+          "check": "coaching-evidence",
+          "passed": true
+        }
+      ],
+      "coachingItems": 0,
+      "skills": [
+        "Enfermagem"
+      ]
+    },
+    {
+      "id": "wrapped-negation",
+      "passed": true,
+      "checks": [
+        {
+          "check": "response-schema",
+          "passed": true
+        },
+        {
+          "check": "identified:C#",
+          "passed": true
+        },
+        {
+          "check": "identified:.NET",
+          "passed": true
+        },
+        {
+          "check": "excluded:Angular",
+          "passed": true
+        },
+        {
+          "check": "target:Desenvolvedor .NET",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Desenvolvedor frontend",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Desenvolvedor sênior",
+          "passed": true
+        },
+        {
+          "check": "literal-strengths",
+          "passed": true
+        },
+        {
+          "check": "coaching-evidence",
+          "passed": true
+        }
+      ],
+      "coachingItems": 0,
+      "skills": [
+        "C#",
+        ".NET"
+      ]
+    },
+    {
+      "id": "outside-default-vocabulary",
+      "passed": true,
+      "checks": [
+        {
+          "check": "response-schema",
+          "passed": true
+        },
+        {
+          "check": "excluded:Vendas",
+          "passed": true
+        },
+        {
+          "check": "excluded:Enfermagem",
+          "passed": true
+        },
+        {
+          "check": "target:Técnico em segurança do trabalho",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Médico",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Vendedor",
+          "passed": true
+        },
+        {
+          "check": "literal-strengths",
+          "passed": true
+        },
+        {
+          "check": "coaching-evidence",
+          "passed": true
+        }
+      ],
+      "coachingItems": 0,
+      "skills": []
+    },
+    {
+      "id": "document-instructions",
+      "passed": true,
+      "checks": [
+        {
+          "check": "response-schema",
+          "passed": true
+        },
+        {
+          "check": "identified:Atendimento ao público",
+          "passed": true
+        },
+        {
+          "check": "excluded:Enfermagem",
+          "passed": true
+        },
+        {
+          "check": "target:Atendente",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Médico",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Diretor executivo",
+          "passed": true
+        },
+        {
+          "check": "literal-strengths",
+          "passed": true
+        },
+        {
+          "check": "coaching-evidence",
+          "passed": true
+        }
+      ],
+      "coachingItems": 0,
+      "skills": [
+        "Atendimento ao público"
+      ]
+    }
+  ]
+}

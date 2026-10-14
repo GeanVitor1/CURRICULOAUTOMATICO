@@ -8,7 +8,13 @@ export function evidenceLines(text: string) {
   const lines = text
     .split(/\r?\n/)
     .map((line) => line.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter(
+      (line) =>
+        !/^(?:ignore (?:as |todas |instrucoes)|system\s*:|assistant\s*:|instrucoes? para (?:a )?(?:ia|modelo)\s*:)/.test(
+          normalized(line),
+        ),
+    );
   return lines.map((line, index) => {
     const previous = lines[index - 1] || "";
     // PDF extraction often wraps a single sentence across several lines.

@@ -24,7 +24,8 @@
     "verify:zen": "tsx scripts/verify-zen.ts",
     "verify:workflow": "tsx scripts/verify-workflow.ts",
     "verify:persistence": "node scripts/verify-persistence.mjs",
-    "verify:gemini": "tsx scripts/verify-gemini.ts"
+    "verify:gemini": "tsx scripts/verify-gemini.ts",
+    "evaluate:resume": "tsx scripts/evaluate-resume-analysis.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.14",

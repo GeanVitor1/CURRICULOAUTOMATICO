@@ -1,6 +1,6 @@
 import { normalize } from "./engine";
 /** Remove contact/identity lines; keep professional facts needed for matching. */
-export function minimizeResume(text: string): string {
+export function minimizeResume(text: string, limit = 18000): string {
   return text
     .split(/\r?\n/)
     .filter((line, index) => {
@@ -30,5 +30,5 @@ export function minimizeResume(text: string): string {
       /(?:\+55\s*)?(?:\(?\d{2}\)?[\s.-]*)?\d{4,5}[\s.-]\d{4}\b/g,
       "[telefone removido]",
     )
-    .slice(0, 18000);
+    .slice(0, limit);
 }

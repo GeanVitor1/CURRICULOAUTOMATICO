@@ -1,0 +1,62 @@
+{
+  "version": 3,
+  "evaluatedAt": "2026-10-14T13:45:43.065Z",
+  "mode": "live-gemini",
+  "model": "gemini-2.5-flash",
+  "scope": "Small authored synthetic benchmark. Measures specified extraction and validation cases, not real-world hiring outcomes or a percentage improvement.",
+  "cases": 1,
+  "passed": 1,
+  "results": [
+    {
+      "id": "first-job-informal",
+      "passed": true,
+      "checks": [
+        {
+          "check": "response-schema",
+          "passed": true
+        },
+        {
+          "check": "identified:Atendimento ao público",
+          "passed": true
+        },
+        {
+          "check": "identified:Organização de estoque",
+          "passed": true
+        },
+        {
+          "check": "excluded:Python",
+          "passed": true
+        },
+        {
+          "check": "target:Atendente",
+          "passed": true
+        },
+        {
+          "check": "target:Auxiliar de estoque",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Gerente de loja",
+          "passed": true
+        },
+        {
+          "check": "unrelated-target:Diretor executivo",
+          "passed": true
+        },
+        {
+          "check": "literal-strengths",
+          "passed": true
+        },
+        {
+          "check": "coaching-evidence",
+          "passed": true
+        }
+      ],
+      "coachingItems": 1,
+      "skills": [
+        "Atendimento ao público",
+        "Organização de estoque"
+      ]
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import { Button, Field, Mascot, PageHead } from "./components";
 import { useAction, useApp } from "./lib";
 import ResumeBuilder from "./ResumeBuilder";
 import IntelligenceControl from "./IntelligenceControl";
+import ResumeReviewPanel from "./ResumeReviewPanel";
 
 export default function SimpleResume() {
   const { w, navigate, toast } = useApp();
@@ -172,17 +173,18 @@ export default function SimpleResume() {
             <summary>Ver o que foi identificado</summary>
             <p>{resume.skills.join(" · ")}</p>
             <pre className="resume-extracted">{resume.text}</pre>
-            <Button
-              disabled={a.isPending || uploading || savingConsent}
-              onClick={() =>
-                a.mutate({ path: `/resumes/${resume.id}/analyze` })
-              }
-            >
-              Analisar novamente
-            </Button>
           </details>
         )}
+        {resume && (
+          <Button
+            disabled={a.isPending || uploading || savingConsent}
+            onClick={() => a.mutate({ path: `/resumes/${resume.id}/analyze` })}
+          >
+            {a.isPending ? "Atualizando a análise…" : "Analisar novamente"}
+          </Button>
+        )}
       </section>
+      {resume && <ResumeReviewPanel resume={resume} showTargets />}
     </div>
   );
 }

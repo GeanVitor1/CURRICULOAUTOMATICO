@@ -62,6 +62,7 @@ import { VERIFIED_SOURCES } from "./source-registry";
 import { isPortalId } from "../shared/portals";
 import { resumeTargets, TARGETS_VERSION } from "./resume-targets";
 import { applicationDraft } from "./application-draft";
+import { buildResumeReview } from "./resume-review";
 import {
   analyzeResume,
   getIntelligence,
@@ -1311,6 +1312,7 @@ export async function buildApp({ serveStatic = true } = {}) {
           approved: false,
           analysis:
             "Documento criado a partir das suas respostas. Revise e aprove antes de usar.",
+          review: buildResumeReview(text, body),
           suggestion: { ...body, name: body.name, skills: body.skills },
           targets: targets.targets,
           targetsMethod: targets.method,
@@ -1419,6 +1421,7 @@ export async function buildApp({ serveStatic = true } = {}) {
           skills: extracted.skills ?? [],
           approved: false,
           analysis: analyzed.message,
+          review: analyzed.review,
           suggestion: extracted,
           targets: targets.targets,
           targetsMethod: targets.method,
@@ -1461,6 +1464,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       if (!resume) throw new RequestError("Currículo não encontrado.");
       Object.assign(resume, {
         analysis: analyzed.message,
+        review: analyzed.review,
         suggestion: analyzed.profile,
         skills: analyzed.profile.skills || [],
         targets: targets.targets,

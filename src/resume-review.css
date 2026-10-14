@@ -1,0 +1,118 @@
+.resume-review {
+  margin-top: 24px;
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  text-align: left;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.resume-review-heading,
+.resume-review-action-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.resume-review h2 {
+  font-size: 22px;
+  margin: 8px 0 14px;
+}
+.resume-review h3 {
+  font-size: 16px;
+  margin: 24px 0 14px;
+}
+.resume-review h4 {
+  font-size: 14px;
+  margin: 0;
+}
+.resume-review p {
+  font-size: 13px;
+  line-height: 1.75;
+  margin: 8px 0;
+}
+.resume-review-note,
+.resume-review-method,
+.resume-review-action-heading > span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.resume-review-method {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 30px;
+}
+.resume-review-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+}
+.resume-review-sections > div {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.resume-review-sections dt {
+  font-size: 12px;
+  font-weight: 600;
+}
+.resume-review-sections dd {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.resume-review-sections [data-status="identified"] dd {
+  color: var(--accent);
+}
+.resume-review-actions,
+.resume-review-targets ul,
+.resume-review-evidence ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.resume-review-actions > li,
+.resume-review-targets li {
+  border: 1px solid var(--border);
+  padding: 18px;
+  border-radius: 10px;
+}
+.resume-review blockquote {
+  margin: 12px 0;
+  padding: 10px 14px;
+  border-left: 2px solid var(--accent);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+.resume-review-question {
+  color: var(--accent);
+}
+.resume-review summary {
+  cursor: pointer;
+  font-size: 13px;
+  padding-block: 10px;
+}
+.resume-review-targets li > strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+.resume-review-evidence li > strong {
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .resume-review-sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .resume-review-actions > li,
+  .resume-review-targets li {
+    padding: 14px;
+  }
+}

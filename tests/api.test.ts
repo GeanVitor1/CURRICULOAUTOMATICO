@@ -116,6 +116,9 @@ describe("Fluxos de ponta a ponta na API", () => {
     expect(r.json().skills).toContain("C#");
     let w = (await request("GET", "/api/workspace")).json();
     expect(w.resumes[0].approved).toBe(false);
+    expect(w.resumes[0].review.method).toBe("local");
+    expect(w.resumes[0].review.sections).toHaveLength(5);
+    expect(w.resumes[0].review.improvements.length).toBeGreaterThan(0);
     expect(w.profile.confirmed).toBe(false);
     expect(
       (
@@ -234,6 +237,16 @@ describe("Fluxos de ponta a ponta na API", () => {
                     skills: [{ name: "C#", evidence: "C# .NET" }],
                     years: null,
                     yearsEvidence: "",
+                    coaching: [
+                      {
+                        category: "experience",
+                        priority: "high",
+                        evidence: "projetos em APIs REST",
+                        action:
+                          "Descreva o contexto e os resultados reais desses projetos.",
+                        question: "Que problema esses projetos resolveram?",
+                      },
+                    ],
                   }),
                 },
               ],
@@ -246,6 +259,19 @@ describe("Fluxos de ponta a ponta na API", () => {
     const result = await analyzeResume(userId, text);
     expect(result.method).toBe("openai");
     expect(result.profile.skills).toContain("C#");
+    expect(result.review.method).toBe("openai");
+    expect(result.review.improvements).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          source: "ai",
+          evidence: "projetos em APIs REST",
+        }),
+      ]),
+    );
+    expect((await analyzeResume(userId, text)).review.improvements).toEqual(
+      result.review.improvements,
+    );
+    expect(mock).toHaveBeenCalledTimes(1);
     const body = JSON.parse(String(mock.mock.calls[0][1]?.body));
     expect(body.store).toBe(false);
     expect(body.text.format.type).toBe("json_schema");
@@ -424,15 +450,13 @@ describe("Fluxos de ponta a ponta na API", () => {
   it("timeout de envio autorizado deixa resultado desconhecido e não repete", async () => {
     // This integration scenario exercises multiple sends on a paid account.
     const { subscriptions } = await import("../server/schema");
-    await dbModule.db
-      .insert(subscriptions)
-      .values({
-        userId,
-        customerId: "cus_controlled_api_fixture",
-        plan: "pro",
-        status: "active",
-        currentPeriodEnd: new Date(Date.now() + 86400000),
-      });
+    await dbModule.db.insert(subscriptions).values({
+      userId,
+      customerId: "cus_controlled_api_fixture",
+      plan: "pro",
+      status: "active",
+      currentPeriodEnd: new Date(Date.now() + 86400000),
+    });
     const { automaticSend } = await import("../server/operations");
     process.env.APPLICATION_WEBHOOK_URL =
       "https://adapter.example.test/applications";

@@ -178,6 +178,7 @@ export type Resume = {
   text: string;
   approved: boolean;
   analysis: string;
+  review?: ResumeReview;
   suggestion?: Partial<Profile>;
   targets?: ResumeTarget[];
   targetsMethod?: string;
@@ -186,11 +187,38 @@ export type Resume = {
   targetsConfirmed?: boolean;
   targetTitles?: string[];
 };
+export type ResumeReviewCategory =
+  "objective" | "experience" | "education" | "skills" | "clarity";
+export type ResumeReview = {
+  version: number;
+  method: string;
+  generatedAt: string;
+  summary: string;
+  coverage: { analyzedCharacters: number; truncated: boolean };
+  sections: {
+    category: ResumeReviewCategory;
+    label: string;
+    status: "identified" | "needs_detail" | "not_found";
+    evidence: string;
+  }[];
+  strengths: { label: string; evidence: string }[];
+  improvements: {
+    id: string;
+    category: ResumeReviewCategory;
+    priority: "high" | "medium";
+    title: string;
+    action: string;
+    question: string;
+    evidence: string;
+    source: "local" | "ai";
+  }[];
+};
 export type ResumeTarget = {
   title: string;
   reason: string;
   evidence: string;
   caution: string;
+  basis?: "objective" | "experience" | "education" | "skills";
 };
 export type Notice = {
   id: string;
