@@ -5,6 +5,7 @@ import { Button, Field, Modal, PageHead } from "./components";
 import { api, useApp } from "./lib";
 import IntelligenceControl from "./IntelligenceControl";
 import Billing from "./Billing";
+import AntigravityConnection from "./AntigravityConnection";
 import {
   GoogleMark,
   googleErrorMessage,
@@ -80,6 +81,7 @@ export default function SimpleAccount() {
         title="Minha conta"
         description="Seus dados e sua privacidade."
       />
+      <AntigravityConnection />
       <div className="account-overview">
         <section className="interview-card account-profile">
           <div className="account-identity">

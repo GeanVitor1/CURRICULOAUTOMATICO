@@ -45,6 +45,9 @@ describe("Fluxos de ponta a ponta na API", () => {
   });
   it("exige autenticação", async () =>
     expect((await app.inject("/api/workspace")).statusCode).toBe(401));
+  it("protege a conexão Antigravity e não disponibiliza a cota do titular a outras contas", async () => {
+    expect((await app.inject("/api/antigravity")).statusCode).toBe(401);
+  });
   it("protege solicitações mutativas contra CSRF", async () =>
     expect(
       (
@@ -66,6 +69,18 @@ describe("Fluxos de ponta a ponta na API", () => {
     expect(r.headers["set-cookie"]).toContain("SameSite=Lax");
     cookie = String(r.headers["set-cookie"]).split(";")[0];
     userId = r.json().id;
+  });
+  it("não abre um terminal para uma conta sem autorização Antigravity", async () => {
+    vi.stubEnv("ANTIGRAVITY_ENABLED", "true");
+    vi.stubEnv("ANTIGRAVITY_OWNER_ID", "different-owner");
+    expect((await request("GET", "/api/antigravity")).json()).toEqual({
+      available: false,
+      connected: false,
+    });
+    expect(
+      (await request("POST", "/api/antigravity/login", {})).statusCode,
+    ).toBe(400);
+    vi.unstubAllEnvs();
   });
   it("workspace real começa vazio e não disponibiliza dados fictícios", async () => {
     const real = (await request("GET", "/api/workspace")).json();

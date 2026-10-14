@@ -279,6 +279,10 @@ export async function discover(
   }[] = [];
   const successfulBoards: { type: string; board: string; ids: Set<string> }[] =
     [];
+  const [owner] = await db
+    .select({ userId: workspaces.userId })
+    .from(workspaces)
+    .where(eq(workspaces.id, id));
   for (const source of sources) {
     try {
       if (discoveryBudgetExpired())
@@ -287,7 +291,7 @@ export async function discover(
         );
       const result =
         source.type === "portal"
-          ? await discoverPortal(source, searchWorkspace)
+          ? await discoverPortal(source, searchWorkspace, owner?.userId)
           : await discoverCachedSource(source);
       if (
         "searchSuggestionsHtml" in result &&
@@ -323,10 +327,6 @@ export async function discover(
       });
     }
   }
-  const [owner] = await db
-    .select({ userId: workspaces.userId })
-    .from(workspaces)
-    .where(eq(workspaces.id, id));
   const nativeSites = owner
     ? await readyPortals(owner.userId, searchWorkspace.resumes[0]?.id || "")
     : [];

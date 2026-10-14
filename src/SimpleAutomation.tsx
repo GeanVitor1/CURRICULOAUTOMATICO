@@ -6,6 +6,7 @@ import { api, date, useAction, useApp } from "./lib";
 import type { SiteCapability } from "./CareerInterview";
 import PortalConnections from "./PortalConnections";
 import { useBilling } from "./Billing";
+import AntigravityConnection from "./AntigravityConnection";
 
 export default function SimpleAutomation() {
   const { w, navigate, toast } = useApp();
@@ -78,6 +79,7 @@ export default function SimpleAutomation() {
         title="Sua automação"
         description="Seu currículo, suas preferências e suas candidaturas. Tudo em um só lugar."
       />
+      <AntigravityConnection />
       {billing.data && (
         <div className="automation-quota">
           <span>

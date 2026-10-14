@@ -58,6 +58,13 @@ import {
 } from "./portal-sessions";
 import { candidatePortals, portals } from "../shared/portals";
 import { geminiConfigured } from "./gemini";
+import {
+  antigravityAvailable,
+  antigravityStatus,
+  startAntigravityLogin,
+  finishAntigravityLogin,
+  disconnectAntigravity,
+} from "./antigravity";
 import { inspectSourceCatalog } from "./source-catalog";
 import { VERIFIED_SOURCES } from "./source-registry";
 import { isPortalId } from "../shared/portals";
@@ -690,7 +697,10 @@ export async function buildApp({ serveStatic = true } = {}) {
     return candidatePortals.map((site) => ({
       id: site,
       name: portals[site].name,
-      discovery: publicDiscoveryAvailable(site, geminiConfigured()),
+      discovery: publicDiscoveryAvailable(
+        site,
+        geminiConfigured() || antigravityAvailable(u.id),
+      ),
       ...connections.find((connection) => connection.id === site),
       authMethod:
         site === "linkedin" && linkedinOAuthConfigured()
@@ -932,6 +942,30 @@ export async function buildApp({ serveStatic = true } = {}) {
   });
   app.get("/api/intelligence", async (req) =>
     getIntelligence((await identity(req)).id),
+  );
+  app.get("/api/antigravity", async (req) =>
+    antigravityStatus((await identity(req)).id),
+  );
+  app.post(
+    "/api/antigravity/login",
+    { config: { rateLimit: { max: 3, timeWindow: "1 minute" } } },
+    async (req) => {
+      const { u, demo } = await scope(req);
+      if (demo) throw new RequestError("Conecte no espaço de dados reais.");
+      return startAntigravityLogin(u.id);
+    },
+  );
+  app.post(
+    "/api/antigravity/confirm",
+    { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } },
+    async (req) => {
+      const { u, demo } = await scope(req);
+      if (demo) throw new RequestError("Conecte no espaço de dados reais.");
+      return finishAntigravityLogin(u.id, req.body);
+    },
+  );
+  app.delete("/api/antigravity", async (req) =>
+    disconnectAntigravity((await identity(req)).id),
   );
   app.put("/api/intelligence", async (req) => {
     const { u, demo } = await scope(req);
@@ -1637,6 +1671,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       .where(eq(workspaces.userId, u.id)))
       await configureSchedule(row.id, false, "08:00");
     await deletePortalConnections(u.id);
+    if (antigravityAvailable(u.id)) await disconnectAntigravity(u.id);
     await disconnectLinkedinIdentity(u.id);
     await db.transaction(async (tx) => {
       // Lock in the same order as send claims and billing updates.
