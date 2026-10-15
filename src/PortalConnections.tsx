@@ -18,6 +18,7 @@ import {
   officialPortalLoginOnly,
 } from "../shared/portals";
 import type { SiteCapability } from "./CareerInterview";
+import PortalConnector from "./PortalConnector";
 
 type Frame = {
   image: string;
@@ -398,10 +399,10 @@ export default function PortalConnections({
                 {externalLoginOnly && (
                   <p className="connection-limitation">
                     Faça login diretamente no site oficial, em outra aba. Não
-                    pedimos seu e-mail ou senha aqui. Esse login não compartilha
-                    sua sessão com o EmpreGatos.
-                    {!status?.automatic &&
-                      " Os envios por este portal continuam pendentes."}
+                    pedimos seu e-mail ou senha aqui.{" "}
+                    {status?.sessionImportAvailable
+                      ? "Depois, use Conectar com a automação para autorizar a sessão pelo conector."
+                      : "Esse login não compartilha sua sessão com o EmpreGatos. Os envios por este portal continuam pendentes."}
                   </p>
                 )}
                 {!externalLoginOnly &&
@@ -443,6 +444,9 @@ export default function PortalConnections({
                     ? "Fazer login no site oficial"
                     : "Abrir site oficial"}
                 </a>
+                {status?.sessionImportAvailable && !demo && (
+                  <PortalConnector portal={site} connected={status.connected} />
+                )}
                 {status?.connectable && !externalLoginOnly && (
                   <Button
                     disabled={

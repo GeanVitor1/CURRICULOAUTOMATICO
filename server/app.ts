@@ -125,6 +125,8 @@ import {
 } from "./google-oauth";
 import { applicationCapabilities } from "./automation-capabilities";
 import { cloudPortalEnabled } from "./portal-cloud-policy";
+import { cloudPortalCommand } from "./portal-cloud";
+import { validatePortalState } from "./portal-session-import";
 import { dispatchNextApplication } from "./submission-dispatch";
 import {
   accountPlan,
@@ -724,7 +726,9 @@ export async function buildApp({ serveStatic = true } = {}) {
         linkedIdentity.expiresAt <= Date.now(),
       oauthConfigured: site === "linkedin" && linkedinOAuthConfigured(),
       limitation: officialPortalLoginOnly(site)
-        ? "Login diretamente no portal. Abrir ou fechar a aba não conecta sua sessão à automação do EmpreGatos."
+        ? cloudPortalEnabled(u.id, site)
+          ? "Entre no site oficial e use o conector para autorizar sua sessão na automação. O servidor verifica o login antes de liberar envios."
+          : "Login diretamente no portal. Abrir ou fechar a aba não conecta sua sessão à automação do EmpreGatos."
         : providerLimits[site],
       applicationMethod: automaticPortals().includes(site)
         ? "authorized-api"
@@ -891,6 +895,71 @@ export async function buildApp({ serveStatic = true } = {}) {
     await cancelPortalLogin(u.id, portal);
     return { ok: true };
   });
+  app.post(
+    "/api/connections/:portal/import",
+    {
+      bodyLimit: 1100000,
+      config: { rateLimit: { max: 6, timeWindow: "1 minute" } },
+    },
+    async (req) => {
+      const { u, portal } = await connectionScope(req);
+      if (!cloudPortalEnabled(u.id, portal))
+        throw new RequestError(
+          "O conector de automação não está habilitado para esta conta.",
+        );
+      const body = z
+        .object({
+          authorizeAutomation: z.literal(true),
+          profileResumeId: z.string().min(1).max(100),
+          state: z.unknown(),
+        })
+        .strict()
+        .parse(req.body);
+      const w = await readWorkspace(`${u.id}:live`);
+      if (
+        !w?.profile.confirmed ||
+        !w.interview?.completed ||
+        w.interview.answers.resumeId !== body.profileResumeId ||
+        !w.interview.answers.sites.includes(portal) ||
+        !w.resumes.some((r) => r.id === body.profileResumeId && r.approved)
+      )
+        throw new RequestError(
+          "Confirme seu currículo e suas preferências antes de conectar os envios.",
+        );
+      let state;
+      try {
+        state = validatePortalState(portal, body.state);
+      } catch {
+        throw new RequestError(
+          "A sessão recebida não é válida para este portal. Entre no site oficial e tente novamente.",
+        );
+      }
+      await cloudPortalCommand(u.id, portal, {
+        op: "import",
+        resumeId: body.profileResumeId,
+        state,
+      });
+      const nativeSites = await readyPortals(u.id, body.profileResumeId);
+      const activated = await mutateWorkspace(`${u.id}:live`, (current) => {
+        if (
+          !current.profile.confirmed ||
+          !current.interview?.completed ||
+          current.interview.answers.resumeId !== body.profileResumeId ||
+          !current.resumes.some(
+            (r) => r.id === body.profileResumeId && r.approved,
+          )
+        )
+          return false;
+        current.routine.enabled = true;
+        current.routine.mode = "automatic";
+        current.routine.nextRun = nextExecution(current.routine.time);
+        queuePreparedApplications(current, nativeSites);
+        return true;
+      });
+      await dispatchNextApplication(`${u.id}:live`);
+      return { ok: true, automatic: activated };
+    },
+  );
   app.delete("/api/connections/:portal", async (req) => {
     const { u, portal } = await connectionScope(req);
     await disconnectPortal(u.id, portal);

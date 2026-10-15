@@ -1,6 +1,7 @@
 node_modules/
 dist/
 dist-server/
+public/empregatos-conector.zip
 .env
 .env.*
 !.env.example

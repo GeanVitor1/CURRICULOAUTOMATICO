@@ -26,6 +26,10 @@ import {
   submitLoginForm,
 } from "./portal-login-fields";
 import type { LoginAction } from "./portal-sessions";
+import {
+  validatePortalState,
+  type ImportedPortalState,
+} from "./portal-session-import";
 
 type Saved = {
   connectedAt: string;
@@ -259,6 +263,44 @@ export class PortalBrowserService {
     await this.close();
     await rm(resolve(this.directory, "session.enc"), { force: true });
   }
+  isBusy() {
+    return this.busy;
+  }
+  async importSession(input: ImportedPortalState, resumeId: string) {
+    const state = validatePortalState(this.portal, input);
+    if (!resumeId) throw new Error("O login precisa de um currículo aprovado.");
+    if (this.page)
+      throw new Error("O portal já está aberto. Feche a conexão anterior.");
+    const previous = await this.load();
+    const now = new Date().toISOString();
+    const context = await this.createContext({
+      state,
+      profileResumeId: resumeId,
+      connectedAt: now,
+      verifiedAt: now,
+    });
+    try {
+      const page = await context.newPage();
+      await page.goto(portalRules[this.portal].account, {
+        waitUntil: "domcontentloaded",
+        timeout: 20000,
+      });
+      await page.waitForTimeout(1000);
+      if (!(await authenticated(page, this.portal)))
+        throw new Error(
+          "O login compartilhado não foi confirmado na nuvem. Entre no portal e conecte novamente; o site também pode exigir uma verificação.",
+        );
+      await this.save({
+        state: await context.storageState({ indexedDB: true }),
+        profileResumeId: resumeId,
+        connectedAt: previous?.connectedAt || now,
+        verifiedAt: now,
+      });
+      return { ok: true };
+    } finally {
+      await context.close().catch(() => {});
+    }
+  }
   async apply(
     resumeId: string,
     input: PortalApplication,
@@ -331,6 +373,7 @@ export class PortalBrowserService {
     action?: LoginAction;
     resumeId?: string | null;
     input?: PortalApplication;
+    state?: ImportedPortalState;
   }) {
     if (this.busy)
       throw new Error(
@@ -343,6 +386,8 @@ export class PortalBrowserService {
         return await this.action(request.action);
       if (request.op === "confirm")
         return await this.confirm(request.resumeId || null);
+      if (request.op === "import" && request.state)
+        return await this.importSession(request.state, request.resumeId || "");
       if (request.op === "close") {
         await this.close();
         return { ok: true };
