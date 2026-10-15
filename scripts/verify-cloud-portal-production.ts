@@ -112,6 +112,43 @@ try {
     if (response.status() !== 400)
       throw new Error("Remote credential endpoint was not disabled");
   }
+  if (!state?.resumes[0]?.id)
+    throw new Error("An approved resume is required for the import probe");
+  const refusal = await context.request.post(
+    origin + "/api/connections/gupy/import",
+    {
+      headers: { Origin: origin, "X-Orbita-Request": "1" },
+      data: {
+        authorizeAutomation: true,
+        profileResumeId: state.resumes[0].id,
+        state: {
+          cookies: [
+            {
+              name: "qa_non_authenticated",
+              value: "synthetic-not-a-session",
+              domain: ".gupy.io",
+              path: "/",
+              expires: -1,
+              httpOnly: true,
+              secure: true,
+              sameSite: "Lax",
+            },
+          ],
+          origins: [],
+        },
+      },
+      timeout: 60000,
+    },
+  );
+  if (
+    refusal.status() !== 400 ||
+    !(await refusal.json()).error?.includes(
+      "login compartilhado não foi confirmado",
+    )
+  )
+    throw new Error(
+      "Production must verify the portal login before enabling sends",
+    );
   const after = await (
     await context.request.get(origin + "/api/automation/sites")
   ).json();
@@ -126,6 +163,7 @@ try {
       portalCredentialFieldsInApp: false,
       credentialRelayEndpointsDisabled: true,
       connectorDownloadVerified: true,
+      cloudRejectedUnverifiedSession: true,
       closingTabDoesNotConnect: true,
       automaticWithoutLogin: false,
       applicationsSubmitted: 0,
