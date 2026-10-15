@@ -132,12 +132,22 @@ try {
   await page.keyboard.press("ControlOrMeta+A");
   await page.keyboard.press("Backspace");
   const count = await page.evaluate(
-    () => performance.getEntriesByName("remote-input").length,
+    () =>
+      performance
+        .getEntriesByName("remote-input")
+        .filter(
+          (entry) => (entry as PerformanceMeasure).detail?.type === "scroll",
+        ).length,
   );
   await image.hover();
   await page.mouse.wheel(0, 300);
   await page.waitForFunction(
-    (before) => performance.getEntriesByName("remote-input").length > before,
+    (before) =>
+      performance
+        .getEntriesByName("remote-input")
+        .filter(
+          (entry) => (entry as PerformanceMeasure).detail?.type === "scroll",
+        ).length > before,
     count,
   );
   const latencies = await page.evaluate(() =>
