@@ -10,7 +10,6 @@ import { useBilling } from "./Billing";
 
 export type SiteCapability = {
   externalLoginOnly?: boolean;
-  sessionImportAvailable?: boolean;
   cloud?: boolean;
   id: string;
   name: string;

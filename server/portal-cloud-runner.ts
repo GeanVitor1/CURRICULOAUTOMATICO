@@ -56,12 +56,7 @@ const server = createServer(async (req, res) => {
           : "Não foi possível concluir a ação no portal. Confira a conexão ou uma verificação solicitada pelo site.";
     }
     res.end(
-      JSON.stringify({
-        data,
-        error,
-        connection: await service.metadata(),
-        canStop: !service.isBusy(),
-      }),
+      JSON.stringify({ data, error, connection: await service.metadata() }),
     );
   } catch {
     res.writeHead(400);

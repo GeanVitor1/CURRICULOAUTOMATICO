@@ -2,13 +2,7 @@
 
 ## Fluxo publicado de login
 
-Gupy, InfoJobs e Glassdoor abrem o login no domínio oficial, em outra aba. O painel não solicita e-mail ou senha desses portais e suas rotas HTTP de login remoto (`open`, `action`, `confirm`) recusam novas conexões. Fechar a aba ou voltar ao painel não comprova autenticação. **Conectar com a automação** usa uma extensão opcional para compartilhar a sessão do portal após autorização explícita. A conexão não usa OAuth do candidato.
-
-O botão **Baixar conector** fornece `/empregatos-conector.zip`, gerado a partir de `browser-connector/` em cada build. A versão inicial exige instalar a pasta extraída no modo desenvolvedor do Chrome ou Edge; não foi publicada na loja. O manifesto contém uma identidade pública fixa e permissões opcionais apenas para os três portais. A extensão não lê campos de senha, não solicita acesso ao Google, não persiste cookies e não faz envios de currículos. Uma janela própria explica o acesso e exige autorização antes de ler a sessão. Cookies seguros, armazenamento local relacionado à autenticação e o banco de autenticação Firebase, quando existente, são enviados somente à página do painel que iniciou o pedido.
-
-O painel transmite a sessão à rota autenticada `/api/connections/:portal/import`, com proteção de origem, confirmação do currículo e consentimento. O servidor restringe todos os domínios, verifica a sessão na página de conta do portal e só salva uma sessão confirmada. Estado autenticado e comunicação com a máquina remota são cifrados; nunca aparecem no retorno da API nem no banco do workspace. Após validação, a rotina muda para automática e as preparações elegíveis entram na fila. Portais podem recusar a sessão transferida, pedir nova autenticação ou bloquear a nuvem; isso é informado, sem marcar conexão ou envio fictícios.
-
-Depois da conexão, o computador e a extensão podem ser fechados. **Desconectar** remove a sessão da nuvem. Remover somente a extensão não revoga uma sessão já compartilhada; use também Desconectar no painel. Se a sessão expirar, entre novamente no portal e repita a conexão explícita.
+Por escolha do produto, Gupy, InfoJobs e Glassdoor agora abrem o login no domínio oficial, em outra aba. O painel não solicita e-mail ou senha desses portais e suas rotas HTTP de login remoto (`open`, `action`, `confirm`) recusam novas conexões. Fechar a aba ou voltar ao painel não comprova autenticação e não ativa os envios. Não há extensão de compartilhamento de sessão instalada nem OAuth de candidato configurado. A busca diária continua; candidaturas sem uma integração ou sessão já válida ficam pendentes. Os componentes de navegador descritos abaixo permanecem como infraestrutura, sem serem usados para pedir credenciais nesse fluxo.
 
 O navegador usa Vercel Sandbox e uma sessão privada por pessoa e portal. Não precisa de computador ligado. A conexão Antigravity é independente: fornece análise e busca, sem autenticar contas de candidatos.
 

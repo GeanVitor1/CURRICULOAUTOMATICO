@@ -5,7 +5,7 @@ await build({
   bundle: true,
   platform: "node",
   format: "esm",
-  external: ["playwright"],
+  packages: "external",
   logLevel: "info",
 });
 await build({

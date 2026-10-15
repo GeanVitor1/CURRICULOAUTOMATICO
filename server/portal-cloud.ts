@@ -14,7 +14,6 @@ import type { LoginAction } from "./portal-sessions";
 import type { PortalApplication, PortalResult } from "./portal-application";
 import type { Workspace } from "../shared/types";
 import { RequestError } from "./errors";
-import type { ImportedPortalState } from "./portal-session-import";
 
 type Metadata = NonNullable<
   Workspace["infrastructure"]["portalConnections"]
@@ -55,26 +54,6 @@ async function cacheMetadata(
   });
 }
 async function runtime(userId: string, portal: CandidatePortal) {
-  const provision = async (sandbox: Sandbox) => {
-    await sandbox.mkDir(root + "/requests").catch((error) => {
-      if (!(error instanceof Error) || !/file exists/i.test(error.message))
-        throw error;
-    });
-    await sandbox.writeFiles([
-      {
-        path: root + "/runner.mjs",
-        content: await readFile(
-          resolve(process.cwd(), "dist-server/portal-cloud-runner.mjs"),
-        ),
-        mode: 0o600,
-      },
-      {
-        path: root + "/client.mjs",
-        content: Buffer.from(clientSource),
-        mode: 0o600,
-      },
-    ]);
-  };
   const s = await Sandbox.getOrCreate({
     name: portalSandboxName(userId, portal),
     source: {
@@ -84,12 +63,26 @@ async function runtime(userId: string, portal: CandidatePortal) {
     resources: { vcpus: 1 },
     timeout: 15 * 60000,
     keepLastSnapshots: { count: 1, expiration: 0 },
-    onCreate: provision,
-    onResume: provision,
+    onCreate: async (sandbox) => {
+      await sandbox.mkDir(root + "/requests");
+      await sandbox.writeFiles([
+        {
+          path: root + "/runner.mjs",
+          content: await readFile(
+            resolve(process.cwd(), "dist-server/portal-cloud-runner.mjs"),
+          ),
+          mode: 0o600,
+        },
+        {
+          path: root + "/client.mjs",
+          content: Buffer.from(clientSource),
+          mode: 0o600,
+        },
+      ]);
+    },
   });
   let healthy = await s.runCommand({ cmd: "node", args: ["-e", probe] });
   if (healthy.exitCode !== 0) {
-    await provision(s);
     await s.runCommand({
       cmd: "node",
       args: [root + "/runner.mjs", portal],
@@ -119,7 +112,6 @@ export async function cloudPortalCommand<T = unknown>(
     action?: LoginAction;
     resumeId?: string | null;
     input?: PortalApplication;
-    state?: ImportedPortalState;
   },
 ) {
   if (!cloudPortalEnabled(userId, portal))
@@ -184,12 +176,8 @@ export async function cloudPortalCommand<T = unknown>(
     );
     if (response.connection !== undefined)
       await cacheMetadata(userId, portal, response.connection);
-    stop =
-      response.canStop !== false &&
-      ["confirm", "close", "disconnect", "apply", "import"].includes(
-        request.op,
-      );
     if (response.error) throw new RequestError(response.error);
+    stop = ["confirm", "close", "disconnect", "apply"].includes(request.op);
     return response.data as T;
   } catch (error) {
     if (error instanceof RequestError) throw error;

@@ -3,7 +3,6 @@ import { randomBytes, createHash } from "node:crypto";
 import { chromium } from "playwright";
 import { eq } from "drizzle-orm";
 import { candidatePortalLoginUrls } from "../shared/portals";
-import { unzipSync } from "fflate";
 dotenv.config({ path: ".env.production.local", quiet: true });
 dotenv.config({ path: ".env.antigravity-owner.local", quiet: true });
 const { db, closeDb, readWorkspace } = await import("../server/db");
@@ -47,12 +46,7 @@ try {
   if (!sitesResponse.ok()) throw new Error("Capabilities unavailable");
   const sites = await sitesResponse.json();
   const gupy = sites.find((s: any) => s.id === "gupy");
-  if (
-    !gupy?.externalLoginOnly ||
-    !gupy.sessionImportAvailable ||
-    gupy.connectable ||
-    gupy.automatic
-  )
+  if (!gupy?.externalLoginOnly || gupy.connectable || gupy.automatic)
     throw new Error(
       "Official login must not advertise a shared portal session",
     );
@@ -76,34 +70,11 @@ try {
   if (
     (await page.getByRole("dialog").count()) ||
     (await card
-      .getByRole("button", {
-        name: /Conectar para envio automático|Confirmar currículo/,
-      })
+      .getByRole("button", { name: /Conectar|Confirmar currículo/ })
       .count())
   )
     throw new Error("The panel must not open a credential relay");
   await popup.close();
-  await card
-    .getByRole("button", { name: "Conectar com a automação", exact: true })
-    .click();
-  const connector = page.getByRole("dialog");
-  await connector
-    .getByRole("link", { name: "Baixar conector", exact: true })
-    .waitFor();
-  const download = await context.request.get(
-    origin + "/empregatos-conector.zip",
-  );
-  if (!download.ok()) throw new Error("Connector download unavailable");
-  const zip = unzipSync(await download.body());
-  const manifest = JSON.parse(Buffer.from(zip["manifest.json"]).toString());
-  if (
-    manifest.manifest_version !== 3 ||
-    !manifest.optional_permissions.includes("cookies") ||
-    manifest.permissions.includes("cookies")
-  )
-    throw new Error(
-      "Connector permissions must require explicit browser authorization",
-    );
   for (const operation of ["open", "action", "confirm"]) {
     const response = await context.request.post(
       origin + `/api/connections/gupy/${operation}`,
@@ -125,7 +96,6 @@ try {
       officialLoginOpenedInNewTab: true,
       portalCredentialFieldsInApp: false,
       credentialRelayEndpointsDisabled: true,
-      connectorDownloadVerified: true,
       closingTabDoesNotConnect: true,
       automaticWithoutLogin: false,
       applicationsSubmitted: 0,

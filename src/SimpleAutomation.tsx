@@ -34,7 +34,9 @@ export default function SimpleAutomation() {
     );
   const cloudAvailable = sites.data?.some(
     (site) =>
-      site.sessionImportAvailable &&
+      site.cloud &&
+      site.connectable &&
+      !site.externalLoginOnly &&
       w.interview?.answers.sites.includes(site.id),
   );
   const saveRoutine = (upgrade = false) => {
@@ -225,7 +227,7 @@ export default function SimpleAutomation() {
                     {available
                       ? "Nos sites sem integração de envio, você conclui a candidatura no anúncio oficial."
                       : cloudAvailable
-                        ? "Abra Contas dos sites, entre no portal oficial e use Conectar com a automação para autorizar a sessão pelo conector. Após a verificação na nuvem, tentaremos concluir as candidaturas elegíveis. Perguntas sem resposta e CAPTCHA ficam pendentes para você."
+                        ? "Abra Contas dos sites, entre no portal e confirme seu currículo. Tentaremos concluir cada candidatura elegível usando seus dados confirmados. Se faltar uma resposta ou houver CAPTCHA, você verá o motivo na candidatura."
                         : "Buscamos as vagas e preparamos as candidaturas compatíveis. Abra uma vaga para revisar o currículo e a apresentação, depois conclua o envio no portal. A candidatura só aparece como enviada após sua confirmação."}
                   </p>
                 </div>

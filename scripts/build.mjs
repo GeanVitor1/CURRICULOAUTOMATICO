@@ -19,7 +19,6 @@ async function run(file, args) {
   });
 }
 await run(require.resolve("typescript/bin/tsc"), ["--noEmit"]);
-await run(resolve("scripts/build-connector.mjs"), []);
 await run(
   resolve(dirname(require.resolve("vite/package.json")), "bin/vite.js"),
   ["build"],

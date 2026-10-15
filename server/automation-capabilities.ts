@@ -52,7 +52,6 @@ export async function applicationCapabilities(
     return {
       ...connection,
       externalLoginOnly,
-      sessionImportAvailable: cloudPortalEnabled(userId, site),
       connectable: !externalLoginOnly && connection.connectable,
       automatic: !blocker,
       needsResumeApproval,
