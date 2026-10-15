@@ -39,6 +39,14 @@ import {
 } from "./portal-browser-policy";
 import { browserAuthorized } from "./provider-capabilities";
 import { portalBrowserRuntime } from "./browser-runtime";
+import { cloudPortalEnabled } from "./portal-cloud-policy";
+import type { PortalLoginFrame } from "./portal-browser-service";
+import {
+  cloudConnectionMetadata,
+  cloudPortalCommand,
+  sendCloudApplication,
+  disconnectCloudPortal,
+} from "./portal-cloud";
 
 type SavedConnection = {
   connectedAt: string;
@@ -166,6 +174,26 @@ export async function connectionStatuses(userId: string) {
   const runtime = portalBrowserRuntime();
   return Promise.all(
     candidatePortals.map(async (portal) => {
+      if (cloudPortalEnabled(userId, portal)) {
+        const saved = await cloudConnectionMetadata(userId, portal);
+        const expired = !!saved?.expiresAt && saved.expiresAt <= Date.now();
+        return {
+          id: portal,
+          connected: !!saved && !expired,
+          sessionState: saved
+            ? expired
+              ? "expired"
+              : "verified"
+            : "disconnected",
+          sessionSaved: !!saved,
+          verifiedAt: saved?.verifiedAt || null,
+          connectedAt: saved?.connectedAt || null,
+          profileResumeId: saved?.profileResumeId || null,
+          connectable: true,
+          browserAvailable: true,
+          cloud: true,
+        };
+      }
       const saved = await load(userId, portal);
       const verifiedAt = saved?.verifiedAt || saved?.connectedAt;
       const expired =
@@ -290,6 +318,8 @@ export async function startPortalLogin(
   userId: string,
   portal: CandidatePortal,
 ) {
+  if (cloudPortalEnabled(userId, portal))
+    return cloudPortalCommand<PortalLoginFrame>(userId, portal, { op: "open" });
   if (!browserAuthorized(portal))
     throw new RequestError(
       "Este provedor não tem autorização de conexão por navegador configurada. Use o site oficial ou uma integração aprovada.",
@@ -358,6 +388,11 @@ export async function portalLoginAction(
   portal: CandidatePortal,
   action: LoginAction,
 ) {
+  if (cloudPortalEnabled(userId, portal))
+    return cloudPortalCommand<PortalLoginFrame>(userId, portal, {
+      op: "action",
+      action,
+    });
   const session = await login(userId, portal);
   return serial(session, async () => {
     if (action.type === "submit") {
@@ -407,6 +442,11 @@ export async function finishPortalLogin(
   portal: CandidatePortal,
   profileResumeId: string | null,
 ) {
+  if (cloudPortalEnabled(userId, portal))
+    return cloudPortalCommand(userId, portal, {
+      op: "confirm",
+      resumeId: profileResumeId,
+    });
   const session = await login(userId, portal);
   return serial(session, async () => {
     if (
@@ -441,15 +481,27 @@ export async function cancelPortalLogin(
   userId: string,
   portal: CandidatePortal,
 ) {
+  if (cloudPortalEnabled(userId, portal)) {
+    await cloudPortalCommand(userId, portal, { op: "close" });
+    return;
+  }
   await closeLogin(userId, portal);
 }
 export async function closeUserPortalLogins(userId: string) {
-  for (const portal of candidatePortals) await closeLogin(userId, portal);
+  for (const portal of candidatePortals) {
+    if (cloudPortalEnabled(userId, portal))
+      await cloudPortalCommand(userId, portal, { op: "close" }).catch(() => {});
+    else await closeLogin(userId, portal);
+  }
 }
 export async function disconnectPortal(
   userId: string,
   portal: CandidatePortal,
 ) {
+  if (cloudPortalEnabled(userId, portal)) {
+    await disconnectCloudPortal(userId, portal);
+    return;
+  }
   await closeLogin(userId, portal);
   // Acquire the same lease used by workers before removing a live connection.
   const release = await lease(userId, portal);
@@ -468,6 +520,8 @@ export async function sendNativeApplication(
   resumeId: string,
   input: PortalApplication,
 ): Promise<PortalResult> {
+  if (cloudPortalEnabled(userId, portal))
+    return sendCloudApplication(userId, portal, resumeId, input);
   if (!browserAuthorized(portal))
     return {
       status: "action_required",

@@ -88,9 +88,10 @@ const receipt = () =>
       ),
     );
 describe("Permissões reais, OAuth e privacidade", () => {
-  it("não habilita navegador ou busca LinkedIn pelo consentimento da pessoa", () => {
+  it("não habilita navegador pelo consentimento; pesquisa pública via IA não libera acesso direto ao LinkedIn", () => {
     expect(browserAuthorized("linkedin")).toBe(false);
-    expect(publicDiscoveryAvailable("linkedin", true)).toBe(false);
+    expect(publicDiscoveryAvailable("linkedin", false)).toBe(false);
+    expect(publicDiscoveryAvailable("linkedin", true)).toBe(true);
     expect(publicDiscoveryAvailable("gupy", false)).toBe(true);
     vi.stubEnv("PORTAL_BROWSER_AUTHORIZED", "gupy");
     expect(browserAuthorized("gupy")).toBe(true);

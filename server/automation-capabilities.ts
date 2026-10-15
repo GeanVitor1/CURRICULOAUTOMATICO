@@ -2,6 +2,7 @@ import { candidatePortals } from "../shared/portals";
 import { automaticPortals } from "./connectors";
 import { connectionStatuses } from "./portal-sessions";
 import { browserAuthorized } from "./provider-capabilities";
+import { cloudPortalEnabled } from "./portal-cloud-policy";
 
 export async function applicationCapabilities(
   userId: string,
@@ -18,7 +19,7 @@ export async function applicationCapabilities(
       (!resumeId || connection.profileResumeId !== resumeId);
     const blocker = gateway
       ? null
-      : !browserAuthorized(site)
+      : !browserAuthorized(site) && !cloudPortalEnabled(userId, site)
         ? "integration_missing"
         : !connection.browserAvailable
           ? "browser_unavailable"

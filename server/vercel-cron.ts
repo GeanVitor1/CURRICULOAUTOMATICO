@@ -47,6 +47,14 @@ export default async function handler(
         ),
       );
     for (const task of pending) await dispatchDiscovery(task.id);
+    const { workspaces } = await import("./schema");
+    const { dispatchNextApplication } = await import("./submission-dispatch");
+    const sending = await db
+      .select({ id: workspaces.id })
+      .from(workspaces)
+      .where(eq(workspaces.demo, false));
+    for (const workspace of sending)
+      await dispatchNextApplication(workspace.id);
     response.end(JSON.stringify({ ok: true }));
   } catch {
     console.error(

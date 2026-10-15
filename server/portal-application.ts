@@ -164,7 +164,7 @@ async function fillKnown(
     }
     const answer = candidateAnswer(info.label, input.profile);
     if (answer) await field.fill(answer);
-    else if (info.required || (!info.value && info.type !== "password"))
+    else if (info.required)
       return info.label || "Há uma pergunta que precisa da sua resposta.";
   }
 }
@@ -207,7 +207,8 @@ export async function applyOnPage(
   if (!isJobUrl(portal, input.job.url))
     return pending("O endereço da vaga não pertence ao site escolhido.");
   let submitted = false,
-    uploaded = false;
+    uploaded = false,
+    finalClicked = false;
   try {
     await page.goto(input.job.url, {
       waitUntil: "domcontentloaded",
@@ -218,11 +219,35 @@ export async function applyOnPage(
       return pending(
         "A vaga redirecionou para outro site. Conclua a candidatura no anúncio.",
       );
-    if (!(await authenticated(page, portal)))
-      return pending(
-        "Entre novamente na sua conta. A sessão expirou ou o site pediu uma verificação.",
-      );
+    if (!(await authenticated(page, portal))) {
+      // Public job pages can omit account controls even when the candidate is signed in.
+      // Verify the account page instead of rejecting a valid stored session outright.
+      await page.goto(rules.account, {
+        waitUntil: "domcontentloaded",
+        timeout: 20000,
+      });
+      await page.waitForTimeout(600);
+      if (!(await authenticated(page, portal)))
+        return pending(
+          "Entre novamente na sua conta. A sessão expirou ou o site pediu uma verificação.",
+        );
+      await page.goto(input.job.url, {
+        waitUntil: "domcontentloaded",
+        timeout: 20000,
+      });
+      await page.waitForTimeout(600);
+      if (!portalHost(portal, page.url()))
+        return pending("O anúncio exige continuar em outro site.");
+    }
     const initialText = await page.locator("body").innerText();
+    if (
+      /captcha|verify you are human|confirme que você|verificação de segurança|access denied|acesso negado/i.test(
+        initialText,
+      )
+    )
+      return pending(
+        "O portal pediu uma verificação ou bloqueou o acesso. Conclua a verificação no site.",
+      );
     if (rules.confirmation.test(initialText))
       return pending(
         "Este portal informa uma candidatura anterior. Confira a data antes de registrar um novo envio.",
@@ -241,8 +266,6 @@ export async function applyOnPage(
     // From that point an ambiguous response must be checked, never automatically retried.
     if (portal !== "linkedin") submitted = true;
     await apply.click({ timeout: 8000 });
-    if (portal === "infojobs")
-      return await submissionConfirmation(page, portal, input);
     for (let step = 0; step < 8; step++) {
       await page.waitForTimeout(700);
       if (!portalHost(portal, page.url()))
@@ -298,7 +321,7 @@ export async function applyOnPage(
       }
       const question = await fillKnown(root, input);
       if (question)
-        return submitted
+        return finalClicked
           ? {
               status: "unknown",
               message: `Confira o envio. O portal solicitou: ${question}`,
@@ -315,6 +338,7 @@ export async function applyOnPage(
             "O portal não liberou o envio. Confira os campos e as perguntas da vaga.",
           );
         submitted = true;
+        finalClicked = true;
         await submit.click({ timeout: 8000 });
         return await submissionConfirmation(page, portal, input);
       }

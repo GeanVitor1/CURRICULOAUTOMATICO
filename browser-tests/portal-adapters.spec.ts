@@ -38,6 +38,21 @@ const configs = {
     done: "Seu currículo foi enviado",
   },
 };
+test("vaga pública sem controles de conta usa a sessão verificada na página do candidato", async ({
+  page,
+}) => {
+  await page.route("https://login.gupy.io/candidates/applications", (route) =>
+    route.fulfill({ contentType: "text/html", body: "<button>Sair</button>" }),
+  );
+  await page.route(urls.gupy, (route) =>
+    route.fulfill({
+      contentType: "text/html; charset=utf-8",
+      body: "<button onclick=\"document.body.innerHTML='<p>Candidatura realizada</p>'\">Candidatar-se</button>",
+    }),
+  );
+  const result = await applyOnPage(page, "gupy", application("gupy"), true);
+  expect(result.status).toBe("sent");
+});
 function application(portal: CandidatePortal): PortalApplication {
   return {
     applicationId: "fixture",
@@ -176,3 +191,32 @@ test("redirect externo não recebe currículo nem candidatura", async ({
   expect(requests).toBe(1);
   expect(await page.evaluate(() => (window as any).submits)).toBe(0);
 });
+
+for (const scenario of ["known", "question", "captcha"] as const) {
+  test(`InfoJobs após o primeiro clique: ${scenario}`, async ({ page }) => {
+    await page.route(urls.infojobs, (route) =>
+      route.fulfill({
+        contentType: "text/html; charset=utf-8",
+        body: `${configs.infojobs.auth}<button id="start" onclick="this.remove();document.querySelector('#form').hidden=false">Candidatar-me</button><form hidden id="form" onsubmit="event.preventDefault();window.submits++;this.innerHTML='<p>Seu currículo foi enviado</p>'">${scenario === "captcha" ? "<p>Verificação de segurança CAPTCHA</p>" : scenario === "question" ? "<label>Possui experiência em vendas?<input required></label>" : '<label>E-mail<input required type="email"></label><label>Observação opcional<input></label>'}<button>Candidatar-me</button></form><script>window.submits=0</script>`,
+      }),
+    );
+    const result = await applyOnPage(
+      page,
+      "infojobs",
+      application("infojobs"),
+      true,
+    );
+    expect(result.status).toBe(
+      scenario === "known"
+        ? "sent"
+        : scenario === "question"
+          ? "action_required"
+          : "unknown",
+    );
+    expect(await page.evaluate(() => (window as any).submits)).toBe(
+      scenario === "known" ? 1 : 0,
+    );
+    if (scenario === "question")
+      expect(result.message).toContain("experiência em vendas");
+  });
+}

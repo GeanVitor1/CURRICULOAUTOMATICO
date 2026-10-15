@@ -63,6 +63,7 @@ export default function PortalConnections({
   const pending = useRef(false);
   const active = useRef<string | null>(null);
   const resume = w.resumes[0];
+  const cloud = sites.data?.some((site) => site.id === portal && site.cloud);
   const oauthWindow = useRef<Window | null>(null);
   const [oauthPending, setOauthPending] = useState(false);
   useEffect(() => {
@@ -256,9 +257,15 @@ export default function PortalConnections({
           profileResumeId: approved ? resume?.id || null : null,
         }),
       });
-      await client.invalidateQueries({ queryKey: ["automation-sites"] });
+      active.current = null;
+      await Promise.all([
+        client.invalidateQueries({ queryKey: ["automation-sites"] }),
+        client.invalidateQueries({ queryKey: ["workspace"] }),
+      ]);
       toast(
-        "Sessão autenticada salva. Confira as capacidades deste site antes de ativar o envio.",
+        cloud && approved
+          ? "Conta conectada. As candidaturas elegíveis entrarão na fila automática."
+          : "Sessão autenticada salva. Confira as capacidades deste site antes de ativar o envio.",
       );
       close();
     } catch (e) {
@@ -374,7 +381,11 @@ export default function PortalConnections({
                   </span>
                   <span className={status?.automatic ? "available" : ""}>
                     <Send size={13} />
-                    {status?.automatic ? "Envio autorizado" : "Envio no site"}
+                    {status?.automatic
+                      ? "Envio automático"
+                      : status?.cloud
+                        ? "Conecte para enviar"
+                        : "Envio no site"}
                   </span>
                 </div>
                 <p className="connection-limitation">{status?.limitation}</p>
@@ -419,7 +430,9 @@ export default function PortalConnections({
                       ? "Confirmar currículo"
                       : status?.connected
                         ? "Reconectar"
-                        : "Conectar"}
+                        : status?.cloud
+                          ? "Conectar para envio automático"
+                          : "Conectar"}
                   </Button>
                 )}
                 {(status?.connected ||
@@ -492,7 +505,11 @@ export default function PortalConnections({
         wide
         busy={busy && !!frame?.authenticated}
         title={`Conectar ${portal ? portals[portal as keyof typeof portals]?.name || portal : "site"}`}
-        description="Conexão por navegador autorizada nesta instalação. Entre na sua conta e conclua apenas a autenticação. As buscas acontecem no painel do Empregatos."
+        description={
+          cloud
+            ? "Entre na sua conta do portal pelo navegador na nuvem. Ao confirmar seu currículo, as candidaturas compatíveis entrarão na fila automática."
+            : "Entre na sua conta e conclua a autenticação. As buscas acontecem no painel do Empregatos."
+        }
         open={!!portal}
         onOpenChange={(value) => {
           if (!value) close();
@@ -679,17 +696,24 @@ export default function PortalConnections({
               </p>
             )}
             <p className="interview-help">
-              A confirmação só salva uma sessão autenticada. Sua senha não será
-              salva. Se o portal bloquear o acesso, a conexão continuará
-              pendente.
+              {cloud
+                ? "Após conectar e confirmar o currículo, tentaremos concluir as candidaturas compatíveis. Perguntas sem resposta ou verificações do portal ficam pendentes para você. "
+                : "A confirmação salva uma sessão autenticada. "}
+              Sua senha não será salva.
             </p>
             {frame.authenticated && (
               <Button
                 className="primary"
-                disabled={busy || frame.blocked}
+                disabled={
+                  busy || frame.blocked || (!!cloud && !!resume && !approved)
+                }
                 onClick={() => void confirm()}
               >
-                {busy ? "Aguarde…" : "Confirmar conexão"}
+                {busy
+                  ? "Aguarde…"
+                  : cloud && approved
+                    ? "Conectar e iniciar envios"
+                    : "Confirmar conexão"}
               </Button>
             )}
           </>

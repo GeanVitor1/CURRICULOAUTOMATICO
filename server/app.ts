@@ -120,6 +120,8 @@ import {
   GOOGLE_COOKIE_PATH,
 } from "./google-oauth";
 import { applicationCapabilities } from "./automation-capabilities";
+import { cloudPortalEnabled } from "./portal-cloud-policy";
+import { dispatchNextApplication } from "./submission-dispatch";
 import {
   accountPlan,
   billingSummary,
@@ -717,7 +719,9 @@ export async function buildApp({ serveStatic = true } = {}) {
         !!linkedIdentity &&
         linkedIdentity.expiresAt <= Date.now(),
       oauthConfigured: site === "linkedin" && linkedinOAuthConfigured(),
-      limitation: providerLimits[site],
+      limitation: cloudPortalEnabled(u.id, site)
+        ? "Tentativa de inscrição pelo navegador na nuvem. Usa seus dados confirmados; perguntas sem resposta e verificações do portal ficam pendentes para você."
+        : providerLimits[site],
       applicationMethod: automaticPortals().includes(site)
         ? "authorized-api"
         : connections.find((c) => c.id === site)?.connected
@@ -771,7 +775,23 @@ export async function buildApp({ serveStatic = true } = {}) {
   const connectionScope = async (req: FastifyRequest) => {
     const { u, demo } = await scope(req);
     if (demo) throw new RequestError("Conecte os sites na sua conta real.");
-    return { u, portal: connectionPortal.parse((req.params as any).portal) };
+    const portal = connectionPortal.parse((req.params as any).portal);
+    if (cloudPortalEnabled(u.id, portal)) {
+      const w = await readWorkspace(`${u.id}:live`);
+      if (
+        w?.applications.some(
+          (a) =>
+            a.status === "Enviando" &&
+            w.jobs.some(
+              (j) => j.id === a.jobId && j.source.toLowerCase() === portal,
+            ),
+        )
+      )
+        throw new RequestError(
+          "Este portal está enviando uma candidatura. Aguarde a conclusão para alterar a conexão.",
+        );
+    }
+    return { u, portal };
   };
   app.post("/api/connections/:portal/open", async (req, reply) => {
     const { u, portal } = await connectionScope(req);
@@ -839,7 +859,24 @@ export async function buildApp({ serveStatic = true } = {}) {
       if (!w?.resumes.some((resume) => resume.id === profileResumeId))
         throw new RequestError("O currículo escolhido não foi encontrado.");
     }
-    return finishPortalLogin(u.id, portal, profileResumeId);
+    const result = await finishPortalLogin(u.id, portal, profileResumeId);
+    if (cloudPortalEnabled(u.id, portal) && profileResumeId) {
+      const nativeSites = await readyPortals(u.id, profileResumeId);
+      await mutateWorkspace(`${u.id}:live`, (w) => {
+        if (
+          !w.profile.confirmed ||
+          !w.resumes.some((r) => r.id === profileResumeId && r.approved) ||
+          !w.interview?.completed
+        )
+          return;
+        w.routine.enabled = true;
+        w.routine.mode = "automatic";
+        w.routine.nextRun = nextExecution(w.routine.time);
+        queuePreparedApplications(w, nativeSites);
+      });
+      await dispatchNextApplication(`${u.id}:live`);
+    }
+    return result;
   });
   app.post("/api/connections/:portal/close", async (req) => {
     const { u, portal } = await connectionScope(req);
@@ -1108,6 +1145,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       if (r.enabled && r.mode === "automatic")
         queuePreparedApplications(w, nativeSites);
     });
+    if (r.enabled && r.mode === "automatic") await dispatchNextApplication(id);
     return { ok: true };
   });
   app.post(

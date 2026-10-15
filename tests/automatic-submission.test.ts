@@ -258,10 +258,10 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
   });
   it("arquivo ausente é recusado antes de registrar ou transmitir uma tentativa", async () => {
     const send = sender();
-    await database.mutateWorkspace(
-      workspaceId,
-      (w) => (w.resumes[0].id = "missing-original"),
-    );
+    await database.mutateWorkspace(workspaceId, (w) => {
+      w.resumes[0].id = "missing-original";
+      delete w.resumes[0].storedFile;
+    });
     const [id] = await prepare([job("107")]);
     await expect(operations.automaticSend(workspaceId, id)).rejects.toThrow(
       "arquivo original",
@@ -270,6 +270,28 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
     expect(
       (await database.readWorkspace(workspaceId))!.applications[0].status,
     ).toBe("Aguardando aprovação");
+  });
+  it("usa o currículo confirmado do portal quando o arquivo antigo não está disponível", async () => {
+    vi.stubEnv("APPLICATION_WEBHOOK_AUTHORIZED", "false");
+    vi.mocked(native.connectedPortals).mockResolvedValue(["gupy"]);
+    vi.spyOn(native, "readyPortals").mockResolvedValue(["gupy"]);
+    const browser = vi
+      .spyOn(native, "sendNativeApplication")
+      .mockResolvedValue({
+        status: "sent",
+        receipt: "fixture-portal-receipt",
+        message: "Confirmada pelo portal",
+      });
+    await database.mutateWorkspace(workspaceId, (w) => {
+      w.resumes[0].id = "missing-original";
+      delete w.resumes[0].storedFile;
+    });
+    const [id] = await prepare([job("117")]);
+    expect((await operations.automaticSend(workspaceId, id)).status).toBe(
+      "Enviada",
+    );
+    expect(browser).toHaveBeenCalledOnce();
+    expect(browser.mock.calls[0][3].resume.file).toBeUndefined();
   });
   it("ativação automática recupera preparações locais e preserva tentativas que exigem intervenção", async () => {
     const [fresh, attempted] = await prepare([job("108"), job("109")], false);

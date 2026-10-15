@@ -32,6 +32,9 @@ export default function SimpleAutomation() {
     w.interview!.answers.sites.every((site) =>
       sites.data?.some((item) => item.id === site && item.automatic),
     );
+  const cloudAvailable = sites.data?.some(
+    (site) => site.cloud && w.interview?.answers.sites.includes(site.id),
+  );
   const saveRoutine = (upgrade = false) => {
     if (saving.current || a.isPending) return;
     saving.current = true;
@@ -149,7 +152,9 @@ export default function SimpleAutomation() {
                 <h2>
                   {w.routine.enabled
                     ? w.routine.mode === "automatic"
-                      ? "Envio automático ativo"
+                      ? available
+                        ? "Envio automático ativo"
+                        : "Conecte um site para iniciar os envios"
                       : "Busca diária ativa · envio pelo site"
                     : "Automação pausada"}
                 </h2>
@@ -210,12 +215,16 @@ export default function SimpleAutomation() {
                   <strong>
                     {available
                       ? "Envio automático nas fontes autorizadas"
-                      : "Você conclui o envio no site da empresa"}
+                      : cloudAvailable
+                        ? "Conecte suas contas para enviar automaticamente"
+                        : "Você conclui o envio no site da empresa"}
                   </strong>
                   <p>
                     {available
                       ? "Nos sites sem integração de envio, você conclui a candidatura no anúncio oficial."
-                      : "Buscamos as vagas e preparamos as candidaturas compatíveis. Abra uma vaga para revisar o currículo e a apresentação, depois conclua o envio no portal. A candidatura só aparece como enviada após sua confirmação."}
+                      : cloudAvailable
+                        ? "Abra Contas dos sites, entre no portal e confirme seu currículo. Tentaremos concluir cada candidatura elegível usando seus dados confirmados. Se faltar uma resposta ou houver CAPTCHA, você verá o motivo na candidatura."
+                        : "Buscamos as vagas e preparamos as candidaturas compatíveis. Abra uma vaga para revisar o currículo e a apresentação, depois conclua o envio no portal. A candidatura só aparece como enviada após sua confirmação."}
                   </p>
                 </div>
               </div>

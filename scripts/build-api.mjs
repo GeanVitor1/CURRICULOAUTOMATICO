@@ -1,11 +1,21 @@
 import { build } from "esbuild";
 await build({
+  entryPoints: ["server/portal-cloud-runner.ts"],
+  outfile: "dist-server/portal-cloud-runner.mjs",
+  bundle: true,
+  platform: "node",
+  format: "esm",
+  packages: "external",
+  logLevel: "info",
+});
+await build({
   entryPoints: [
     "server/index.ts",
     "server/worker.ts",
     "server/vercel.ts",
     "server/vercel-worker.ts",
     "server/vercel-cron.ts",
+    "server/vercel-submission-worker.ts",
     "server/app.ts",
   ],
   bundle: true,

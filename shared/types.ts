@@ -329,6 +329,15 @@ export type Workspace = {
     automatic: boolean;
     worker: boolean;
     scheduleWindow?: string;
+    portalConnections?: Record<
+      string,
+      {
+        connectedAt: string;
+        verifiedAt: string;
+        profileResumeId: string | null;
+        expiresAt: number | null;
+      }
+    >;
   };
   searchProfiles: {
     id: string;

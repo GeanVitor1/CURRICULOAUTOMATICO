@@ -9,6 +9,7 @@ import PortalConnections from "./PortalConnections";
 import { useBilling } from "./Billing";
 
 export type SiteCapability = {
+  cloud?: boolean;
   id: string;
   name: string;
   discovery: boolean;

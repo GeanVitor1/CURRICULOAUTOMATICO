@@ -1,5 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { discoveryBudgetExpired, discoverySignal } from "./discovery-budget";
+import { vercelQueueEnabled } from "./automation-runtime";
+import { dispatchNextApplication } from "./submission-dispatch";
 import { resolve, extname } from "node:path";
 import { and, eq, sql } from "drizzle-orm";
 import { discoveryTasks, workspaces } from "./schema";
@@ -489,6 +491,12 @@ export async function automaticSend(
   const nativeSites = workspaceOwner
     ? await connectedPortals(workspaceOwner.userId)
     : [];
+  const snapshot = await readWorkspace(id);
+  const applicationResumeId =
+    snapshot?.applications.find((a) => a.id === appId)?.resumeId || "";
+  const profileSites = workspaceOwner
+    ? await readyPortals(workspaceOwner.userId, applicationResumeId)
+    : [];
   if (!supportsAutomatic() && !nativeSites.length)
     throw new RequestError(
       "Nenhuma integração de envio está disponível. Configure uma integração ou conecte uma sessão de navegador habilitada para o site da vaga.",
@@ -555,20 +563,28 @@ export async function automaticSend(
               resume.id + extension,
             ),
           ).catch(() => {
+            if (
+              route.method === "browser" &&
+              source.type === "portal" &&
+              ["gupy", "infojobs"].includes(source.board) &&
+              profileSites.includes(source.board as CandidatePortal)
+            )
+              return null;
             throw new RequestError(
               "O arquivo original do currículo não está disponível. Envie o currículo novamente.",
             );
           });
-      if (bytes.length > 5 * 1024 * 1024)
+      if (bytes && bytes.length > 5 * 1024 * 1024)
         throw new RequestError("O currículo excedeu o limite para envio.");
-      file = {
-        name: resume.name,
-        mimeType:
-          extension === ".pdf"
-            ? "application/pdf"
-            : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        data: bytes.toString("base64"),
-      };
+      if (bytes)
+        file = {
+          name: resume.name,
+          mimeType:
+            extension === ".pdf"
+              ? "application/pdf"
+              : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          data: bytes.toString("base64"),
+        };
     }
     // Claim once before external I/O. Interrupted claims are recovered as unknown, never retried.
     await reserveApplication(
@@ -601,6 +617,13 @@ export async function automaticSend(
     definitiveFailure = false,
     actionRequired = false,
     detail = "";
+  const heartbeat = setInterval(() => {
+    void mutateWorkspace(id, (w) => {
+      const current = w.applications.find((a) => a.id === appId);
+      if (current?.status === "Enviando") current.updatedAt = now();
+    }).catch(() => {});
+  }, 30000);
+  heartbeat.unref();
   try {
     if (delivery === "browser" && payload.portal && workspaceOwner) {
       const result = await sendNativeApplication(
@@ -648,6 +671,8 @@ export async function automaticSend(
     }
   } catch {
     /* Unknown result intentionally prevents retries. */
+  } finally {
+    clearInterval(heartbeat);
   }
   return mutateWorkspace(id, (w) => {
     const a = w.applications.find((a) => a.id === appId)!;
@@ -728,6 +753,10 @@ export async function executeRoutine(id: string) {
   await enqueueDiscovery(id);
 }
 export async function processAutomaticApplications(id: string) {
+  if (vercelQueueEnabled()) {
+    await dispatchNextApplication(id);
+    return;
+  }
   const state = await readWorkspace(id);
   if (state?.routine.mode === "automatic") {
     for (const a of state.applications.filter(
