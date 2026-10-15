@@ -151,7 +151,19 @@ try {
     path: ".data/remote-login-production-mobile.png",
     fullPage: true,
   });
+  const cancelled = popup.waitForResponse(
+    (r) =>
+      r.url().includes("/connections/gupy/close") &&
+      r.request().method() === "POST",
+    { timeout: 65000 },
+  );
   await popup.getByRole("button", { name: /^Cancelar conex/ }).click();
+  const cancelledResponse = await cancelled;
+  if (!cancelledResponse.ok())
+    throw new Error(
+      "Remote cancellation failed: " +
+        JSON.stringify(await cancelledResponse.json()),
+    );
   await popup.waitForEvent("close", { timeout: 15000 }).catch(() => {
     if (!popup.isClosed()) throw new Error("Viewer did not close");
   });

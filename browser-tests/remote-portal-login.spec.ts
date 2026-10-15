@@ -8,6 +8,7 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
   let signed = false;
   let confirmed = false;
   let closed = 0;
+  let finishClose: (() => void) | undefined;
   const frame = () => ({
     viewerId,
     image: "/login-video-poster.png",
@@ -48,6 +49,9 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
     expect(route.request().headers()["x-portal-viewer"]).toBe(viewerId);
     if (path.endsWith("/close")) {
       closed++;
+      await new Promise<void>((resolve) => {
+        finishClose = resolve;
+      });
       return route.fulfill({ json: { ok: true } });
     }
     if (path.endsWith("/confirm")) {
@@ -110,4 +114,18 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
   expect(confirmed).toBe(true);
   await page.goto("/app?portal=gupy");
   expect(closed).toBe(0);
+  signed = false;
+  await page.clock.install();
+  await page
+    .getByRole("button", { name: "Abrir navegador remoto", exact: true })
+    .click();
+  await expect(image).toBeVisible();
+  const beforeClosing = actions.length;
+  await page
+    .getByRole("button", { name: "Cancelar conexão", exact: true })
+    .click();
+  await expect.poll(() => closed).toBe(1);
+  await page.clock.fastForward(15000);
+  expect(actions.length).toBe(beforeClosing);
+  finishClose?.();
 });

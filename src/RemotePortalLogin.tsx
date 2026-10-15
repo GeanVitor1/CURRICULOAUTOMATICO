@@ -35,8 +35,10 @@ export default function RemotePortalLogin({
   const [done, setDone] = useState(false);
   const [automatic, setAutomatic] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [ending, setEnding] = useState(false);
   const current = useRef<Frame | null>(null);
   const finished = useRef(false);
+  const closing = useRef(false);
   const keyboard = useRef<HTMLTextAreaElement>(null);
   const keyboardButton = useRef<HTMLButtonElement>(null);
   const sequence = useRef<Promise<void>>(Promise.resolve());
@@ -61,7 +63,8 @@ export default function RemotePortalLogin({
   const enqueue = useCallback(
     (action: Action, recover = false) => {
       const viewerId = current.current?.viewerId;
-      if (!viewerId || finished.current) return Promise.resolve();
+      if (!viewerId || finished.current || closing.current)
+        return Promise.resolve();
       pending.current++;
       setBusy(true);
       sequence.current = sequence.current
@@ -130,6 +133,7 @@ export default function RemotePortalLogin({
         !buffer.current &&
         !composing.current &&
         !failed.current &&
+        !closing.current &&
         document.visibilityState === "visible"
       )
         void enqueue({ type: "refresh" });
@@ -200,6 +204,11 @@ export default function RemotePortalLogin({
     }
   };
   const close = async () => {
+    if (closing.current) return;
+    closing.current = true;
+    setEnding(true);
+    pending.current++;
+    setBusy(true);
     clearTimeout(timer.current);
     buffer.current = "";
     await sequence.current;
@@ -212,11 +221,15 @@ export default function RemotePortalLogin({
         });
         finished.current = true;
       } catch (failure) {
+        closing.current = false;
+        setEnding(false);
+        pending.current--;
         setError((failure as Error).message);
         setBusy(false);
         return;
       }
     }
+    pending.current--;
     window.close();
     if (!window.closed) location.href = "/app#automacao";
   };
@@ -390,11 +403,13 @@ export default function RemotePortalLogin({
               />
               <div className="remote-toolbar">
                 <span role="status">
-                  {busy
-                    ? "Atualizando navegador…"
-                    : typing
-                      ? "Teclado conectado · Esc para sair"
-                      : "Clique na página para interagir"}
+                  {ending
+                    ? "Encerrando navegador…"
+                    : busy
+                      ? "Atualizando navegador…"
+                      : typing
+                        ? "Teclado conectado · Esc para sair"
+                        : "Clique na página para interagir"}
                 </span>
                 <button
                   disabled={busy}
@@ -474,7 +489,7 @@ export default function RemotePortalLogin({
             disabled={busy}
             onClick={() => void close()}
           >
-            Cancelar conexão
+            {ending ? "Encerrando conexão…" : "Cancelar conexão"}
           </button>
         </>
       )}
