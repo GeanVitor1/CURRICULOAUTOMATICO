@@ -50,7 +50,7 @@ vi.mock("../server/portal-browser-policy", async (original) => {
               secure: true,
             },
           ]);
-          body = "<button>Sair</button><h1>Candidaturas</h1>";
+          body = `<button>Sair</button><h1>Candidaturas</h1><script>if(window.opener){window.opener.location.href='https://login.gupy.io/callback';window.close()}</script>`;
         } else if (signed) body = "<button>Sair</button><h1>Candidaturas</h1>";
         else
           body = `<style>button{display:block;width:180px;height:50px;margin:10px}</style><button onclick="location.href='https://accounts.google.com/signin'">Google</button><button onclick="window.open('https://www.linkedin.com/oauth/v2/authorization')">LinkedIn</button><button onclick="location.href='https://accounts.google.com/refused'">Recusado</button><input aria-label="Email">`;
