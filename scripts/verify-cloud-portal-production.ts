@@ -1,220 +1,119 @@
-import dotenv from "dotenv";
-import { randomBytes, createHash } from "node:crypto";
-import { chromium } from "playwright";
-import { eq } from "drizzle-orm";
+import { randomUUID } from "node:crypto";
 import { mkdir } from "node:fs/promises";
-dotenv.config({ path: ".env.production.local", quiet: true });
-dotenv.config({ path: ".env.antigravity-owner.local", quiet: true });
-const { db, closeDb, readWorkspace } = await import("../server/db");
-const { sessions } = await import("../server/schema");
-const userId =
-  process.env.PORTAL_CLOUD_OWNER_ID || process.env.ANTIGRAVITY_OWNER_ID;
-if (!userId) throw new Error("Owner not configured");
+import { chromium } from "playwright";
+
+const origin = "https://curriculoautomatico.vercel.app";
 const portal = process.argv[2] || "gupy";
 if (!["gupy", "infojobs", "glassdoor"].includes(portal))
   throw new Error("Invalid portal");
-const name =
-  portal === "gupy" ? "Gupy" : portal === "infojobs" ? "InfoJobs" : "Glassdoor";
-const state = await readWorkspace(`${userId}:live`);
-if (state?.infrastructure.portalConnections?.[portal])
-  throw new Error(
-    "Do not replace a connected portal session during verification",
-  );
-const origin = "https://curriculoautomatico.vercel.app";
-// Short-lived first-party QA session, kept in memory and deleted in finally.
-// No portal credentials, login submission, or job application is used in this probe.
-const token = randomBytes(32).toString("hex");
-const hash = createHash("sha256").update(token).digest("hex");
-await db.insert(sessions).values({
-  token: hash,
-  userId,
-  expiresAt: new Date(Date.now() + 10 * 60000),
-});
+const mobile = process.argv[3] === "mobile";
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({
-  viewport: { width: 1440, height: 1100 },
+  viewport: { width: mobile ? 390 : 1024, height: mobile ? 844 : 760 },
 });
-await context.addCookies([
-  {
-    name: "orbita_session",
-    value: token,
-    url: origin,
-    httpOnly: true,
-    secure: true,
-    sameSite: "Lax",
-  },
-]);
-let openedViewerId = "";
+const headers = { Origin: origin, "X-Orbita-Request": "1" };
+const password = `Remote-QA-${randomUUID()}`;
+let registered = false;
+// Separate, disposable account: never replace the user's active portal login.
+// No portal credential or job application is submitted by this verification.
 try {
-  const sitesResponse = await context.request.get(
-    origin + "/api/automation/sites",
-  );
-  if (!sitesResponse.ok()) throw new Error("Capabilities unavailable");
-  const sites = await sitesResponse.json();
-  const gupy = sites.find((s: any) => s.id === portal);
-  if (
-    !gupy?.remoteLogin ||
-    gupy.externalLoginOnly ||
-    !gupy.connectable ||
-    gupy.automatic
-  )
-    throw new Error("Remote browser must require a real portal login");
+  const account = await context.request.post(origin + "/api/auth/register", {
+    headers,
+    data: {
+      name: "Remote login QA",
+      email: `remote-qa-${randomUUID()}@example.test`,
+      password,
+    },
+  });
+  if (!account.ok()) throw new Error("Synthetic registration failed");
+  registered = true;
   const page = await context.newPage();
-  await page.goto(origin + "/app#automacao");
-  await page.getByText("Contas dos sites", { exact: true }).click();
-  const card = page
-    .locator(".connection-card")
-    .filter({ has: page.getByText(name, { exact: true }) });
-  const [popup] = await Promise.all([
-    page.waitForEvent("popup"),
-    card
-      .getByRole("button", {
-        name: "Conectar no navegador remoto",
-        exact: true,
-      })
-      .click(),
-  ]);
-  await popup.waitForURL(origin + `/app?portal=${portal}`);
-  if (process.argv[3] === "mobile")
-    await popup.setViewportSize({ width: 390, height: 844 });
-  await popup
-    .getByRole("button", { name: "Abrir navegador remoto", exact: true })
-    .waitFor();
-  if (await popup.locator("input[type=email],input[type=password]").count())
-    throw new Error("Remote viewer must not present app credential fields");
-  const denied = await context.request.post(
-    origin + `/api/connections/${portal}/open`,
-    { headers: { Origin: origin, "X-Orbita-Request": "1" }, data: {} },
-  );
-  if (denied.status() !== 400)
-    throw new Error("Remote browser consent is required");
-  const opened = popup.waitForResponse(
-    (r) =>
-      r.url().includes(`/connections/${portal}/open`) &&
-      r.request().method() === "POST",
+  let opens = 0;
+  page.on("request", (request) => {
+    if (
+      request.url().includes(`/connections/${portal}/open`) &&
+      request.method() === "POST"
+    )
+      opens++;
+  });
+  const opened = page.waitForResponse(
+    (response) =>
+      response.url().includes(`/connections/${portal}/open`) &&
+      response.request().method() === "POST",
     { timeout: 65000 },
   );
-  await popup
-    .getByRole("button", { name: "Abrir navegador remoto", exact: true })
-    .click();
+  await page.goto(origin + `/app?portal=${portal}`);
   const response = await opened;
   if (!response.ok())
-    throw new Error("Cloud portal open failed: " + response.status());
+    throw new Error("Remote open failed: " + response.status());
   const frame = await response.json();
-  openedViewerId = frame.viewerId || "";
   if (
     !frame.viewerId ||
     !frame.image?.startsWith("data:image/jpeg;base64,") ||
-    !frame.address.includes(
-      portal === "gupy"
-        ? "gupy.io"
-        : portal === "infojobs"
-          ? "infojobs.com.br"
-          : "glassdoor.com",
-    ) ||
-    (process.argv[3] === "mobile" && frame.width !== 375) ||
-    frame.authenticated
+    frame.authenticated ||
+    frame.blocked
   )
-    throw new Error("Unexpected real Gupy frame");
-  await popup
-    .getByRole("img", { name: new RegExp(name + ".*navegador remoto") })
-    .waitFor();
-  const confirm = popup.getByRole("button", {
-    name: "Conectar e iniciar envios",
-    exact: true,
-  });
-  if (await confirm.isEnabled())
-    throw new Error("Unauthenticated portal cannot enable automatic sends");
-  const stale = await context.request.post(
-    origin + `/api/connections/${portal}/close`,
-    {
-      headers: {
-        Origin: origin,
-        "X-Orbita-Request": "1",
-        "X-Portal-Viewer": "00000000-0000-4000-8000-000000000000",
-      },
-    },
-  );
-  if (stale.status() !== 400) throw new Error("Stale viewer was not rejected");
-  await popup
-    .getByRole("button", { name: "Atualizar imagem", exact: true })
-    .click();
-  await popup
-    .getByRole("button", { name: "Atualizar imagem", exact: true })
-    .waitFor({ state: "visible" });
-  await popup.waitForFunction(
-    () =>
-      !document
-        .querySelector(".remote-screen")
-        ?.getAttribute("aria-busy")
-        ?.includes("true"),
-  );
-  if (await popup.getByRole("alert").count())
-    throw new Error("Stale viewer damaged active browser");
-  await mkdir(".data", { recursive: true });
-  await popup.screenshot({
-    path: `.data/remote-${portal}-production-initial.png`,
-    fullPage: true,
-  });
-  await popup.setViewportSize({ width: 390, height: 844 });
+    throw new Error("Unexpected public login frame");
+  const image = page.locator(".remote-screen img");
+  await image.waitFor();
+  if (opens !== 1) throw new Error("Login opened more than once");
   if (
-    await popup.evaluate(
+    (await page.getByRole("button").count()) ||
+    (await page.getByRole("heading").count()) ||
+    (await page.locator("input[type=email],input[type=password]").count())
+  )
+    throw new Error("Extra interface surrounds the portal login");
+  if ((await page.locator(".remote-login").innerText()).trim())
+    throw new Error("Extra login text is visible");
+  if (
+    await page.evaluate(
       () => document.documentElement.scrollWidth > innerWidth + 1,
     )
   )
-    throw new Error("Mobile layout overflows");
-  await popup.screenshot({
-    path: `.data/remote-${portal}-production-mobile.png`,
-    fullPage: true,
+    throw new Error("Viewport overflow");
+  await mkdir(".data", { recursive: true });
+  await page.screenshot({
+    path: `.data/login-only-${portal}-${mobile ? "mobile" : "desktop"}.png`,
   });
-  const cancelled = popup.waitForResponse(
-    (r) =>
-      r.url().includes(`/connections/${portal}/close`) &&
-      r.request().method() === "POST",
+  const scrolled = page.waitForResponse(
+    (response) =>
+      response.url().includes(`/connections/${portal}/action`) &&
+      response.request().postDataJSON()?.type === "scroll",
     { timeout: 65000 },
   );
-  await popup.getByRole("button", { name: /^Cancelar conex/ }).click();
-  const cancelledResponse = await cancelled;
-  if (!cancelledResponse.ok())
-    throw new Error(
-      "Remote cancellation failed: " +
-        JSON.stringify(await cancelledResponse.json()),
-    );
-  await popup.waitForEvent("close", { timeout: 15000 }).catch(() => {
-    if (!popup.isClosed()) throw new Error("Viewer did not close");
-  });
-  const after = await (
+  await image.hover();
+  await page.mouse.wheel(0, 300);
+  if (!(await scrolled).ok())
+    throw new Error("Native wheel did not reach the remote browser");
+  await page.close();
+  const sites = await (
     await context.request.get(origin + "/api/automation/sites")
   ).json();
-  if (after.find((s: any) => s.id === portal)?.connected)
-    throw new Error("Closing an unauthenticated viewer must not connect");
+  if (sites.find((site: any) => site.id === portal)?.connected)
+    throw new Error("Unauthenticated login was saved");
   console.log(
     JSON.stringify({
-      productionPortal: portal,
-      remoteViewport: frame.width,
-      realCloudBrowserOpened: true,
-      installRequired: false,
-      appCredentialFields: false,
-      consentRequired: true,
-      staleViewerRejected: true,
-      activeViewerSurvived: true,
-      mobileOverflow: false,
-      automaticWithoutLogin: false,
+      portal,
+      mobile,
+      directLogin: true,
+      introduction: false,
+      surroundingControls: false,
+      openRequests: opens,
+      nativeScroll: true,
+      connectedWithoutLogin: false,
       applicationsSubmitted: 0,
     }),
   );
 } finally {
-  if (openedViewerId)
+  if (registered) {
     await context.request
-      .post(origin + `/api/connections/${portal}/close`, {
-        headers: {
-          Origin: origin,
-          "X-Orbita-Request": "1",
-          "X-Portal-Viewer": openedViewerId,
-        },
-      })
+      .delete(origin + `/api/connections/${portal}`, { headers })
       .catch(() => {});
+    const deleted = await context.request.delete(origin + "/api/account", {
+      headers,
+      data: { password },
+    });
+    if (!deleted.ok()) throw new Error("Synthetic account cleanup failed");
+  }
   await browser.close();
-  await db.delete(sessions).where(eq(sessions.token, hash));
-  await closeDb();
 }

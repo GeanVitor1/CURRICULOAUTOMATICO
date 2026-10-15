@@ -8,6 +8,8 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
   let signed = false;
   let confirmed = false;
   let closed = 0;
+  let opens = 0;
+  let blocked = false;
   let finishClose: (() => void) | undefined;
   const frame = () => ({
     viewerId,
@@ -16,8 +18,8 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
     height: 720,
     address: "login.gupy.io/candidates/signin",
     authenticated: signed,
-    blocked: false,
-    notice: "",
+    blocked,
+    notice: blocked ? "O portal bloqueou o acesso." : "",
   });
   await page.route("**/api/auth/me*", (route) =>
     route.fulfill({
@@ -43,12 +45,10 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
     const path = new URL(route.request().url()).pathname;
     const body = route.request().postDataJSON();
     if (path.endsWith("/open")) {
+      opens++;
       expect(body.remoteBrowserConsent).toBe(true);
       expect(body.viewportWidth).toBe(
-        Math.max(
-          375,
-          Math.min(1024, (page.viewportSize()?.width || 1440) - 40),
-        ),
+        Math.max(375, Math.min(1024, page.viewportSize()?.width || 1440)),
       );
       return route.fulfill({ json: { ...frame(), width: body.viewportWidth } });
     }
@@ -75,30 +75,34 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
   });
   await page.goto("/app?portal=gupy");
   await expect(
-    page.getByText(/Esta conexão não é uma autorização oficial/),
-  ).toBeVisible();
-  await expect(
     page.locator("input[type=email],input[type=password]"),
   ).toHaveCount(0);
-  await page
-    .getByRole("button", { name: "Abrir navegador remoto", exact: true })
-    .click();
   const confirm = page.getByRole("button", {
     name: "Conectar e iniciar envios",
     exact: true,
   });
-  await expect(confirm).toBeDisabled();
   const image = page.getByRole("img", { name: /Página do Gupy/ });
+  await expect(image).toBeVisible();
+  expect(opens).toBe(1);
+  await expect(page.getByRole("button")).toHaveCount(0);
+  await expect(page.getByRole("heading")).toHaveCount(0);
+  await expect(confirm).toHaveCount(0);
+  await image.dispatchEvent("wheel", { deltaY: 350 });
+  await expect
+    .poll(() => actions.some((a) => a.type === "scroll" && a.delta === 350))
+    .toBe(true);
   await image.click({ position: { x: 100, y: 80 } });
   await page.keyboard.insertText("fixture@example.test");
   await page.keyboard.press("Tab");
   await page.keyboard.insertText("fixture-password");
   await page.keyboard.press("Enter");
   await expect(
-    page.getByText("Login confirmado pelo portal", { exact: true }),
+    page.getByRole("heading", { name: "Login confirmado", exact: true }),
   ).toBeVisible();
   expect(
-    actions.filter((a) => a.type !== "refresh").map((a) => a.type),
+    actions
+      .filter((a) => !["refresh", "scroll"].includes(a.type))
+      .map((a) => a.type),
   ).toEqual(["click", "text", "key", "text", "key"]);
   expect(actions.filter((a) => a.type === "text").map((a) => a.value)).toEqual([
     "fixture@example.test",
@@ -121,14 +125,12 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
   await page.goto("/app?portal=gupy");
   expect(closed).toBe(0);
   signed = false;
+  blocked = true;
   await page.clock.install();
-  await page
-    .getByRole("button", { name: "Abrir navegador remoto", exact: true })
-    .click();
   await expect(image).toBeVisible();
   const beforeClosing = actions.length;
   await page
-    .getByRole("button", { name: "Cancelar conexão", exact: true })
+    .getByRole("button", { name: "Fechar janela", exact: true })
     .click();
   await expect.poll(() => closed).toBe(1);
   await page.clock.fastForward(15000);

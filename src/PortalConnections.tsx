@@ -100,7 +100,7 @@ export default function PortalConnections({
     const popup = window.open(
       `/app?portal=${encodeURIComponent(site)}`,
       `empregatos-remote-${site}`,
-      "popup,width=1100,height=900",
+      "popup,width=1024,height=800",
     );
     if (popup) remoteWindows.current.set(site, popup);
     else
@@ -436,6 +436,12 @@ export default function PortalConnections({
                   </span>
                 </div>
                 <p className="connection-limitation">{status?.limitation}</p>
+                {status?.remoteLogin && (
+                  <p className="connection-limitation">
+                    Ao conectar, você abre o login em um navegador operado pela
+                    EmpreGatos e permite salvar a sessão para a automação.
+                  </p>
+                )}
                 {externalLoginOnly && (
                   <p className="connection-limitation">
                     Faça login diretamente no site oficial, em outra aba. Não

@@ -2,7 +2,7 @@
 
 ## Fluxo publicado de login
 
-Gupy, InfoJobs e Glassdoor oferecem uma janela separada em `/app?portal=<portal>`. Após aceitar o navegador remoto, a pessoa interage com a página real do portal por imagem, cliques e teclado. Não há instalação, extensão nem formulário de e-mail/senha recriado pelo aplicativo. A janela informa que o navegador e a sessão são operados pela EmpreGatos, e que isso não equivale a OAuth oficial do portal. Entradas externas, como Google, não estão habilitadas nessa janela; use o acesso do próprio portal.
+Gupy, InfoJobs e Glassdoor oferecem uma janela separada em `/app?portal=<portal>`. Clicar em conectar no painel abre diretamente o login do portal, sem introdução, cabeçalho, botões de teclado ou controles de imagem. A pessoa interage com a página real por cliques, teclado, roda do mouse e gestos de rolagem. O painel informa que o navegador e a sessão são operados pela EmpreGatos. A confirmação do currículo e dos envios aparece somente após autenticação reconhecida. Não há instalação, extensão nem formulário de e-mail/senha recriado pelo aplicativo. Isso não equivale a OAuth oficial; entradas externas, como Google, não estão habilitadas nessa janela.
 
 O navegador usa Vercel Sandbox e uma sessão privada por pessoa e portal. Não precisa de computador ligado. A conexão Antigravity é independente: fornece análise e busca, sem autenticar contas de candidatos.
 
