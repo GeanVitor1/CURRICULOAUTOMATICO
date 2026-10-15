@@ -4,6 +4,8 @@ import {
   portalHost,
   publicAddress,
   portalLogin,
+  identityHost,
+  loginNavigationAllowed,
 } from "../server/portal-browser-policy";
 import { defaultProfile } from "../shared/types";
 
@@ -55,6 +57,24 @@ describe("Conexões privadas e respostas verificadas", () => {
       "https://user:pass@www.linkedin.com/",
     ])
       expect(portalHost("linkedin", url)).toBe(false);
+  });
+  it("libera Google e LinkedIn somente no login interativo e mantém envios restritos ao portal", () => {
+    for (const url of [
+      "https://accounts.google.com/v3/signin/identifier",
+      "https://www.linkedin.com/oauth/v2/authorization",
+    ]) {
+      expect(identityHost(url)).toBe(true);
+      expect(loginNavigationAllowed("gupy", url, true)).toBe(true);
+      expect(loginNavigationAllowed("gupy", url)).toBe(false);
+    }
+    for (const url of [
+      "https://accounts.google.com.evil.test/",
+      "https://www.linkedin.com.evil.test/",
+      "http://accounts.google.com/",
+      "https://accounts.google.com:8443/",
+      "https://secret@accounts.google.com/",
+    ])
+      expect(loginNavigationAllowed("gupy", url, true)).toBe(false);
   });
   it.each([
     "127.0.0.1",

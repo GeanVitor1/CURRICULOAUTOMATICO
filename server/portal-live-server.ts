@@ -125,10 +125,11 @@ export class PortalLiveServer {
       sequence = sequence.then(async () => {
         if (stopped || this.ticket !== ticket) return;
         try {
-          if (failed && action.data.type !== "refresh")
+          const recovery = ["refresh", "login"].includes(action.data.type);
+          if (failed && !recovery)
             throw new Error("Atualize a conexão antes de continuar.");
           await this.service.liveInput(ticket.viewerId, action.data);
-          if (action.data.type === "refresh") failed = false;
+          if (recovery) failed = false;
           send({ type: "ack", id });
         } catch {
           failed = true;

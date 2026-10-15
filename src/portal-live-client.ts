@@ -6,6 +6,8 @@ type Listener = {
     authenticated: boolean;
     blocked: boolean;
     notice: string;
+    address?: string;
+    navigationError?: string;
   }) => void;
   error: (error: Error) => void;
 };
@@ -85,6 +87,12 @@ export class PortalLiveClient {
             authenticated: message.authenticated,
             blocked: message.blocked,
             notice: typeof message.notice === "string" ? message.notice : "",
+            address:
+              typeof message.address === "string" ? message.address : undefined,
+            navigationError:
+              typeof message.navigationError === "string"
+                ? message.navigationError
+                : "",
           });
         if (message.type !== "ack") return;
         const pending = this.pending.get(message.id);
@@ -129,15 +137,18 @@ export class PortalLiveClient {
       throw new Error("A conexão com o navegador está indisponível.");
     const id = ++this.nextId;
     return new Promise<void>((resolve, reject) => {
-      const timer = setTimeout(() => {
-        this.pending.delete(id);
-        reject(
-          new Error(
-            "A ação demorou a responder. Confira o campo antes de continuar.",
-          ),
-        );
-        this.socket.close();
-      }, 10000);
+      const timer = setTimeout(
+        () => {
+          this.pending.delete(id);
+          reject(
+            new Error(
+              "A ação demorou a responder. Confira o campo antes de continuar.",
+            ),
+          );
+          this.socket.close();
+        },
+        action.type === "login" ? 30000 : 10000,
+      );
       this.pending.set(id, {
         resolve,
         reject,

@@ -1,6 +1,6 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
-import type { BrowserContext } from "playwright";
+import type { BrowserContext, Page } from "playwright";
 import {
   candidatePortals,
   candidatePortalLoginUrls,
@@ -10,6 +10,27 @@ import {
 export type CandidatePortal = (typeof candidatePortals)[number];
 export const portalLogin: Record<CandidatePortal, string> =
   candidatePortalLoginUrls;
+export function identityHost(value: string) {
+  try {
+    const url = new URL(value);
+    return (
+      url.protocol === "https:" &&
+      !url.username &&
+      !url.password &&
+      (!url.port || url.port === "443") &&
+      ["accounts.google.com", "www.linkedin.com", "linkedin.com"].includes(
+        url.hostname,
+      )
+    );
+  } catch {
+    return false;
+  }
+}
+export const loginNavigationAllowed = (
+  portal: PortalId,
+  value: string,
+  interactive = false,
+) => portalHost(portal, value) || (interactive && identityHost(value));
 export function portalHost(portal: PortalId, value: string) {
   try {
     const u = new URL(value);
@@ -57,6 +78,10 @@ export function publicAddress(ip: string): boolean {
 export async function protectBrowser(
   context: BrowserContext,
   portal: CandidatePortal,
+  options: {
+    interactiveLogin?: boolean;
+    onBlockedNavigation?: (page: Page) => void;
+  } = {},
 ) {
   const hosts = new Map<string, Promise<boolean>>();
   await context.route("**/*", async (route) => {
@@ -75,9 +100,11 @@ export async function protectBrowser(
       if (
         request.isNavigationRequest() &&
         request.frame().parentFrame() === null &&
-        !portalHost(portal, url.href)
-      )
+        !loginNavigationAllowed(portal, url.href, options.interactiveLogin)
+      ) {
+        options.onBlockedNavigation?.(request.frame().page());
         return await route.abort();
+      }
       let allowed = hosts.get(url.hostname);
       if (!allowed) {
         allowed = lookup(url.hostname, { all: true })

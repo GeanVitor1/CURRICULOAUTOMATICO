@@ -32,6 +32,7 @@ export const liveInputSchema = z.discriminatedUnion("type", [
     delta: z.number().min(-1200).max(1200),
   }),
   z.object({ type: z.literal("refresh") }),
+  z.object({ type: z.literal("login") }),
 ]);
 export type LiveInput = z.infer<typeof liveInputSchema>;
 export type LiveTicket = { url: string; token: string; expiresAt: number };

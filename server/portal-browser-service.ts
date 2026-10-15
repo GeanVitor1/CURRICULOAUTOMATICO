@@ -3,6 +3,7 @@ import {
   type Browser,
   type BrowserContext,
   type Page,
+  type CDPSession,
 } from "playwright";
 import {
   createCipheriv,
@@ -22,6 +23,9 @@ import {
 import {
   portalLogin,
   protectBrowser,
+  portalHost,
+  loginNavigationAllowed,
+  identityHost,
   type CandidatePortal,
 } from "./portal-browser-policy";
 import {
@@ -50,11 +54,16 @@ export type PortalLoginFrame = {
   blocked: boolean;
   notice: string;
   live?: LiveTicket;
+  navigationError?: string;
 };
 export class PortalBrowserService {
   private browser?: Browser;
   private context?: BrowserContext;
   private page?: Page;
+  private rootPage?: Page;
+  private navigationError = "";
+  private navigationStarted = Date.now();
+  private displayListeners = new Set<(page: Page) => void>();
   private expires = 0;
   private busy = false;
   private viewerId = "";
@@ -101,6 +110,22 @@ export class PortalBrowserService {
     }
   }
   private async save(value: Saved) {
+    // Keep only the candidate portal's session, never the Google/LinkedIn account.
+    value = {
+      ...value,
+      state: {
+        ...value.state,
+        cookies: value.state.cookies.filter((cookie) =>
+          portalHost(
+            this.portal,
+            "https://" + cookie.domain.replace(/^\./, ""),
+          ),
+        ),
+        origins: value.state.origins.filter((origin) =>
+          portalHost(this.portal, origin.origin),
+        ),
+      },
+    };
     const iv = randomBytes(12);
     const cipher = createCipheriv(
       "aes-256-gcm",
@@ -137,7 +162,11 @@ export class PortalBrowserService {
       expiresAt,
     };
   }
-  private async createContext(saved: Saved | null, width = 1024) {
+  private async createContext(
+    saved: Saved | null,
+    width = 1024,
+    interactiveLogin = false,
+  ) {
     if (!this.browser?.isConnected())
       this.browser = await chromium.launch({
         headless: true,
@@ -153,8 +182,60 @@ export class PortalBrowserService {
       acceptDownloads: false,
     });
     context.setDefaultTimeout(8000);
-    await protectBrowser(context, this.portal);
+    await protectBrowser(context, this.portal, {
+      interactiveLogin,
+      onBlockedNavigation: () => {
+        if (interactiveLogin)
+          this.navigationError =
+            "Este destino não está disponível nesta janela. Volte ao login do portal para continuar.";
+      },
+    });
+    if (interactiveLogin) context.on("page", (page) => this.watchPage(page));
     return context;
+  }
+  private activatePage(page: Page) {
+    if (page.isClosed() || this.page === page) return;
+    this.page = page;
+    this.navigationError = "";
+    this.navigationStarted = Date.now();
+    for (const listener of this.displayListeners) listener(page);
+    void page.bringToFront().catch(() => {});
+  }
+  private watchPage(page: Page) {
+    // A popup's first navigation can finish before the context emits `page`.
+    if (loginNavigationAllowed(this.portal, page.url(), true))
+      this.activatePage(page);
+    page.on("framenavigated", (frame) => {
+      if (frame !== page.mainFrame()) return;
+      if (loginNavigationAllowed(this.portal, page.url(), true)) {
+        this.navigationError = "";
+        this.navigationStarted = Date.now();
+        this.activatePage(page);
+      }
+    });
+    page.on("requestfailed", (request) => {
+      if (
+        request.isNavigationRequest() &&
+        request.frame() === page.mainFrame() &&
+        !/ERR_ABORTED/.test(request.failure()?.errorText || "")
+      )
+        this.navigationError ||=
+          "Não foi possível carregar a página de login. Volte ao portal e tente novamente.";
+    });
+    page.on("close", () => {
+      if (this.page !== page || !this.context) return;
+      const next =
+        this.rootPage && !this.rootPage.isClosed()
+          ? this.rootPage
+          : this.context
+              .pages()
+              .find(
+                (p) =>
+                  !p.isClosed() &&
+                  loginNavigationAllowed(this.portal, p.url(), true),
+              );
+      if (next) this.activatePage(next);
+    });
   }
   private async frame(): Promise<PortalLoginFrame> {
     if (!this.page || this.expires < Date.now())
@@ -192,6 +273,7 @@ export class PortalBrowserService {
         : challenge
           ? "O portal pediu uma verificação. Resolva manualmente; o sistema não contorna CAPTCHA."
           : "",
+      navigationError: this.navigationError,
     };
   }
   async close() {
@@ -200,6 +282,8 @@ export class PortalBrowserService {
     await this.context?.close().catch(() => {});
     this.context = undefined;
     this.page = undefined;
+    this.rootPage = undefined;
+    this.navigationError = "";
   }
   async open(width = 1024) {
     await this.close();
@@ -208,8 +292,10 @@ export class PortalBrowserService {
     this.context = await this.createContext(
       saved,
       Math.max(375, Math.min(1024, Math.round(width))),
+      true,
     );
     this.page = await this.context.newPage();
+    this.rootPage = this.page;
     this.expires = Date.now() + 15 * 60000;
     await this.page.goto(
       saved ? portalRules[this.portal].account : portalLogin[this.portal],
@@ -224,11 +310,26 @@ export class PortalBrowserService {
         .catch(() => {});
     return this.frame();
   }
-  private async input(action: LoginAction) {
+  private async input(action: LoginAction | LiveInput) {
     if (!this.page || this.expires < Date.now())
       throw new Error("A janela de conexão expirou. Abra novamente.");
     const page = this.page;
-    if (action.type === "submit") {
+    if (action.type === "login") {
+      const root = this.rootPage;
+      if (!root || root.isClosed())
+        throw new Error("A janela de conexão expirou. Abra novamente.");
+      this.activatePage(root);
+      await Promise.all(
+        this.context!.pages()
+          .filter((p) => p !== root)
+          .map((p) => p.close().catch(() => {})),
+      );
+      this.navigationError = "";
+      await root.goto(portalLogin[this.portal], {
+        waitUntil: "domcontentloaded",
+        timeout: 25000,
+      });
+    } else if (action.type === "submit") {
       const fields = [];
       for (const item of action.fields) {
         const field = page.locator(loginInputs).nth(item.index);
@@ -284,18 +385,20 @@ export class PortalBrowserService {
       authenticated: boolean;
       blocked: boolean;
       notice: string;
+      address?: string;
+      navigationError?: string;
     }) => void,
     onEnd: () => void,
   ) {
     this.assertViewer(viewerId);
     await this.stopLive?.();
-    const page = this.page!;
-    const cdp = await this.context!.newCDPSession(page);
+    let cdp: CDPSession | undefined;
     let ended = false,
       checking = false,
       lastImage = 0;
     let latestImage = "";
     let imageTimer: ReturnType<typeof setTimeout> | undefined;
+    let switches = Promise.resolve();
     const deliverImage = () => {
       imageTimer = undefined;
       if (ended || !latestImage) return;
@@ -303,44 +406,89 @@ export class PortalBrowserService {
       onImage(latestImage);
       latestImage = "";
     };
-    cdp.on("Page.screencastFrame", (event) => {
-      void cdp
-        .send("Page.screencastFrameAck", { sessionId: event.sessionId })
-        .catch(() => {});
-      if (ended) return;
-      latestImage = "data:image/jpeg;base64," + event.data;
-      if (Date.now() - lastImage >= 70) {
-        clearTimeout(imageTimer);
-        deliverImage();
-      } else
-        imageTimer ||= setTimeout(deliverImage, 70 - (Date.now() - lastImage));
-    });
-    await cdp.send("Page.startScreencast", {
-      format: "jpeg",
-      quality: 65,
-      maxWidth: 1024,
-      maxHeight: 720,
-      everyNthFrame: 1,
-    });
+    const switchPage = (page: Page) => {
+      switches = switches
+        .then(async () => {
+          if (ended || page.isClosed() || page !== this.page) return;
+          clearTimeout(imageTimer);
+          latestImage = "";
+          await cdp?.send("Page.stopScreencast").catch(() => {});
+          await cdp?.detach().catch(() => {});
+          const session = await page.context().newCDPSession(page);
+          cdp = session;
+          session.on("Page.screencastFrame", (event) => {
+            void session
+              .send("Page.screencastFrameAck", { sessionId: event.sessionId })
+              .catch(() => {});
+            if (ended || page !== this.page) return;
+            latestImage = "data:image/jpeg;base64," + event.data;
+            if (Date.now() - lastImage >= 70) {
+              clearTimeout(imageTimer);
+              deliverImage();
+            } else
+              imageTimer ||= setTimeout(
+                deliverImage,
+                70 - (Date.now() - lastImage),
+              );
+          });
+          await session.send("Page.startScreencast", {
+            format: "jpeg",
+            quality: 65,
+            maxWidth: 1024,
+            maxHeight: 720,
+            everyNthFrame: 1,
+          });
+        })
+        .catch(() => {
+          if (!ended)
+            this.navigationError =
+              "Não foi possível exibir a página de login. Volte ao portal para tentar novamente.";
+        });
+      return switches;
+    };
+    this.displayListeners.add(switchPage);
+    await switchPage(this.page!);
     const update = async () => {
       if (checking || ended || this.busy) return;
       checking = true;
       try {
         this.assertViewer(viewerId);
+        if (
+          this.rootPage &&
+          this.page !== this.rootPage &&
+          !this.rootPage.isClosed() &&
+          (await authenticated(this.rootPage, this.portal))
+        )
+          this.activatePage(this.rootPage);
+        const page = this.page!;
         const signed = await authenticated(page, this.portal);
         const text = await page.locator("body").innerText({ timeout: 1000 });
         const blocked =
           /access denied|acesso negado|humans only|request (?:was )?blocked|you have been blocked/i.test(
             text,
           );
+        if (
+          identityHost(page.url()) &&
+          /disallowed_useragent|this browser or app may not be secure|este navegador ou app pode não ser seguro|couldn.t sign you in|não foi possível fazer login|access blocked|acesso bloqueado/i.test(
+            text,
+          )
+        )
+          this.navigationError =
+            "O provedor recusou o acesso neste navegador. Volte ao portal e use a entrada com e-mail ou sem senha, se disponível.";
+        if (!text.trim() && Date.now() - this.navigationStarted > 10000)
+          this.navigationError ||=
+            "A página de login não carregou. Volte ao portal para tentar novamente.";
+        const url = new URL(page.url());
         onStatus({
           authenticated: signed,
           blocked,
           notice: blocked ? "O portal bloqueou o acesso." : "",
+          address: url.hostname + url.pathname,
+          navigationError: this.navigationError,
         });
       } catch {
         if (
-          page.isClosed() ||
+          !this.context ||
           viewerId !== this.viewerId ||
           this.expires < Date.now()
         )
@@ -355,10 +503,12 @@ export class PortalBrowserService {
     this.stopLive = () =>
       (cleanup ||= (async () => {
         ended = true;
+        this.displayListeners.delete(switchPage);
         clearTimeout(imageTimer);
         clearInterval(interval);
-        await cdp.send("Page.stopScreencast").catch(() => {});
-        await cdp.detach().catch(() => {});
+        await switches;
+        await cdp?.send("Page.stopScreencast").catch(() => {});
+        await cdp?.detach().catch(() => {});
       })());
     return this.stopLive;
   }

@@ -15,6 +15,7 @@ for (const fast of [false, true])
     let peakOutstanding = 0;
     let httpInputs = 0;
     let finishClose: (() => void) | undefined;
+    let failNavigation: (() => void) | undefined;
     const frame = () => ({
       viewerId,
       image: "/login-video-poster.png",
@@ -34,10 +35,31 @@ for (const fast of [false, true])
     });
     if (fast)
       await page.routeWebSocket("wss://fixture.vercel.run/live", (ws) => {
+        failNavigation = () =>
+          ws.send(
+            JSON.stringify({
+              type: "status",
+              authenticated: false,
+              blocked: false,
+              notice: "",
+              navigationError: "O provedor recusou o acesso neste navegador.",
+            }),
+          );
         ws.send(JSON.stringify({ type: "ready" }));
         ws.onMessage((raw) => {
           const message = JSON.parse(String(raw));
           actions.push(message.action);
+          if (message.action.type === "login")
+            ws.send(
+              JSON.stringify({
+                type: "status",
+                authenticated: false,
+                blocked: false,
+                notice: "",
+                navigationError: "",
+                address: "login.gupy.io/candidates/signin",
+              }),
+            );
           outstanding++;
           peakOutstanding = Math.max(peakOutstanding, outstanding);
           setTimeout(() => {
@@ -131,6 +153,19 @@ for (const fast of [false, true])
     await expect(page.getByRole("button")).toHaveCount(0);
     await expect(page.getByRole("heading")).toHaveCount(0);
     await expect(confirm).toHaveCount(0);
+    if (fast) {
+      failNavigation!();
+      await expect(
+        page.getByText("O provedor recusou o acesso neste navegador."),
+      ).toBeVisible();
+      await page
+        .getByRole("button", { name: "Voltar ao login do portal" })
+        .click();
+      await expect(page.getByRole("button")).toHaveCount(0);
+      await expect
+        .poll(() => actions.some((a) => a.type === "login"))
+        .toBe(true);
+    }
     await image.dispatchEvent("wheel", { deltaY: 350 });
     await expect
       .poll(() => actions.some((a) => a.type === "scroll" && a.delta === 350))
@@ -145,7 +180,7 @@ for (const fast of [false, true])
     ).toBeVisible();
     expect(
       actions
-        .filter((a) => !["refresh", "scroll"].includes(a.type))
+        .filter((a) => !["refresh", "scroll", "login"].includes(a.type))
         .map((a) => a.type),
     ).toEqual(["click", "text", "key", "text", "key"]);
     expect(

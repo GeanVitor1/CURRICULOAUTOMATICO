@@ -31,7 +31,7 @@ const server = createServer(async (req, res) => {
     return;
   }
   if (req.method === "GET" && req.url === "/health") {
-    res.end('{"ok":true,"version":2}');
+    res.end('{"ok":true,"version":3}');
     return;
   }
   if (req.method !== "POST" || req.url !== "/command") {

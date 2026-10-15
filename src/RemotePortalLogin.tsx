@@ -16,6 +16,7 @@ type Frame = {
   blocked: boolean;
   notice: string;
   live?: LiveTicket;
+  navigationError?: string;
 };
 type Action = LiveInput;
 
@@ -81,9 +82,15 @@ export default function RemotePortalLogin({
           previous?.viewerId === next.viewerId &&
           (previous.authenticated !== status.authenticated ||
             previous.blocked !== status.blocked ||
-            previous.notice !== status.notice)
+            previous.notice !== status.notice ||
+            previous.navigationError !== status.navigationError ||
+            previous.address !== status.address)
         )
-          receive({ ...previous, ...status });
+          receive({
+            ...previous,
+            ...status,
+            address: status.address || previous.address,
+          });
       },
       error: (error) => {
         if (finished.current || closing.current) return;
@@ -507,6 +514,29 @@ export default function RemotePortalLogin({
                 : "Revise suas preferências no painel para ativar os envios."}
             </p>
             <button onClick={() => void close()}>Concluir</button>
+          </section>
+        </div>
+      )}
+      {frame?.navigationError && !error && !done && (
+        <div className="remote-overlay">
+          <section className="remote-confirm" role="alert">
+            <p>{frame.navigationError}</p>
+            <button
+              disabled={busy}
+              onClick={() => {
+                void flush();
+                void enqueue({ type: "login" });
+              }}
+            >
+              Voltar ao login do portal
+            </button>
+            <button
+              className="remote-secondary"
+              disabled={busy}
+              onClick={() => void close()}
+            >
+              Fechar janela
+            </button>
           </section>
         </div>
       )}
