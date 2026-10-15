@@ -207,7 +207,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       );
       reply.header(
         "Content-Security-Policy",
-        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' wss://*.vercel.run; media-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
       );
     }
     if (request.url.startsWith("/api"))
@@ -821,7 +821,12 @@ export async function buildApp({ serveStatic = true } = {}) {
             .parse(req.body)
         : undefined;
       reply.header("Cache-Control", "no-store");
-      return startPortalLogin(u.id, portal, settings?.viewportWidth);
+      return startPortalLogin(
+        u.id,
+        portal,
+        settings?.viewportWidth,
+        req.headers.origin || appOrigins()[0],
+      );
     },
   );
   app.post("/api/connections/:portal/action", async (req, reply) => {

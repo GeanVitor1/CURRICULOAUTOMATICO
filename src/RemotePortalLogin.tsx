@@ -3,6 +3,8 @@ import { api } from "./lib";
 import { portals } from "../shared/portals";
 import type { Workspace } from "../shared/types";
 import "./RemotePortalLogin.css";
+import { PortalLiveClient } from "./portal-live-client";
+import type { LiveInput, LiveTicket } from "../shared/portal-live";
 
 type Frame = {
   viewerId: string;
@@ -13,12 +15,9 @@ type Frame = {
   authenticated: boolean;
   blocked: boolean;
   notice: string;
+  live?: LiveTicket;
 };
-type Action =
-  | { type: "click"; x: number; y: number }
-  | { type: "text" | "key"; value: string }
-  | { type: "scroll"; delta: number }
-  | { type: "refresh" };
+type Action = LiveInput;
 
 export default function RemotePortalLogin({
   portal,
@@ -36,6 +35,7 @@ export default function RemotePortalLogin({
   const [automatic, setAutomatic] = useState(false);
   const [ending, setEnding] = useState(false);
   const current = useRef<Frame | null>(null);
+  const live = useRef<PortalLiveClient | null>(null);
   const finished = useRef(false);
   const closing = useRef(false);
   const keyboard = useRef<HTMLTextAreaElement>(null);
@@ -66,6 +66,33 @@ export default function RemotePortalLogin({
     current.current = next;
     setFrame(next);
   };
+  const connectLive = useCallback((next: Frame) => {
+    if (!next.live) return;
+    live.current?.close();
+    live.current = new PortalLiveClient(next.live, {
+      image: (image) => {
+        const previous = current.current;
+        if (previous?.viewerId === next.viewerId)
+          receive({ ...previous, image });
+      },
+      status: (status) => {
+        const previous = current.current;
+        if (
+          previous?.viewerId === next.viewerId &&
+          (previous.authenticated !== status.authenticated ||
+            previous.blocked !== status.blocked ||
+            previous.notice !== status.notice)
+        )
+          receive({ ...previous, ...status });
+      },
+      error: (error) => {
+        if (finished.current || closing.current) return;
+        failed.current = true;
+        buffer.current = "";
+        setError(error.message);
+      },
+    });
+  }, []);
   const enqueue = useCallback(
     (action: Action, recover = false) => {
       const viewerId = current.current?.viewerId;
@@ -73,14 +100,17 @@ export default function RemotePortalLogin({
         return Promise.resolve();
       pending.current++;
       setBusy(true);
-      sequence.current = sequence.current
-        .then(async () => {
-          if (failed.current && !recover) return;
-          if (recover) {
-            failed.current = false;
-            setError("");
-          }
-          try {
+      const perform = async () => {
+        if (failed.current && !recover) return;
+        if (recover) {
+          failed.current = false;
+          setError("");
+        }
+        try {
+          if (current.current?.live) {
+            if (!live.current || recover) connectLive(current.current);
+            await live.current!.send(action);
+          } else
             receive(
               await api<Frame>(`/connections/${portal}/action`, {
                 method: "POST",
@@ -88,22 +118,28 @@ export default function RemotePortalLogin({
                 body: JSON.stringify(action),
               }),
             );
-          } catch (failure) {
-            failed.current = true;
-            buffer.current = "";
-            setError(
-              (failure as Error).message +
-                " Atualize a imagem antes de continuar. Confira o campo antes de digitar novamente.",
-            );
-          }
-        })
-        .finally(() => {
-          pending.current--;
-          if (!pending.current) setBusy(false);
-        });
+        } catch (failure) {
+          failed.current = true;
+          buffer.current = "";
+          setError(
+            (failure as Error).message +
+              " Confira o campo antes de digitar novamente.",
+          );
+        }
+      };
+      const direct = !!current.current?.live;
+      const task = (
+        direct ? perform() : sequence.current.then(perform)
+      ).finally(() => {
+        pending.current--;
+        if (!pending.current) setBusy(false);
+      });
+      sequence.current = direct
+        ? Promise.all([sequence.current, task]).then(() => {})
+        : task;
       return sequence.current;
     },
-    [portal],
+    [portal, connectLive],
   );
   const flush = useCallback(() => {
     clearTimeout(timer.current);
@@ -117,6 +153,8 @@ export default function RemotePortalLogin({
     const cleanup = () => {
       clearTimeout(timer.current);
       clearTimeout(scrollTimer.current);
+      live.current?.close();
+      live.current = null;
       buffer.current = "";
       const viewerId = current.current?.viewerId;
       if (!viewerId || finished.current) return;
@@ -133,7 +171,8 @@ export default function RemotePortalLogin({
     };
   }, [portal]);
   useEffect(() => {
-    if (!frame || done || frame.authenticated || frame.blocked) return;
+    if (!frame || frame.live || done || frame.authenticated || frame.blocked)
+      return;
     const interval = setInterval(() => {
       if (
         !pending.current &&
@@ -146,7 +185,14 @@ export default function RemotePortalLogin({
         void enqueue({ type: "refresh" });
     }, 3500);
     return () => clearInterval(interval);
-  }, [!!frame, frame?.authenticated, frame?.blocked, done, enqueue]);
+  }, [
+    !!frame,
+    !!frame?.live,
+    frame?.authenticated,
+    frame?.blocked,
+    done,
+    enqueue,
+  ]);
   const start = useCallback(async () => {
     if (started.current || pending.current || current.current) return;
     started.current = true;
@@ -154,22 +200,22 @@ export default function RemotePortalLogin({
     setBusy(true);
     setError("");
     try {
-      receive(
-        await api<Frame>(`/connections/${portal}/open`, {
-          method: "POST",
-          body: JSON.stringify({
-            remoteBrowserConsent: true,
-            viewportWidth: Math.max(375, Math.min(1024, window.innerWidth)),
-          }),
+      const next = await api<Frame>(`/connections/${portal}/open`, {
+        method: "POST",
+        body: JSON.stringify({
+          remoteBrowserConsent: true,
+          viewportWidth: Math.max(375, Math.min(1024, window.innerWidth)),
         }),
-      );
+      });
+      receive(next);
+      connectLive(next);
     } catch (failure) {
       setError((failure as Error).message);
     } finally {
       pending.current--;
       setBusy(false);
     }
-  }, [portal]);
+  }, [portal, connectLive]);
   useEffect(() => {
     void start();
   }, [start]);
@@ -200,6 +246,8 @@ export default function RemotePortalLogin({
     pending.current++;
     setBusy(true);
     setError("");
+    live.current?.close();
+    live.current = null;
     try {
       const result = await api<{ automatic: boolean }>(
         `/connections/${portal}/confirm`,
@@ -240,6 +288,8 @@ export default function RemotePortalLogin({
     clearTimeout(timer.current);
     buffer.current = "";
     await sequence.current;
+    live.current?.close();
+    live.current = null;
     if (current.current && !finished.current) {
       setBusy(true);
       try {
@@ -349,7 +399,10 @@ export default function RemotePortalLogin({
               buffer.current += event.currentTarget.value;
               event.currentTarget.value = "";
               clearTimeout(timer.current);
-              timer.current = setTimeout(() => void flush(), 220);
+              timer.current = setTimeout(
+                () => void flush(),
+                current.current?.live ? 35 : 220,
+              );
             }}
             onKeyDown={(event) => {
               if (event.nativeEvent.isComposing) return;
@@ -382,7 +435,10 @@ export default function RemotePortalLogin({
               ) {
                 event.preventDefault();
                 void flush();
-                void enqueue({ type: "key", value: key });
+                void enqueue({
+                  type: "key",
+                  value: key as Extract<LiveInput, { type: "key" }>["value"],
+                });
               }
             }}
           />

@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { PortalBrowserService } from "./portal-browser-service";
 import type { CandidatePortal } from "./portal-browser-policy";
+import { PortalLiveServer } from "./portal-live-server";
 const root = "/vercel/sandbox/portal-runtime";
 const portal = process.argv[2];
 if (!["gupy", "infojobs", "glassdoor"].includes(portal))
@@ -18,6 +19,8 @@ const service = new PortalBrowserService(
   portal as CandidatePortal,
   root + "/private",
 );
+const live = new PortalLiveServer(service);
+live.server.listen(3001, "0.0.0.0");
 const server = createServer(async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   const auth = Buffer.from(req.headers.authorization || "");
@@ -28,7 +31,7 @@ const server = createServer(async (req, res) => {
     return;
   }
   if (req.method === "GET" && req.url === "/health") {
-    res.end('{"ok":true}');
+    res.end('{"ok":true,"version":2}');
     return;
   }
   if (req.method !== "POST" || req.url !== "/command") {
@@ -46,6 +49,12 @@ const server = createServer(async (req, res) => {
     let data, error;
     try {
       data = await service.execute(request);
+      if (request.op === "open" && request.viewerOrigin) {
+        const frame = data as { viewerId: string; live?: unknown };
+        frame.live = live.issue(frame.viewerId, request.viewerOrigin);
+      }
+      if (["confirm", "close", "disconnect"].includes(request.op))
+        live.revoke();
     } catch (e) {
       error =
         e instanceof Error &&

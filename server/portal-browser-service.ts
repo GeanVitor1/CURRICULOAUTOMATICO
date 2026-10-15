@@ -31,6 +31,7 @@ import {
   submitLoginForm,
 } from "./portal-login-fields";
 import type { LoginAction } from "./portal-sessions";
+import type { LiveInput, LiveTicket } from "../shared/portal-live";
 
 type Saved = {
   connectedAt: string;
@@ -48,6 +49,7 @@ export type PortalLoginFrame = {
   authenticated: boolean;
   blocked: boolean;
   notice: string;
+  live?: LiveTicket;
 };
 export class PortalBrowserService {
   private browser?: Browser;
@@ -56,6 +58,7 @@ export class PortalBrowserService {
   private expires = 0;
   private busy = false;
   private viewerId = "";
+  private stopLive?: () => Promise<void>;
   isBusy() {
     return this.busy;
   }
@@ -192,6 +195,8 @@ export class PortalBrowserService {
     };
   }
   async close() {
+    await this.stopLive?.();
+    this.stopLive = undefined;
     await this.context?.close().catch(() => {});
     this.context = undefined;
     this.page = undefined;
@@ -219,7 +224,7 @@ export class PortalBrowserService {
         .catch(() => {});
     return this.frame();
   }
-  async action(action: LoginAction) {
+  private async input(action: LoginAction) {
     if (!this.page || this.expires < Date.now())
       throw new Error("A janela de conexão expirou. Abra novamente.");
     const page = this.page;
@@ -248,8 +253,114 @@ export class PortalBrowserService {
       await page.mouse.click(action.x, action.y);
     else if (action.type === "key") await page.keyboard.press(action.value);
     else if (action.type === "scroll") await page.mouse.wheel(0, action.delta);
-    await page.waitForTimeout(action.type === "refresh" ? 50 : 400);
+  }
+  async action(action: LoginAction) {
+    await this.input(action);
     return this.frame();
+  }
+  private assertViewer(viewerId: string) {
+    if (viewerId !== this.viewerId || !this.page || this.expires < Date.now())
+      throw new Error(
+        "Esta janela de conexão foi substituída ou expirou. Abra o navegador novamente.",
+      );
+  }
+  async liveInput(viewerId: string, action: LiveInput) {
+    this.assertViewer(viewerId);
+    if (this.busy)
+      throw new Error(
+        "O portal já está executando uma ação. Aguarde a conclusão.",
+      );
+    this.busy = true;
+    try {
+      await this.input(action);
+    } finally {
+      this.busy = false;
+    }
+  }
+  async startLive(
+    viewerId: string,
+    onImage: (image: string) => void,
+    onStatus: (status: {
+      authenticated: boolean;
+      blocked: boolean;
+      notice: string;
+    }) => void,
+    onEnd: () => void,
+  ) {
+    this.assertViewer(viewerId);
+    await this.stopLive?.();
+    const page = this.page!;
+    const cdp = await this.context!.newCDPSession(page);
+    let ended = false,
+      checking = false,
+      lastImage = 0;
+    let latestImage = "";
+    let imageTimer: ReturnType<typeof setTimeout> | undefined;
+    const deliverImage = () => {
+      imageTimer = undefined;
+      if (ended || !latestImage) return;
+      lastImage = Date.now();
+      onImage(latestImage);
+      latestImage = "";
+    };
+    cdp.on("Page.screencastFrame", (event) => {
+      void cdp
+        .send("Page.screencastFrameAck", { sessionId: event.sessionId })
+        .catch(() => {});
+      if (ended) return;
+      latestImage = "data:image/jpeg;base64," + event.data;
+      if (Date.now() - lastImage >= 70) {
+        clearTimeout(imageTimer);
+        deliverImage();
+      } else
+        imageTimer ||= setTimeout(deliverImage, 70 - (Date.now() - lastImage));
+    });
+    await cdp.send("Page.startScreencast", {
+      format: "jpeg",
+      quality: 65,
+      maxWidth: 1024,
+      maxHeight: 720,
+      everyNthFrame: 1,
+    });
+    const update = async () => {
+      if (checking || ended || this.busy) return;
+      checking = true;
+      try {
+        this.assertViewer(viewerId);
+        const signed = await authenticated(page, this.portal);
+        const text = await page.locator("body").innerText({ timeout: 1000 });
+        const blocked =
+          /access denied|acesso negado|humans only|request (?:was )?blocked|you have been blocked/i.test(
+            text,
+          );
+        onStatus({
+          authenticated: signed,
+          blocked,
+          notice: blocked ? "O portal bloqueou o acesso." : "",
+        });
+      } catch {
+        if (
+          page.isClosed() ||
+          viewerId !== this.viewerId ||
+          this.expires < Date.now()
+        )
+          onEnd();
+      } finally {
+        checking = false;
+      }
+    };
+    const interval = setInterval(() => void update(), 500);
+    void update();
+    let cleanup: Promise<void> | undefined;
+    this.stopLive = () =>
+      (cleanup ||= (async () => {
+        ended = true;
+        clearTimeout(imageTimer);
+        clearInterval(interval);
+        await cdp.send("Page.stopScreencast").catch(() => {});
+        await cdp.detach().catch(() => {});
+      })());
+    return this.stopLive;
   }
   async confirm(profileResumeId: string | null) {
     if (

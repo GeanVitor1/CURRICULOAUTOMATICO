@@ -15,6 +15,19 @@ import {
   browserAuthorized,
   publicDiscoveryAvailable,
 } from "../server/provider-capabilities";
+// These cases validate permissions and session state, not disk persistence.
+// Keep the real SQL engine while avoiding slow filesystem migrations on Windows.
+vi.mock("@electric-sql/pglite", async (original) => {
+  const actual = await original<typeof import("@electric-sql/pglite")>();
+  return {
+    ...actual,
+    PGlite: class extends actual.PGlite {
+      constructor() {
+        super();
+      }
+    },
+  };
+});
 let dir = "",
   cookie = "",
   userId = "",

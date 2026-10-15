@@ -318,11 +318,13 @@ export async function startPortalLogin(
   userId: string,
   portal: CandidatePortal,
   viewportWidth?: number,
+  viewerOrigin?: string,
 ) {
   if (cloudPortalEnabled(userId, portal))
     return cloudPortalCommand<PortalLoginFrame>(userId, portal, {
       op: "open",
       viewportWidth,
+      viewerOrigin,
     });
   if (!browserAuthorized(portal))
     throw new RequestError(

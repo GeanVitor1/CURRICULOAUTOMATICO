@@ -19,7 +19,7 @@ type Metadata = NonNullable<
   Workspace["infrastructure"]["portalConnections"]
 >[string];
 const root = "/vercel/sandbox/portal-runtime";
-const probe = `const fs=require('node:fs');(async()=>{try{const k=fs.readFileSync('${root}/controller.key','utf8');const r=await fetch('http://127.0.0.1:3000/health',{headers:{Authorization:'Bearer '+k},signal:AbortSignal.timeout(1000)});process.exit(r.ok?0:1)}catch{process.exit(1)}})()`;
+const probe = `const fs=require('node:fs');(async()=>{try{const k=fs.readFileSync('${root}/controller.key','utf8');const r=await fetch('http://127.0.0.1:3000/health',{headers:{Authorization:'Bearer '+k},signal:AbortSignal.timeout(1000)});process.exit(r.ok?((await r.json()).version===2?0:2):1)}catch{process.exit(1)}})()`;
 const clientSource = `import {readFile,writeFile,rm} from 'node:fs/promises';
 import{createDecipheriv,createCipheriv,randomBytes}from'node:crypto';
 const id=process.argv[2];if(!/^[a-f0-9-]{36}$/.test(id))throw Error('Invalid request');
@@ -53,7 +53,11 @@ async function cacheMetadata(
     else delete w.infrastructure.portalConnections[portal];
   });
 }
-async function runtime(userId: string, portal: CandidatePortal) {
+async function runtime(
+  userId: string,
+  portal: CandidatePortal,
+  upgrade = false,
+) {
   const provision = async (sandbox: Sandbox) => {
     await sandbox.mkDir(root + "/requests").catch((error) => {
       if (!(error instanceof Error) || !/file exists/i.test(error.message))
@@ -74,20 +78,28 @@ async function runtime(userId: string, portal: CandidatePortal) {
       },
     ]);
   };
-  const s = await Sandbox.getOrCreate({
-    name: portalSandboxName(userId, portal),
-    source: {
-      type: "snapshot",
-      snapshotId: process.env.PORTAL_CLOUD_SNAPSHOT_ID!,
-    },
-    resources: { vcpus: 1 },
-    timeout: 15 * 60000,
-    keepLastSnapshots: { count: 1, expiration: 0 },
-    onCreate: provision,
-    onResume: provision,
-  });
+  const get = () =>
+    Sandbox.getOrCreate({
+      name: portalSandboxName(userId, portal),
+      source: {
+        type: "snapshot",
+        snapshotId: process.env.PORTAL_CLOUD_SNAPSHOT_ID!,
+      },
+      resources: { vcpus: 1 },
+      ports: [3001],
+      timeout: 15 * 60000,
+      keepLastSnapshots: { count: 1, expiration: 0 },
+      onCreate: provision,
+      onResume: provision,
+    });
+  let s = await get();
   let healthy = await s.runCommand({ cmd: "node", args: ["-e", probe] });
-  if (healthy.exitCode !== 0) {
+  if (healthy.exitCode === 2 && upgrade) {
+    await s.stop();
+    s = await get();
+    healthy = await s.runCommand({ cmd: "node", args: ["-e", probe] });
+  }
+  if (healthy.exitCode !== 0 && healthy.exitCode !== 2) {
     await provision(s);
     await s.runCommand({
       cmd: "node",
@@ -101,7 +113,7 @@ async function runtime(userId: string, portal: CandidatePortal) {
       if (healthy.exitCode === 0) break;
     }
   }
-  if (healthy.exitCode !== 0) {
+  if (healthy.exitCode !== 0 && healthy.exitCode !== 2) {
     await s.stop();
     throw new RequestError(
       "O navegador na nuvem não iniciou. Tente abrir a conexão novamente.",
@@ -120,6 +132,7 @@ export async function cloudPortalCommand<T = unknown>(
     input?: PortalApplication;
     viewerId?: string;
     viewportWidth?: number;
+    viewerOrigin?: string;
   },
 ) {
   if (!cloudPortalEnabled(userId, portal))
@@ -138,7 +151,14 @@ export async function cloudPortalCommand<T = unknown>(
       throw error;
     }
   }
-  const s = await runtime(userId, portal);
+  const s = await runtime(userId, portal, request.op === "open");
+  if (request.op === "open" && request.viewerOrigin) {
+    try {
+      s.domain(3001);
+    } catch {
+      await s.update({ ports: [3001] });
+    }
+  }
   const id = randomUUID(),
     path = root + "/requests/" + id;
   const key = randomBytes(32),
@@ -188,6 +208,11 @@ export async function cloudPortalCommand<T = unknown>(
       response.canStop !== false &&
       ["confirm", "close", "disconnect", "apply"].includes(request.op);
     if (response.error) throw new RequestError(response.error);
+    if (request.op === "open" && response.data?.live) {
+      const url = new URL("/live", s.domain(3001));
+      url.protocol = "wss:";
+      response.data.live.url = url.href;
+    }
     return response.data as T;
   } catch (error) {
     if (error instanceof RequestError) throw error;

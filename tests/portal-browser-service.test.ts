@@ -77,6 +77,26 @@ it("salva login cifrado, restaura a sessão e não repete a candidatura após re
   }
   expect(first.authenticated).toBe(false);
   expect(await service.metadata()).toBeNull();
+  let liveImages = 0;
+  const stopLive = await service.startLive(
+    first.viewerId,
+    (image) => {
+      expect(image).toMatch(/^data:image\/jpeg;base64,/);
+      liveImages++;
+    },
+    () => {},
+    () => {},
+  );
+  await service.liveInput(first.viewerId, { type: "key", value: "Tab" });
+  await service.liveInput(first.viewerId, {
+    type: "text",
+    value: "live-fixture@example.test",
+  });
+  await expect.poll(() => liveImages).toBeGreaterThan(0);
+  await stopLive();
+  await expect(
+    service.liveInput(obsolete.viewerId, { type: "text", value: "not-used" }),
+  ).rejects.toThrow("substituída");
   await expect(
     service.execute({ op: "confirm", viewerId: first.viewerId }),
   ).rejects.toThrow("login ainda");

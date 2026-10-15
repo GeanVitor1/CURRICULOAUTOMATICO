@@ -28,6 +28,18 @@ try {
   if (!account.ok()) throw new Error("Synthetic registration failed");
   registered = true;
   const page = await context.newPage();
+  let readyLive!: () => void;
+  const connectedLive = new Promise<void>((resolve) => {
+    readyLive = resolve;
+  });
+  let actionRequests = 0;
+  page.on("websocket", (socket) =>
+    socket.on("framereceived", (event) => {
+      try {
+        if (JSON.parse(String(event.payload)).type === "ready") readyLive();
+      } catch {}
+    }),
+  );
   let opens = 0;
   page.on("request", (request) => {
     if (
@@ -35,6 +47,8 @@ try {
       request.method() === "POST"
     )
       opens++;
+    if (request.url().includes(`/connections/${portal}/action`))
+      actionRequests++;
   });
   const opened = page.waitForResponse(
     (response) =>
@@ -47,6 +61,16 @@ try {
   if (!response.ok())
     throw new Error("Remote open failed: " + response.status());
   const frame = await response.json();
+  if (!frame.live?.url) throw new Error("Continuous transport is not enabled");
+  await Promise.race([
+    connectedLive,
+    new Promise<never>((_resolve, reject) =>
+      setTimeout(
+        () => reject(new Error("Continuous transport did not connect")),
+        15000,
+      ),
+    ),
+  ]);
   if (
     !frame.viewerId ||
     !frame.image?.startsWith("data:image/jpeg;base64,") ||
@@ -75,16 +99,52 @@ try {
   await page.screenshot({
     path: `.data/login-only-${portal}-${mobile ? "mobile" : "desktop"}.png`,
   });
-  const scrolled = page.waitForResponse(
-    (response) =>
-      response.url().includes(`/connections/${portal}/action`) &&
-      response.request().postDataJSON()?.type === "scroll",
-    { timeout: 65000 },
+  const box = await image.boundingBox();
+  if (!box) throw new Error("Remote image missing");
+  await image.click({
+    position: {
+      x: box.width / 2,
+      y: box.height * (portal === "gupy" ? 0.295 : 0.568),
+    },
+  });
+  const typingStarted = Date.now();
+  await page.keyboard.insertText("latency-test");
+  await page.waitForFunction(() =>
+    performance
+      .getEntriesByName("remote-input")
+      .some((entry) => (entry as PerformanceMeasure).detail?.type === "text"),
+  );
+  const typingAckMs = Date.now() - typingStarted;
+  if (actionRequests !== 0)
+    throw new Error("Input still uses per-action API requests");
+  const checked = await context.request.post(
+    origin + `/api/connections/${portal}/action`,
+    {
+      headers: { ...headers, "X-Portal-Viewer": frame.viewerId },
+      data: { type: "refresh" },
+    },
+  );
+  if (
+    !checked.ok() ||
+    !(await checked.json()).fields.some((field: any) => field.hasValue)
+  )
+    throw new Error("Native field did not receive the typing");
+  await page.keyboard.press("ControlOrMeta+A");
+  await page.keyboard.press("Backspace");
+  const count = await page.evaluate(
+    () => performance.getEntriesByName("remote-input").length,
   );
   await image.hover();
   await page.mouse.wheel(0, 300);
-  if (!(await scrolled).ok())
-    throw new Error("Native wheel did not reach the remote browser");
+  await page.waitForFunction(
+    (before) => performance.getEntriesByName("remote-input").length > before,
+    count,
+  );
+  const latencies = await page.evaluate(() =>
+    performance
+      .getEntriesByName("remote-input")
+      .map((entry) => Math.round(entry.duration)),
+  );
   await page.close();
   const sites = await (
     await context.request.get(origin + "/api/automation/sites")
@@ -100,6 +160,9 @@ try {
       surroundingControls: false,
       openRequests: opens,
       nativeScroll: true,
+      continuousTransport: true,
+      typingAckMs,
+      commandAckMs: latencies,
       connectedWithoutLogin: false,
       applicationsSubmitted: 0,
     }),
