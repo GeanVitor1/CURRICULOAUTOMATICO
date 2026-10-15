@@ -69,6 +69,46 @@ export default function PortalConnections({
   const resume = w.resumes[0];
   const cloud = sites.data?.some((site) => site.id === portal && site.cloud);
   const oauthWindow = useRef<Window | null>(null);
+  const remoteWindows = useRef(new Map<string, Window>());
+  useEffect(() => {
+    const refresh = () => {
+      void client.invalidateQueries({ queryKey: ["automation-sites"] });
+      void client.invalidateQueries({ queryKey: ["workspace"] });
+    };
+    const receive = (event: MessageEvent) => {
+      if (
+        event.origin !== location.origin ||
+        event.data?.type !== "empregatos:portal-connected" ||
+        event.source !== remoteWindows.current.get(event.data.portal)
+      )
+        return;
+      refresh();
+    };
+    window.addEventListener("message", receive);
+    window.addEventListener("focus", refresh);
+    return () => {
+      window.removeEventListener("message", receive);
+      window.removeEventListener("focus", refresh);
+    };
+  }, [client]);
+  const openRemote = (site: string) => {
+    const previous = remoteWindows.current.get(site);
+    if (previous && !previous.closed) {
+      previous.focus();
+      return;
+    }
+    const popup = window.open(
+      `/app?portal=${encodeURIComponent(site)}`,
+      `empregatos-remote-${site}`,
+      "popup,width=1100,height=900",
+    );
+    if (popup) remoteWindows.current.set(site, popup);
+    else
+      toast(
+        "Permita a abertura da janela do navegador remoto e tente novamente.",
+        true,
+      );
+  };
   const [oauthPending, setOauthPending] = useState(false);
   useEffect(() => {
     if (!oauthPending) return;
@@ -344,7 +384,8 @@ export default function PortalConnections({
         {selected.map((site) => {
           const status = sites.data?.find((item) => item.id === site);
           const externalLoginOnly =
-            officialPortalLoginOnly(site) || status?.externalLoginOnly;
+            (officialPortalLoginOnly(site) && !status?.remoteLogin) ||
+            status?.externalLoginOnly;
           return (
             <div key={site} className="connection-card">
               <div>
@@ -448,7 +489,9 @@ export default function PortalConnections({
                     disabled={
                       busy || disconnecting || demo || !status?.connectable
                     }
-                    onClick={() => void open(site)}
+                    onClick={() =>
+                      status?.remoteLogin ? openRemote(site) : void open(site)
+                    }
                   >
                     <Link size={15} />
                     {status?.needsResumeApproval
@@ -456,7 +499,7 @@ export default function PortalConnections({
                       : status?.connected
                         ? "Reconectar"
                         : status?.cloud
-                          ? "Conectar para envio automático"
+                          ? "Conectar no navegador remoto"
                           : "Conectar"}
                   </Button>
                 )}

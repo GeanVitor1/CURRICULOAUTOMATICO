@@ -6,8 +6,11 @@ export function cloudPortalEnabled(userId: string, portal: CandidatePortal) {
     process.env.PORTAL_CLOUD_ENABLED === "true" &&
     portal !== "linkedin" &&
     !!process.env.PORTAL_CLOUD_SNAPSHOT_ID &&
-    userId ===
-      (process.env.PORTAL_CLOUD_OWNER_ID || process.env.ANTIGRAVITY_OWNER_ID) &&
+    !!userId &&
+    (process.env.PORTAL_CLOUD_ALL_USERS === "true" ||
+      userId ===
+        (process.env.PORTAL_CLOUD_OWNER_ID ||
+          process.env.ANTIGRAVITY_OWNER_ID)) &&
     (process.env.PORTAL_CLOUD_PORTALS || "gupy,infojobs,glassdoor")
       .split(",")
       .includes(portal)

@@ -88,6 +88,50 @@ const receipt = () =>
       ),
     );
 describe("Permissões reais, OAuth e privacidade", () => {
+  it("exige consentimento e identificação da janela no navegador remoto", async () => {
+    vi.stubEnv("PORTAL_CLOUD_ENABLED", "true");
+    vi.stubEnv("PORTAL_CLOUD_SNAPSHOT_ID", "fixture-snapshot");
+    vi.stubEnv("PORTAL_CLOUD_OWNER_ID", userId);
+    const sites = (
+      await app.inject({ url: "/api/automation/sites", headers: headers() })
+    ).json();
+    expect(sites.find((s: any) => s.id === "gupy")).toMatchObject({
+      remoteLogin: true,
+      externalLoginOnly: false,
+      connectable: true,
+      connected: false,
+      automatic: false,
+    });
+    for (const operation of ["open", "action", "confirm", "close"]) {
+      const denied = await app.inject({
+        method: "POST",
+        url: `/api/connections/gupy/${operation}`,
+        headers: headers(),
+        payload: {},
+      });
+      expect(denied.statusCode).toBe(400);
+    }
+    const unapproved = await app.inject({
+      method: "POST",
+      url: "/api/connections/gupy/confirm",
+      headers: {
+        ...headers(),
+        "x-portal-viewer": "00000000-0000-4000-8000-000000000000",
+      },
+      payload: { authorizeAutomation: true, profileResumeId: "unknown-resume" },
+    });
+    expect(unapproved.statusCode).toBe(400);
+    expect(unapproved.json().error).toContain("currículo");
+    vi.stubEnv("PORTAL_CLOUD_OWNER_ID", "other-account");
+    const others = (
+      await app.inject({ url: "/api/automation/sites", headers: headers() })
+    ).json();
+    expect(others.find((s: any) => s.id === "gupy")).toMatchObject({
+      remoteLogin: false,
+      externalLoginOnly: true,
+      connectable: false,
+    });
+  });
   it("não habilita navegador pelo consentimento; pesquisa pública via IA não libera acesso direto ao LinkedIn", () => {
     expect(browserAuthorized("linkedin")).toBe(false);
     expect(publicDiscoveryAvailable("linkedin", false)).toBe(false);

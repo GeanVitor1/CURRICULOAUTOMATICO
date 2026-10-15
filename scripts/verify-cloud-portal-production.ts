@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { randomBytes, createHash } from "node:crypto";
 import { chromium } from "playwright";
 import { eq } from "drizzle-orm";
-import { candidatePortalLoginUrls } from "../shared/portals";
+import { mkdir } from "node:fs/promises";
 dotenv.config({ path: ".env.production.local", quiet: true });
 dotenv.config({ path: ".env.antigravity-owner.local", quiet: true });
 const { db, closeDb, readWorkspace } = await import("../server/db");
@@ -39,6 +39,7 @@ await context.addCookies([
     sameSite: "Lax",
   },
 ]);
+let openedViewerId = "";
 try {
   const sitesResponse = await context.request.get(
     origin + "/api/automation/sites",
@@ -46,62 +47,144 @@ try {
   if (!sitesResponse.ok()) throw new Error("Capabilities unavailable");
   const sites = await sitesResponse.json();
   const gupy = sites.find((s: any) => s.id === "gupy");
-  if (!gupy?.externalLoginOnly || gupy.connectable || gupy.automatic)
-    throw new Error(
-      "Official login must not advertise a shared portal session",
-    );
+  if (
+    !gupy?.remoteLogin ||
+    gupy.externalLoginOnly ||
+    !gupy.connectable ||
+    gupy.automatic
+  )
+    throw new Error("Remote browser must require a real portal login");
   const page = await context.newPage();
   await page.goto(origin + "/app#automacao");
   await page.getByText("Contas dos sites", { exact: true }).click();
   const card = page
     .locator(".connection-card")
     .filter({ has: page.getByText("Gupy", { exact: true }) });
-  const link = card.getByRole("link", {
-    name: "Fazer login no site oficial",
+  const [popup] = await Promise.all([
+    page.waitForEvent("popup"),
+    card
+      .getByRole("button", {
+        name: "Conectar no navegador remoto",
+        exact: true,
+      })
+      .click(),
+  ]);
+  await popup.waitForURL(origin + "/app?portal=gupy");
+  await popup
+    .getByRole("button", { name: "Abrir navegador remoto", exact: true })
+    .waitFor();
+  if (await popup.locator("input[type=email],input[type=password]").count())
+    throw new Error("Remote viewer must not present app credential fields");
+  const denied = await context.request.post(
+    origin + "/api/connections/gupy/open",
+    { headers: { Origin: origin, "X-Orbita-Request": "1" }, data: {} },
+  );
+  if (denied.status() !== 400)
+    throw new Error("Remote browser consent is required");
+  const opened = popup.waitForResponse(
+    (r) =>
+      r.url().includes("/connections/gupy/open") &&
+      r.request().method() === "POST",
+    { timeout: 65000 },
+  );
+  await popup
+    .getByRole("button", { name: "Abrir navegador remoto", exact: true })
+    .click();
+  const response = await opened;
+  if (!response.ok())
+    throw new Error("Cloud portal open failed: " + response.status());
+  const frame = await response.json();
+  openedViewerId = frame.viewerId || "";
+  if (
+    !frame.viewerId ||
+    !frame.image?.startsWith("data:image/jpeg;base64,") ||
+    !frame.address.includes("gupy.io") ||
+    frame.authenticated
+  )
+    throw new Error("Unexpected real Gupy frame");
+  await popup.getByRole("img", { name: /Gupy.*navegador remoto/ }).waitFor();
+  const confirm = popup.getByRole("button", {
+    name: "Conectar e iniciar envios",
     exact: true,
   });
+  if (await confirm.isEnabled())
+    throw new Error("Unauthenticated portal cannot enable automatic sends");
+  const stale = await context.request.post(
+    origin + "/api/connections/gupy/close",
+    {
+      headers: {
+        Origin: origin,
+        "X-Orbita-Request": "1",
+        "X-Portal-Viewer": "00000000-0000-4000-8000-000000000000",
+      },
+    },
+  );
+  if (stale.status() !== 400) throw new Error("Stale viewer was not rejected");
+  await popup
+    .getByRole("button", { name: "Atualizar imagem", exact: true })
+    .click();
+  await popup
+    .getByRole("button", { name: "Atualizar imagem", exact: true })
+    .waitFor({ state: "visible" });
+  await popup.waitForFunction(
+    () =>
+      !document
+        .querySelector(".remote-screen")
+        ?.getAttribute("aria-busy")
+        ?.includes("true"),
+  );
+  if (await popup.getByRole("alert").count())
+    throw new Error("Stale viewer damaged active browser");
+  await mkdir(".data", { recursive: true });
+  await popup.screenshot({
+    path: ".data/remote-login-production-desktop.png",
+    fullPage: true,
+  });
+  await popup.setViewportSize({ width: 390, height: 844 });
   if (
-    (await link.getAttribute("href")) !== candidatePortalLoginUrls.gupy ||
-    (await link.getAttribute("target")) !== "_blank"
+    await popup.evaluate(
+      () => document.documentElement.scrollWidth > innerWidth + 1,
+    )
   )
-    throw new Error("Official login link does not target Gupy in a new tab");
-  const [popup] = await Promise.all([page.waitForEvent("popup"), link.click()]);
-  await popup.waitForURL(candidatePortalLoginUrls.gupy);
-  if (
-    (await page.getByRole("dialog").count()) ||
-    (await card
-      .getByRole("button", { name: /Conectar|Confirmar currículo/ })
-      .count())
-  )
-    throw new Error("The panel must not open a credential relay");
-  await popup.close();
-  for (const operation of ["open", "action", "confirm"]) {
-    const response = await context.request.post(
-      origin + `/api/connections/gupy/${operation}`,
-      { headers: { Origin: origin, "X-Orbita-Request": "1" }, data: {} },
-    );
-    if (response.status() !== 400)
-      throw new Error("Remote credential endpoint was not disabled");
-  }
+    throw new Error("Mobile layout overflows");
+  await popup.screenshot({
+    path: ".data/remote-login-production-mobile.png",
+    fullPage: true,
+  });
+  await popup.getByRole("button", { name: /^Cancelar conex/ }).click();
+  await popup.waitForEvent("close", { timeout: 15000 }).catch(() => {
+    if (!popup.isClosed()) throw new Error("Viewer did not close");
+  });
   const after = await (
     await context.request.get(origin + "/api/automation/sites")
   ).json();
   if (after.find((s: any) => s.id === "gupy")?.connected)
-    throw new Error(
-      "Closing the official tab must not be treated as connection proof",
-    );
+    throw new Error("Closing an unauthenticated viewer must not connect");
   console.log(
     JSON.stringify({
       productionPortal: "gupy",
-      officialLoginOpenedInNewTab: true,
-      portalCredentialFieldsInApp: false,
-      credentialRelayEndpointsDisabled: true,
-      closingTabDoesNotConnect: true,
+      realCloudBrowserOpened: true,
+      installRequired: false,
+      appCredentialFields: false,
+      consentRequired: true,
+      staleViewerRejected: true,
+      activeViewerSurvived: true,
+      mobileOverflow: false,
       automaticWithoutLogin: false,
       applicationsSubmitted: 0,
     }),
   );
 } finally {
+  if (openedViewerId)
+    await context.request
+      .post(origin + "/api/connections/gupy/close", {
+        headers: {
+          Origin: origin,
+          "X-Orbita-Request": "1",
+          "X-Portal-Viewer": openedViewerId,
+        },
+      })
+      .catch(() => {});
   await browser.close();
   await db.delete(sessions).where(eq(sessions.token, hash));
   await closeDb();

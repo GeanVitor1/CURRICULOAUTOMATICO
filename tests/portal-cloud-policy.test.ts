@@ -16,6 +16,10 @@ it("isola o navegador do titular e exclui LinkedIn mesmo se configurado", () => 
     portalSandboxName("bob", "gupy"),
   );
   expect(portalSandboxName("alice", "gupy")).not.toContain("alice");
+  vi.stubEnv("PORTAL_CLOUD_ALL_USERS", "true");
+  expect(cloudPortalEnabled("bob", "gupy")).toBe(true);
+  expect(cloudPortalEnabled("", "gupy")).toBe(false);
+  expect(cloudPortalEnabled("bob", "linkedin")).toBe(false);
   vi.stubEnv("PORTAL_CLOUD_SNAPSHOT_ID", "");
   expect(cloudPortalEnabled("alice", "gupy")).toBe(false);
 });

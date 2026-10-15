@@ -35,6 +35,7 @@ import GoogleSignIn, {
 } from "./GoogleSignIn";
 import { selectedPlan } from "./Pricing";
 const Landing = lazy(() => import("./Landing"));
+const RemotePortalLogin = lazy(() => import("./RemotePortalLogin"));
 const pages = {
   vagas: lazy(() => import("./pages/Jobs")),
   candidaturas: lazy(() => import("./pages/Applications")),
@@ -568,6 +569,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [toastMessage]);
   const w = workspace.data;
+  const remotePortal = new URLSearchParams(location.search).get("portal");
   const Page = pages[page as keyof typeof pages] || pages.automacao;
   const title =
     nav.find((item) => item.id === page)?.label ||
@@ -636,6 +638,15 @@ export default function App() {
             navigate(selectedPlan() ? "conta" : "automacao");
           }}
         />
+      ) : route === "/app" &&
+        (remotePortal === "gupy" ||
+          remotePortal === "infojobs" ||
+          remotePortal === "glassdoor") ? (
+        <Suspense
+          fallback={<div className="app-loading">Carregando navegador…</div>}
+        >
+          <RemotePortalLogin portal={remotePortal} workspace={w} />
+        </Suspense>
       ) : (
         <div className="app-shell simple-shell">
           <a

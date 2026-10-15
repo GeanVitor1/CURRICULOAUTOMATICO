@@ -13,7 +13,8 @@ export async function applicationCapabilities(
   return candidatePortals.map((site) => {
     const connection = connections.find((item) => item.id === site)!;
     const gateway = gateways.includes(site);
-    const externalLoginOnly = officialPortalLoginOnly(site);
+    const remoteLogin = cloudPortalEnabled(userId, site);
+    const externalLoginOnly = officialPortalLoginOnly(site) && !remoteLogin;
     const needsResumeApproval =
       ["gupy", "infojobs"].includes(site) &&
       connection.connected &&
@@ -52,6 +53,7 @@ export async function applicationCapabilities(
     return {
       ...connection,
       externalLoginOnly,
+      remoteLogin,
       connectable: !externalLoginOnly && connection.connectable,
       automatic: !blocker,
       needsResumeApproval,

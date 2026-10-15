@@ -724,7 +724,9 @@ export async function buildApp({ serveStatic = true } = {}) {
         linkedIdentity.expiresAt <= Date.now(),
       oauthConfigured: site === "linkedin" && linkedinOAuthConfigured(),
       limitation: officialPortalLoginOnly(site)
-        ? "Login diretamente no portal. Abrir ou fechar a aba não conecta sua sessão à automação do EmpreGatos."
+        ? cloudPortalEnabled(u.id, site)
+          ? "Conexão em navegador remoto na nuvem, sem instalação. A sessão só libera envios após autenticação e confirmação do currículo."
+          : "Login diretamente no portal. Abrir ou fechar a aba não conecta sua sessão à automação do EmpreGatos."
         : providerLimits[site],
       applicationMethod: automaticPortals().includes(site)
         ? "authorized-api"
@@ -780,7 +782,11 @@ export async function buildApp({ serveStatic = true } = {}) {
     const { u, demo } = await scope(req);
     if (demo) throw new RequestError("Conecte os sites na sua conta real.");
     const portal = connectionPortal.parse((req.params as any).portal);
-    if (interactive && officialPortalLoginOnly(portal))
+    if (
+      interactive &&
+      officialPortalLoginOnly(portal) &&
+      !cloudPortalEnabled(u.id, portal)
+    )
       throw new RequestError(
         "Faça login no site oficial, em outra aba. O EmpreGatos não recebe e-mail ou senha deste portal. Esse login não conecta a conta à automação.",
       );
@@ -801,13 +807,22 @@ export async function buildApp({ serveStatic = true } = {}) {
     }
     return { u, portal };
   };
-  app.post("/api/connections/:portal/open", async (req, reply) => {
-    const { u, portal } = await connectionScope(req, true);
-    reply.header("Cache-Control", "no-store");
-    return startPortalLogin(u.id, portal);
-  });
+  app.post(
+    "/api/connections/:portal/open",
+    { config: { rateLimit: { max: 6, timeWindow: "1 minute" } } },
+    async (req, reply) => {
+      const { u, portal } = await connectionScope(req, true);
+      if (cloudPortalEnabled(u.id, portal))
+        z.object({ remoteBrowserConsent: z.literal(true) }).parse(req.body);
+      reply.header("Cache-Control", "no-store");
+      return startPortalLogin(u.id, portal);
+    },
+  );
   app.post("/api/connections/:portal/action", async (req, reply) => {
     const { u, portal } = await connectionScope(req, true);
+    const viewerId = cloudPortalEnabled(u.id, portal)
+      ? z.string().uuid().parse(req.headers["x-portal-viewer"])
+      : undefined;
     const action = z
       .discriminatedUnion("type", [
         z.object({
@@ -845,6 +860,13 @@ export async function buildApp({ serveStatic = true } = {}) {
             "ControlOrMeta+A",
             "ArrowDown",
             "ArrowUp",
+            "ArrowLeft",
+            "ArrowRight",
+            "Home",
+            "End",
+            "Delete",
+            "PageUp",
+            "PageDown",
           ]),
         }),
         z.object({
@@ -855,10 +877,14 @@ export async function buildApp({ serveStatic = true } = {}) {
       ])
       .parse(req.body);
     reply.header("Cache-Control", "no-store");
-    return portalLoginAction(u.id, portal, action);
+    return portalLoginAction(u.id, portal, action, viewerId);
   });
   app.post("/api/connections/:portal/confirm", async (req) => {
     const { u, portal } = await connectionScope(req, true);
+    const cloud = cloudPortalEnabled(u.id, portal);
+    const viewerId = cloud
+      ? z.string().uuid().parse(req.headers["x-portal-viewer"])
+      : undefined;
     const { profileResumeId } = z
       .object({ profileResumeId: z.string().max(100).nullable().default(null) })
       .parse(req.body || {});
@@ -867,28 +893,56 @@ export async function buildApp({ serveStatic = true } = {}) {
       if (!w?.resumes.some((resume) => resume.id === profileResumeId))
         throw new RequestError("O currículo escolhido não foi encontrado.");
     }
-    const result = await finishPortalLogin(u.id, portal, profileResumeId);
+    if (cloud) {
+      z.object({
+        authorizeAutomation: z.literal(true),
+        profileResumeId: z.string().min(1),
+      }).parse(req.body);
+      const w = await readWorkspace(`${u.id}:live`);
+      if (
+        !w?.profile.confirmed ||
+        !w.interview?.completed ||
+        w.interview.answers.resumeId !== profileResumeId ||
+        !w.interview.answers.sites.includes(portal) ||
+        !w.resumes.some((r) => r.id === profileResumeId && r.approved)
+      )
+        throw new RequestError(
+          "Confirme o currículo e conclua as preferências antes de liberar os envios.",
+        );
+    }
+    const result = await finishPortalLogin(
+      u.id,
+      portal,
+      profileResumeId,
+      viewerId,
+    );
+    let automatic = false;
     if (cloudPortalEnabled(u.id, portal) && profileResumeId) {
       const nativeSites = await readyPortals(u.id, profileResumeId);
       await mutateWorkspace(`${u.id}:live`, (w) => {
         if (
           !w.profile.confirmed ||
           !w.resumes.some((r) => r.id === profileResumeId && r.approved) ||
-          !w.interview?.completed
+          !w.interview?.completed ||
+          w.interview.answers.resumeId !== profileResumeId
         )
           return;
         w.routine.enabled = true;
         w.routine.mode = "automatic";
         w.routine.nextRun = nextExecution(w.routine.time);
         queuePreparedApplications(w, nativeSites);
+        automatic = true;
       });
       await dispatchNextApplication(`${u.id}:live`);
     }
-    return result;
+    return { ...result, automatic };
   });
   app.post("/api/connections/:portal/close", async (req) => {
     const { u, portal } = await connectionScope(req);
-    await cancelPortalLogin(u.id, portal);
+    const viewerId = cloudPortalEnabled(u.id, portal)
+      ? z.string().uuid().parse(req.headers["x-portal-viewer"])
+      : undefined;
+    await cancelPortalLogin(u.id, portal, viewerId);
     return { ok: true };
   });
   app.delete("/api/connections/:portal", async (req) => {

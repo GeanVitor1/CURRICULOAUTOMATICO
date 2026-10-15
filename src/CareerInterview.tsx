@@ -9,6 +9,7 @@ import PortalConnections from "./PortalConnections";
 import { useBilling } from "./Billing";
 
 export type SiteCapability = {
+  remoteLogin?: boolean;
   externalLoginOnly?: boolean;
   cloud?: boolean;
   id: string;

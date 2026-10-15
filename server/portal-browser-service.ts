@@ -4,7 +4,12 @@ import {
   type BrowserContext,
   type Page,
 } from "playwright";
-import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
+import {
+  createCipheriv,
+  createDecipheriv,
+  randomBytes,
+  randomUUID,
+} from "node:crypto";
 import { mkdir, readFile, writeFile, rename, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
@@ -34,6 +39,7 @@ type Saved = {
   state: Awaited<ReturnType<BrowserContext["storageState"]>>;
 };
 export type PortalLoginFrame = {
+  viewerId: string;
   image: string;
   width: number;
   height: number;
@@ -49,6 +55,10 @@ export class PortalBrowserService {
   private page?: Page;
   private expires = 0;
   private busy = false;
+  private viewerId = "";
+  isBusy() {
+    return this.busy;
+  }
   constructor(
     readonly portal: CandidatePortal,
     readonly directory: string,
@@ -162,6 +172,7 @@ export class PortalBrowserService {
         text,
       );
     return {
+      viewerId: this.viewerId,
       image:
         "data:image/jpeg;base64," +
         (
@@ -187,6 +198,7 @@ export class PortalBrowserService {
   }
   async open() {
     await this.close();
+    this.viewerId = randomUUID();
     const saved = await this.load();
     this.context = await this.createContext(saved);
     this.page = await this.context.newPage();
@@ -331,6 +343,7 @@ export class PortalBrowserService {
     action?: LoginAction;
     resumeId?: string | null;
     input?: PortalApplication;
+    viewerId?: string;
   }) {
     if (this.busy)
       throw new Error(
@@ -338,6 +351,10 @@ export class PortalBrowserService {
       );
     this.busy = true;
     try {
+      if (request.viewerId && request.viewerId !== this.viewerId)
+        throw new Error(
+          "Esta janela de conexão foi substituída ou expirou. Abra o navegador novamente.",
+        );
       if (request.op === "open") return await this.open();
       if (request.op === "action" && request.action)
         return await this.action(request.action);

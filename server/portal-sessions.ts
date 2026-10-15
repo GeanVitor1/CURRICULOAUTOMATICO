@@ -387,11 +387,13 @@ export async function portalLoginAction(
   userId: string,
   portal: CandidatePortal,
   action: LoginAction,
+  viewerId?: string,
 ) {
   if (cloudPortalEnabled(userId, portal))
     return cloudPortalCommand<PortalLoginFrame>(userId, portal, {
       op: "action",
       action,
+      viewerId,
     });
   const session = await login(userId, portal);
   return serial(session, async () => {
@@ -441,11 +443,13 @@ export async function finishPortalLogin(
   userId: string,
   portal: CandidatePortal,
   profileResumeId: string | null,
+  viewerId?: string,
 ) {
   if (cloudPortalEnabled(userId, portal))
-    return cloudPortalCommand(userId, portal, {
+    return cloudPortalCommand<{ ok: boolean }>(userId, portal, {
       op: "confirm",
       resumeId: profileResumeId,
+      viewerId,
     });
   const session = await login(userId, portal);
   return serial(session, async () => {
@@ -480,9 +484,10 @@ export async function finishPortalLogin(
 export async function cancelPortalLogin(
   userId: string,
   portal: CandidatePortal,
+  viewerId?: string,
 ) {
   if (cloudPortalEnabled(userId, portal)) {
-    await cloudPortalCommand(userId, portal, { op: "close" });
+    await cloudPortalCommand(userId, portal, { op: "close", viewerId });
     return;
   }
   await closeLogin(userId, portal);

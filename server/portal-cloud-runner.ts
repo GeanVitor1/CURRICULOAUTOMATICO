@@ -49,14 +49,19 @@ const server = createServer(async (req, res) => {
     } catch (e) {
       error =
         e instanceof Error &&
-        /^(A janela|O formulário|O login|O portal já|Operação|Candidatura inválida)/.test(
+        /^(A janela|Esta janela|O formulário|O login|O portal já|Operação|Candidatura inválida)/.test(
           e.message,
         )
           ? e.message
           : "Não foi possível concluir a ação no portal. Confira a conexão ou uma verificação solicitada pelo site.";
     }
     res.end(
-      JSON.stringify({ data, error, connection: await service.metadata() }),
+      JSON.stringify({
+        data,
+        error,
+        connection: await service.metadata(),
+        canStop: !service.isBusy() && !error,
+      }),
     );
   } catch {
     res.writeHead(400);

@@ -56,14 +56,27 @@ afterAll(async () => {
     await rm(directory, { recursive: true, force: true });
 });
 it("salva login cifrado, restaura a sessão e não repete a candidatura após reiniciar", async () => {
+  const obsolete = (await service.execute({ op: "open" })) as any;
   const first = (await service.execute({ op: "open" })) as any;
+  expect(first.viewerId).not.toBe(obsolete.viewerId);
+  for (const op of ["action", "confirm", "close"]) {
+    await expect(
+      service.execute({
+        op,
+        viewerId: obsolete.viewerId,
+        action: { type: "refresh" },
+      }),
+    ).rejects.toThrow("substituída");
+    expect(service.isBusy()).toBe(false);
+  }
   expect(first.authenticated).toBe(false);
   expect(await service.metadata()).toBeNull();
-  await expect(service.execute({ op: "confirm" })).rejects.toThrow(
-    "login ainda",
-  );
+  await expect(
+    service.execute({ op: "confirm", viewerId: first.viewerId }),
+  ).rejects.toThrow("login ainda");
   const frame = (await service.execute({
     op: "action",
+    viewerId: first.viewerId,
     action: {
       type: "submit",
       fields: first.fields.map((f: any) => ({
@@ -75,7 +88,11 @@ it("salva login cifrado, restaura a sessão e não repete a candidatura após re
     },
   })) as any;
   expect(frame.authenticated).toBe(true);
-  await service.execute({ op: "confirm", resumeId: "resume-1" });
+  await service.execute({
+    op: "confirm",
+    resumeId: "resume-1",
+    viewerId: first.viewerId,
+  });
   expect(await service.metadata()).toMatchObject({
     profileResumeId: "resume-1",
   });
