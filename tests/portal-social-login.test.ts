@@ -165,3 +165,36 @@ it("exibe a recusa do provedor e permite voltar ao login sem encerrar a conexão
     await service.close();
   }
 }, 15000);
+
+it("recupera a imagem quando o screencast para de entregar frames", async () => {
+  const service = new PortalBrowserService("gupy", join(directory, "stalled"));
+  const frame = await service.open();
+  const context = browsers.at(-1)!.contexts()[0];
+  // Simulate a compositor stream that never delivers another frame.
+  vi.spyOn(context, "newCDPSession").mockResolvedValue({
+    send: async () => ({}),
+    on: () => {},
+    detach: async () => {},
+  } as any);
+  let images = 0;
+  const stop = await service.startLive(
+    frame.viewerId,
+    () => images++,
+    () => {},
+    () => {},
+  );
+  try {
+    await expect.poll(() => images).toBeGreaterThan(0);
+    const previous = images;
+    await service.liveInput(frame.viewerId, { type: "click", x: 70, y: 30 });
+    await expect
+      .poll(() => images, { timeout: 4000 })
+      .toBeGreaterThan(previous);
+    expect((await service.action({ type: "refresh" })).address).toContain(
+      "accounts.google.com",
+    );
+  } finally {
+    await stop();
+    await service.close();
+  }
+}, 15000);

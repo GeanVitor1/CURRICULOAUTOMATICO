@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { chromium, type Page } from "playwright";
 
 // Public sign-in screens only. Never submit provider credentials or applications.
@@ -27,6 +27,27 @@ const until = async (page: Page, check: () => boolean) => {
     await page.waitForTimeout(200);
   }
 };
+const visibleFrame = async (page: Page) =>
+  page.waitForFunction(
+    () => {
+      const image =
+        document.querySelector<HTMLImageElement>(".remote-screen img");
+      if (!image?.complete || !image.naturalWidth) return false;
+      const canvas = document.createElement("canvas");
+      canvas.width = 64;
+      canvas.height = 45;
+      const context = canvas.getContext("2d")!;
+      context.drawImage(image, 0, 0, 64, 45);
+      const pixels = context.getImageData(0, 0, 64, 45).data;
+      let ink = 0;
+      for (let i = 0; i < pixels.length; i += 4)
+        if (pixels[i] < 220 || pixels[i + 1] < 220 || pixels[i + 2] < 220)
+          ink++;
+      return ink > 20;
+    },
+    undefined,
+    { timeout: 10000 },
+  );
 try {
   const account = await context.request.post(origin + "/api/auth/register", {
     headers,
@@ -78,8 +99,24 @@ try {
   await page.screenshot({ path: `.data/social-${provider}-initial.png` });
   // Dismiss the portal's cookie banner, then click its native provider button.
   await click(600, 638);
-  await page.waitForTimeout(700);
+  await page.waitForTimeout(2500);
+  await visibleFrame(page);
   await page.screenshot({ path: `.data/social-${provider}-before.png` });
+  const source = await image.getAttribute("src");
+  if (source?.startsWith("data:image/jpeg;base64,"))
+    await writeFile(
+      `.data/social-${provider}-stream-before.jpg`,
+      Buffer.from(source.split(",")[1], "base64"),
+    );
+  console.log(
+    JSON.stringify({
+      stage: "before-provider",
+      latest,
+      frames,
+      viewport: { width: initial.width, height: initial.height },
+      imageBox: await image.boundingBox(),
+    }),
+  );
   const before = frames;
   await click(provider === "google" ? 428 : 590, 623);
   try {
@@ -102,6 +139,11 @@ try {
       },
     );
     const result = await diagnostic.json();
+    if (result.image)
+      await writeFile(
+        `.data/social-${provider}-native-failed.jpg`,
+        Buffer.from(result.image.split(",")[1], "base64"),
+      );
     console.log(
       JSON.stringify({
         latest,
@@ -119,6 +161,7 @@ try {
     throw error;
   }
   await page.waitForTimeout(1500);
+  await visibleFrame(page);
   await page.screenshot({ path: `.data/social-${provider}-result.png` });
   if (frames <= before) throw Error("Provider display did not update");
   if (latest.authenticated)

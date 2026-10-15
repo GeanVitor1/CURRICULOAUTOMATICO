@@ -405,6 +405,32 @@ export class PortalBrowserService {
       lastImage = 0;
     let latestImage = "";
     let imageTimer: ReturnType<typeof setTimeout> | undefined;
+    let capturing = false;
+    // Chromium can stall its screencast on a white compositor frame after
+    // navigation. A low-frequency capture repairs the stream independently of
+    // input acknowledgements, with no extra HTTP/DB round trips per keystroke.
+    const capture = async () => {
+      const page = this.page;
+      if (ended || capturing || this.busy || !page || page.isClosed()) return;
+      capturing = true;
+      try {
+        const bytes = await page.screenshot({
+          type: "jpeg",
+          quality: 65,
+          timeout: 1500,
+        });
+        if (!ended && page === this.page) {
+          clearTimeout(imageTimer);
+          imageTimer = undefined;
+          latestImage = "data:image/jpeg;base64," + bytes.toString("base64");
+          deliverImage();
+        }
+      } catch {
+        // Navigation may replace the page while a capture is in progress.
+      } finally {
+        capturing = false;
+      }
+    };
     let switches = Promise.resolve();
     const deliverImage = () => {
       imageTimer = undefined;
@@ -505,6 +531,8 @@ export class PortalBrowserService {
       }
     };
     const interval = setInterval(() => void update(), 500);
+    const repaintInterval = setInterval(() => void capture(), 2000);
+    void capture();
     void update();
     let cleanup: Promise<void> | undefined;
     this.stopLive = () =>
@@ -513,6 +541,7 @@ export class PortalBrowserService {
         this.displayListeners.delete(switchPage);
         clearTimeout(imageTimer);
         clearInterval(interval);
+        clearInterval(repaintInterval);
         await switches;
         await cdp?.send("Page.stopScreencast").catch(() => {});
         await cdp?.detach().catch(() => {});

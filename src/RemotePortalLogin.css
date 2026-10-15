@@ -4,6 +4,9 @@
   background: #fff;
   color: #17201a;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
+  max-width: none;
   overscroll-behavior: none;
 }
 .remote-screen {

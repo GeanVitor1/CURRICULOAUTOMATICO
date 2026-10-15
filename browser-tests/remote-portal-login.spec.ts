@@ -149,6 +149,7 @@ for (const fast of [false, true])
     });
     const image = page.getByRole("img", { name: /Página do Gupy/ });
     await expect(image).toBeVisible();
+    expect((await image.boundingBox())?.y).toBe(0);
     expect(opens).toBe(1);
     await expect(page.getByRole("button")).toHaveCount(0);
     await expect(page.getByRole("heading")).toHaveCount(0);
