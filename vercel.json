@@ -5,11 +5,11 @@
   "outputDirectory": "dist",
   "functions": {
     "api/server.mjs": {
-      "includeFiles": ["migrations/**", "dist-server/portal-cloud-runner.mjs"],
+      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs}",
       "maxDuration": 60
     },
     "api/search-worker.mjs": {
-      "includeFiles": ["migrations/**", "dist-server/portal-cloud-runner.mjs"],
+      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs}",
       "maxDuration": 300,
       "experimentalTriggers": [
         {
@@ -20,11 +20,11 @@
       ]
     },
     "api/daily-routine.mjs": {
-      "includeFiles": ["migrations/**", "dist-server/portal-cloud-runner.mjs"],
+      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs}",
       "maxDuration": 300
     },
     "api/submission-worker.mjs": {
-      "includeFiles": ["migrations/**", "dist-server/portal-cloud-runner.mjs"],
+      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs}",
       "maxDuration": 300,
       "experimentalTriggers": [
         {
@@ -35,7 +35,12 @@
       ]
     }
   },
-  "crons": [{ "path": "/api/daily-routine", "schedule": "0 11 * * *" }],
+  "crons": [
+    {
+      "path": "/api/daily-routine",
+      "schedule": "0 11 * * *"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
@@ -49,11 +54,28 @@
       },
       "continue": true
     },
-    { "src": "/api/search-worker", "dest": "/api/search-worker" },
-    { "src": "/api/submission-worker", "dest": "/api/submission-worker" },
-    { "src": "/api/daily-routine", "dest": "/api/daily-routine" },
-    { "src": "/api(?:/.*)?", "dest": "/api/server" },
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
+    {
+      "src": "/api/search-worker",
+      "dest": "/api/search-worker"
+    },
+    {
+      "src": "/api/submission-worker",
+      "dest": "/api/submission-worker"
+    },
+    {
+      "src": "/api/daily-routine",
+      "dest": "/api/daily-routine"
+    },
+    {
+      "src": "/api(?:/.*)?",
+      "dest": "/api/server"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
   ]
 }
