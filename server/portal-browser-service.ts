@@ -214,9 +214,16 @@ export class PortalBrowserService {
       }
     });
     page.on("requestfailed", (request) => {
+      let mainNavigation = request.isNavigationRequest();
+      if (mainNavigation) {
+        try {
+          mainNavigation = request.frame() === page.mainFrame();
+        } catch {
+          // Popup navigation may fail before its frame exists.
+        }
+      }
       if (
-        request.isNavigationRequest() &&
-        request.frame() === page.mainFrame() &&
+        mainNavigation &&
         !/ERR_ABORTED/.test(request.failure()?.errorText || "")
       )
         this.navigationError ||=

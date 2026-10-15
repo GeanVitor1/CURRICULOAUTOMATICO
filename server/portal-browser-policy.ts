@@ -1,6 +1,6 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
-import type { BrowserContext, Page } from "playwright";
+import type { BrowserContext } from "playwright";
 import {
   candidatePortals,
   candidatePortalLoginUrls,
@@ -80,7 +80,7 @@ export async function protectBrowser(
   portal: CandidatePortal,
   options: {
     interactiveLogin?: boolean;
-    onBlockedNavigation?: (page: Page) => void;
+    onBlockedNavigation?: () => void;
   } = {},
 ) {
   const hosts = new Map<string, Promise<boolean>>();
@@ -97,12 +97,21 @@ export async function protectBrowser(
         return await route.abort();
       // Candidate sessions never follow application redirects to an unrelated employer/ATS.
       // Identity providers can only be visited during an explicitly interactive login.
+      let topNavigation = false;
+      if (request.isNavigationRequest()) {
+        try {
+          topNavigation = request.frame().parentFrame() === null;
+        } catch {
+          // The initial popup request can precede the creation of its frame.
+          // Apply the same strict navigation policy rather than aborting it.
+          topNavigation = true;
+        }
+      }
       if (
-        request.isNavigationRequest() &&
-        request.frame().parentFrame() === null &&
+        topNavigation &&
         !loginNavigationAllowed(portal, url.href, options.interactiveLogin)
       ) {
-        options.onBlockedNavigation?.(request.frame().page());
+        options.onBlockedNavigation?.();
         return await route.abort();
       }
       let allowed = hosts.get(url.hostname);

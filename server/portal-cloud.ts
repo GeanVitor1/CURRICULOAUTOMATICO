@@ -19,7 +19,7 @@ type Metadata = NonNullable<
   Workspace["infrastructure"]["portalConnections"]
 >[string];
 const root = "/vercel/sandbox/portal-runtime";
-const probe = `const fs=require('node:fs');(async()=>{try{const k=fs.readFileSync('${root}/controller.key','utf8');const r=await fetch('http://127.0.0.1:3000/health',{headers:{Authorization:'Bearer '+k},signal:AbortSignal.timeout(1000)});process.exit(r.ok?((await r.json()).version===3?0:2):1)}catch{process.exit(1)}})()`;
+const probe = `const fs=require('node:fs');(async()=>{try{const k=fs.readFileSync('${root}/controller.key','utf8');const r=await fetch('http://127.0.0.1:3000/health',{headers:{Authorization:'Bearer '+k},signal:AbortSignal.timeout(1000)});process.exit(r.ok?((await r.json()).version===4?0:2):1)}catch{process.exit(1)}})()`;
 const clientSource = `import {readFile,writeFile,rm} from 'node:fs/promises';
 import{createDecipheriv,createCipheriv,randomBytes}from'node:crypto';
 const id=process.argv[2];if(!/^[a-f0-9-]{36}$/.test(id))throw Error('Invalid request');

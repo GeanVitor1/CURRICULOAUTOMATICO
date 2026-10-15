@@ -61,6 +61,7 @@ try {
   if (!response.ok()) throw Error("Remote open failed: " + response.status());
   const initial = await response.json();
   await until(page, () => ready);
+  await page.waitForTimeout(2500);
   const image = page.locator(".remote-screen img");
   await image.waitFor();
   const click = async (x: number, y: number) => {
@@ -81,15 +82,42 @@ try {
   await page.screenshot({ path: `.data/social-${provider}-before.png` });
   const before = frames;
   await click(provider === "google" ? 428 : 590, 623);
-  await until(
-    page,
-    () =>
-      !!latest.navigationError ||
-      (latest.address?.includes(
-        provider === "google" ? "accounts.google.com" : "linkedin.com",
-      ) ??
-        false),
-  );
+  try {
+    await until(
+      page,
+      () =>
+        !!latest.navigationError ||
+        (latest.address?.includes(
+          provider === "google" ? "accounts.google.com" : "linkedin.com",
+        ) ??
+          false),
+    );
+  } catch (error) {
+    await page.screenshot({ path: `.data/social-${provider}-failed.png` });
+    const diagnostic = await context.request.post(
+      origin + "/api/connections/gupy/action",
+      {
+        headers: { ...headers, "X-Portal-Viewer": initial.viewerId },
+        data: { type: "refresh" },
+      },
+    );
+    const result = await diagnostic.json();
+    console.log(
+      JSON.stringify({
+        latest,
+        frames,
+        diagnosticStatus: diagnostic.status(),
+        diagnosticAddress: result.address,
+        navigationError: result.navigationError,
+        fields: result.fields?.map((f: any) => ({
+          label: f.label,
+          type: f.type,
+        })),
+        error: result.error,
+      }),
+    );
+    throw error;
+  }
   await page.waitForTimeout(1500);
   await page.screenshot({ path: `.data/social-${provider}-result.png` });
   if (frames <= before) throw Error("Provider display did not update");
