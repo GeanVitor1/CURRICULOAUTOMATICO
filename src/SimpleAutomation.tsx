@@ -33,7 +33,11 @@ export default function SimpleAutomation() {
       sites.data?.some((item) => item.id === site && item.automatic),
     );
   const cloudAvailable = sites.data?.some(
-    (site) => site.cloud && w.interview?.answers.sites.includes(site.id),
+    (site) =>
+      site.cloud &&
+      site.connectable &&
+      !site.externalLoginOnly &&
+      w.interview?.answers.sites.includes(site.id),
   );
   const saveRoutine = (upgrade = false) => {
     if (saving.current || a.isPending) return;

@@ -1,15 +1,15 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
 import type { BrowserContext } from "playwright";
-import { candidatePortals, type PortalId } from "../shared/portals";
+import {
+  candidatePortals,
+  candidatePortalLoginUrls,
+  type PortalId,
+} from "../shared/portals";
 
 export type CandidatePortal = (typeof candidatePortals)[number];
-export const portalLogin: Record<CandidatePortal, string> = {
-  linkedin: "https://www.linkedin.com/login/",
-  gupy: "https://login.gupy.io/candidates/signin",
-  infojobs: "https://www.infojobs.com.br/candidate/",
-  glassdoor: "https://www.glassdoor.com/member/profile/login",
-};
+export const portalLogin: Record<CandidatePortal, string> =
+  candidatePortalLoginUrls;
 export function portalHost(portal: PortalId, value: string) {
   try {
     const u = new URL(value);

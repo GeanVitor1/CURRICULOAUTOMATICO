@@ -12,7 +12,11 @@ import {
 } from "lucide-react";
 import { Button, Field, Modal } from "./components";
 import { api, useApp } from "./lib";
-import { portals } from "../shared/portals";
+import {
+  portals,
+  candidatePortalLoginUrls,
+  officialPortalLoginOnly,
+} from "../shared/portals";
 import type { SiteCapability } from "./CareerInterview";
 
 type Frame = {
@@ -339,6 +343,8 @@ export default function PortalConnections({
       <div className="connection-list">
         {selected.map((site) => {
           const status = sites.data?.find((item) => item.id === site);
+          const externalLoginOnly =
+            officialPortalLoginOnly(site) || status?.externalLoginOnly;
           return (
             <div key={site} className="connection-card">
               <div>
@@ -389,11 +395,22 @@ export default function PortalConnections({
                   </span>
                 </div>
                 <p className="connection-limitation">{status?.limitation}</p>
-                {!status?.automatic && status?.applicationMessage && (
-                  <p className="connection-limitation" role="status">
-                    {status.applicationMessage}
+                {externalLoginOnly && (
+                  <p className="connection-limitation">
+                    Faça login diretamente no site oficial, em outra aba. Não
+                    pedimos seu e-mail ou senha aqui. Esse login não compartilha
+                    sua sessão com o EmpreGatos.
+                    {!status?.automatic &&
+                      " Os envios por este portal continuam pendentes."}
                   </p>
                 )}
+                {!externalLoginOnly &&
+                  !status?.automatic &&
+                  status?.applicationMessage && (
+                    <p className="connection-limitation" role="status">
+                      {status.applicationMessage}
+                    </p>
+                  )}
               </div>
               <div className="connection-actions">
                 {status?.oauthConfigured && (
@@ -411,14 +428,22 @@ export default function PortalConnections({
                 )}
                 <a
                   className="button"
-                  href={portals[site as keyof typeof portals]?.url}
+                  href={
+                    externalLoginOnly
+                      ? candidatePortalLoginUrls[
+                          site as keyof typeof candidatePortalLoginUrls
+                        ]
+                      : portals[site as keyof typeof portals]?.url
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <ExternalLink size={15} />
-                  Abrir site oficial
+                  {externalLoginOnly
+                    ? "Fazer login no site oficial"
+                    : "Abrir site oficial"}
                 </a>
-                {status?.connectable && (
+                {status?.connectable && !externalLoginOnly && (
                   <Button
                     disabled={
                       busy || disconnecting || demo || !status?.connectable

@@ -1,10 +1,14 @@
 # Candidaturas pelo navegador na Vercel
 
+## Fluxo publicado de login
+
+Por escolha do produto, Gupy, InfoJobs e Glassdoor agora abrem o login no domínio oficial, em outra aba. O painel não solicita e-mail ou senha desses portais e suas rotas HTTP de login remoto (`open`, `action`, `confirm`) recusam novas conexões. Fechar a aba ou voltar ao painel não comprova autenticação e não ativa os envios. Não há extensão de compartilhamento de sessão instalada nem OAuth de candidato configurado. A busca diária continua; candidaturas sem uma integração ou sessão já válida ficam pendentes. Os componentes de navegador descritos abaixo permanecem como infraestrutura, sem serem usados para pedir credenciais nesse fluxo.
+
 O navegador usa Vercel Sandbox e uma sessão privada por pessoa e portal. Não precisa de computador ligado. A conexão Antigravity é independente: fornece análise e busca, sem autenticar contas de candidatos.
 
 Habilitação inicial restrita ao titular configurado por `PORTAL_CLOUD_OWNER_ID` (ou `ANTIGRAVITY_OWNER_ID`), com `PORTAL_CLOUD_ENABLED=true` e `PORTAL_CLOUD_SNAPSHOT_ID` apontando para a imagem com Chromium e dependências Linux. `PORTAL_CLOUD_PORTALS` seleciona Gupy, InfoJobs e Glassdoor. LinkedIn permanece excluído. O recurso usa a cota Sandbox da conta Vercel; não transforma a cota de IA em computação ilimitada.
 
-Em **Sua automação → Contas dos sites**, conectar o portal, entrar com e-mail e senha e verificar o currículo do perfil. **Conectar e iniciar envios** ativa o modo automático se currículo, perfil e entrevista já estiverem confirmados. Não enviar senhas pelo chat. A senha não é persistida; cookies e estado autenticado ficam cifrados na máquina privada. O banco recebe apenas metadados de conexão. Desconectar remove a máquina e seus snapshots.
+O fluxo anterior usava login interativo na máquina remota e confirmação do currículo do perfil. Esse fluxo não é mais oferecido no painel para Gupy, InfoJobs ou Glassdoor. Sessões já existentes continuam cifradas; o banco recebe apenas metadados. Desconectar remove a máquina e seus snapshots.
 
 Cada candidatura elegível entra em `empregatos-submissions` e tem uma execução separada da busca diária. A fila contém apenas identificadores; o original aprovado é carregado no servidor. Gupy e InfoJobs também podem usar o currículo existente no perfil, com confirmação explícita de que corresponde ao currículo aprovado. O adaptador tenta os botões de candidatura e preenche nome, e-mail e outros campos pessoais confirmados. Não inventa respostas sobre experiência, testes ou declarações legais. CAPTCHA, bloqueios do portal e perguntas adicionais ficam registrados com o motivo. Não há evasão de bloqueios.
 

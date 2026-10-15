@@ -355,12 +355,53 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
     expect(
       sites.every(
         (site: any) =>
-          !site.automatic && site.applicationBlocker === "integration_missing",
+          !site.automatic &&
+          site.applicationBlocker ===
+            (site.id === "linkedin"
+              ? "integration_missing"
+              : "external_login_only"),
       ),
     ).toBe(true);
     expect(
       (await app.inject({ url: "/api/workspace", headers: { cookie } })).json()
         .infrastructure.automatic,
     ).toBe(false);
+  });
+  it("não recebe credenciais dos portais no fluxo de login oficial, mesmo com navegador habilitado", async () => {
+    vi.stubEnv("PORTAL_BROWSER_AUTHORIZED", "gupy,infojobs,glassdoor");
+    const open = vi
+      .spyOn(native, "startPortalLogin")
+      .mockRejectedValue(new Error("Unexpected remote login"));
+    const action = vi
+      .spyOn(native, "portalLoginAction")
+      .mockRejectedValue(new Error("Unexpected remote action"));
+    const confirm = vi
+      .spyOn(native, "finishPortalLogin")
+      .mockRejectedValue(new Error("Unexpected remote confirmation"));
+    for (const portal of ["gupy", "infojobs", "glassdoor"]) {
+      for (const operation of ["open", "action", "confirm"]) {
+        const response = await app.inject({
+          method: "POST",
+          url: `/api/connections/${portal}/${operation}`,
+          headers: {
+            cookie,
+            origin: "http://127.0.0.1:5173",
+            "x-orbita-request": "1",
+          },
+          payload:
+            operation === "action"
+              ? {
+                  type: "submit",
+                  fields: [{ index: 0, value: "synthetic@example.test" }],
+                }
+              : {},
+        });
+        expect(response.statusCode).toBe(400);
+        expect(response.json().error).toContain("site oficial");
+      }
+    }
+    expect(open).not.toHaveBeenCalled();
+    expect(action).not.toHaveBeenCalled();
+    expect(confirm).not.toHaveBeenCalled();
   });
 });

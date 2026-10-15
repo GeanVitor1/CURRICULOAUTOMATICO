@@ -40,6 +40,14 @@ export const candidatePortals = [
   "infojobs",
 ] as const;
 export type PortalId = keyof typeof portals;
+export const candidatePortalLoginUrls = {
+  linkedin: "https://www.linkedin.com/login/",
+  gupy: "https://login.gupy.io/candidates/signin",
+  infojobs: "https://www.infojobs.com.br/candidate/",
+  glassdoor: "https://www.glassdoor.com/member/profile/login",
+} as const;
+export const officialPortalLoginOnly = (portal: string) =>
+  portal === "gupy" || portal === "infojobs" || portal === "glassdoor";
 export function isPortalId(value: string): value is PortalId {
   return Object.hasOwn(portals, value);
 }

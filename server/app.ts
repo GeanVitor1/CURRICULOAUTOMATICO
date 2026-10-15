@@ -56,7 +56,11 @@ import {
   closePortalBrowsers,
   closeUserPortalLogins,
 } from "./portal-sessions";
-import { candidatePortals, portals } from "../shared/portals";
+import {
+  candidatePortals,
+  portals,
+  officialPortalLoginOnly,
+} from "../shared/portals";
 import { geminiConfigured } from "./gemini";
 import {
   antigravityAvailable,
@@ -719,8 +723,8 @@ export async function buildApp({ serveStatic = true } = {}) {
         !!linkedIdentity &&
         linkedIdentity.expiresAt <= Date.now(),
       oauthConfigured: site === "linkedin" && linkedinOAuthConfigured(),
-      limitation: cloudPortalEnabled(u.id, site)
-        ? "Tentativa de inscrição pelo navegador na nuvem. Usa seus dados confirmados; perguntas sem resposta e verificações do portal ficam pendentes para você."
+      limitation: officialPortalLoginOnly(site)
+        ? "Login diretamente no portal. Abrir ou fechar a aba não conecta sua sessão à automação do EmpreGatos."
         : providerLimits[site],
       applicationMethod: automaticPortals().includes(site)
         ? "authorized-api"
@@ -772,10 +776,14 @@ export async function buildApp({ serveStatic = true } = {}) {
       );
   });
   const connectionPortal = z.enum(candidatePortals);
-  const connectionScope = async (req: FastifyRequest) => {
+  const connectionScope = async (req: FastifyRequest, interactive = false) => {
     const { u, demo } = await scope(req);
     if (demo) throw new RequestError("Conecte os sites na sua conta real.");
     const portal = connectionPortal.parse((req.params as any).portal);
+    if (interactive && officialPortalLoginOnly(portal))
+      throw new RequestError(
+        "Faça login no site oficial, em outra aba. O EmpreGatos não recebe e-mail ou senha deste portal. Esse login não conecta a conta à automação.",
+      );
     if (cloudPortalEnabled(u.id, portal)) {
       const w = await readWorkspace(`${u.id}:live`);
       if (
@@ -794,12 +802,12 @@ export async function buildApp({ serveStatic = true } = {}) {
     return { u, portal };
   };
   app.post("/api/connections/:portal/open", async (req, reply) => {
-    const { u, portal } = await connectionScope(req);
+    const { u, portal } = await connectionScope(req, true);
     reply.header("Cache-Control", "no-store");
     return startPortalLogin(u.id, portal);
   });
   app.post("/api/connections/:portal/action", async (req, reply) => {
-    const { u, portal } = await connectionScope(req);
+    const { u, portal } = await connectionScope(req, true);
     const action = z
       .discriminatedUnion("type", [
         z.object({
@@ -850,7 +858,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     return portalLoginAction(u.id, portal, action);
   });
   app.post("/api/connections/:portal/confirm", async (req) => {
-    const { u, portal } = await connectionScope(req);
+    const { u, portal } = await connectionScope(req, true);
     const { profileResumeId } = z
       .object({ profileResumeId: z.string().max(100).nullable().default(null) })
       .parse(req.body || {});
