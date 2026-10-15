@@ -812,10 +812,16 @@ export async function buildApp({ serveStatic = true } = {}) {
     { config: { rateLimit: { max: 6, timeWindow: "1 minute" } } },
     async (req, reply) => {
       const { u, portal } = await connectionScope(req, true);
-      if (cloudPortalEnabled(u.id, portal))
-        z.object({ remoteBrowserConsent: z.literal(true) }).parse(req.body);
+      const settings = cloudPortalEnabled(u.id, portal)
+        ? z
+            .object({
+              remoteBrowserConsent: z.literal(true),
+              viewportWidth: z.number().int().min(375).max(1024).optional(),
+            })
+            .parse(req.body)
+        : undefined;
       reply.header("Cache-Control", "no-store");
-      return startPortalLogin(u.id, portal);
+      return startPortalLogin(u.id, portal, settings?.viewportWidth);
     },
   );
   app.post("/api/connections/:portal/action", async (req, reply) => {

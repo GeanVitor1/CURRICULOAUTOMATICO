@@ -57,6 +57,12 @@ afterAll(async () => {
 });
 it("salva login cifrado, restaura a sessão e não repete a candidatura após reiniciar", async () => {
   const obsolete = (await service.execute({ op: "open" })) as any;
+  const mobile = (await service.execute({
+    op: "open",
+    viewportWidth: 375,
+  })) as any;
+  expect(mobile.width).toBe(375);
+  expect(mobile.height).toBe(720);
   const first = (await service.execute({ op: "open" })) as any;
   expect(first.viewerId).not.toBe(obsolete.viewerId);
   for (const op of ["action", "confirm", "close"]) {

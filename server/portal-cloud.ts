@@ -119,6 +119,7 @@ export async function cloudPortalCommand<T = unknown>(
     resumeId?: string | null;
     input?: PortalApplication;
     viewerId?: string;
+    viewportWidth?: number;
   },
 ) {
   if (!cloudPortalEnabled(userId, portal))

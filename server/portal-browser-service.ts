@@ -134,7 +134,7 @@ export class PortalBrowserService {
       expiresAt,
     };
   }
-  private async createContext(saved: Saved | null) {
+  private async createContext(saved: Saved | null, width = 1024) {
     if (!this.browser?.isConnected())
       this.browser = await chromium.launch({
         headless: true,
@@ -142,7 +142,7 @@ export class PortalBrowserService {
         timeout: 20000,
       });
     const context = await this.browser.newContext({
-      viewport: { width: 1024, height: 720 },
+      viewport: { width, height: 720 },
       locale: "pt-BR",
       timezoneId: "America/Sao_Paulo",
       storageState: saved?.state,
@@ -178,7 +178,7 @@ export class PortalBrowserService {
         (
           await page.screenshot({ type: "jpeg", quality: 70, timeout: 10000 })
         ).toString("base64"),
-      width: 1024,
+      width: page.viewportSize()?.width || 1024,
       height: 720,
       address: new URL(page.url()).hostname + new URL(page.url()).pathname,
       fields,
@@ -196,11 +196,14 @@ export class PortalBrowserService {
     this.context = undefined;
     this.page = undefined;
   }
-  async open() {
+  async open(width = 1024) {
     await this.close();
     this.viewerId = randomUUID();
     const saved = await this.load();
-    this.context = await this.createContext(saved);
+    this.context = await this.createContext(
+      saved,
+      Math.max(375, Math.min(1024, Math.round(width))),
+    );
     this.page = await this.context.newPage();
     this.expires = Date.now() + 15 * 60000;
     await this.page.goto(
@@ -344,6 +347,7 @@ export class PortalBrowserService {
     resumeId?: string | null;
     input?: PortalApplication;
     viewerId?: string;
+    viewportWidth?: number;
   }) {
     if (this.busy)
       throw new Error(
@@ -355,7 +359,7 @@ export class PortalBrowserService {
         throw new Error(
           "Esta janela de conexão foi substituída ou expirou. Abra o navegador novamente.",
         );
-      if (request.op === "open") return await this.open();
+      if (request.op === "open") return await this.open(request.viewportWidth);
       if (request.op === "action" && request.action)
         return await this.action(request.action);
       if (request.op === "confirm")

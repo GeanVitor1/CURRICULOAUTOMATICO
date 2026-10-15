@@ -317,9 +317,13 @@ async function frame(session: LoginSession, portal: CandidatePortal) {
 export async function startPortalLogin(
   userId: string,
   portal: CandidatePortal,
+  viewportWidth?: number,
 ) {
   if (cloudPortalEnabled(userId, portal))
-    return cloudPortalCommand<PortalLoginFrame>(userId, portal, { op: "open" });
+    return cloudPortalCommand<PortalLoginFrame>(userId, portal, {
+      op: "open",
+      viewportWidth,
+    });
   if (!browserAuthorized(portal))
     throw new RequestError(
       "Este provedor não tem autorização de conexão por navegador configurada. Use o site oficial ou uma integração aprovada.",

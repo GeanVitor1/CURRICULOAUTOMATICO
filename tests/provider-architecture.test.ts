@@ -111,6 +111,13 @@ describe("Permissões reais, OAuth e privacidade", () => {
       });
       expect(denied.statusCode).toBe(400);
     }
+    const invalidSize = await app.inject({
+      method: "POST",
+      url: "/api/connections/gupy/open",
+      headers: headers(),
+      payload: { remoteBrowserConsent: true, viewportWidth: 100000 },
+    });
+    expect(invalidSize.statusCode).toBe(400);
     const unapproved = await app.inject({
       method: "POST",
       url: "/api/connections/gupy/confirm",

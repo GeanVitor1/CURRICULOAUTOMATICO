@@ -149,7 +149,13 @@ export default function RemotePortalLogin({
       receive(
         await api<Frame>(`/connections/${portal}/open`, {
           method: "POST",
-          body: JSON.stringify({ remoteBrowserConsent: true }),
+          body: JSON.stringify({
+            remoteBrowserConsent: true,
+            viewportWidth: Math.max(
+              375,
+              Math.min(1024, window.innerWidth - 40),
+            ),
+          }),
         }),
       );
     } catch (failure) {
@@ -300,7 +306,11 @@ export default function RemotePortalLogin({
                   Digitar na janela
                 </button>
               </div>
-              <div className="remote-screen" aria-busy={busy}>
+              <div
+                className="remote-screen"
+                aria-busy={busy}
+                style={{ maxWidth: frame.width }}
+              >
                 <img
                   src={frame.image}
                   width={frame.width}

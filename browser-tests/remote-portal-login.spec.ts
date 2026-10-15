@@ -43,8 +43,14 @@ test("navegador remoto transmite cliques e teclado em ordem, exige confirmação
     const path = new URL(route.request().url()).pathname;
     const body = route.request().postDataJSON();
     if (path.endsWith("/open")) {
-      expect(body).toEqual({ remoteBrowserConsent: true });
-      return route.fulfill({ json: frame() });
+      expect(body.remoteBrowserConsent).toBe(true);
+      expect(body.viewportWidth).toBe(
+        Math.max(
+          375,
+          Math.min(1024, (page.viewportSize()?.width || 1440) - 40),
+        ),
+      );
+      return route.fulfill({ json: { ...frame(), width: body.viewportWidth } });
     }
     expect(route.request().headers()["x-portal-viewer"]).toBe(viewerId);
     if (path.endsWith("/close")) {
