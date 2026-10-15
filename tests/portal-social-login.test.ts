@@ -53,7 +53,7 @@ vi.mock("../server/portal-browser-policy", async (original) => {
           body = `<button>Sair</button><h1>Candidaturas</h1><script>if(window.opener){window.opener.location.href='https://login.gupy.io/callback';window.close()}</script>`;
         } else if (signed) body = "<button>Sair</button><h1>Candidaturas</h1>";
         else
-          body = `<style>button{display:block;width:180px;height:50px;margin:10px}</style><button onclick="location.href='https://accounts.google.com/signin'">Google</button><button onclick="window.open('https://www.linkedin.com/oauth/v2/authorization')">LinkedIn</button><button onclick="location.href='https://accounts.google.com/refused'">Recusado</button><input aria-label="Email">`;
+          body = `<style>button{display:block;width:180px;height:50px;margin:10px}</style><button onclick="location.href='https://accounts.google.com/signin'">Google</button><button onclick="window.open('https://www.linkedin.com/oauth/v2/authorization')">LinkedIn</button><button onclick="location.href='https://accounts.google.com/refused'">Recusado</button><input aria-label="Email"><div id="nested-scroll" style="position:absolute;left:500px;top:50px;width:200px;height:120px;overflow:auto"><div style="height:900px">Scrollable fixture</div></div>`;
         await route.fulfill({ contentType: "text/html; charset=utf-8", body });
       });
     },
@@ -162,6 +162,29 @@ it("exibe a recusa do provedor e permite voltar ao login sem encerrar a conexão
     expect(latest.navigationError).toBe("");
   } finally {
     await stop();
+    await service.close();
+  }
+}, 15000);
+
+it("rola a caixa sob o ponteiro sem depender da posição do último clique", async () => {
+  const service = new PortalBrowserService("gupy", join(directory, "scroll"));
+  const frame = await service.open();
+  try {
+    await service.liveInput(frame.viewerId, { type: "click", x: 350, y: 400 });
+    await service.liveInput(frame.viewerId, {
+      type: "scroll",
+      x: 550,
+      y: 100,
+      delta: 300,
+    });
+    const page = browsers.at(-1)!.contexts()[0].pages()[0];
+    await expect
+      .poll(() =>
+        page.locator("#nested-scroll").evaluate((node) => node.scrollTop),
+      )
+      .toBeGreaterThan(0);
+    expect(await page.evaluate(() => scrollY)).toBe(0);
+  } finally {
     await service.close();
   }
 }, 15000);

@@ -36,6 +36,7 @@ import {
 } from "./portal-login-fields";
 import type { LoginAction } from "./portal-sessions";
 import type { LiveInput, LiveTicket } from "../shared/portal-live";
+import { fitLinkedInVerification } from "./portal-login-layout";
 
 type Saved = {
   connectedAt: string;
@@ -248,6 +249,7 @@ export class PortalBrowserService {
     if (!this.page || this.expires < Date.now())
       throw new Error("A janela de conexão expirou. Abra novamente.");
     const page = this.page;
+    await fitLinkedInVerification(page);
     const signed = await authenticated(page, this.portal);
     const fields = signed ? [] : await editableLoginFields(page);
     const text = await page
@@ -360,7 +362,11 @@ export class PortalBrowserService {
     else if (action.type === "click")
       await page.mouse.click(action.x, action.y);
     else if (action.type === "key") await page.keyboard.press(action.value);
-    else if (action.type === "scroll") await page.mouse.wheel(0, action.delta);
+    else if (action.type === "scroll") {
+      if (action.x !== undefined && action.y !== undefined)
+        await page.mouse.move(action.x, action.y);
+      await page.mouse.wheel(0, action.delta);
+    }
   }
   async action(action: LoginAction) {
     await this.input(action);
@@ -414,6 +420,7 @@ export class PortalBrowserService {
       if (ended || capturing || this.busy || !page || page.isClosed()) return;
       capturing = true;
       try {
+        await fitLinkedInVerification(page);
         const bytes = await page.screenshot({
           type: "jpeg",
           quality: 65,

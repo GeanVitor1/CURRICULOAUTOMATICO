@@ -387,7 +387,7 @@ export type LoginAction =
   | { type: "text"; value: string }
   | { type: "fill"; index: number; value: string }
   | { type: "key"; value: string }
-  | { type: "scroll"; delta: number }
+  | { type: "scroll"; delta: number; x?: number; y?: number }
   | { type: "refresh" };
 export async function portalLoginAction(
   userId: string,
@@ -439,8 +439,11 @@ export async function portalLoginAction(
       await session.page.keyboard.insertText(action.value);
     else if (action.type === "key")
       await session.page.keyboard.press(action.value);
-    else if (action.type === "scroll")
+    else if (action.type === "scroll") {
+      if (action.x !== undefined && action.y !== undefined)
+        await session.page.mouse.move(action.x, action.y);
       await session.page.mouse.wheel(0, action.delta);
+    }
     await session.page.waitForTimeout(action.type === "refresh" ? 100 : 500);
     return frame(session, portal);
   });

@@ -167,10 +167,21 @@ for (const fast of [false, true])
         .poll(() => actions.some((a) => a.type === "login"))
         .toBe(true);
     }
-    await image.dispatchEvent("wheel", { deltaY: 350 });
+    await page.setViewportSize({ width: 390, height: 844 });
+    const scaled = (await image.boundingBox())!;
+    await image.dispatchEvent("wheel", {
+      deltaY: 350,
+      clientX: scaled.x + scaled.width / 2,
+      clientY: scaled.y + scaled.height / 2,
+    });
     await expect
       .poll(() => actions.some((a) => a.type === "scroll" && a.delta === 350))
       .toBe(true);
+    const scrollAction = actions.find((a) => a.type === "scroll");
+    // Browser wheel coordinates are rounded to a CSS pixel before scaling.
+    expect(Math.abs(scrollAction.x - 512)).toBeLessThan(1024 / scaled.width);
+    expect(Math.abs(scrollAction.y - 360)).toBeLessThan(720 / scaled.height);
+    await page.setViewportSize({ width: 1440, height: 1100 });
     await image.click({ position: { x: 100, y: 80 } });
     await page.keyboard.insertText("fixture@example.test");
     await page.keyboard.press("Tab");

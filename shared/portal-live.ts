@@ -30,6 +30,8 @@ export const liveInputSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("scroll"),
     delta: z.number().min(-1200).max(1200),
+    x: z.number().min(0).max(1024).optional(),
+    y: z.number().min(0).max(720).optional(),
   }),
   z.object({ type: z.literal("refresh") }),
   z.object({ type: z.literal("login") }),

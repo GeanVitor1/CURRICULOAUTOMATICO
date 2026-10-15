@@ -46,6 +46,9 @@ export default function RemotePortalLogin({
     undefined,
   );
   const scrollDelta = useRef(0);
+  const scrollPosition = useRef<{ x: number; y: number } | undefined>(
+    undefined,
+  );
   const touchY = useRef<number | null>(null);
   const swiped = useRef(false);
   const sequence = useRef<Promise<void>>(Promise.resolve());
@@ -226,7 +229,26 @@ export default function RemotePortalLogin({
   useEffect(() => {
     void start();
   }, [start]);
-  const scroll = (delta: number) => {
+  const scroll = (delta: number, clientX: number, clientY: number) => {
+    const rect = screen.current?.getBoundingClientRect();
+    const size = current.current;
+    if (rect && size)
+      scrollPosition.current = {
+        x: Math.max(
+          0,
+          Math.min(
+            size.width,
+            ((clientX - rect.left) * size.width) / rect.width,
+          ),
+        ),
+        y: Math.max(
+          0,
+          Math.min(
+            size.height,
+            ((clientY - rect.top) * size.height) / rect.height,
+          ),
+        ),
+      };
     scrollDelta.current = Math.max(
       -1200,
       Math.min(1200, scrollDelta.current + delta),
@@ -236,7 +258,7 @@ export default function RemotePortalLogin({
       const value = scrollDelta.current;
       scrollDelta.current = 0;
       void flush();
-      void enqueue({ type: "scroll", delta: value });
+      void enqueue({ type: "scroll", delta: value, ...scrollPosition.current });
     }, 120);
   };
   const confirm = async () => {
@@ -340,7 +362,9 @@ export default function RemotePortalLogin({
               draggable={false}
               tabIndex={0}
               onFocus={() => keyboard.current?.focus({ preventScroll: true })}
-              onWheel={(event) => scroll(event.deltaY)}
+              onWheel={(event) =>
+                scroll(event.deltaY, event.clientX, event.clientY)
+              }
               onPointerDown={(event) => {
                 touchY.current =
                   event.pointerType === "touch" ? event.clientY : null;
@@ -352,7 +376,11 @@ export default function RemotePortalLogin({
                   Math.abs(touchY.current - event.clientY) > 20
                 ) {
                   swiped.current = true;
-                  scroll(touchY.current - event.clientY);
+                  scroll(
+                    touchY.current - event.clientY,
+                    event.clientX,
+                    event.clientY,
+                  );
                 }
                 touchY.current = null;
               }}
