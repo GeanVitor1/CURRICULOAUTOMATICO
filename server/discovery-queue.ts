@@ -1,8 +1,7 @@
 import { RequestError, StaleDiscoveryClaimError } from "./errors";
 import { randomUUID } from "node:crypto";
-import { and, asc, eq, inArray, lt, or } from "drizzle-orm";
-import { db, mutateWorkspace } from "./db";
-import { discoveryTasks, workspaces } from "./schema";
+import { and, asc, eq, inArray, lt, or } from "./storage-types";
+import { store, mutateWorkspace } from "./db";
 import { dispatchDiscovery } from "./vercel-dispatch";
 import {
   discover,
@@ -12,25 +11,21 @@ import {
 } from "./operations";
 
 export async function enqueueDiscovery(workspaceId: string) {
-  const result = await db.transaction(async (tx) => {
+  const result = await store.transaction(async (tx) => {
     // The workspace lock makes the uniqueness check/queue marker atomic across API processes.
-    const [row] = await tx
-      .select()
-      .from(workspaces)
-      .where(eq(workspaces.id, workspaceId))
-      .for("update");
+    const [row] = await tx.select("workspaces", {
+      where: eq("id", workspaceId),
+      lock: true,
+    });
     if (!row) throw new RequestError("Workspace não encontrado.");
     if (row.demo)
       throw new RequestError("A demonstração não consulta fontes externas.");
-    const [pending] = await tx
-      .select()
-      .from(discoveryTasks)
-      .where(
-        and(
-          eq(discoveryTasks.workspaceId, workspaceId),
-          inArray(discoveryTasks.status, ["queued", "running"]),
-        ),
-      );
+    const [pending] = await tx.select("discoveryTasks", {
+      where: and(
+        eq("workspaceId", workspaceId),
+        inArray("status", ["queued", "running"]),
+      ),
+    });
     if (pending)
       return {
         id: pending.id,
@@ -43,9 +38,7 @@ export async function enqueueDiscovery(workspaceId: string) {
       );
     const id = randomUUID(),
       at = new Date();
-    await tx
-      .insert(discoveryTasks)
-      .values({ id, workspaceId, status: "queued" });
+    await tx.insert("discoveryTasks", { id, workspaceId, status: "queued" });
     row.data.runs.unshift({
       id,
       at: at.toISOString(),
@@ -57,10 +50,11 @@ export async function enqueueDiscovery(workspaceId: string) {
         "Busca na fila. Os resultados serão atualizados automaticamente.",
     });
     row.data.runs = row.data.runs.slice(0, 100);
-    await tx
-      .update(workspaces)
-      .set({ data: row.data, updatedAt: at })
-      .where(eq(workspaces.id, workspaceId));
+    await tx.update(
+      "workspaces",
+      { data: row.data, updatedAt: at },
+      eq("id", workspaceId),
+    );
     return {
       id,
       status: "queued",
@@ -78,31 +72,26 @@ export class DiscoveryTaskBusyError extends Error {}
 
 export async function processNextDiscoveryTask(taskId?: string) {
   const leaseToken = randomUUID();
-  const task = await db.transaction(async (tx) => {
-    const [task] = await tx
-      .select()
-      .from(discoveryTasks)
-      .where(
-        and(
-          taskId ? eq(discoveryTasks.id, taskId) : undefined,
-          or(
-            eq(discoveryTasks.status, "queued"),
-            and(
-              eq(discoveryTasks.status, "running"),
-              lt(discoveryTasks.leaseUntil, new Date()),
-            ),
-          ),
+  const task = await store.transaction(async (tx) => {
+    const [task] = await tx.select("discoveryTasks", {
+      where: and(
+        taskId ? eq("id", taskId) : undefined,
+        or(
+          eq("status", "queued"),
+          and(eq("status", "running"), lt("leaseUntil", new Date())),
         ),
-      )
-      .orderBy(asc(discoveryTasks.createdAt))
-      .limit(1)
-      .for("update", { skipLocked: true });
+      ),
+      orderBy: [asc("createdAt")],
+      limit: 1,
+      lock: true,
+      skipLocked: true,
+    });
     if (!task) {
       if (taskId) {
-        const [existing] = await tx
-          .select({ status: discoveryTasks.status })
-          .from(discoveryTasks)
-          .where(eq(discoveryTasks.id, taskId));
+        const [existing] = await tx.select("discoveryTasks", {
+          where: eq("id", taskId),
+          columns: ["status"],
+        });
         if (existing?.status === "running")
           throw new DiscoveryTaskBusyError(
             "A busca ainda pertence a outro processo.",
@@ -112,46 +101,47 @@ export async function processNextDiscoveryTask(taskId?: string) {
     }
     // At most one restart recovery; completed/failed tasks are never automatically repeated.
     if (task.attempts >= 2) {
-      await tx
-        .update(discoveryTasks)
-        .set({
+      await tx.update(
+        "discoveryTasks",
+        {
           status: "failed",
           leaseToken: null,
           leaseUntil: null,
           lastError: "Busca interrompida duas vezes. Inicie uma nova busca.",
           updatedAt: new Date(),
-        })
-        .where(eq(discoveryTasks.id, task.id));
+        },
+        eq("id", task.id),
+      );
       return { ...task, exhausted: true };
     }
-    await tx
-      .update(discoveryTasks)
-      .set({
+    await tx.update(
+      "discoveryTasks",
+      {
         status: "running",
         attempts: task.attempts + 1,
         leaseToken,
         leaseUntil: new Date(Date.now() + 360000),
         updatedAt: new Date(),
-      })
-      .where(eq(discoveryTasks.id, task.id));
+      },
+      eq("id", task.id),
+    );
     return { ...task, exhausted: false };
   });
   if (!task) return false;
-  const claim = and(
-    eq(discoveryTasks.id, task.id),
-    eq(discoveryTasks.leaseToken, leaseToken),
-  );
+  const claim = and(eq("id", task.id), eq("leaseToken", leaseToken));
   // Renew long paginated runs so a second worker never reclaims a live task.
   const heartbeat = task.exhausted
     ? null
     : setInterval(() => {
-        void db
-          .update(discoveryTasks)
-          .set({
-            leaseUntil: new Date(Date.now() + 360000),
-            updatedAt: new Date(),
-          })
-          .where(claim)
+        void store
+          .update(
+            "discoveryTasks",
+            {
+              leaseUntil: new Date(Date.now() + 360000),
+              updatedAt: new Date(),
+            },
+            claim,
+          )
           .catch(() => {
             console.error(
               JSON.stringify({
@@ -170,16 +160,17 @@ export async function processNextDiscoveryTask(taskId?: string) {
     const run = await discover(task.workspaceId, task.id, leaseToken);
     if (run.status !== "failed")
       await processAutomaticApplications(task.workspaceId);
-    await db
-      .update(discoveryTasks)
-      .set({
+    await store.update(
+      "discoveryTasks",
+      {
         status: run.status === "failed" ? "failed" : "completed",
         lastError: run.errors.join(" ") || null,
         leaseToken: null,
         leaseUntil: null,
         updatedAt: new Date(),
-      })
-      .where(claim);
+      },
+      claim,
+    );
   } catch (error) {
     if (error instanceof StaleDiscoveryClaimError) return true;
     const message =
@@ -187,17 +178,18 @@ export async function processNextDiscoveryTask(taskId?: string) {
         ? error.message
         : "Não foi possível executar a busca.";
     if (!task.exhausted) {
-      const failed = await db
-        .update(discoveryTasks)
-        .set({
+      const failed = await store.update(
+        "discoveryTasks",
+        {
           status: "failed",
           lastError: message,
           leaseToken: null,
           leaseUntil: null,
           updatedAt: new Date(),
-        })
-        .where(claim)
-        .returning({ id: discoveryTasks.id });
+        },
+        claim,
+        ["id"],
+      );
       // A delayed upstream/database error can arrive after another worker has
       // recovered the task. Only the current owner may change its history.
       if (!failed.length) return true;

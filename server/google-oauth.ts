@@ -1,9 +1,8 @@
 import { createHash, randomBytes, randomUUID } from "node:crypto";
-import { and, eq, gt, lt } from "drizzle-orm";
+import { and, eq, gt, lt } from "./storage-types";
 import { OAuth2Client } from "google-auth-library";
 import { z } from "zod";
-import { db } from "./db";
-import { googleOAuthStates, sessions, users, workspaces } from "./schema";
+import { store } from "./db";
 import { createWorkspace } from "./workspace";
 import { RequestError } from "./errors";
 import { googleOAuthConfig } from "./auth-config";
@@ -40,15 +39,9 @@ export async function beginGoogleOAuth(
   const sessionHash = sessionToken ? hash(sessionToken) : undefined;
   if (intent !== "signin") {
     if (!sessionHash) throw new GoogleOAuthError("session_expired", intent);
-    const [session] = await db
-      .select()
-      .from(sessions)
-      .where(
-        and(
-          eq(sessions.token, sessionHash),
-          gt(sessions.expiresAt, new Date()),
-        ),
-      );
+    const [session] = await store.select("sessions", {
+      where: and(eq("token", sessionHash), gt("expiresAt", new Date())),
+    });
     if (!session) throw new GoogleOAuthError("session_expired", intent);
     userId = session.userId;
   }
@@ -57,10 +50,8 @@ export async function beginGoogleOAuth(
     nonce = random();
   const codeVerifier = randomBytes(48).toString("base64url");
   const { clientId, redirectUri } = config;
-  await db
-    .delete(googleOAuthStates)
-    .where(lt(googleOAuthStates.expiresAt, new Date()));
-  await db.insert(googleOAuthStates).values({
+  await store.delete("googleOAuthStates", lt("expiresAt", new Date()));
+  await store.insert("googleOAuthStates", {
     stateHash: hash(state),
     browserHash: hash(browserToken),
     nonce,
@@ -100,16 +91,15 @@ export async function completeGoogleOAuth(input: {
   if (!input.state || !input.browserToken)
     throw new GoogleOAuthError("expired");
   // A matching browser and state consume the challenge atomically, once only.
-  const [challenge] = await db
-    .delete(googleOAuthStates)
-    .where(
-      and(
-        eq(googleOAuthStates.stateHash, hash(input.state)),
-        eq(googleOAuthStates.browserHash, hash(input.browserToken)),
-        gt(googleOAuthStates.expiresAt, new Date()),
-      ),
-    )
-    .returning();
+  const [challenge] = await store.delete(
+    "googleOAuthStates",
+    and(
+      eq("stateHash", hash(input.state)),
+      eq("browserHash", hash(input.browserToken)),
+      gt("expiresAt", new Date()),
+    ),
+    true,
+  );
   if (!challenge) throw new GoogleOAuthError("expired");
   const intent = challenge.intent as GoogleIntent;
   if (input.denied) throw new GoogleOAuthError("denied", intent);
@@ -164,25 +154,21 @@ export async function completeGoogleOAuth(input: {
       })
       .parse(ticket.getPayload());
     const email = profile.email.toLowerCase();
-    const user = await db.transaction(async (tx) => {
+    const user = await store.transaction(async (tx) => {
       if (intent !== "signin") {
-        const [session] = await tx
-          .select()
-          .from(sessions)
-          .where(
-            and(
-              eq(sessions.token, challenge.sessionHash!),
-              gt(sessions.expiresAt, new Date()),
-            ),
-          )
-          .for("update");
+        const [session] = await tx.select("sessions", {
+          where: and(
+            eq("token", challenge.sessionHash!),
+            gt("expiresAt", new Date()),
+          ),
+          lock: true,
+        });
         if (!session || session.userId !== challenge.userId)
           throw new GoogleOAuthError("session_expired", intent);
-        const [account] = await tx
-          .select()
-          .from(users)
-          .where(eq(users.id, challenge.userId!))
-          .for("update");
+        const [account] = await tx.select("users", {
+          where: eq("id", challenge.userId!),
+          lock: true,
+        });
         if (!account) throw new GoogleOAuthError("session_expired", intent);
         if (intent === "reauthenticate") {
           if (account.googleSub !== profile.sub)
@@ -193,54 +179,52 @@ export async function completeGoogleOAuth(input: {
             (account.googleSub && account.googleSub !== profile.sub)
           )
             throw new GoogleOAuthError("wrong_account", intent);
-          const [owner] = await tx
-            .select()
-            .from(users)
-            .where(eq(users.googleSub, profile.sub));
+          const [owner] = await tx.select("users", {
+            where: eq("googleSub", profile.sub),
+          });
           if (owner && owner.id !== account.id)
             throw new GoogleOAuthError("account_exists", intent);
-          await tx
-            .update(users)
-            .set({ googleSub: profile.sub })
-            .where(eq(users.id, account.id));
+          await tx.update(
+            "users",
+            { googleSub: profile.sub },
+            eq("id", account.id),
+          );
         }
-        await tx
-          .update(sessions)
-          .set({ googleAuthenticatedAt: new Date() })
-          .where(eq(sessions.token, session.token));
+        await tx.update(
+          "sessions",
+          { googleAuthenticatedAt: new Date() },
+          eq("token", session.token),
+        );
         return account;
       }
-      const [existing] = await tx
-        .select()
-        .from(users)
-        .where(eq(users.googleSub, profile.sub));
+      const [existing] = await tx.select("users", {
+        where: eq("googleSub", profile.sub),
+      });
       if (existing) return existing;
       // Existing password accounts are linked only from their authenticated account page.
-      const [collision] = await tx
-        .select()
-        .from(users)
-        .where(eq(users.email, email));
+      const [collision] = await tx.select("users", {
+        where: eq("email", email),
+      });
       if (collision) throw new GoogleOAuthError("account_exists", intent);
-      const [created] = await tx
-        .insert(users)
-        .values({
+      const [created] = await tx.insert(
+        "users",
+        {
           id: randomUUID(),
           email,
           googleSub: profile.sub,
           password: null,
           name: (profile.name?.trim() || email.split("@")[0]).slice(0, 100),
-        })
-        .onConflictDoNothing()
-        .returning();
+        },
+        { conflict: "ignore", returning: true },
+      );
       if (!created) {
-        const [concurrent] = await tx
-          .select()
-          .from(users)
-          .where(eq(users.googleSub, profile.sub));
+        const [concurrent] = await tx.select("users", {
+          where: eq("googleSub", profile.sub),
+        });
         if (concurrent) return concurrent;
         throw new GoogleOAuthError("account_exists", intent);
       }
-      await tx.insert(workspaces).values({
+      await tx.insert("workspaces", {
         id: `${created.id}:live`,
         userId: created.id,
         demo: false,

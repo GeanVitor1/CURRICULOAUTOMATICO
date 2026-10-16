@@ -272,18 +272,18 @@ describe("Planos, pagamento e cota protegida", () => {
       (w) => (w.applications = []),
     );
     await expect(
-      database.db.transaction((tx) =>
+      database.store.transaction((tx) =>
         billing.reserveApplication(tx, userId, randomUUID(), 100, 0),
       ),
     ).rejects.toThrow("Limite diário");
   });
   it("não reserva duas vezes a mesma candidatura, nem cobra a cota de outro usuário", async () => {
     const id = randomUUID();
-    await database.db.transaction((tx) =>
+    await database.store.transaction((tx) =>
       billing.reserveApplication(tx, userId, id, 100, 0),
     );
     await expect(
-      database.db.transaction((tx) =>
+      database.store.transaction((tx) =>
         billing.reserveApplication(tx, userId, id, 100, 0),
       ),
     ).rejects.toThrow("já teve uma tentativa");
@@ -292,7 +292,7 @@ describe("Planos, pagamento e cota protegida", () => {
   it("cota paga usa 50 ou 100 em vez de aceitar limite arbitrário", async () => {
     await database.db.insert(schema.subscriptions).values(paid("pro"));
     expect(
-      await database.db.transaction((tx) =>
+      await database.store.transaction((tx) =>
         billing.workspaceDailyLimit(tx, `${userId}:live`, 100),
       ),
     ).toBe(100);
@@ -301,7 +301,7 @@ describe("Planos, pagamento e cota protegida", () => {
       .set({ plan: "plus" })
       .where(eq(schema.subscriptions.userId, userId));
     expect(
-      await database.db.transaction((tx) =>
+      await database.store.transaction((tx) =>
         billing.workspaceDailyLimit(tx, `${userId}:live`, 100),
       ),
     ).toBe(50);
@@ -310,7 +310,7 @@ describe("Planos, pagamento e cota protegida", () => {
       .set({ status: "past_due" })
       .where(eq(schema.subscriptions.userId, userId));
     expect(
-      await database.db.transaction((tx) =>
+      await database.store.transaction((tx) =>
         billing.workspaceDailyLimit(tx, `${userId}:live`, 100),
       ),
     ).toBe(5);

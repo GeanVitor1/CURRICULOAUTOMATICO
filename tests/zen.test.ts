@@ -16,8 +16,8 @@ vi.mock("../server/db", async () => {
   const { join } = await import("node:path");
   return {
     dataDir: mkdtempSync(join(tmpdir(), "orbita-intelligence-tests-")),
-    db: {
-      select: () => ({ from: () => ({ where: async () => [state.config] }) }),
+    store: {
+      select: async () => [state.config],
     },
   };
 });
@@ -75,19 +75,17 @@ afterAll(async () => {
 });
 describe("OpenCode Zen real transport contract and privacy", () => {
   it("explica a restrição do plano gratuito sem tentar burlar o provedor", async () => {
-    const fetcher = vi
-      .spyOn(globalThis, "fetch")
-      .mockResolvedValue(
-        new Response(
-          JSON.stringify({
-            error: {
-              message:
-                "OpenCode's free tier can only be used from within OpenCode",
-            },
-          }),
-          { status: 403 },
-        ),
-      );
+    const fetcher = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          error: {
+            message:
+              "OpenCode's free tier can only be used from within OpenCode",
+          },
+        }),
+        { status: 403 },
+      ),
+    );
     await expect(
       requestIntelligence("https://opencode.ai/zen/v1/chat/completions", {
         method: "POST",

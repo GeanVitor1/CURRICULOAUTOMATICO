@@ -7,9 +7,8 @@ import {
   createCipheriv,
   createDecipheriv,
 } from "node:crypto";
-import { db, mutateWorkspace } from "./db";
-import { eq, sql } from "drizzle-orm";
-import { workspaces } from "./schema";
+import { store, mutateWorkspace } from "./db";
+
 import { cloudPortalEnabled, portalSandboxName } from "./portal-cloud-policy";
 import type { CandidatePortal } from "./portal-browser-policy";
 import type { LoginAction } from "./portal-sessions";
@@ -38,13 +37,7 @@ export async function cloudConnectionMetadata(
   userId: string,
   portal: CandidatePortal,
 ) {
-  const [row] = await db
-    .select({
-      metadata: sql<Metadata | null>`${workspaces.data}->'infrastructure'->'portalConnections'->${portal}::text`,
-    })
-    .from(workspaces)
-    .where(eq(workspaces.id, `${userId}:live`));
-  return row?.metadata || null;
+  return (await store.portalMetadata(userId, portal)) as Metadata | null;
 }
 async function cacheMetadata(
   userId: string,

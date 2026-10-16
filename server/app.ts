@@ -7,13 +7,13 @@ import { randomUUID, randomBytes, createHash } from "node:crypto";
 import { isIP } from "node:net";
 import { mkdir, readFile, rm, stat } from "node:fs/promises";
 import { resolve, extname, relative } from "node:path";
-import { eq, and, lt, sql } from "drizzle-orm";
+import { eq, and, lt, asc } from "./storage-types";
 import { z } from "zod";
 import { extractDocx } from "./documents";
 import { extractPdfText, PdfReaderUnavailableError } from "./pdf-text";
 import { createResumePdf, createResumeTextPdf, resumeText } from "./resume-pdf";
 import {
-  db,
+  store,
   dataDir,
   databaseKind,
   healthDb,
@@ -22,7 +22,6 @@ import {
   readResumeArchive,
   workspaceRevision,
 } from "./db";
-import { users, sessions, workspaces } from "./schema";
 import { createWorkspace } from "./workspace";
 import {
   classify,
@@ -272,11 +271,16 @@ export async function buildApp({ serveStatic = true } = {}) {
       throw Object.assign(new Error("Entre na sua conta para continuar."), {
         statusCode: 401,
       });
-    const [result] = await db
-      .select({ user: users, session: sessions })
-      .from(sessions)
-      .innerJoin(users, eq(sessions.userId, users.id))
-      .where(eq(sessions.token, tokenHash(session)));
+    const [savedSession] = await store.select("sessions", {
+      where: eq("token", tokenHash(session)),
+    });
+    const [savedUser] = savedSession
+      ? await store.select("users", { where: eq("id", savedSession.userId) })
+      : [];
+    const result =
+      savedSession && savedUser
+        ? { user: savedUser, session: savedSession }
+        : null;
     if (!result || result.session.expiresAt < new Date())
       throw Object.assign(new Error("Sua sessão expirou."), {
         statusCode: 401,
@@ -291,9 +295,9 @@ export async function buildApp({ serveStatic = true } = {}) {
     userId: string,
     google = false,
   ) {
-    await db.delete(sessions).where(lt(sessions.expiresAt, new Date()));
+    await store.delete("sessions", lt("expiresAt", new Date()));
     const token = randomBytes(32).toString("hex");
-    await db.insert(sessions).values({
+    await store.insert("sessions", {
       token: tokenHash(token),
       userId,
       expiresAt: new Date(Date.now() + 7 * 86400000),
@@ -316,22 +320,23 @@ export async function buildApp({ serveStatic = true } = {}) {
         "O modo de dados demonstrativos foi removido. Use seu espaço real.",
       );
     const id = `${u.id}:${demo ? "demo" : "live"}`;
-    const [workspace] = await db
-      .select({ id: workspaces.id })
-      .from(workspaces)
-      .where(eq(workspaces.id, id));
+    const [workspace] = await store.select("workspaces", {
+      where: eq("id", id),
+      columns: ["id"],
+    });
     // Most routes read or mutate the workspace themselves. An existence check
     // must not deserialize its full resume/job history a second time.
     if (!workspace)
-      await db
-        .insert(workspaces)
-        .values({
+      await store.insert(
+        "workspaces",
+        {
           id,
           userId: u.id,
           demo,
           data: createWorkspace(u.name, u.email, demo),
-        })
-        .onConflictDoNothing();
+        },
+        { conflict: "ignore" },
+      );
     return { u, id, demo };
   }
   app.get("/api/health", async () => {
@@ -503,17 +508,18 @@ export async function buildApp({ serveStatic = true } = {}) {
           if (!body.name) throw new RequestError("Informe seu nome.");
           const name = body.name;
           const password = await passwordHash(body.password);
-          user = await db.transaction(async (tx) => {
-            const [created] = await tx
-              .insert(users)
-              .values({
+          user = await store.transaction(async (tx) => {
+            const [created] = await tx.insert(
+              "users",
+              {
                 id: randomUUID(),
                 email: body.email,
                 name,
                 password,
-              })
-              .returning();
-            await tx.insert(workspaces).values({
+              },
+              { returning: true },
+            );
+            await tx.insert("workspaces", {
               id: `${created.id}:live`,
               userId: created.id,
               demo: false,
@@ -522,10 +528,9 @@ export async function buildApp({ serveStatic = true } = {}) {
             return created;
           });
         } else {
-          [user] = await db
-            .select()
-            .from(users)
-            .where(eq(users.email, body.email));
+          [user] = await store.select("users", {
+            where: eq("email", body.email),
+          });
           if (!(await verifyPassword(body.password, user?.password)))
             throw Object.assign(new Error("E-mail ou senha incorretos."), {
               statusCode: 401,
@@ -539,9 +544,10 @@ export async function buildApp({ serveStatic = true } = {}) {
     const u = await identity(req).catch(() => null);
     if (u) await closeUserPortalLogins(u.id);
     if (req.cookies.orbita_session)
-      await db
-        .delete(sessions)
-        .where(eq(sessions.token, tokenHash(req.cookies.orbita_session)));
+      await store.delete(
+        "sessions",
+        eq("token", tokenHash(req.cookies.orbita_session)),
+      );
     reply.clearCookie("orbita_session", { path: "/" });
     return { ok: true };
   });
@@ -702,13 +708,7 @@ export async function buildApp({ serveStatic = true } = {}) {
   });
   app.get("/api/automation/sites", async (req) => {
     const u = await identity(req);
-    const [workspace] = await db
-      .select({
-        resumeId: sql<string>`${workspaces.data}->'resumes'->0->>'id'`,
-      })
-      .from(workspaces)
-      .where(eq(workspaces.id, `${u.id}:live`));
-    const resumeId = workspace?.resumeId || "";
+    const resumeId = await store.latestResumeId(`${u.id}:live`);
     const connections = await applicationCapabilities(u.id, resumeId);
     const linkedIdentity = await linkedinIdentity(u.id);
     return candidatePortals.map((site) => ({
@@ -1790,29 +1790,29 @@ export async function buildApp({ serveStatic = true } = {}) {
         "Confirme sua identidade com Google e informe o e-mail da conta para excluir.",
       );
     }
-    for (const row of await db
-      .select({ id: workspaces.id })
-      .from(workspaces)
-      .where(eq(workspaces.userId, u.id)))
+    for (const row of await store.select("workspaces", {
+      where: eq("userId", u.id),
+      columns: ["id"],
+    }))
       await configureSchedule(row.id, false, "08:00");
     await deletePortalConnections(u.id);
     if (antigravityAvailable(u.id)) await disconnectAntigravity(u.id);
     await disconnectLinkedinIdentity(u.id);
-    await db.transaction(async (tx) => {
+    await store.transaction(async (tx) => {
       // Lock in the same order as send claims and billing updates.
-      await tx
-        .select({ id: workspaces.id })
-        .from(workspaces)
-        .where(eq(workspaces.userId, u.id))
-        .orderBy(workspaces.id)
-        .for("update");
-      await tx
-        .select({ id: users.id })
-        .from(users)
-        .where(eq(users.id, u.id))
-        .for("update");
+      await tx.select("workspaces", {
+        where: eq("userId", u.id),
+        columns: ["id"],
+        orderBy: [asc("id")],
+        lock: true,
+      });
+      await tx.select("users", {
+        where: eq("id", u.id),
+        columns: ["id"],
+        lock: true,
+      });
       await cancelAccountSubscription(u.id, tx);
-      await tx.delete(users).where(eq(users.id, u.id));
+      await tx.delete("users", eq("id", u.id));
     });
     clearAnalysisCache(u.id);
     const dir = resolve(dataDir, "resumes", u.id);

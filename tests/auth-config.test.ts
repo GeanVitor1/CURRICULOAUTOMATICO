@@ -19,6 +19,27 @@ const production = {
 };
 
 describe("Configuração de autenticação pública", () => {
+  it("aceita Firestore na Vercel sem PostgreSQL e exige identidade do servidor", () => {
+    const env = {
+      VERCEL: "1",
+      VERCEL_ENV: "production",
+      DATABASE_PROVIDER: "firestore",
+      FIREBASE_PROJECT_ID: "example-project",
+    };
+    expect(() => requirePersistentDatabase(env)).toThrow("Vercel ao Firestore");
+    expect(() =>
+      requirePersistentDatabase({
+        ...env,
+        GCP_WORKLOAD_IDENTITY_AUDIENCE:
+          "//iam.googleapis.com/projects/123/locations/global/workloadIdentityPools/p/providers/p",
+        GCP_SERVICE_ACCOUNT_EMAIL:
+          "app@example-project.iam.gserviceaccount.com",
+      }),
+    ).not.toThrow();
+    expect(() =>
+      requirePersistentDatabase({ ...env, FIREBASE_PROJECT_ID: "" }),
+    ).toThrow("projeto Firebase");
+  });
   it("deriva o callback HTTPS do domínio público sem configuração por computador", () => {
     expect(googleOAuthConfig(production)?.redirectUri).toBe(
       "https://empregatos.example/api/auth/google/callback",

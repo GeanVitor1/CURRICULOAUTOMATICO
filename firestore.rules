@@ -1,0 +1,11 @@
+rules_version = '2';
+// All data, credentials, application claims and file chunks are server-only.
+// The API uses IAM, authenticates its own sessions and validates ownership.
+// Prototype rules: no Firebase client (including an authenticated one) has access.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

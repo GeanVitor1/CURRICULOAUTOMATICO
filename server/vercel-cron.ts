@@ -28,31 +28,24 @@ export default async function handler(
   try {
     validateHostedRuntime();
     const { enqueueDueRoutines } = await import("./queue");
-    const { db } = await import("./db");
-    const { discoveryTasks } = await import("./schema");
+    const { store } = await import("./db");
     const { dispatchDiscovery } = await import("./vercel-dispatch");
-    const { eq, and, or, lt } = await import("drizzle-orm");
+    const { eq, and, or, lt } = await import("./storage-types");
     await enqueueDueRoutines();
     // Recover committed tasks if publishing failed, including interrupted invocations.
-    const pending = await db
-      .select({ id: discoveryTasks.id })
-      .from(discoveryTasks)
-      .where(
-        or(
-          eq(discoveryTasks.status, "queued"),
-          and(
-            eq(discoveryTasks.status, "running"),
-            lt(discoveryTasks.leaseUntil, new Date()),
-          ),
-        ),
-      );
+    const pending = await store.select("discoveryTasks", {
+      where: or(
+        eq("status", "queued"),
+        and(eq("status", "running"), lt("leaseUntil", new Date())),
+      ),
+      columns: ["id"],
+    });
     for (const task of pending) await dispatchDiscovery(task.id);
-    const { workspaces } = await import("./schema");
     const { dispatchNextApplication } = await import("./submission-dispatch");
-    const sending = await db
-      .select({ id: workspaces.id })
-      .from(workspaces)
-      .where(eq(workspaces.demo, false));
+    const sending = await store.select("workspaces", {
+      where: eq("demo", false),
+      columns: ["id"],
+    });
     for (const workspace of sending)
       await dispatchNextApplication(workspace.id);
     response.end(JSON.stringify({ ok: true }));

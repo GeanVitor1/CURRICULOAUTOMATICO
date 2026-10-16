@@ -1,7 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { and, eq, ne, sql } from "drizzle-orm";
-import { db } from "./db";
-import { sourceCatalog } from "./schema";
+import { and, eq } from "./storage-types";
+import { store } from "./db";
 import { connectors, SourceError } from "./connectors";
 import type { Job, Source } from "../shared/types";
 
@@ -36,24 +35,24 @@ async function load(source: Source, key: string) {
     throw new SourceError(
       "Esta fonte não possui uma integração de descoberta disponível.",
     );
-  await db
-    .insert(sourceCatalog)
-    .values({
+  await store.insert(
+    "sourceCatalog",
+    {
       key,
       type: source.type,
       board: source.type === "jobicy" ? "public" : source.board,
       company: source.type === "jobicy" ? "Jobicy" : source.company,
       sector: source.sector || "Não informado",
       country: source.country || "",
-    })
-    .onConflictDoNothing();
+    },
+    { conflict: "ignore" },
+  );
   const leaseToken = randomUUID();
-  const claim = await db.transaction(async (tx) => {
-    const [row] = await tx
-      .select()
-      .from(sourceCatalog)
-      .where(eq(sourceCatalog.key, key))
-      .for("update");
+  const claim = await store.transaction(async (tx) => {
+    const [row] = await tx.select("sourceCatalog", {
+      where: eq("key", key),
+      lock: true,
+    });
     if (row.expiresAt && row.expiresAt.getTime() > Date.now() && !row.lastError)
       return row;
     if (row.retryAt && row.retryAt.getTime() > Date.now())
@@ -65,10 +64,11 @@ async function load(source: Source, key: string) {
       throw new SourceError(
         "Esta organização já está sendo atualizada por outro worker; tente novamente em instantes.",
       );
-    await tx
-      .update(sourceCatalog)
-      .set({ leaseToken, leaseUntil: new Date(Date.now() + 600000) })
-      .where(eq(sourceCatalog.key, key));
+    await tx.update(
+      "sourceCatalog",
+      { leaseToken, leaseUntil: new Date(Date.now() + 600000) },
+      eq("key", key),
+    );
     return null;
   });
   if (claim)
@@ -83,9 +83,9 @@ async function load(source: Source, key: string) {
     // One new Jobicy sync per hour. Adzuna cache avoids repeated licensed queries.
     const ttl =
       source.type === "jobicy" || source.type === "adzuna" ? 3600000 : 900000;
-    const updated = await db
-      .update(sourceCatalog)
-      .set({
+    const updated = await store.update(
+      "sourceCatalog",
+      {
         jobs,
         fetchedAt: checkedAt,
         expiresAt: new Date(checkedAt.getTime() + ttl),
@@ -93,14 +93,10 @@ async function load(source: Source, key: string) {
         lastError: null,
         leaseUntil: null,
         leaseToken: null,
-      })
-      .where(
-        and(
-          eq(sourceCatalog.key, key),
-          eq(sourceCatalog.leaseToken, leaseToken),
-        ),
-      )
-      .returning({ key: sourceCatalog.key });
+      },
+      and(eq("key", key), eq("leaseToken", leaseToken)),
+      ["key"],
+    );
     if (!updated.length)
       throw new SourceError(
         "A atualização excedeu seu tempo de reserva. Repita a busca.",
@@ -115,42 +111,23 @@ async function load(source: Source, key: string) {
       source.type === "jobicy" ? 3600000 : 60000,
       error instanceof SourceError ? error.retryAfterMs : 0,
     );
-    await db
-      .update(sourceCatalog)
-      .set({
+    await store.update(
+      "sourceCatalog",
+      {
         lastError: message,
         retryAt: new Date(Date.now() + cooldown),
         leaseUntil: null,
         leaseToken: null,
-      })
-      .where(
-        and(
-          eq(sourceCatalog.key, key),
-          eq(sourceCatalog.leaseToken, leaseToken),
-        ),
-      );
+      },
+      and(eq("key", key), eq("leaseToken", leaseToken)),
+    );
     // Old genuine jobs remain stored, but are never passed off as a successful new query.
     throw new SourceError(message);
   }
 }
 export async function inspectSourceCatalog() {
-  // Count inside PostgreSQL; metadata listing must not transfer every description from JSONB.
-  const rows = await db
-    .select({
-      key: sourceCatalog.key,
-      type: sourceCatalog.type,
-      board: sourceCatalog.board,
-      company: sourceCatalog.company,
-      sector: sourceCatalog.sector,
-      country: sourceCatalog.country,
-      count: sql<number>`jsonb_array_length(${sourceCatalog.jobs})`,
-      fetchedAt: sourceCatalog.fetchedAt,
-      lastError: sourceCatalog.lastError,
-      retryAt: sourceCatalog.retryAt,
-      expiresAt: sourceCatalog.expiresAt,
-    })
-    .from(sourceCatalog)
-    .where(ne(sourceCatalog.type, "adzuna"));
+  // Metadata listing must not transfer every description from the cached feed.
+  const rows = await store.catalogMetadata();
   // Public metadata only: no user preferences and no complete job feed in this endpoint.
   // Adzuna board contains a search preference, not an organization. Keep it private.
   return rows

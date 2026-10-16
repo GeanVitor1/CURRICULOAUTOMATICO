@@ -1,9 +1,7 @@
 import { Queue } from "bullmq";
 import Redis from "ioredis";
-import { eq, sql } from "drizzle-orm";
-import type { Routine } from "../shared/types";
-import { db, mutateWorkspace } from "./db";
-import { workspaces } from "./schema";
+
+import { store, mutateWorkspace } from "./db";
 import { executeRoutine, notify } from "./operations";
 import { nextExecution } from "./engine";
 export const connection = process.env.REDIS_URL
@@ -42,13 +40,7 @@ export async function configureSchedule(
 }
 export async function enqueueDueRoutines() {
   // Read only scheduling data, rather than every user's resume and job history.
-  const rows = await db
-    .select({
-      id: workspaces.id,
-      routine: sql<Routine>`${workspaces.data}->'routine'`,
-    })
-    .from(workspaces)
-    .where(eq(workspaces.demo, false));
+  const rows = await store.routines();
   for (const row of rows) {
     const r = row.routine;
     if (r.enabled && r.nextRun && Date.parse(r.nextRun) <= Date.now()) {

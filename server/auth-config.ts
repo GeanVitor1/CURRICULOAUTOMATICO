@@ -95,6 +95,22 @@ export function googleOAuthConfig(env: Environment = process.env) {
 }
 
 export function requirePersistentDatabase(env: Environment = process.env) {
+  if (env.DATABASE_PROVIDER === "firestore") {
+    if (!env.FIREBASE_PROJECT_ID?.trim())
+      throw new RuntimeConfigurationError(
+        "FIREBASE_PROJECT_ID_MISSING",
+        "Configure o projeto Firebase do banco.",
+      );
+    if (
+      hostedOnVercel(env) &&
+      !(env.GCP_WORKLOAD_IDENTITY_AUDIENCE && env.GCP_SERVICE_ACCOUNT_EMAIL)
+    )
+      throw new RuntimeConfigurationError(
+        "FIREBASE_CREDENTIALS_MISSING",
+        "Configure o acesso da Vercel ao Firestore.",
+      );
+    return;
+  }
   if (hostedOnVercel(env) && !env.DATABASE_URL?.trim())
     throw new RuntimeConfigurationError(
       "DATABASE_URL_MISSING",

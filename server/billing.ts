@@ -1,20 +1,13 @@
+import type { Store } from "./storage-types";
 import Stripe from "stripe";
-import { and, eq, sql } from "drizzle-orm";
-import { db } from "./db";
-import {
-  applicationUsage,
-  billingEvents,
-  subscriptions,
-  users,
-  workspaces,
-} from "./schema";
+import { and, eq, asc } from "./storage-types";
+import { store } from "./db";
+import type { subscriptions } from "./schema";
 import { appOrigins } from "./auth-config";
 import { DailyLimitError, RequestError } from "./errors";
 import { plans, type BillingSummary, type PlanId } from "../shared/plans";
-import { dailySubmissionAttempts } from "./submission-routing";
-import type { Workspace } from "../shared/types";
 
-type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
+type Transaction = Parameters<Parameters<typeof store.transaction>[0]>[0];
 type Subscription = typeof subscriptions.$inferSelect;
 const priceId = (plan: string) =>
   plan === "plus"
@@ -57,42 +50,23 @@ export function effectivePlan(
 }
 export async function accountPlan(
   userId: string,
-  connection: Transaction | typeof db = db,
+  connection: Transaction | Store = store,
 ) {
-  const [subscription] = await connection
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.userId, userId));
+  const [subscription] = await connection.select("subscriptions", {
+    where: eq("userId", userId),
+  });
   return effectivePlan(subscription);
 }
 export async function billingSummary(userId: string): Promise<BillingSummary> {
-  const [subscription] = await db
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.userId, userId));
+  const [subscription] = await store.select("subscriptions", {
+    where: eq("userId", userId),
+  });
   const plan = effectivePlan(subscription);
-  const [{ used }] = await db
-    .select({ used: sql<number>`count(*)::int` })
-    .from(applicationUsage)
-    .where(
-      and(
-        eq(applicationUsage.userId, userId),
-        eq(applicationUsage.day, billingDay()),
-      ),
-    );
-  // Preserve the quota for applications sent before the ledger migration.
-  const rows = await db
-    .select({
-      data: sql<
-        Pick<Workspace, "applications">
-      >`jsonb_build_object('applications', COALESCE(${workspaces.data}->'applications', '[]'::jsonb))`,
-    })
-    .from(workspaces)
-    .where(eq(workspaces.userId, userId));
-  const historical = rows.reduce(
-    (total, row) => total + dailySubmissionAttempts(row.data),
-    0,
+  const used = await store.count(
+    "applicationUsage",
+    and(eq("userId", userId), eq("day", billingDay())),
   );
+  const historical = await store.historicalAttempts(userId, billingDay());
   const usedToday = Math.max(used, historical);
   return {
     paymentMode: process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")
@@ -117,10 +91,10 @@ export async function workspaceDailyLimit(
   workspaceId: string,
   preferred: number,
 ) {
-  const [owner] = await tx
-    .select({ userId: workspaces.userId })
-    .from(workspaces)
-    .where(eq(workspaces.id, workspaceId));
+  const [owner] = await tx.select("workspaces", {
+    where: eq("id", workspaceId),
+    columns: ["userId"],
+  });
   if (!owner) throw new RequestError("Conta não encontrada.");
   return Math.min(preferred, (await accountPlan(owner.userId, tx)).dailyLimit);
 }
@@ -132,28 +106,23 @@ export async function reserveApplication(
   historical: number,
 ) {
   // A lock per account serializes concurrent sends even across workspaces/workers.
-  await tx
-    .select({ id: users.id })
-    .from(users)
-    .where(eq(users.id, userId))
-    .for("update");
+  await tx.select("users", {
+    where: eq("id", userId),
+    columns: ["id"],
+    lock: true,
+  });
   const plan = await accountPlan(userId, tx);
-  const [{ used }] = await tx
-    .select({ used: sql<number>`count(*)::int` })
-    .from(applicationUsage)
-    .where(
-      and(
-        eq(applicationUsage.userId, userId),
-        eq(applicationUsage.day, billingDay()),
-      ),
-    );
+  const used = await tx.count(
+    "applicationUsage",
+    and(eq("userId", userId), eq("day", billingDay())),
+  );
   if (Math.max(used, historical) >= Math.min(preferred, plan.dailyLimit))
     throw new DailyLimitError();
-  const inserted = await tx
-    .insert(applicationUsage)
-    .values({ applicationId, userId, day: billingDay() })
-    .onConflictDoNothing()
-    .returning();
+  const inserted = await tx.insert(
+    "applicationUsage",
+    { applicationId, userId, day: billingDay() },
+    { conflict: "ignore", returning: true },
+  );
   if (!inserted.length)
     throw new RequestError(
       "Esta candidatura já teve uma tentativa de envio. Confira o resultado no portal.",
@@ -184,26 +153,26 @@ export async function createCheckout(userId: string, plan: "plus" | "pro") {
   const stripe = stripeClient();
   const price = await stripe.prices.retrieve(priceId(plan)!);
   requirePrice(price, plan, true);
-  return db.transaction(async (tx) => {
-    const [user] = await tx
-      .select()
-      .from(users)
-      .where(eq(users.id, userId))
-      .for("update");
+  const checkoutEpoch = Math.floor(Date.now() / 1800000);
+  return store.transaction(async (tx) => {
+    const [user] = await tx.select("users", {
+      where: eq("id", userId),
+      lock: true,
+    });
     if (!user) throw new RequestError("Conta não encontrada.");
-    let [billing] = await tx
-      .select()
-      .from(subscriptions)
-      .where(eq(subscriptions.userId, userId));
+    let [billing] = await tx.select("subscriptions", {
+      where: eq("userId", userId),
+    });
     if (!billing) {
       const customer = await stripe.customers.create(
         { email: user.email, name: user.name, metadata: { userId } },
         { idempotencyKey: `empregatos-customer-${userId}` },
       );
-      [billing] = await tx
-        .insert(subscriptions)
-        .values({ userId, customerId: customer.id })
-        .returning();
+      [billing] = await tx.insert(
+        "subscriptions",
+        { userId, customerId: customer.id },
+        { returning: true },
+      );
     }
     // Block a second subscription, including payment retries and cancellation at period end.
     const existing = await stripe.subscriptions.list({
@@ -253,27 +222,27 @@ export async function createCheckout(userId: string, plan: "plus" | "pro") {
         cancel_url: `${origin}/app?billing=canceled#conta`,
       },
       {
-        idempotencyKey: `empregatos-checkout-${userId}-${plan}-${billing.checkoutId || "initial"}-${Math.floor(Date.now() / 1800000)}`,
+        idempotencyKey: `empregatos-checkout-${userId}-${plan}-${billing.checkoutId || "initial"}-${checkoutEpoch}`,
       },
     );
     if (!session.url) throw new Error("Checkout unavailable");
-    await tx
-      .update(subscriptions)
-      .set({
+    await tx.update(
+      "subscriptions",
+      {
         checkoutId: session.id,
         checkoutUrl: session.url,
         checkoutExpiresAt: new Date(session.expires_at * 1000),
         updatedAt: new Date(),
-      })
-      .where(eq(subscriptions.userId, userId));
+      },
+      eq("userId", userId),
+    );
     return { url: session.url };
   });
 }
 export async function createBillingPortal(userId: string) {
-  const [billing] = await db
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.userId, userId));
+  const [billing] = await store.select("subscriptions", {
+    where: eq("userId", userId),
+  });
   if (!billing) throw new RequestError("Você ainda não possui uma assinatura.");
   const session = await stripeClient().billingPortal.sessions.create({
     customer: billing.customerId,
@@ -290,12 +259,12 @@ export async function processBillingEvent(
   event: Stripe.Event,
   stripe = stripeClient(),
 ) {
-  return db.transaction(async (tx) => {
-    const inserted = await tx
-      .insert(billingEvents)
-      .values({ id: event.id })
-      .onConflictDoNothing()
-      .returning();
+  return store.transaction(async (tx) => {
+    const inserted = await tx.insert(
+      "billingEvents",
+      { id: event.id },
+      { conflict: "ignore", returning: true },
+    );
     if (!inserted.length) return { received: true, duplicate: true };
     const object = event.data.object as any;
     const relevant = [
@@ -311,22 +280,20 @@ export async function processBillingEvent(
     if (!relevant) return { received: true };
     const customer = objectId(object.customer);
     if (!customer) return { received: true };
-    const [billing] = await tx
-      .select()
-      .from(subscriptions)
-      .where(eq(subscriptions.customerId, customer));
+    const [billing] = await tx.select("subscriptions", {
+      where: eq("customerId", customer),
+    });
     if (!billing) return { received: true };
-    const accountWorkspaces = await tx
-      .select()
-      .from(workspaces)
-      .where(eq(workspaces.userId, billing.userId))
-      .orderBy(workspaces.id)
-      .for("update");
-    await tx
-      .select({ id: users.id })
-      .from(users)
-      .where(eq(users.id, billing.userId))
-      .for("update");
+    const accountWorkspaces = await tx.select("workspaces", {
+      where: eq("userId", billing.userId),
+      orderBy: [asc("id")],
+      lock: true,
+    });
+    await tx.select("users", {
+      where: eq("id", billing.userId),
+      columns: ["id"],
+      lock: true,
+    });
     const subscriptionId = event.type.startsWith("customer.subscription.")
       ? object.id
       : objectId(object.subscription) ||
@@ -368,14 +335,15 @@ export async function processBillingEvent(
           : Math.min(preferred, nextLimit);
       if (row.data.interview)
         row.data.interview.answers.dailyLimit = row.data.routine.dailyLimit;
-      await tx
-        .update(workspaces)
-        .set({ data: row.data, updatedAt: new Date() })
-        .where(eq(workspaces.id, row.id));
+      await tx.update(
+        "workspaces",
+        { data: row.data, updatedAt: new Date() },
+        eq("id", row.id),
+      );
     }
-    await tx
-      .update(subscriptions)
-      .set({
+    await tx.update(
+      "subscriptions",
+      {
         subscriptionId: subscription.id,
         plan: eligible ? plan!.id : "free",
         status: subscription.status,
@@ -385,8 +353,9 @@ export async function processBillingEvent(
         checkoutUrl: null,
         checkoutExpiresAt: null,
         updatedAt: new Date(),
-      })
-      .where(eq(subscriptions.userId, billing.userId));
+      },
+      eq("userId", billing.userId),
+    );
     return { received: true };
   });
 }
@@ -405,12 +374,11 @@ export function verifyBillingEvent(raw: Buffer, signature: string) {
 }
 export async function cancelAccountSubscription(
   userId: string,
-  connection: Transaction | typeof db = db,
+  connection: Transaction | Store = store,
 ) {
-  const [billing] = await connection
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.userId, userId));
+  const [billing] = await connection.select("subscriptions", {
+    where: eq("userId", userId),
+  });
   if (!billing) return;
   const stripe = stripeClient();
   if (billing.checkoutId) {

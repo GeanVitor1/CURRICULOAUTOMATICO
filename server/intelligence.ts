@@ -14,10 +14,9 @@ import {
 } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { eq } from "drizzle-orm";
+import { eq } from "./storage-types";
 import { z } from "zod";
-import { db, dataDir } from "./db";
-import { aiSettings } from "./schema";
+import { store, dataDir } from "./db";
 import {
   geminiConfigured,
   geminiJson,
@@ -85,10 +84,9 @@ export const settingsSchema = z.object({
   clearKey: z.boolean().default(false),
 });
 export async function getIntelligence(userId: string) {
-  const [config] = await db
-    .select()
-    .from(aiSettings)
-    .where(eq(aiSettings.userId, userId));
+  const [config] = await store.select("aiSettings", {
+    where: eq("userId", userId),
+  });
   return {
     provider: config?.provider || (geminiConfigured() ? "gemini" : "local"),
     model:
@@ -129,10 +127,9 @@ export async function saveIntelligence(userId: string, input: unknown) {
     );
   if (body.provider === "zen" && !body.model)
     body.model = process.env.OPENCODE_ZEN_MODEL || "";
-  const [existing] = await db
-    .select()
-    .from(aiSettings)
-    .where(eq(aiSettings.userId, userId));
+  const [existing] = await store.select("aiSettings", {
+    where: eq("userId", userId),
+  });
   const encryptedKey = body.clearKey
     ? null
     : body.apiKey
@@ -170,10 +167,7 @@ export async function saveIntelligence(userId: string, input: unknown) {
     encryptedKey,
     updatedAt: new Date(),
   };
-  await db
-    .insert(aiSettings)
-    .values(values)
-    .onConflictDoUpdate({ target: aiSettings.userId, set: values });
+  await store.insert("aiSettings", values, { conflict: values });
   clearAnalysisCache(userId);
   return getIntelligence(userId);
 }
@@ -537,10 +531,9 @@ export async function testGeminiConnection(userId: string, model: string) {
 }
 export async function analyzeResume(userId: string, text: string) {
   const fallback = parseResume(text);
-  const [config] = await db
-    .select()
-    .from(aiSettings)
-    .where(eq(aiSettings.userId, userId));
+  const [config] = await store.select("aiSettings", {
+    where: eq("userId", userId),
+  });
   if (!config?.enabled || config.provider === "local")
     return {
       profile: fallback,
@@ -664,10 +657,9 @@ export async function analyzeJobMatch(
   filters: Filters = defaultFilters,
 ): Promise<Match> {
   const objective = analyze(job, profile, filters);
-  const [config] = await db
-    .select()
-    .from(aiSettings)
-    .where(eq(aiSettings.userId, userId));
+  const [config] = await store.select("aiSettings", {
+    where: eq("userId", userId),
+  });
   if (
     !config?.enabled ||
     !["gemini", "zen"].includes(config.provider) ||

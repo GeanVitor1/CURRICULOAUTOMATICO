@@ -22,7 +22,7 @@ Sem `DATABASE_URL`, o banco PGlite persiste em `.data/postgres`. Esse modo local
 
 Login/cadastro com Google e configuração das integrações de envio: [guia local](docs/GOOGLE-E-ENVIO-LOCAL.md). Após criar um cliente OAuth Web no Google Cloud e baixar seu JSON, use `npm run configure:google` para importar as credenciais privadas no `.env`.
 
-Para login Google público na Vercel, siga [Vercel e Google](docs/VERCEL-E-GOOGLE.md). A publicação usa credenciais do servidor e PostgreSQL compartilhado; os visitantes podem entrar com a própria conta Google em qualquer computador. O callback é derivado do domínio público, sem depender de localhost. O guia também descreve o armazenamento e os workers necessários para as outras funções do aplicativo.
+Na Vercel, o banco atual é o [Firestore Standard em São Paulo](docs/FIREBASE.md), com acesso OIDC exclusivo do servidor. Para o login Google público, siga [Vercel e Google](docs/VERCEL-E-GOOGLE.md). Os visitantes entram com a própria conta Google; o callback é derivado do domínio público. As buscas diárias usam Cron e Queues da Vercel.
 
 1. Entre na conta e escolha **Enviar currículo**. Use PDF/DOCX ou **Ainda não tenho currículo** para criar o arquivo por perguntas.
 2. O sistema analisa o currículo e abre **Preferências**. Responda uma pergunta de cada vez: cargos, remoto/presencial/híbrido e cidade, salário, data/contratação, sites e limite diário.

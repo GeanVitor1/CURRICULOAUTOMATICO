@@ -27,7 +27,10 @@ Em **Settings → Environment Variables**, configure estas variáveis no ambient
 | `APP_ORIGIN` | `https://seu-projeto.vercel.app` ou seu domínio próprio, sem caminho |
 | `GOOGLE_CLIENT_ID` | ID do cliente OAuth Web de produção |
 | `GOOGLE_CLIENT_SECRET` | Segredo desse cliente, somente no servidor |
-| `DATABASE_URL` | Conexão PostgreSQL externa, preferencialmente com pool e TLS |
+| `DATABASE_PROVIDER` | `firestore` na instalação atual |
+| `FIREBASE_PROJECT_ID` | `curriculoautomatico-a15fa` |
+| `GCP_WORKLOAD_IDENTITY_AUDIENCE` | Audience do provider OIDC de produção; veja [Firebase](FIREBASE.md) |
+| `GCP_SERVICE_ACCOUNT_EMAIL` | Conta de serviço restrita ao Firestore |
 | `ENCRYPTION_KEY` | Chave fixa de 32 bytes em base64, preservada entre deploys |
 | `NODE_ENV` | `production` |
 
@@ -39,7 +42,7 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
 
 `GOOGLE_REDIRECT_URI` pode ficar sem definição: o servidor deriva `/api/auth/google/callback` de `APP_ORIGIN`. Se for definida explicitamente, deve usar uma das origens de `APP_ORIGIN` e o caminho exato. Se `APP_ORIGIN` não estiver definida e as variáveis de sistema estiverem habilitadas, o domínio de produção vem de `VERCEL_PROJECT_PRODUCTION_URL`. Recomenda-se definir `APP_ORIGIN` para manter o endereço OAuth estável.
 
-Não use prefixo `VITE_` para segredos. Não copie o `.env` de desenvolvimento para produção. A função usa `/tmp` apenas para arquivos temporários; contas, sessões e desafios Google ficam no PostgreSQL. Sem `DATABASE_URL` ou sem chave de criptografia estável, a API recusa iniciar na Vercel. As migrations SQL são incluídas na função e aplicadas sob um lock PostgreSQL para impedir conflito entre inicializações simultâneas.
+Não use prefixo `VITE_` para segredos. Não copie o `.env` de desenvolvimento para produção. A função usa `/tmp` apenas para arquivos temporários; contas, sessões, desafios Google e currículos persistem no Firestore. A API exige um banco persistente e chave de criptografia estável. PostgreSQL continua como alternativa, selecionada quando `DATABASE_PROVIDER` não é `firestore`.
 
 Faça um novo deploy depois de alterar as variáveis. Para acesso público, confira também as configurações de proteção do deployment na Vercel. Configure as credenciais somente em **Production**. Previews exigem um cliente e callback próprios; não são automaticamente autorizados pelo Google.
 
@@ -60,6 +63,7 @@ Se a página abre, mas `/api/health` falha, consulte **Vercel → projeto → Lo
 | Código | O que conferir em Production |
 | --- | --- |
 | `DATABASE_URL_MISSING` | Configure a conexão PostgreSQL em `DATABASE_URL` |
+| `FIREBASE_PROJECT_ID_MISSING` / `FIREBASE_CREDENTIALS_MISSING` | Confira as variáveis Firestore e o vínculo OIDC de Production |
 | `ENCRYPTION_KEY_INVALID` | Configure uma chave fixa de 32 bytes em base64 em `ENCRYPTION_KEY` |
 | `APP_ORIGIN_MISSING` / `APP_ORIGIN_INVALID` | Use `https://curriculoautomatico.vercel.app` ou o domínio real do projeto |
 | `28P01` / `3D000` | Confira credenciais e nome do banco PostgreSQL |
@@ -70,7 +74,7 @@ Depois de ajustar variáveis, faça um novo deployment. O login e o cadastro exi
 
 ## Limites das outras funções do aplicativo
 
-A integração da Vercel adicionada aqui atende a API e o login. Ela não inicia os workers de busca/candidaturas. Essas rotinas precisam de um serviço Node persistente com PostgreSQL/Redis. Os uploads de currículo, as conexões LinkedIn e as sessões dos portais ainda usam arquivos no servidor; antes de oferecer esses recursos na Vercel, migre-os para armazenamento persistente privado ou hospede a API completa em um serviço com volume persistente. `/tmp` não preserva esses arquivos entre instâncias/deploys.
+As buscas e candidaturas usam Cron e Queues da Vercel; consulte `vercel.json` e [Firebase](FIREBASE.md). Arquivos originais são criptografados no banco. Os navegadores de portais usam Sandboxes privados; os metadados de conexão ficam no workspace. CAPTCHA e verificações adicionais continuam exigindo ação da pessoa. A saúde do banco não comprova conexão válida nem envio aceito por um portal.
 
 ## Referências
 

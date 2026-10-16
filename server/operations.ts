@@ -3,8 +3,7 @@ import { discoveryBudgetExpired, discoverySignal } from "./discovery-budget";
 import { vercelQueueEnabled } from "./automation-runtime";
 import { dispatchNextApplication } from "./submission-dispatch";
 import { resolve, extname } from "node:path";
-import { and, eq, sql } from "drizzle-orm";
-import { discoveryTasks, workspaces } from "./schema";
+import { and, eq } from "./storage-types";
 import { transitions } from "../shared/types";
 import type { Application, Job, Status, Workspace } from "../shared/types";
 import {
@@ -26,7 +25,7 @@ import type { CandidatePortal } from "./portal-browser-policy";
 import { discoverCachedSource } from "./source-catalog";
 import { discoverPortal } from "./portal-discovery";
 import {
-  db,
+  store,
   dataDir,
   mutateWorkspace,
   readWorkspace,
@@ -214,23 +213,21 @@ export async function discover(
   leaseToken?: string,
 ) {
   const checkClaim = async (
-    tx: Parameters<Parameters<typeof db.transaction>[0]>[0],
+    tx: Parameters<Parameters<typeof store.transaction>[0]>[0],
   ) => {
     if (!leaseToken || !queuedRunId) return;
     // Lock the task in the same transaction as its workspace changes. Recovery
     // cannot replace the owner between this check and publication.
-    const [claim] = await tx
-      .select({ id: discoveryTasks.id })
-      .from(discoveryTasks)
-      .where(
-        and(
-          eq(discoveryTasks.id, queuedRunId),
-          eq(discoveryTasks.workspaceId, id),
-          eq(discoveryTasks.status, "running"),
-          eq(discoveryTasks.leaseToken, leaseToken),
-        ),
-      )
-      .for("update");
+    const [claim] = await tx.select("discoveryTasks", {
+      where: and(
+        eq("id", queuedRunId),
+        eq("workspaceId", id),
+        eq("status", "running"),
+        eq("leaseToken", leaseToken),
+      ),
+      columns: ["id"],
+      lock: true,
+    });
     if (!claim) throw new StaleDiscoveryClaimError();
   };
   // The persisted run marker also prevents concurrent discovery across workers.
@@ -287,10 +284,10 @@ export async function discover(
   }[] = [];
   const successfulBoards: { type: string; board: string; ids: Set<string> }[] =
     [];
-  const [owner] = await db
-    .select({ userId: workspaces.userId })
-    .from(workspaces)
-    .where(eq(workspaces.id, id));
+  const [owner] = await store.select("workspaces", {
+    where: eq("id", id),
+    columns: ["userId"],
+  });
   for (const source of sources) {
     try {
       if (discoveryBudgetExpired())
@@ -490,10 +487,10 @@ export async function automaticSend(
   appId: string,
   fetcher: typeof fetch = fetch,
 ) {
-  const [workspaceOwner] = await db
-    .select({ userId: workspaces.userId })
-    .from(workspaces)
-    .where(eq(workspaces.id, id));
+  const [workspaceOwner] = await store.select("workspaces", {
+    where: eq("id", id),
+    columns: ["userId"],
+  });
   const nativeSites = workspaceOwner
     ? await connectedPortals(workspaceOwner.userId)
     : [];
@@ -743,12 +740,7 @@ export function recoverInterruptedApplications(
   return count;
 }
 export async function recoverInterruptedSends() {
-  const rows = await db
-    .select({ id: workspaces.id })
-    .from(workspaces)
-    .where(
-      sql`${workspaces.data}->'applications' @> '[{"status":"Enviando"}]'::jsonb`,
-    );
+  const rows = await store.sendingWorkspaceIds();
   for (const row of rows)
     await mutateWorkspace(row.id, (w) => recoverInterruptedApplications(w));
 }
