@@ -38,6 +38,7 @@ import type { LiveInput, LiveTicket } from "../shared/portal-live";
 import { fitLinkedInVerification } from "./portal-login-layout";
 import { portalViewport, portalPixelRatio } from "../shared/portal-display";
 import { providerLoginIssue } from "./portal-login-issue";
+import { portalAccess } from "./portal-access";
 
 type Saved = {
   connectedAt: string;
@@ -54,6 +55,7 @@ export type PortalLoginFrame = {
   fields: Awaited<ReturnType<typeof editableLoginFields>>;
   authenticated: boolean;
   blocked: boolean;
+  challenge?: boolean;
   notice: string;
   live?: LiveTicket;
   navigationError?: string;
@@ -262,14 +264,7 @@ export class PortalBrowserService {
       .locator("body")
       .innerText()
       .catch(() => "");
-    const blocked =
-      /access denied|acesso negado|humans only|request (?:was )?blocked|you have been blocked/i.test(
-        text,
-      );
-    const challenge =
-      /captcha|verify you are human|verifique que|verificação de segurança|confirme que você/i.test(
-        text,
-      );
+    const access = await portalAccess(page, text);
     return {
       viewerId: this.viewerId,
       image:
@@ -282,12 +277,7 @@ export class PortalBrowserService {
       address: new URL(page.url()).hostname + new URL(page.url()).pathname,
       fields,
       authenticated: signed,
-      blocked,
-      notice: blocked
-        ? "O portal bloqueou o acesso. Nenhuma candidatura foi enviada por esta janela."
-        : challenge
-          ? "O portal pediu uma verificação. Resolva manualmente; o sistema não contorna CAPTCHA."
-          : "",
+      ...access,
       navigationError:
         providerLoginIssue(page.url(), text) || this.navigationError,
     };
@@ -412,6 +402,7 @@ export class PortalBrowserService {
     onStatus: (status: {
       authenticated: boolean;
       blocked: boolean;
+      challenge?: boolean;
       notice: string;
       address?: string;
       navigationError?: string;
@@ -539,10 +530,7 @@ export class PortalBrowserService {
         const page = this.page!;
         const signed = await authenticated(page, this.portal);
         const text = await page.locator("body").innerText({ timeout: 1000 });
-        const blocked =
-          /access denied|acesso negado|humans only|request (?:was )?blocked|you have been blocked/i.test(
-            text,
-          );
+        const access = await portalAccess(page, text);
         const issue = providerLoginIssue(page.url(), text);
         if (issue) this.navigationError = issue;
         if (!text.trim() && Date.now() - this.navigationStarted > 10000)
@@ -551,8 +539,7 @@ export class PortalBrowserService {
         const url = new URL(page.url());
         onStatus({
           authenticated: signed,
-          blocked,
-          notice: blocked ? "O portal bloqueou o acesso." : "",
+          ...access,
           address: url.hostname + url.pathname,
           navigationError: this.navigationError,
         });

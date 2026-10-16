@@ -5,6 +5,7 @@ type Listener = {
   status: (status: {
     authenticated: boolean;
     blocked: boolean;
+    challenge?: boolean;
     notice: string;
     address?: string;
     navigationError?: string;
@@ -96,6 +97,7 @@ export class PortalLiveClient {
           listener.status({
             authenticated: message.authenticated,
             blocked: message.blocked,
+            challenge: message.challenge === true,
             notice: typeof message.notice === "string" ? message.notice : "",
             address:
               typeof message.address === "string" ? message.address : undefined,

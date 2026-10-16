@@ -31,7 +31,7 @@ a confirmação de cada tecla. Os frames antigos de uma janela redimensionada s�
 descartados. Não há emulação de identidade, remoção de sinais de automação ou
 contorno de verificações do provedor.
 
-O protocolo do runner é versão 7. Ao abrir, uma instância antiga é parada e
+O protocolo do runner é versão 8. Ao abrir, uma instância antiga é parada e
 retomada com o runner atualizado, preservando o arquivo cifrado da sessão do portal.
 Não é necessário criar outra imagem-base para essas mudanças.
 
@@ -42,3 +42,11 @@ respectivamente. Nenhum erro JavaScript foi observado nessas janelas. São medid
 pontuais de confirmação de comando, não uma garantia de latência nem prova de
 autenticação. O Glassdoor recusou o acesso da sessão de teste. A conta QA e os
 navegadores foram removidos; nenhum login de candidato ou candidatura foi enviado.
+
+Correção posterior: a página "Humans only" do Glassdoor também pode conter uma
+verificação manual visível do Cloudflare. A classificação anterior cobria essa
+verificação com um modal e desativava os cliques. O visualizador agora distingue
+um iframe de verificação visível de uma recusa sem verificação: a pessoa pode
+interagir com o controle original e a sessão continua sem autenticação até o
+portal reconhecer o login. Nenhuma resposta de verificação é obtida ou enviada
+pelo serviço. Um bloqueio sem verificação continua informado como bloqueio.

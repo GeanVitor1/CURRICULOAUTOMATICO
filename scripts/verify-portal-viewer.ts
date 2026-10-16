@@ -125,6 +125,7 @@ try {
         inputAckMs,
         address: latest.address || frame.address,
         blocked: latest.blocked || frame.blocked,
+        challenge: latest.challenge || frame.challenge || false,
         navigationError: latest.navigationError || "",
         pageErrors: pageErrors.length,
         applicationsSubmitted: 0,

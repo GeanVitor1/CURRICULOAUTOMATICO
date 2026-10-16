@@ -24,7 +24,10 @@ for (const fast of [false, true])
       address: "login.gupy.io/candidates/signin",
       authenticated: signed,
       blocked,
-      notice: blocked ? "O portal bloqueou o acesso." : "",
+      challenge: !signed && !blocked,
+      notice: blocked
+        ? "O portal bloqueou o acesso."
+        : "Verificação do portal. Conclua manualmente na página.",
       live: fast
         ? {
             url: "wss://fixture.vercel.run/live",
@@ -167,6 +170,10 @@ for (const fast of [false, true])
     });
     const image = page.getByRole("img", { name: /Página do Gupy/ });
     await expect(image).toBeVisible();
+    await expect(
+      page.getByText("Verificação do portal. Conclua manualmente na página."),
+    ).toBeVisible();
+    await expect(page.locator(".remote-overlay")).toHaveCount(0);
     expect((await image.boundingBox())?.y).toBe(0);
     expect(opens).toBe(1);
     await expect(page.getByRole("button")).toHaveCount(0);
