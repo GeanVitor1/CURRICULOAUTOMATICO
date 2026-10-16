@@ -34,3 +34,11 @@ contorno de verificações do provedor.
 O protocolo do runner é versão 7. Ao abrir, uma instância antiga é parada e
 retomada com o runner atualizado, preservando o arquivo cifrado da sessão do portal.
 Não é necessário criar outra imagem-base para essas mudanças.
+
+Verificação em produção em 16/10/2026: `npx tsx scripts/verify-portal-viewer.ts`.
+Gupy e InfoJobs abriram em 1280 × 900 CSS com imagens de 1920 × 1350 pixels,
+redimensionaram para 390 × 844 e confirmaram um comando Tab em 183 ms e 149 ms,
+respectivamente. Nenhum erro JavaScript foi observado nessas janelas. São medidas
+pontuais de confirmação de comando, não uma garantia de latência nem prova de
+autenticação. O Glassdoor recusou o acesso da sessão de teste. A conta QA e os
+navegadores foram removidos; nenhum login de candidato ou candidatura foi enviado.

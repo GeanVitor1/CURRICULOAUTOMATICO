@@ -50,7 +50,10 @@ try {
     );
     try {
       const opening = page.waitForResponse(
-        (response) => response.url().endsWith(`/connections/${portal}/open`),
+        (response) =>
+          new URL(response.url()).pathname.endsWith(
+            `/connections/${portal}/open`,
+          ),
         { timeout: 65000 },
       );
       await page.goto(`${origin}/app?portal=${portal}`);
@@ -58,6 +61,9 @@ try {
       if (!response.ok())
         throw new Error(`Open ${portal}: ${response.status()}`);
       const frame = await response.json();
+      console.log(
+        JSON.stringify({ portal, stage: "opened", blocked: frame.blocked }),
+      );
       if (!frame.image?.startsWith("data:image/png;base64,"))
         throw new Error("Lossless opening frame missing");
       const png = Buffer.from(frame.image.split(",")[1], "base64");
