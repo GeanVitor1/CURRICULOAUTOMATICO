@@ -1,5 +1,10 @@
 # Conexões dos candidatos — capacidades atuais
 
+O fluxo oficial atualizado, a pesquisa por portal e as instruções de ativação
+estão em [OAuth dos portais](OAUTH-PORTAIS.md). O LinkedIn agora persiste estados
+e metadados cifrados no banco compartilhado; arquivos temporários deixaram de
+ser usados. Há um conector separado para InfoJobs Espanha, sem habilitar Brasil.
+
 Cada fonte informa separadamente autenticação, busca e envio em **Automação → Contas dos sites** e na entrevista. A seleção de um site não conecta a conta. Abertura do site oficial também não comprova conexão ou candidatura.
 
 ## LinkedIn oficial
@@ -8,7 +13,7 @@ Com `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET` e `LINKEDIN_REDIRECT_URI` con
 
 O backend valida estado aleatório vinculado ao usuário, prazo de dez minutos e uso único. Troca o código e consulta `userinfo` no servidor. Tokens não são devolvidos nem persistidos; apenas metadados da autenticação são armazenados cifrados. Autorização expirada, recusada ou falha não aparece como conectada. Desconectar/excluir conta remove os metadados.
 
-Desconexão e conclusão OAuth compartilham o lock do workspace e uma geração da autorização. Uma troca de código que terminar depois de desconectar ou iniciar uma autorização nova não pode restaurar a conexão antiga.
+Desconexão e conclusão OAuth usam transações no banco e uma geração da autorização. Uma troca de código que terminar depois de desconectar ou iniciar uma autorização nova não pode restaurar a conexão antiga.
 
 Sem as credenciais do aplicativo, o OAuth é informado como não configurado. O round trip com aplicativo real não foi validado nesta revisão. [Permissões LinkedIn](https://learn.microsoft.com/en-us/linkedin/shared/authentication/getting-access) e [OpenID Connect](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2).
 

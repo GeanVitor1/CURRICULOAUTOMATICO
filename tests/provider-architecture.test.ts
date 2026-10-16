@@ -7,10 +7,11 @@ import {
   it,
   vi,
 } from "vitest";
-import { mkdtemp, readdir, readFile, rm } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { FastifyInstance } from "fastify";
+import { eq } from "../server/storage-types";
 import {
   browserAuthorized,
   publicDiscoveryAvailable,
@@ -171,6 +172,34 @@ describe("Permissões reais, OAuth e privacidade", () => {
       url.searchParams.get("state"),
     );
   });
+  it("não oferece OAuth fictício para Gupy/Glassdoor e protege a demonstração", async () => {
+    for (const provider of ["gupy", "glassdoor", "infojobs"]) {
+      const response = await app.inject({
+        method: "POST",
+        url: `/api/oauth/${provider}/start`,
+        headers: headers(),
+      });
+      expect(response.statusCode).toBe(400);
+    }
+    const response = await app.inject({
+      method: "DELETE",
+      url: "/api/oauth/linkedin?demo=true",
+      headers: headers(),
+    });
+    expect(response.statusCode).toBe(400);
+    const catalog = await app.inject({
+      url: "/api/oauth/connections",
+      headers: headers(),
+    });
+    expect(catalog.statusCode).toBe(200);
+    expect(catalog.json().map((item: any) => item.id)).toEqual([
+      "linkedin",
+      "infojobs-es",
+    ]);
+    expect(
+      catalog.json().every((item: any) => item.automaticApplications === false),
+    ).toBe(true);
+  });
   it("recusa estado errado antes de trocar código", async () => {
     await authorization();
     const fetcher = vi.spyOn(globalThis, "fetch");
@@ -213,9 +242,12 @@ describe("Permissões reais, OAuth e privacidade", () => {
     expect(JSON.stringify(sites)).not.toMatch(
       /private-access-token|fixture-server-secret|private-provider-subject/,
     );
-    const files = await readdir(join(dir, "oauth"));
-    for (const file of files)
-      expect(await readFile(join(dir, "oauth", file), "utf8")).not.toMatch(
+    const rows = await database.store.select("portalOAuthAccounts", {
+      where: eq("userId", userId),
+    });
+    expect(rows).toHaveLength(1);
+    for (const row of rows)
+      expect(row.encryptedData).not.toMatch(
         /private-access-token|private-provider-subject|connectedAt/,
       );
   });

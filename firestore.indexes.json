@@ -63,6 +63,16 @@
   ],
   "fieldOverrides": [
     {
+      "collectionGroup": "portal_oauth_accounts",
+      "fieldPath": "encryptedData",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "portal_oauth_states",
+      "fieldPath": "stateHash",
+      "indexes": []
+    },
+    {
       "collectionGroup": "workspaces",
       "fieldPath": "_sections",
       "indexes": []

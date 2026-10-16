@@ -380,12 +380,85 @@ describe.skipIf(!process.env.FIRESTORE_TEST_ACCESS_TOKEN)(
       expect(claimed).toHaveLength(1);
       await database.store.delete("discoveryTasks", eq("id", id));
     }, 30000);
+    it("persists official OAuth across requests and consumes a callback only once", async () => {
+      vi.stubEnv("APP_ORIGIN", "http://127.0.0.1:5173");
+      vi.stubEnv("LINKEDIN_CLIENT_ID", "firestore-oauth-qa");
+      vi.stubEnv("LINKEDIN_CLIENT_SECRET", "private-qa-client-secret");
+      vi.stubEnv(
+        "LINKEDIN_REDIRECT_URI",
+        "http://127.0.0.1:5173/api/oauth/linkedin/callback",
+      );
+      const started = await request("POST", "/api/oauth/linkedin/start");
+      expect(started.statusCode).toBe(200);
+      const url = new URL(started.json().url);
+      const state = url.searchParams.get("state")!;
+      const records = await database.store.select("portalOAuthStates", {
+        where: eq("userId", userId),
+      });
+      expect(records).toHaveLength(1);
+      expect(JSON.stringify(records)).not.toContain(state);
+      const mocked = vi
+        .spyOn(globalThis, "fetch")
+        .mockResolvedValueOnce(
+          new Response(
+            JSON.stringify({
+              access_token: "private-qa-access-token",
+              expires_in: 3600,
+            }),
+          ),
+        )
+        .mockResolvedValueOnce(
+          new Response(
+            JSON.stringify({ sub: "private-qa-account", name: "QA" }),
+          ),
+        );
+      try {
+        const callback =
+          "/api/oauth/linkedin/callback?" +
+          new URLSearchParams({ state, code: "qa-code" });
+        const replies = await Promise.all([
+          request("GET", callback),
+          request("GET", callback),
+        ]);
+        expect(
+          replies.filter((reply) =>
+            reply.body.includes("<h1>Conta autenticada</h1>"),
+          ),
+        ).toHaveLength(1);
+        expect(mocked).toHaveBeenCalledTimes(2);
+        expect(JSON.stringify(replies.map((reply) => reply.body))).not.toMatch(
+          /private-qa-|qa-code/,
+        );
+        const account = await database.store.select("portalOAuthAccounts", {
+          where: eq("userId", userId),
+        });
+        expect(account).toHaveLength(1);
+        expect(account[0].encryptedData).not.toMatch(/private-qa-/);
+        const visible = await request("GET", "/api/oauth/connections");
+        expect(
+          visible.json().find((item: any) => item.id === "linkedin"),
+        ).toMatchObject({ connected: true, automaticApplications: false });
+        expect(visible.body).not.toMatch(/private-qa-/);
+      } finally {
+        mocked.mockRestore();
+      }
+      // Leave a pending authorization to verify user-deletion cascade as well.
+      expect(
+        (await request("POST", "/api/oauth/linkedin/start")).statusCode,
+      ).toBe(200);
+    }, 30000);
     it("deletes dependent sessions, workspaces, files and unique email markers with the account", async () => {
       const id = userId;
       expect(
         (await request("DELETE", "/api/account", { password })).statusCode,
       ).toBe(200);
       expect(await database.store.count("sessions", eq("userId", id))).toBe(0);
+      expect(
+        await database.store.count("portalOAuthStates", eq("userId", id)),
+      ).toBe(0);
+      expect(
+        await database.store.count("portalOAuthAccounts", eq("userId", id)),
+      ).toBe(0);
       expect(await database.store.count("workspaces", eq("userId", id))).toBe(
         0,
       );

@@ -61,6 +61,12 @@ function defaults(
     users: { password: null, googleSub: null, createdAt: now },
     sessions: { googleAuthenticatedAt: null },
     googleOAuthStates: { userId: null, sessionHash: null },
+    portalOAuthStates: {},
+    portalOAuthAccounts: {
+      encryptedData: null,
+      connectedAt: null,
+      expiresAt: null,
+    },
     workspaces: { demo: false, updatedAt: now },
     resumeFiles: {},
     aiSettings: {
@@ -382,6 +388,8 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
         : [
               "sessions",
               "googleOAuthStates",
+              "portalOAuthStates",
+              "portalOAuthAccounts",
               "workspaces",
               "aiSettings",
               "subscriptions",
@@ -648,6 +656,8 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
           for (const child of [
             "sessions",
             "googleOAuthStates",
+            "portalOAuthStates",
+            "portalOAuthAccounts",
             "aiSettings",
             "subscriptions",
             "applicationUsage",

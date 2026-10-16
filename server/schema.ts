@@ -97,6 +97,28 @@ export const googleOAuthStates = pgTable("google_oauth_states", {
   redirectUri: text("redirect_uri").notNull(),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
 });
+export const portalOAuthStates = pgTable("portal_oauth_states", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  provider: text("provider").notNull(),
+  stateHash: text("state_hash").notNull(),
+  clientId: text("client_id").notNull(),
+  redirectUri: text("redirect_uri").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+});
+export const portalOAuthAccounts = pgTable("portal_oauth_accounts", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  provider: text("provider").notNull(),
+  generation: text("generation").notNull(),
+  encryptedData: text("encrypted_data"),
+  connectedAt: timestamp("connected_at", { withTimezone: true }),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
+});
 export const workspaces = pgTable(
   "workspaces",
   {

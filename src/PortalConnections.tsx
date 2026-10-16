@@ -17,6 +17,11 @@ import {
   candidatePortalLoginUrls,
   officialPortalLoginOnly,
 } from "../shared/portals";
+import {
+  officialOAuthProviders,
+  type OfficialOAuthProvider,
+  type OfficialOAuthConnection,
+} from "../shared/official-oauth";
 import type { SiteCapability } from "./CareerInterview";
 
 type Frame = {
@@ -51,6 +56,16 @@ export default function PortalConnections({
     staleTime: 60000,
     refetchOnWindowFocus: true,
   });
+  const official = useQuery({
+    queryKey: ["official-oauth-connections"],
+    queryFn: () => api<OfficialOAuthConnection[]>("/oauth/connections"),
+    staleTime: 60000,
+    enabled: selected.includes("infojobs") && !demo,
+  });
+  const spanishAccount = Array.isArray(official.data)
+    ? official.data.find((item) => item.id === "infojobs-es")
+    : undefined;
+  const oauthProvider = useRef<OfficialOAuthProvider>("linkedin");
   const [portal, setPortal] = useState<string | null>(null);
   const [frame, setFrame] = useState<Frame | null>(null);
   const [busy, setBusy] = useState(false);
@@ -74,6 +89,9 @@ export default function PortalConnections({
   useEffect(() => {
     const refresh = () => {
       void client.invalidateQueries({ queryKey: ["automation-sites"] });
+      void client.invalidateQueries({
+        queryKey: ["official-oauth-connections"],
+      });
       void client.invalidateQueries({ queryKey: ["workspace"] });
     };
     const receive = (event: MessageEvent) => {
@@ -121,6 +139,9 @@ export default function PortalConnections({
         oauthWindow.current = null;
         setOauthPending(false);
         void client.invalidateQueries({ queryKey: ["automation-sites"] });
+        void client.invalidateQueries({
+          queryKey: ["official-oauth-connections"],
+        });
       }
     }, 1000);
     return () => window.clearInterval(timer);
@@ -130,14 +151,20 @@ export default function PortalConnections({
       if (
         event.origin !== location.origin ||
         event.source !== oauthWindow.current ||
-        event.data?.type !== "empregatos:oauth"
+        event.data?.type !== "empregatos:oauth" ||
+        (event.data.provider && event.data.provider !== oauthProvider.current)
       )
         return;
       void client.invalidateQueries({ queryKey: ["automation-sites"] });
+      void client.invalidateQueries({
+        queryKey: ["official-oauth-connections"],
+      });
       toast(
         event.data.success
-          ? "Conta LinkedIn autenticada. As permissões de busca e envio são separadas."
-          : "O LinkedIn não confirmou a autenticação. Tente novamente.",
+          ? oauthProvider.current === "linkedin"
+            ? "Conta LinkedIn autenticada. As permissões de busca e envio são separadas."
+            : "InfoJobs Espanha conectado. A conexão do InfoJobs Brasil é separada."
+          : `O ${officialOAuthProviders[oauthProvider.current].name} não confirmou a autenticação. Tente novamente.`,
         !event.data.success,
       );
       oauthWindow.current = null;
@@ -146,7 +173,7 @@ export default function PortalConnections({
     window.addEventListener("message", receiveOAuth);
     return () => window.removeEventListener("message", receiveOAuth);
   }, [client, toast]);
-  const openOAuth = async () => {
+  const openOAuth = async (provider: OfficialOAuthProvider = "linkedin") => {
     if (pending.current) return;
     if (oauthWindow.current && !oauthWindow.current.closed) {
       oauthWindow.current.focus();
@@ -155,7 +182,7 @@ export default function PortalConnections({
     // Open synchronously so popup blockers do not treat the later navigation as unsolicited.
     const popup = window.open(
       "about:blank",
-      "empregatos-linkedin",
+      `empregatos-${provider}`,
       "popup,width=620,height=760",
     );
     if (!popup) {
@@ -165,18 +192,24 @@ export default function PortalConnections({
       );
       return;
     }
+    oauthProvider.current = provider;
     oauthWindow.current = popup;
     setOauthPending(true);
     pending.current = true;
     setBusy(true);
     try {
-      const result = await api<{ url: string }>("/oauth/linkedin/start", {
+      const result = await api<{ url: string }>(`/oauth/${provider}/start`, {
         method: "POST",
       });
       const url = new URL(result.url);
+      const expected = new URL(
+        officialOAuthProviders[provider].authorizationUrl,
+      );
       if (
-        url.origin !== "https://www.linkedin.com" ||
-        url.pathname !== "/oauth/v2/authorization"
+        url.origin !== expected.origin ||
+        url.pathname !== expected.pathname ||
+        url.username ||
+        url.password
       )
         throw new Error("Endereço de autenticação inválido.");
       popup.location.href = url.href;
@@ -440,6 +473,14 @@ export default function PortalConnections({
                   </span>
                 </div>
                 <p className="connection-limitation">{status?.limitation}</p>
+                {site === "linkedin" &&
+                  !status?.oauthConfigured &&
+                  !sites.isPending && (
+                    <p className="connection-limitation">
+                      A conexão oficial do LinkedIn aguarda configuração do
+                      serviço.
+                    </p>
+                  )}
                 {status?.remoteLogin && (
                   <p className="connection-limitation">
                     Ao conectar, você abre o login em um navegador operado pela
@@ -529,6 +570,78 @@ export default function PortalConnections({
           );
         })}
       </div>
+      {selected.includes("infojobs") &&
+        spanishAccount &&
+        (spanishAccount.configured ||
+          spanishAccount.connected ||
+          spanishAccount.expired) && (
+          <details className="connection-card official-oauth-region">
+            <summary>InfoJobs Espanha — conexão oficial opcional</summary>
+            <p>{officialOAuthProviders["infojobs-es"].description}</p>
+            <p role="status">
+              {official.isError
+                ? "Não foi possível verificar esta conexão."
+                : official.isPending && !demo
+                  ? "Verificando conexão…"
+                  : spanishAccount?.connected
+                    ? `Conta conectada${spanishAccount.accountName ? `: ${spanishAccount.accountName}` : ""}`
+                    : spanishAccount?.expired
+                      ? "Autorização expirada. Conecte novamente."
+                      : spanishAccount?.configured
+                        ? "Conta não conectada."
+                        : "A integração oficial aguarda configuração do serviço."}
+            </p>
+            <div className="connection-actions">
+              <Button
+                disabled={
+                  demo || busy || oauthPending || !spanishAccount?.configured
+                }
+                onClick={() => void openOAuth("infojobs-es")}
+              >
+                <ExternalLink size={15} />
+                {oauthPending && oauthProvider.current === "infojobs-es"
+                  ? "Autenticando…"
+                  : "Conectar InfoJobs Espanha"}
+              </Button>
+              {(spanishAccount?.connected || spanishAccount?.expired) && (
+                <Button
+                  disabled={busy || oauthPending}
+                  onClick={async () => {
+                    if (pending.current) return;
+                    pending.current = true;
+                    setBusy(true);
+                    try {
+                      await api("/oauth/infojobs-es", { method: "DELETE" });
+                      await client.invalidateQueries({
+                        queryKey: ["official-oauth-connections"],
+                      });
+                      toast("InfoJobs Espanha desconectado.");
+                    } catch (failure) {
+                      toast((failure as Error).message, true);
+                    } finally {
+                      pending.current = false;
+                      setBusy(false);
+                    }
+                  }}
+                >
+                  Desconectar InfoJobs Espanha
+                </Button>
+              )}
+              <a
+                href={officialOAuthProviders["infojobs-es"].documentation}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Sobre esta conexão
+              </a>
+              {official.isError && (
+                <Button onClick={() => void official.refetch()}>
+                  Verificar novamente
+                </Button>
+              )}
+            </div>
+          </details>
+        )}
       <Modal
         title={`Desconectar ${disconnectSite ? portals[disconnectSite as keyof typeof portals]?.name || disconnectSite : "site"}`}
         description="A sessão salva será removida. Para enviar novas candidaturas por este site, você precisará conectá-lo novamente."

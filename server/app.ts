@@ -41,10 +41,18 @@ import {
 import {
   linkedinOAuthConfigured,
   linkedinIdentity,
-  beginLinkedinOAuth,
-  completeLinkedinOAuth,
   disconnectLinkedinIdentity,
 } from "./linkedin-oauth";
+import {
+  beginOfficialOAuth,
+  completeOfficialOAuth,
+  disconnectOfficialOAuth,
+  officialOAuthConnection,
+} from "./official-oauth";
+import {
+  officialOAuthProviders,
+  type OfficialOAuthProvider,
+} from "../shared/official-oauth";
 import { interviewSchema, applyInterview } from "./career-interview";
 import {
   readyPortals,
@@ -152,6 +160,15 @@ import {
   proxyAuthorized,
 } from "./auth-config";
 const tokenHash = (s: string) => createHash("sha256").update(s).digest("hex");
+function oauthCallbackPage(provider: OfficialOAuthProvider, success: boolean) {
+  const name = officialOAuthProviders[provider].name;
+  const message = success
+    ? provider === "linkedin"
+      ? "Seu LinkedIn foi autenticado. Essa permissão identifica sua conta; busca e candidaturas dependem de integrações próprias."
+      : "Sua conta do InfoJobs Espanha foi autenticada. Essa conexão não autentica sua conta do InfoJobs Brasil nem libera envios nas vagas brasileiras."
+    : "A autorização expirou, foi recusada ou não pôde ser verificada. Volte ao EmpreGatos e tente novamente.";
+  return `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Conexão ${name}</title><body style="font:16px system-ui;padding:40px;background:#f7f8f4;color:#17201a"><h1>${success ? "Conta autenticada" : "Não foi possível conectar"}</h1><p>${message}</p><a href="/app#automacao">Voltar ao EmpreGatos</a><script>if(window.opener){window.opener.postMessage({type:'empregatos:oauth',provider:${JSON.stringify(provider)},success:${success}},window.location.origin);window.close();}</script></body></html>`;
+}
 export async function buildApp({ serveStatic = true } = {}) {
   const app = Fastify({
     trustProxy: hostedOnVercel(),
@@ -756,13 +773,36 @@ export async function buildApp({ serveStatic = true } = {}) {
         .automatic,
     }));
   });
-  app.post("/api/oauth/linkedin/start", async (req) => {
+  const oauthProvider = z.enum(["linkedin", "infojobs-es"]);
+  app.get("/api/oauth/connections", async (req) => {
+    const u = await identity(req);
+    return Promise.all(
+      (Object.keys(officialOAuthProviders) as OfficialOAuthProvider[]).map(
+        (provider) => officialOAuthConnection(u.id, provider),
+      ),
+    );
+  });
+  app.post(
+    "/api/oauth/:provider/start",
+    { config: { rateLimit: { max: 6, timeWindow: "1 minute" } } },
+    async (req) => {
+      const { u, demo } = await scope(req);
+      if (demo)
+        throw new RequestError("A demonstração não conecta contas externas.");
+      const provider = oauthProvider.parse((req.params as any).provider);
+      return { url: await beginOfficialOAuth(u.id, provider) };
+    },
+  );
+  app.delete("/api/oauth/:provider", async (req) => {
     const { u, demo } = await scope(req);
     if (demo)
-      throw new RequestError("A demonstração não conecta contas externas.");
-    return { url: await beginLinkedinOAuth(u.id) };
+      throw new RequestError("A demonstração não altera conexões externas.");
+    const provider = oauthProvider.parse((req.params as any).provider);
+    await disconnectOfficialOAuth(u.id, provider);
+    return { ok: true };
   });
-  app.get("/api/oauth/linkedin/callback", async (req, reply) => {
+  app.get("/api/oauth/:provider/callback", async (req, reply) => {
+    const provider = oauthProvider.parse((req.params as any).provider);
     let success = false;
     try {
       const u = await identity(req);
@@ -773,20 +813,25 @@ export async function buildApp({ serveStatic = true } = {}) {
           error: z.string().max(200).optional(),
         })
         .parse(req.query);
-      await completeLinkedinOAuth(u.id, query.state, query.code, !!query.error);
+      await completeOfficialOAuth(
+        u.id,
+        provider,
+        query.state,
+        query.code,
+        !!query.error,
+      );
       success = true;
     } catch {
-      /* No provider response, code, token or personal data is rendered. */
+      /* Never render provider responses, codes, tokens or personal data. */
     }
     return reply
       .type("text/html")
+      .header("Referrer-Policy", "no-referrer")
       .header(
         "Content-Security-Policy",
         "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'",
       )
-      .send(
-        `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Conexão LinkedIn</title><body style="font:16px system-ui;padding:40px;background:#f7f8f4;color:#17201a"><h1>${success ? "Conta autenticada" : "Não foi possível conectar"}</h1><p>${success ? "Seu LinkedIn foi autenticado. Essa permissão identifica sua conta; busca e candidaturas dependem de integrações próprias." : "A autorização expirou, foi recusada ou não pôde ser verificada. Volte ao Empregatos e tente novamente."}</p><a href="/app#automacao">Voltar ao Empregatos</a><script>if(window.opener){window.opener.postMessage({type:'empregatos:oauth',success:${success}},window.location.origin);window.close();}</script></body></html>`,
-      );
+      .send(oauthCallbackPage(provider, success));
   });
   const connectionPortal = z.enum(candidatePortals);
   const connectionScope = async (req: FastifyRequest, interactive = false) => {

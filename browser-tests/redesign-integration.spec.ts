@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { createWorkspace } from "../server/workspace";
 
-async function fixture(page: Page) {
+async function fixture(page: Page, spanishConfigured = false) {
   const w = createWorkspace("Pessoa QA", "fixture@example.test");
   w.profile.confirmed = true;
   w.resumes = [
@@ -38,6 +38,7 @@ async function fixture(page: Page) {
     },
   };
   let identity = false;
+  let spanishIdentity = false;
   let automatic = false;
   let jobs: any[] = [];
   const mutations: string[] = [];
@@ -53,6 +54,20 @@ async function fixture(page: Page) {
         },
       });
     if (url.pathname === "/api/workspace") return route.fulfill({ json: w });
+    if (url.pathname === "/api/oauth/connections")
+      return route.fulfill({
+        json: [
+          {
+            id: "infojobs-es",
+            name: "InfoJobs Espanha",
+            region: "ES",
+            configured: spanishConfigured,
+            connected: spanishIdentity,
+            expired: false,
+            automaticApplications: false,
+          },
+        ],
+      });
     if (url.pathname === "/api/automation/sites")
       return route.fulfill({
         json: [
@@ -73,7 +88,7 @@ async function fixture(page: Page) {
             name: id,
             discovery: id === "gupy",
             connected: false,
-              automatic: automatic && id === "gupy",
+            automatic: automatic && id === "gupy",
             connectable: false,
           })),
         ],
@@ -94,6 +109,12 @@ async function fixture(page: Page) {
           url: "https://www.linkedin.com/oauth/v2/authorization?client_id=fixture&state=fixture&scope=openid%20profile%20email",
         },
       });
+    if (url.pathname === "/api/oauth/infojobs-es/start")
+      return route.fulfill({
+        json: {
+          url: "https://www.infojobs.net/api/oauth/user-authorize/index.xhtml?client_id=fixture&state=fixture&scope=candidate_profile_with_email",
+        },
+      });
     if (url.pathname === "/api/connections/linkedin" && method === "DELETE") {
       identity = false;
       mutations.push(url.pathname);
@@ -105,6 +126,9 @@ async function fixture(page: Page) {
     mutations,
     setIdentity: (value: boolean) => {
       identity = value;
+    },
+    setSpanishIdentity: (value: boolean) => {
+      spanishIdentity = value;
     },
     supportAutomaticGupy: () => {
       automatic = true;
@@ -278,6 +302,7 @@ test("OAuth abre janela oficial sem navegador embutido e autenticação não pro
     }),
   );
   await page.goto("/app#automacao");
+  await page.getByText("Contas dos sites", { exact: true }).click();
   const popupPromise = page.waitForEvent("popup");
   await page
     .getByRole("button", { name: "Conectar LinkedIn", exact: true })
@@ -291,6 +316,7 @@ test("OAuth abre janela oficial sem navegador embutido e autenticação não pro
   await popup.close();
   data.setIdentity(true);
   await page.reload();
+  await page.getByText("Contas dos sites", { exact: true }).click();
   await expect(
     page.getByText("Conta autenticada via OAuth", { exact: true }),
   ).toBeVisible();
@@ -312,6 +338,54 @@ test("OAuth abre janela oficial sem navegador embutido e autenticação não pro
     });
   }
 });
+test("InfoJobs Espanha abre OAuth oficial e mantém o Brasil separado", async ({
+  page,
+  context,
+}) => {
+  const data = await fixture(page, true);
+  await context.route("https://www.infojobs.net/**", (route) =>
+    route.fulfill({ contentType: "text/html", body: "<h1>OAuth fixture</h1>" }),
+  );
+  await page.goto("/app#automacao");
+  await page.getByText("Contas dos sites", { exact: true }).click();
+  await page
+    .getByText("InfoJobs Espanha — conexão oficial opcional", { exact: true })
+    .click();
+  const region = page.locator(".official-oauth-region");
+  await expect(region).toContainText("não autentica o InfoJobs Brasil");
+  const opened = page.waitForEvent("popup");
+  await region
+    .getByRole("button", { name: "Conectar InfoJobs Espanha", exact: true })
+    .click();
+  const popup = await opened;
+  await expect(popup).toHaveURL(
+    /^https:\/\/www.infojobs.net\/api\/oauth\/user-authorize\/index.xhtml/,
+  );
+  await expect(page.locator(".portal-screen, .remote-screen")).toHaveCount(0);
+  await popup.close();
+  data.setSpanishIdentity(true);
+  await page.reload();
+  await page.getByText("Contas dos sites", { exact: true }).click();
+  await page
+    .getByText("InfoJobs Espanha — conexão oficial opcional", { exact: true })
+    .click();
+  await expect(region).toContainText("Conta conectada");
+  await expect(
+    page.getByRole("button", { name: "Ativar envio automático", exact: true }),
+  ).toHaveCount(0);
+  for (const width of [1440, 375]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await fits(page);
+    await expect
+      .poll(async () => {
+        const box = await region.boundingBox();
+        return !!box && box.x >= 0 && box.x + box.width <= width + 1;
+      })
+      .toBe(true);
+    await region.screenshot({ path: `.data/oauth-infojobs-${width}.png` });
+  }
+});
+
 test("um site sem envio não bloqueia os sites autorizados e a interface informa o alcance", async ({
   page,
 }) => {
