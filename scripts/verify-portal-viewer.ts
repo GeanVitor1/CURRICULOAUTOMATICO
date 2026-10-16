@@ -79,6 +79,12 @@ try {
         return image?.complete && image.naturalWidth > 0;
       });
       await page.waitForTimeout(2000);
+      if (frame.challenge && !frame.blocked) {
+        if (await page.locator(".remote-overlay").count())
+          throw new Error("Manual verification is covered by an overlay");
+        if (!(await page.locator(".remote-verification").isVisible()))
+          throw new Error("Manual verification status is missing");
+      }
       await page.screenshot({ path: `.data/viewer-${portal}-desktop.png` });
       let resized = false;
       let inputAckMs: number | undefined;

@@ -50,3 +50,9 @@ um iframe de verificação visível de uma recusa sem verificação: a pessoa po
 interagir com o controle original e a sessão continua sem autenticação até o
 portal reconhecer o login. Nenhuma resposta de verificação é obtida ou enviada
 pelo serviço. Um bloqueio sem verificação continua informado como bloqueio.
+
+Validação após a correção em produção: Glassdoor apresentou a verificação
+Cloudflare visível, `challenge: true`, `blocked: false`, sem modal por cima do
+controle. Redimensionamento e confirmação de Tab em 159 ms funcionaram, sem
+erros JavaScript. A verificação não foi respondida e nenhum login foi concluído;
+o teste não comprova que o portal aceitará uma conta após essa etapa.
