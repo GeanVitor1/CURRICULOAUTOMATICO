@@ -97,6 +97,7 @@ export function useAction() {
         client.invalidateQueries({ queryKey: ["workspace"] }),
         client.invalidateQueries({ queryKey: ["jobs"] }),
         client.invalidateQueries({ queryKey: ["billing"] }),
+        client.invalidateQueries({ queryKey: ["automation-sites"] }),
       ]);
     },
     onError: (e: Error) => toast(e.message, true),

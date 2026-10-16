@@ -470,6 +470,7 @@ export default function App() {
           client.invalidateQueries({ queryKey: ["workspace"] }),
           client.invalidateQueries({ queryKey: ["jobs"] }),
           client.invalidateQueries({ queryKey: ["billing"] }),
+          client.invalidateQueries({ queryKey: ["automation-sites"] }),
         ]);
       return version;
     },
