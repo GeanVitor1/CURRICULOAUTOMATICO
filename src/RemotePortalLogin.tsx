@@ -5,6 +5,7 @@ import type { Workspace } from "../shared/types";
 import "./RemotePortalLogin.css";
 import { PortalLiveClient } from "./portal-live-client";
 import type { LiveInput, LiveTicket } from "../shared/portal-live";
+import { portalViewport } from "../shared/portal-display";
 
 type Frame = {
   viewerId: string;
@@ -74,10 +75,10 @@ export default function RemotePortalLogin({
     if (!next.live) return;
     live.current?.close();
     live.current = new PortalLiveClient(next.live, {
-      image: (image) => {
+      image: (image, size) => {
         const previous = current.current;
         if (previous?.viewerId === next.viewerId)
-          receive({ ...previous, image });
+          receive({ ...previous, ...size, image });
       },
       status: (status) => {
         const previous = current.current;
@@ -214,7 +215,10 @@ export default function RemotePortalLogin({
         method: "POST",
         body: JSON.stringify({
           remoteBrowserConsent: true,
-          viewportWidth: Math.max(375, Math.min(1024, window.innerWidth)),
+          viewportWidth: portalViewport(window.innerWidth, window.innerHeight)
+            .width,
+          viewportHeight: portalViewport(window.innerWidth, window.innerHeight)
+            .height,
         }),
       });
       receive(next);
@@ -229,6 +233,33 @@ export default function RemotePortalLogin({
   useEffect(() => {
     void start();
   }, [start]);
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const resize = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const next = portalViewport(window.innerWidth, window.innerHeight);
+        const previous = current.current;
+        if (
+          !previous ||
+          finished.current ||
+          closing.current ||
+          previous.authenticated ||
+          previous.blocked ||
+          failed.current ||
+          (previous.width === next.width && previous.height === next.height)
+        )
+          return;
+        void flush();
+        void enqueue({ type: "resize", ...next });
+      }, 250);
+    };
+    window.addEventListener("resize", resize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", resize);
+    };
+  }, [enqueue, flush]);
   const scroll = (delta: number, clientX: number, clientY: number) => {
     const rect = screen.current?.getBoundingClientRect();
     const size = current.current;
@@ -347,7 +378,8 @@ export default function RemotePortalLogin({
     >
       {!frame && !error && (
         <div className="remote-loading" role="status">
-          Abrindo login do {name}…
+          <span className="remote-spinner" aria-hidden="true" />
+          <span>Abrindo login do {name}…</span>
         </div>
       )}
       {frame && !done && (
@@ -358,6 +390,10 @@ export default function RemotePortalLogin({
               src={frame.image}
               width={frame.width}
               height={frame.height}
+              style={{
+                width: `min(100vw, ${(100 * frame.width) / frame.height}dvh)`,
+                aspectRatio: `${frame.width} / ${frame.height}`,
+              }}
               alt={`Página do ${name} no navegador remoto. Clique para interagir.`}
               draggable={false}
               tabIndex={0}
@@ -548,6 +584,7 @@ export default function RemotePortalLogin({
       {frame?.navigationError && !error && !done && (
         <div className="remote-overlay">
           <section className="remote-confirm" role="alert">
+            <h1>Não foi possível concluir o login</h1>
             <p>{frame.navigationError}</p>
             <button
               disabled={busy}

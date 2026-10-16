@@ -25,7 +25,6 @@ import {
   protectBrowser,
   portalHost,
   loginNavigationAllowed,
-  identityHost,
   type CandidatePortal,
 } from "./portal-browser-policy";
 import {
@@ -37,6 +36,8 @@ import {
 import type { LoginAction } from "./portal-sessions";
 import type { LiveInput, LiveTicket } from "../shared/portal-live";
 import { fitLinkedInVerification } from "./portal-login-layout";
+import { portalViewport, portalPixelRatio } from "../shared/portal-display";
+import { providerLoginIssue } from "./portal-login-issue";
 
 type Saved = {
   connectedAt: string;
@@ -63,6 +64,8 @@ export class PortalBrowserService {
   private page?: Page;
   private rootPage?: Page;
   private navigationError = "";
+  private viewport = portalViewport();
+  private lastInput = 0;
   private navigationStarted = Date.now();
   private displayListeners = new Set<(page: Page) => void>();
   private expires = 0;
@@ -167,6 +170,7 @@ export class PortalBrowserService {
     saved: Saved | null,
     width = 1024,
     interactiveLogin = false,
+    height = 720,
   ) {
     if (!this.browser?.isConnected())
       this.browser = await chromium.launch({
@@ -175,7 +179,8 @@ export class PortalBrowserService {
         timeout: 20000,
       });
     const context = await this.browser.newContext({
-      viewport: { width, height: 720 },
+      viewport: { width, height },
+      deviceScaleFactor: interactiveLogin ? portalPixelRatio : 1,
       locale: "pt-BR",
       timezoneId: "America/Sao_Paulo",
       storageState: saved?.state,
@@ -197,6 +202,7 @@ export class PortalBrowserService {
   private activatePage(page: Page) {
     if (page.isClosed() || this.page === page) return;
     this.page = page;
+    void page.setViewportSize(this.viewport).catch(() => {});
     this.navigationError = "";
     this.navigationStarted = Date.now();
     for (const listener of this.displayListeners) listener(page);
@@ -267,12 +273,12 @@ export class PortalBrowserService {
     return {
       viewerId: this.viewerId,
       image:
-        "data:image/jpeg;base64," +
-        (
-          await page.screenshot({ type: "jpeg", quality: 70, timeout: 10000 })
-        ).toString("base64"),
+        "data:image/png;base64," +
+        (await page.screenshot({ type: "png", timeout: 10000 })).toString(
+          "base64",
+        ),
       width: page.viewportSize()?.width || 1024,
-      height: 720,
+      height: page.viewportSize()?.height || this.viewport.height,
       address: new URL(page.url()).hostname + new URL(page.url()).pathname,
       fields,
       authenticated: signed,
@@ -282,7 +288,8 @@ export class PortalBrowserService {
         : challenge
           ? "O portal pediu uma verificação. Resolva manualmente; o sistema não contorna CAPTCHA."
           : "",
-      navigationError: this.navigationError,
+      navigationError:
+        providerLoginIssue(page.url(), text) || this.navigationError,
     };
   }
   async close() {
@@ -294,14 +301,16 @@ export class PortalBrowserService {
     this.rootPage = undefined;
     this.navigationError = "";
   }
-  async open(width = 1024) {
+  async open(width = 1024, height = 720) {
     await this.close();
     this.viewerId = randomUUID();
     const saved = await this.load();
+    this.viewport = portalViewport(width, height);
     this.context = await this.createContext(
       saved,
-      Math.max(375, Math.min(1024, Math.round(width))),
+      this.viewport.width,
       true,
+      this.viewport.height,
     );
     this.page = await this.context.newPage();
     this.rootPage = this.page;
@@ -323,7 +332,13 @@ export class PortalBrowserService {
     if (!this.page || this.expires < Date.now())
       throw new Error("A janela de conexão expirou. Abra novamente.");
     const page = this.page;
-    if (action.type === "login") {
+    this.lastInput = Date.now();
+    if (action.type === "resize") {
+      this.viewport = portalViewport(action.width, action.height);
+      for (const tab of this.context!.pages())
+        if (!tab.isClosed()) await tab.setViewportSize(this.viewport);
+      for (const listener of this.displayListeners) listener(page);
+    } else if (action.type === "login") {
       const root = this.rootPage;
       if (!root || root.isClosed())
         throw new Error("A janela de conexão expirou. Abra novamente.");
@@ -393,7 +408,7 @@ export class PortalBrowserService {
   }
   async startLive(
     viewerId: string,
-    onImage: (image: string) => void,
+    onImage: (image: string, size?: { width: number; height: number }) => void,
     onStatus: (status: {
       authenticated: boolean;
       blocked: boolean;
@@ -410,6 +425,7 @@ export class PortalBrowserService {
       checking = false,
       lastImage = 0;
     let latestImage = "";
+    let imageSize = this.page!.viewportSize()!;
     let imageTimer: ReturnType<typeof setTimeout> | undefined;
     let capturing = false;
     // Chromium can stall its screencast on a white compositor frame after
@@ -417,19 +433,30 @@ export class PortalBrowserService {
     // input acknowledgements, with no extra HTTP/DB round trips per keystroke.
     const capture = async () => {
       const page = this.page;
-      if (ended || capturing || this.busy || !page || page.isClosed()) return;
+      if (
+        ended ||
+        capturing ||
+        this.busy ||
+        Date.now() - this.lastInput < 350 ||
+        !page ||
+        page.isClosed()
+      )
+        return;
       capturing = true;
       try {
         await fitLinkedInVerification(page);
-        const bytes = await page.screenshot({
-          type: "jpeg",
-          quality: 65,
-          timeout: 1500,
-        });
-        if (!ended && page === this.page) {
+        const size = page.viewportSize()!;
+        const bytes = await page.screenshot({ type: "png", timeout: 1500 });
+        if (
+          !ended &&
+          page === this.page &&
+          size.width === page.viewportSize()?.width &&
+          size.height === page.viewportSize()?.height
+        ) {
           clearTimeout(imageTimer);
           imageTimer = undefined;
-          latestImage = "data:image/jpeg;base64," + bytes.toString("base64");
+          latestImage = "data:image/png;base64," + bytes.toString("base64");
+          imageSize = size;
           deliverImage();
         }
       } catch {
@@ -443,7 +470,7 @@ export class PortalBrowserService {
       imageTimer = undefined;
       if (ended || !latestImage) return;
       lastImage = Date.now();
-      onImage(latestImage);
+      onImage(latestImage, imageSize);
       latestImage = "";
     };
     const switchPage = (page: Page) => {
@@ -454,14 +481,23 @@ export class PortalBrowserService {
           latestImage = "";
           await cdp?.send("Page.stopScreencast").catch(() => {});
           await cdp?.detach().catch(() => {});
+          const size = page.viewportSize()!;
           const session = await page.context().newCDPSession(page);
           cdp = session;
           session.on("Page.screencastFrame", (event) => {
             void session
               .send("Page.screencastFrameAck", { sessionId: event.sessionId })
               .catch(() => {});
-            if (ended || page !== this.page) return;
+            if (
+              ended ||
+              page !== this.page ||
+              session !== cdp ||
+              size.width !== page.viewportSize()?.width ||
+              size.height !== page.viewportSize()?.height
+            )
+              return;
             latestImage = "data:image/jpeg;base64," + event.data;
+            imageSize = size;
             if (Date.now() - lastImage >= 70) {
               clearTimeout(imageTimer);
               deliverImage();
@@ -473,9 +509,9 @@ export class PortalBrowserService {
           });
           await session.send("Page.startScreencast", {
             format: "jpeg",
-            quality: 65,
-            maxWidth: 1024,
-            maxHeight: 720,
+            quality: 90,
+            maxWidth: Math.ceil(size.width * portalPixelRatio),
+            maxHeight: Math.ceil(size.height * portalPixelRatio),
             everyNthFrame: 1,
           });
         })
@@ -507,14 +543,8 @@ export class PortalBrowserService {
           /access denied|acesso negado|humans only|request (?:was )?blocked|you have been blocked/i.test(
             text,
           );
-        if (
-          identityHost(page.url()) &&
-          /disallowed_useragent|this browser or app may not be secure|este navegador ou app pode não ser seguro|couldn.t sign you in|não foi possível fazer login|access blocked|acesso bloqueado/i.test(
-            text,
-          )
-        )
-          this.navigationError =
-            "O provedor recusou o acesso neste navegador. Volte ao portal e use a entrada com e-mail ou sem senha, se disponível.";
+        const issue = providerLoginIssue(page.url(), text);
+        if (issue) this.navigationError = issue;
         if (!text.trim() && Date.now() - this.navigationStarted > 10000)
           this.navigationError ||=
             "A página de login não carregou. Volte ao portal para tentar novamente.";
@@ -652,6 +682,7 @@ export class PortalBrowserService {
     input?: PortalApplication;
     viewerId?: string;
     viewportWidth?: number;
+    viewportHeight?: number;
   }) {
     if (this.busy)
       throw new Error(
@@ -663,7 +694,8 @@ export class PortalBrowserService {
         throw new Error(
           "Esta janela de conexão foi substituída ou expirou. Abra o navegador novamente.",
         );
-      if (request.op === "open") return await this.open(request.viewportWidth);
+      if (request.op === "open")
+        return await this.open(request.viewportWidth, request.viewportHeight);
       if (request.op === "action" && request.action)
         return await this.action(request.action);
       if (request.op === "confirm")

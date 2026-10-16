@@ -26,9 +26,30 @@
 }
 .remote-loading {
   height: 100%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
   font-size: 15px;
+}
+.remote-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #e5ebe3;
+  border-top-color: #417c35;
+  border-radius: 50%;
+  animation: remote-spin 0.8s linear infinite;
+}
+@keyframes remote-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .remote-spinner {
+    animation: none;
+  }
 }
 .remote-login .remote-keyboard {
   position: fixed;

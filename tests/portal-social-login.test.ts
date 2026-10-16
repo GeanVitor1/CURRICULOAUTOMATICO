@@ -23,7 +23,8 @@ vi.mock("../server/portal-browser-policy", async (original) => {
           url.hostname === "www.linkedin.com"
         ) {
           if (url.pathname === "/refused")
-            body = "<h1>Este navegador ou app pode não ser seguro</h1>";
+            body =
+              "<h1>Não foi possível fazer o login</h1><p>Esse navegador ou app pode não ser seguro.</p>";
           else
             body = `<h1 style="margin:0;height:50px">${url.hostname}</h1><input style="display:block;height:30px" aria-label="Email"><button style="display:block;width:180px;height:60px" onclick="location.href='https://login.gupy.io/callback'">Continuar</button>`;
         } else if (url.pathname === "/callback") {
@@ -221,3 +222,58 @@ it("recupera a imagem quando o screencast para de entregar frames", async () => 
     await service.close();
   }
 }, 15000);
+
+it("mantém texto em alta resolução e coordenadas corretas ao redimensionar e abrir popup", async () => {
+  const service = new PortalBrowserService(
+    "gupy",
+    join(directory, "resolution"),
+  );
+  const first = await service.open(1280, 900);
+  expect(first.width).toBe(1280);
+  expect(first.height).toBe(900);
+  const png = Buffer.from(first.image.split(",")[1], "base64");
+  expect(png.readUInt32BE(16)).toBe(1920);
+  expect(png.readUInt32BE(20)).toBe(1350);
+  const pictures: { width?: number; height?: number }[] = [];
+  const stop = await service.startLive(
+    first.viewerId,
+    (_image, size) => pictures.push(size || {}),
+    () => {},
+    () => {},
+  );
+  try {
+    await service.liveInput(first.viewerId, {
+      type: "resize",
+      width: 390,
+      height: 844,
+    });
+    await expect
+      .poll(() => pictures.at(-1))
+      .toEqual({ width: 390, height: 844 });
+    await service.liveInput(first.viewerId, { type: "click", x: 70, y: 90 });
+    await expect
+      .poll(() => browsers.at(-1)!.contexts()[0].pages().length)
+      .toBe(2);
+    const popup = browsers.at(-1)!.contexts()[0].pages()[1];
+    await expect
+      .poll(() => popup.viewportSize())
+      .toEqual({ width: 390, height: 844 });
+    await service.liveInput(first.viewerId, { type: "click", x: 80, y: 70 });
+    await service.liveInput(first.viewerId, {
+      type: "text",
+      value: "resolution-fixture",
+    });
+    expect(await popup.getByRole("textbox").inputValue()).toBe(
+      "resolution-fixture",
+    );
+    const frame = await service.action({ type: "refresh" });
+    expect(frame.width).toBe(390);
+    expect(frame.height).toBe(844);
+    const resized = Buffer.from(frame.image.split(",")[1], "base64");
+    expect(resized.readUInt32BE(16)).toBe(585);
+    expect(resized.readUInt32BE(20)).toBe(1266);
+  } finally {
+    await stop();
+    await service.close();
+  }
+}, 20000);

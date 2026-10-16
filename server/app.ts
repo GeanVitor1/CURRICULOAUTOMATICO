@@ -827,7 +827,8 @@ export async function buildApp({ serveStatic = true } = {}) {
         ? z
             .object({
               remoteBrowserConsent: z.literal(true),
-              viewportWidth: z.number().int().min(375).max(1024).optional(),
+              viewportWidth: z.number().int().min(375).max(1600).optional(),
+              viewportHeight: z.number().int().min(480).max(1000).optional(),
             })
             .parse(req.body)
         : undefined;
@@ -837,6 +838,7 @@ export async function buildApp({ serveStatic = true } = {}) {
         portal,
         settings?.viewportWidth,
         req.headers.origin || appOrigins()[0],
+        settings?.viewportHeight,
       );
     },
   );
@@ -862,8 +864,8 @@ export async function buildApp({ serveStatic = true } = {}) {
         }),
         z.object({
           type: z.literal("click"),
-          x: z.number().min(0).max(1024),
-          y: z.number().min(0).max(720),
+          x: z.number().min(0).max(1600),
+          y: z.number().min(0).max(1000),
         }),
         z.object({ type: z.literal("text"), value: z.string().max(2000) }),
         z.object({
@@ -894,10 +896,16 @@ export async function buildApp({ serveStatic = true } = {}) {
         z.object({
           type: z.literal("scroll"),
           delta: z.number().min(-1200).max(1200),
-          x: z.number().min(0).max(1024).optional(),
-          y: z.number().min(0).max(720).optional(),
+          x: z.number().min(0).max(1600).optional(),
+          y: z.number().min(0).max(1000).optional(),
         }),
         z.object({ type: z.literal("refresh") }),
+        z.object({ type: z.literal("login") }),
+        z.object({
+          type: z.literal("resize"),
+          width: z.number().int().min(375).max(1600),
+          height: z.number().int().min(480).max(1000),
+        }),
       ])
       .parse(req.body);
     reply.header("Cache-Control", "no-store");

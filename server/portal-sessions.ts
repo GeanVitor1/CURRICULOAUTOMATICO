@@ -305,8 +305,8 @@ async function frame(session: LoginSession, portal: CandidatePortal) {
       "Este site bloqueou o acesso pelo navegador de candidaturas. A conta não foi conectada. Você pode tentar novamente mais tarde ou acessar o portal diretamente.";
   return {
     image: `data:image/jpeg;base64,${(await session.page.screenshot({ type: "jpeg", quality: 75, timeout: 10000 })).toString("base64")}`,
-    width: 1024,
-    height: 720,
+    width: session.page.viewportSize()?.width || 1024,
+    height: session.page.viewportSize()?.height || 720,
     address: u.hostname + u.pathname,
     fields,
     notice,
@@ -319,11 +319,13 @@ export async function startPortalLogin(
   portal: CandidatePortal,
   viewportWidth?: number,
   viewerOrigin?: string,
+  viewportHeight?: number,
 ) {
   if (cloudPortalEnabled(userId, portal))
     return cloudPortalCommand<PortalLoginFrame>(userId, portal, {
       op: "open",
       viewportWidth,
+      viewportHeight,
       viewerOrigin,
     });
   if (!browserAuthorized(portal))
@@ -382,6 +384,7 @@ export async function startPortalLogin(
   }
 }
 export type LoginAction =
+  | import("../shared/portal-live").LiveInput
   | { type: "submit"; fields: { index: number; key?: string; value: string }[] }
   | { type: "click"; x: number; y: number }
   | { type: "text"; value: string }
@@ -403,7 +406,17 @@ export async function portalLoginAction(
     });
   const session = await login(userId, portal);
   return serial(session, async () => {
-    if (action.type === "submit") {
+    if (action.type === "resize") {
+      await session.page.setViewportSize({
+        width: action.width,
+        height: action.height,
+      });
+    } else if (action.type === "login") {
+      await session.page.goto(portalLogin[portal], {
+        waitUntil: "domcontentloaded",
+        timeout: 25000,
+      });
+    } else if (action.type === "submit") {
       const targets = [];
       for (const item of action.fields) {
         const field = session.page.locator(loginInputs).nth(item.index);

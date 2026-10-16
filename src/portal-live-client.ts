@@ -1,7 +1,7 @@
 import type { LiveInput, LiveTicket } from "../shared/portal-live";
 
 type Listener = {
-  image: (image: string) => void;
+  image: (image: string, size?: { width: number; height: number }) => void;
   status: (status: {
     authenticated: boolean;
     blocked: boolean;
@@ -74,10 +74,20 @@ export class PortalLiveClient {
         if (
           message.type === "frame" &&
           typeof message.image === "string" &&
-          message.image.startsWith("data:image/jpeg;base64,") &&
-          message.image.length < 3000000
+          /^data:image\/(?:jpeg|png);base64,/.test(message.image) &&
+          message.image.length < 8000000
         )
-          listener.image(message.image);
+          listener.image(
+            message.image,
+            Number.isInteger(message.width) &&
+              message.width >= 375 &&
+              message.width <= 1600 &&
+              Number.isInteger(message.height) &&
+              message.height >= 480 &&
+              message.height <= 1000
+              ? { width: message.width, height: message.height }
+              : undefined,
+          );
         if (
           message.type === "status" &&
           typeof message.authenticated === "boolean" &&

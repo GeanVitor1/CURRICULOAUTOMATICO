@@ -15,12 +15,12 @@ for (const fast of [false, true])
     let peakOutstanding = 0;
     let httpInputs = 0;
     let finishClose: (() => void) | undefined;
+    let view = { width: 1024, height: 720 };
     let failNavigation: (() => void) | undefined;
     const frame = () => ({
       viewerId,
       image: "/login-video-poster.png",
-      width: 1024,
-      height: 720,
+      ...view,
       address: "login.gupy.io/candidates/signin",
       authenticated: signed,
       blocked,
@@ -49,6 +49,20 @@ for (const fast of [false, true])
         ws.onMessage((raw) => {
           const message = JSON.parse(String(raw));
           actions.push(message.action);
+          if (message.action.type === "resize") {
+            view = {
+              width: message.action.width,
+              height: message.action.height,
+            };
+            ws.send(
+              JSON.stringify({
+                type: "frame",
+                image:
+                  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLttAAAAABJRU5ErkJggg==",
+                ...view,
+              }),
+            );
+          }
           if (message.action.type === "login")
             ws.send(
               JSON.stringify({
@@ -111,11 +125,13 @@ for (const fast of [false, true])
         opens++;
         expect(body.remoteBrowserConsent).toBe(true);
         expect(body.viewportWidth).toBe(
-          Math.max(375, Math.min(1024, page.viewportSize()?.width || 1440)),
+          Math.max(375, Math.min(1600, page.viewportSize()?.width || 1440)),
         );
-        return route.fulfill({
-          json: { ...frame(), width: body.viewportWidth },
-        });
+        view = { width: body.viewportWidth, height: body.viewportHeight };
+        expect(body.viewportHeight).toBe(
+          Math.min(1000, page.viewportSize()!.height),
+        );
+        return route.fulfill({ json: frame() });
       }
       expect(route.request().headers()["x-portal-viewer"]).toBe(viewerId);
       if (path.endsWith("/close")) {
@@ -135,6 +151,8 @@ for (const fast of [false, true])
         return route.fulfill({ json: { ok: true, automatic: true } });
       }
       actions.push(body);
+      if (body.type === "resize")
+        view = { width: body.width, height: body.height };
       httpInputs++;
       if (body.type === "key" && body.value === "Enter") signed = true;
       return route.fulfill({ json: frame() });
@@ -168,6 +186,8 @@ for (const fast of [false, true])
         .toBe(true);
     }
     await page.setViewportSize({ width: 390, height: 844 });
+    await expect.poll(() => view.width).toBe(390);
+    await expect(image).toHaveAttribute("width", "390");
     const scaled = (await image.boundingBox())!;
     await image.dispatchEvent("wheel", {
       deltaY: 350,
@@ -179,9 +199,11 @@ for (const fast of [false, true])
       .toBe(true);
     const scrollAction = actions.find((a) => a.type === "scroll");
     // Browser wheel coordinates are rounded to a CSS pixel before scaling.
-    expect(Math.abs(scrollAction.x - 512)).toBeLessThan(1024 / scaled.width);
-    expect(Math.abs(scrollAction.y - 360)).toBeLessThan(720 / scaled.height);
+    expect(Math.abs(scrollAction.x - 195)).toBeLessThan(390 / scaled.width);
+    expect(Math.abs(scrollAction.y - 422)).toBeLessThan(844 / scaled.height);
     await page.setViewportSize({ width: 1440, height: 1100 });
+    await expect.poll(() => view.width).toBe(1440);
+    await expect(image).toHaveAttribute("width", "1440");
     await image.click({ position: { x: 100, y: 80 } });
     await page.keyboard.insertText("fixture@example.test");
     await page.keyboard.press("Tab");
@@ -192,7 +214,9 @@ for (const fast of [false, true])
     ).toBeVisible();
     expect(
       actions
-        .filter((a) => !["refresh", "scroll", "login"].includes(a.type))
+        .filter(
+          (a) => !["refresh", "scroll", "login", "resize"].includes(a.type),
+        )
         .map((a) => a.type),
     ).toEqual(["click", "text", "key", "text", "key"]);
     expect(

@@ -81,7 +81,7 @@ it("salva login cifrado, restaura a sessão e não repete a candidatura após re
   const stopLive = await service.startLive(
     first.viewerId,
     (image) => {
-      expect(image).toMatch(/^data:image\/jpeg;base64,/);
+      expect(image).toMatch(/^data:image\/(jpeg|png);base64,/);
       liveImages++;
     },
     () => {},

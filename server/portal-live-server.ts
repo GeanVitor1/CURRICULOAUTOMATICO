@@ -147,8 +147,9 @@ export class PortalLiveServer {
     void this.service
       .startLive(
         ticket.viewerId,
-        (image) => {
-          if (ws.bufferedAmount < 512000) send({ type: "frame", image });
+        (image, size) => {
+          if (ws.bufferedAmount < 512000)
+            send({ type: "frame", image, ...size });
         },
         (status) => send({ type: "status", ...status }),
         () => ws.close(1000),
