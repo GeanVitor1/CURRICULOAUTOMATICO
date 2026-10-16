@@ -453,16 +453,25 @@ export default function App() {
     queryKey: ["workspace", false],
     queryFn: () => api<Workspace>("/workspace?summary=true"),
     enabled: !!me.data && route === "/app",
-    refetchInterval: (q) =>
-      q.state.data?.routine.enabled ||
-      q.state.data?.applications.some(
-        (application) => application.status === "Enviando",
-      ) ||
-      q.state.data?.runs.some((run) =>
-        ["running", "queued"].includes(run.status),
+    refetchInterval: (q) => {
+      const data = q.state.data;
+      if (
+        data?.applications.some(
+          (application) => application.status === "Enviando",
+        ) ||
+        data?.runs.some((run) => ["running", "queued"].includes(run.status))
       )
-        ? 2000
-        : false,
+        return 2000;
+      // Wake near the scheduled search, without fetching large workspaces
+      // every two seconds throughout the day while the routine is idle.
+      const next =
+        data?.routine.enabled && data.routine.nextRun
+          ? Date.parse(data.routine.nextRun) - Date.now()
+          : NaN;
+      return Number.isFinite(next)
+        ? Math.min(2147483647, next > 0 ? Math.max(60000, next) : 1800000)
+        : false;
+    },
   });
   const toast = (text: string, error = false) => setToast({ text, error });
   const navigate = (target: string) => {

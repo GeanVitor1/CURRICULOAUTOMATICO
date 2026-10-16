@@ -44,6 +44,7 @@ test("preferences start a search and explain the daily schedule without promisin
     },
   };
   let starts = 0;
+  let workspaceReads = 0;
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.route("**/api/**", async (route) => {
@@ -56,7 +57,10 @@ test("preferences start a search and explain the daily schedule without promisin
           email: w.profile.email,
         },
       });
-    if (path === "/api/workspace") return route.fulfill({ json: w });
+    if (path === "/api/workspace") {
+      workspaceReads++;
+      return route.fulfill({ json: w });
+    }
     if (path === "/api/automation/sites")
       return route.fulfill({
         json: [
@@ -99,6 +103,7 @@ test("preferences start a search and explain the daily schedule without promisin
     }
     return route.fulfill({ json: {} });
   });
+  await page.clock.install();
   await page.goto("/app#preferencias");
   await expect(page.getByText(/A primeira busca começa agora/)).toBeVisible();
   await page
@@ -120,5 +125,25 @@ test("preferences start a search and explain the daily schedule without promisin
     page.getByRole("button", { name: "Buscando…", exact: true }),
   ).toBeDisabled();
   expect(starts).toBe(1);
+  const queuedReads = workspaceReads;
+  await page.clock.fastForward(2100);
+  await expect.poll(() => workspaceReads).toBeGreaterThan(queuedReads);
+  w.runs[0].status = "completed";
+  const completingReads = workspaceReads;
+  await page.clock.fastForward(2100);
+  await expect.poll(() => workspaceReads).toBeGreaterThan(completingReads);
+  await expect(
+    page.getByRole("button", { name: "Buscar agora", exact: true }),
+  ).toBeEnabled();
+  const idleReads = workspaceReads;
+  await page.clock.fastForward(15000);
+  expect(w.routine.enabled).toBe(true);
+  expect(workspaceReads).toBe(idleReads);
+  w.runs[0].status = "queued";
+  await page.clock.fastForward(86400000);
+  await expect.poll(() => workspaceReads).toBeGreaterThan(idleReads);
+  await expect(
+    page.getByRole("button", { name: "Buscando…", exact: true }),
+  ).toBeDisabled();
   expect(errors).toEqual([]);
 });

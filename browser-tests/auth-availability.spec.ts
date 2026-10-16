@@ -24,8 +24,13 @@ for (const path of ["/login", "/register"]) {
       page.getByText("Não foi possível acessar sua conta agora."),
     ).toHaveCount(0);
     await expect(
-      page.getByText("Não foi possível verificar o acesso com Google."),
+      page.getByText(
+        "O serviço de acesso está temporariamente indisponível. Tente novamente em instantes.",
+      ),
     ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Continuar com Google", exact: true }),
+    ).toBeDisabled();
   });
 }
 

@@ -68,9 +68,11 @@ export default function GoogleSignIn({
   disabled?: boolean;
 }) {
   const providers = useAuthProviders();
+  const unavailable =
+    (providers.error as (Error & { status?: number }) | null)?.status === 503;
   return (
     <div className="google-signin">
-      {providers.data?.google && !disabled ? (
+      {providers.data?.google && !providers.isError && !disabled ? (
         <a
           className="button google-button full"
           href={providers.data.googleSignInUrl!}
@@ -86,18 +88,21 @@ export default function GoogleSignIn({
             : "Continuar com Google"}
         </Button>
       )}
-      {!providers.isPending && !providers.data?.google && (
-        <p className="google-signin-help" role="status">
-          {providers.isError
-            ? "Não foi possível verificar o acesso com Google."
-            : "O acesso com Google ainda não está disponível."}
-          {providers.isError && (
-            <button type="button" onClick={() => void providers.refetch()}>
-              Tentar novamente
-            </button>
-          )}
-        </p>
-      )}
+      {!providers.isPending &&
+        (!providers.data?.google || providers.isError) && (
+          <p className="google-signin-help" role="status">
+            {providers.isError
+              ? unavailable
+                ? "O serviço de acesso está temporariamente indisponível. Tente novamente em instantes."
+                : "Não foi possível verificar o acesso com Google."
+              : "O acesso com Google ainda não está disponível."}
+            {providers.isError && (
+              <button type="button" onClick={() => void providers.refetch()}>
+                Tentar novamente
+              </button>
+            )}
+          </p>
+        )}
     </div>
   );
 }
