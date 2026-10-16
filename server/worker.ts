@@ -4,6 +4,8 @@ import { connection, queue, configureSchedule } from "./queue";
 import { executeRoutine } from "./operations";
 import { db, closeDb } from "./db";
 import { workspaces } from "./schema";
+import { eq, sql } from "drizzle-orm";
+import type { Routine } from "../shared/types";
 import { startDiscoveryWorker } from "./discovery-queue";
 import { closePortalBrowsers } from "./portal-sessions";
 if (!connection || !process.env.DATABASE_URL)
@@ -23,13 +25,14 @@ worker.on("failed", (job, err) =>
   ),
 );
 // Stable IDs reconcile schedules across restart without duplication.
-for (const row of await db.select().from(workspaces))
-  if (!row.demo)
-    await configureSchedule(
-      row.id,
-      row.data.routine.enabled,
-      row.data.routine.time,
-    );
+for (const row of await db
+  .select({
+    id: workspaces.id,
+    routine: sql<Routine>`${workspaces.data}->'routine'`,
+  })
+  .from(workspaces)
+  .where(eq(workspaces.demo, false)))
+  await configureSchedule(row.id, row.routine.enabled, row.routine.time);
 console.log("Worker EmpreGatos ativo.");
 const stopDiscovery = startDiscoveryWorker();
 const stop = async () => {

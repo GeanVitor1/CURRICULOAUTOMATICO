@@ -241,6 +241,8 @@ export type Run = {
   searchSuggestions?: string[];
 };
 export type Workspace = {
+  /** Response revision used for lightweight change polling; not persisted in data. */
+  revision?: string;
   interviewDraft?: {
     step: number;
     completed: boolean;

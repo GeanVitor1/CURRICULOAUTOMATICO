@@ -17,7 +17,8 @@ export function publicWorkspace(w: Workspace): Workspace {
     ...w,
     resumes: w.resumes.map(({ storedFile, ...resume }) => ({
       ...resume,
-      originalFileAvailable: !!storedFile || !hostedOnVercel(),
+      originalFileAvailable:
+        resume.originalFileAvailable || !!storedFile || !hostedOnVercel(),
     })),
   };
 }

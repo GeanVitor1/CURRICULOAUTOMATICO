@@ -453,8 +453,29 @@ export default function App() {
     queryKey: ["workspace", false],
     queryFn: () => api<Workspace>("/workspace?summary=true"),
     enabled: !!me.data && route === "/app",
+  });
+  useQuery({
+    queryKey: ["workspace-version", me.data?.id],
+    enabled: !!me.data && !!workspace.data && route === "/app",
+    queryFn: async ({ signal }) => {
+      const version = await api<{ revision: string | null }>(
+        "/workspace/version",
+        { signal },
+      );
+      const current = client.getQueryData<Workspace>(["workspace", false]);
+      // While work is active, check one timestamp. Fetch the dashboard and
+      // dependent lists only when a worker has actually changed the workspace.
+      if (version.revision && current && version.revision !== current.revision)
+        await Promise.all([
+          client.invalidateQueries({ queryKey: ["workspace"] }),
+          client.invalidateQueries({ queryKey: ["jobs"] }),
+          client.invalidateQueries({ queryKey: ["billing"] }),
+        ]);
+      return version;
+    },
     refetchInterval: (q) => {
-      const data = q.state.data;
+      if (q.state.status === "error") return 30000;
+      const data = workspace.data;
       if (
         data?.applications.some(
           (application) => application.status === "Enviando",
@@ -462,8 +483,7 @@ export default function App() {
         data?.runs.some((run) => ["running", "queued"].includes(run.status))
       )
         return 2000;
-      // Wake near the scheduled search, without fetching large workspaces
-      // every two seconds throughout the day while the routine is idle.
+      // Wake near the scheduled daily search; idle dashboards do not poll.
       const next =
         data?.routine.enabled && data.routine.nextRun
           ? Date.parse(data.routine.nextRun) - Date.now()

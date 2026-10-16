@@ -5,6 +5,7 @@ test("preferences start a search and explain the daily schedule without promisin
   page,
 }) => {
   const w = createWorkspace("Pessoa fictícia", "automation@example.test");
+  w.revision = "initial";
   w.onboarding!.completed = true;
   w.guide = { step: 0, completed: true, dismissed: true, active: false };
   w.infrastructure = {
@@ -45,6 +46,9 @@ test("preferences start a search and explain the daily schedule without promisin
   };
   let starts = 0;
   let workspaceReads = 0;
+  let versionReads = 0;
+  let billingReads = 0;
+  let siteReads = 0;
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.route("**/api/**", async (route) => {
@@ -61,7 +65,12 @@ test("preferences start a search and explain the daily schedule without promisin
       workspaceReads++;
       return route.fulfill({ json: w });
     }
-    if (path === "/api/automation/sites")
+    if (path === "/api/workspace/version") {
+      versionReads++;
+      return route.fulfill({ json: { revision: w.revision } });
+    }
+    if (path === "/api/automation/sites") {
+      siteReads++;
       return route.fulfill({
         json: [
           {
@@ -73,10 +82,13 @@ test("preferences start a search and explain the daily schedule without promisin
           },
         ],
       });
-    if (path === "/api/billing")
+    }
+    if (path === "/api/billing") {
+      billingReads++;
       return route.fulfill({
         json: { name: "Grátis", dailyLimit: 5, remainingToday: 5 },
       });
+    }
     if (path === "/api/interview") {
       const body = route.request().postDataJSON();
       expect(body.start).toBe("prepare");
@@ -86,6 +98,7 @@ test("preferences start a search and explain the daily schedule without promisin
       w.resumes[0].approved = true;
       w.profile.confirmed = true;
       w.routine.enabled = true;
+      w.revision = "queued";
       w.routine.mode = "approval";
       w.routine.nextRun = new Date(Date.now() + 86400000).toISOString();
       w.runs = [
@@ -126,9 +139,12 @@ test("preferences start a search and explain the daily schedule without promisin
   ).toBeDisabled();
   expect(starts).toBe(1);
   const queuedReads = workspaceReads;
+  const queuedVersionReads = versionReads;
   await page.clock.fastForward(2100);
-  await expect.poll(() => workspaceReads).toBeGreaterThan(queuedReads);
+  await expect.poll(() => versionReads).toBeGreaterThan(queuedVersionReads);
+  expect(workspaceReads).toBe(queuedReads);
   w.runs[0].status = "completed";
+  w.revision = "completed";
   const completingReads = workspaceReads;
   await page.clock.fastForward(2100);
   await expect.poll(() => workspaceReads).toBeGreaterThan(completingReads);
@@ -136,10 +152,17 @@ test("preferences start a search and explain the daily schedule without promisin
     page.getByRole("button", { name: "Buscar agora", exact: true }),
   ).toBeEnabled();
   const idleReads = workspaceReads;
-  await page.clock.fastForward(15000);
+  const idleBilling = billingReads;
+  const idleSites = siteReads;
+  const idleVersions = versionReads;
+  await page.clock.fastForward(45000);
   expect(w.routine.enabled).toBe(true);
   expect(workspaceReads).toBe(idleReads);
+  expect(billingReads).toBe(idleBilling);
+  expect(siteReads).toBe(idleSites);
+  expect(versionReads).toBe(idleVersions);
   w.runs[0].status = "queued";
+  w.revision = "next-day";
   await page.clock.fastForward(86400000);
   await expect.poll(() => workspaceReads).toBeGreaterThan(idleReads);
   await expect(

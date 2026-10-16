@@ -29,7 +29,10 @@ export function submissionRoute(w: Workspace, job: Job, nativeSites: string[]) {
   const native = w.sources.find((source) => portalMatches(source, nativeSites));
   return native ? { source: native, method: "browser" as const } : null;
 }
-export function dailySubmissionAttempts(w: Workspace, timestamp = new Date()) {
+export function dailySubmissionAttempts(
+  w: Pick<Workspace, "applications">,
+  timestamp = new Date(),
+) {
   const day = (value: Date) =>
     value.toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
   const today = day(timestamp);

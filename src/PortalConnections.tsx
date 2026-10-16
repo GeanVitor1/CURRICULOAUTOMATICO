@@ -48,7 +48,8 @@ export default function PortalConnections({
   const sites = useQuery({
     queryKey: ["automation-sites"],
     queryFn: () => api<SiteCapability[]>("/automation/sites"),
-    refetchInterval: 30000,
+    staleTime: 60000,
+    refetchOnWindowFocus: true,
   });
   const [portal, setPortal] = useState<string | null>(null);
   const [frame, setFrame] = useState<Frame | null>(null);
@@ -84,11 +85,14 @@ export default function PortalConnections({
         return;
       refresh();
     };
+    const focus = () => {
+      if (remoteWindows.current.size) refresh();
+    };
     window.addEventListener("message", receive);
-    window.addEventListener("focus", refresh);
+    window.addEventListener("focus", focus);
     return () => {
       window.removeEventListener("message", receive);
-      window.removeEventListener("focus", refresh);
+      window.removeEventListener("focus", focus);
     };
   }, [client]);
   const openRemote = (site: string) => {

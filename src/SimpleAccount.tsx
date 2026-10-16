@@ -17,7 +17,7 @@ export default function SimpleAccount() {
   const me = useQuery({
     queryKey: ["me"],
     queryFn: () => api<AuthIdentity>("/auth/me"),
-    refetchInterval: 30000,
+    refetchOnWindowFocus: true,
   });
   const providers = useAuthProviders();
   const [googleBusy, setGoogleBusy] = useState(false);

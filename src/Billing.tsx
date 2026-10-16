@@ -5,22 +5,31 @@ import { Button } from "./components";
 import Pricing, { rememberPlan, selectedPlan } from "./Pricing";
 import type { BillingSummary, PlanId } from "../shared/plans";
 
-export function useBilling() {
+export function useBilling(awaitingCheckout = false) {
+  const started = useRef(Date.now());
   return useQuery({
     queryKey: ["billing"],
     queryFn: () => api<BillingSummary>("/billing"),
-    refetchInterval: 10000,
+    staleTime: 60000,
+    refetchOnWindowFocus: true,
+    // A brief reconciliation after returning from checkout, never an idle loop.
+    refetchInterval: (query) =>
+      awaitingCheckout &&
+      query.state.status !== "error" &&
+      Date.now() - started.current < 60000
+        ? 2000
+        : false,
   });
 }
 export default function Billing() {
-  const billing = useBilling();
+  const [outcome] = useState(() =>
+    new URLSearchParams(location.search).get("billing"),
+  );
+  const billing = useBilling(outcome === "success");
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
   const [error, setError] = useState("");
   const [intended] = useState(selectedPlan);
-  const [outcome] = useState(() =>
-    new URLSearchParams(location.search).get("billing"),
-  );
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     if (query.has("billing")) {

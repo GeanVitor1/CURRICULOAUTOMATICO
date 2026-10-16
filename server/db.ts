@@ -1,18 +1,19 @@
 import "dotenv/config";
-import { mkdir, readFile, readdir } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { PGlite } from "@electric-sql/pglite";
 import postgres from "postgres";
 import { drizzle as pgDrizzle } from "drizzle-orm/postgres-js";
 import { drizzle as localDrizzle } from "drizzle-orm/pglite";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, notInArray, sql } from "drizzle-orm";
 import * as schema from "./schema";
-import type { Workspace } from "../shared/types";
+import type { Resume, Workspace } from "../shared/types";
 import { TARGETS_VERSION } from "./resume-targets";
 import { upgradeResumeTargets } from "./workspace-upgrade";
 import { lockLocalDatabase } from "./local-database-lock";
 import { hostedOnVercel, validateHostedRuntime } from "./auth-config";
+import { applyMigrations } from "./database-migrations";
 validateHostedRuntime();
 export const dataDir = hostedOnVercel()
   ? resolve(tmpdir(), "empregatos")
@@ -38,19 +39,24 @@ const local = pg ? null : new PGlite(resolve(dataDir, "postgres"));
 export const db = (
   pg ? pgDrizzle(pg, { schema }) : localDrizzle(local!, { schema })
 ) as ReturnType<typeof pgDrizzle<typeof schema>>;
-const migrations = await Promise.all(
-  (await readdir(resolve("migrations")))
-    .filter((f) => f.endsWith(".sql"))
-    .sort()
-    .map((file) => readFile(resolve("migrations", file), "utf8")),
-);
 if (pg) {
   await pg.begin(async (tx) => {
     // Concurrent cold starts must not race while creating authentication tables.
     await tx`SELECT pg_advisory_xact_lock(184732901)`;
-    for (const migration of migrations) await tx.unsafe(migration);
+    await applyMigrations((query, parameters) =>
+      tx.unsafe(query, parameters || []),
+    );
   });
-} else for (const migration of migrations) await local!.exec(migration);
+} else
+  await local!.transaction((tx) =>
+    applyMigrations(async (query, parameters) =>
+      parameters
+        ? tx.query(query, parameters)
+        : query.startsWith("SELECT")
+          ? tx.query(query)
+          : tx.exec(query),
+    ),
+  );
 export async function closeDb() {
   if (pg) await pg.end();
   else {
@@ -64,9 +70,38 @@ export async function readWorkspace(id: string): Promise<Workspace | null> {
     .from(schema.workspaces)
     .where(eq(schema.workspaces.id, id));
   if (!row) return null;
-  if (row.data.resumes.some((r) => r.targetsVersion !== TARGETS_VERSION))
-    return mutateWorkspace(id, (w) => structuredClone(w));
-  return row.data;
+  if (row.data.resumes.some((r) => r.targetsVersion !== TARGETS_VERSION)) {
+    await mutateWorkspace(id, () => {});
+    return readWorkspace(id);
+  }
+  return { ...row.data, revision: row.updatedAt.toISOString() };
+}
+export async function workspaceRevision(id: string) {
+  const [row] = await db
+    .select({ revision: schema.workspaces.updatedAt })
+    .from(schema.workspaces)
+    .where(eq(schema.workspaces.id, id));
+  return row?.revision.toISOString() || null;
+}
+export async function readResumeArchive(
+  workspaceId: string,
+  resumeId: string,
+  connection:
+    typeof db | Parameters<Parameters<typeof db.transaction>[0]>[0] = db,
+): Promise<NonNullable<Resume["storedFile"]> | null> {
+  const [file] = await connection
+    .select({
+      extension: schema.resumeFiles.extension,
+      ciphertext: schema.resumeFiles.ciphertext,
+    })
+    .from(schema.resumeFiles)
+    .where(
+      and(
+        eq(schema.resumeFiles.workspaceId, workspaceId),
+        eq(schema.resumeFiles.resumeId, resumeId),
+      ),
+    );
+  return file || null;
 }
 export async function mutateWorkspace<T>(
   id: string,
@@ -82,11 +117,42 @@ export async function mutateWorkspace<T>(
       .where(eq(schema.workspaces.id, id))
       .for("update");
     if (!row) throw new Error("Workspace não encontrado");
+    const previousResumeIds = row.data.resumes.map((resume) => resume.id);
     upgradeResumeTargets(row.data);
     const result = await fn(row.data, tx);
+    // A new original is written once, in the same transaction as its metadata.
+    // Ordinary reads and mutations never fetch ciphertext.
+    for (const resume of row.data.resumes) {
+      if (!resume.storedFile) continue;
+      await tx
+        .insert(schema.resumeFiles)
+        .values({ workspaceId: id, resumeId: resume.id, ...resume.storedFile })
+        .onConflictDoUpdate({
+          target: [schema.resumeFiles.workspaceId, schema.resumeFiles.resumeId],
+          set: resume.storedFile,
+        });
+      delete resume.storedFile;
+      resume.originalFileAvailable = true;
+    }
+    const resumeIds = row.data.resumes.map((resume) => resume.id);
+    if (previousResumeIds.some((previous) => !resumeIds.includes(previous)))
+      await tx
+        .delete(schema.resumeFiles)
+        .where(
+          and(
+            eq(schema.resumeFiles.workspaceId, id),
+            resumeIds.length
+              ? notInArray(schema.resumeFiles.resumeId, resumeIds)
+              : undefined,
+          ),
+        );
+    delete row.data.revision;
     await tx
       .update(schema.workspaces)
-      .set({ data: row.data, updatedAt: new Date() })
+      .set({
+        data: row.data,
+        updatedAt: new Date(Math.max(Date.now(), row.updatedAt.getTime() + 1)),
+      })
       .where(eq(schema.workspaces.id, id));
     return result;
   });

@@ -96,6 +96,7 @@ export function useAction() {
       await Promise.all([
         client.invalidateQueries({ queryKey: ["workspace"] }),
         client.invalidateQueries({ queryKey: ["jobs"] }),
+        client.invalidateQueries({ queryKey: ["billing"] }),
       ]);
     },
     onError: (e: Error) => toast(e.message, true),

@@ -6,6 +6,7 @@ import {
   boolean,
   index,
   integer,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 import type { Job, Workspace } from "../shared/types";
 export const subscriptions = pgTable("subscriptions", {
@@ -111,6 +112,20 @@ export const workspaces = pgTable(
   },
   (t) => [index("workspaces_user_idx").on(t.userId)],
 );
+// Encrypted originals are fetched only for a download or application submission.
+export const resumeFiles = pgTable(
+  "resume_files",
+  {
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    resumeId: text("resume_id").notNull(),
+    extension: text("extension").$type<".pdf" | ".docx">().notNull(),
+    ciphertext: text("ciphertext").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.workspaceId, t.resumeId] })],
+);
+
 // Only public provider data is shared. Profiles, resumes and recommendations stay in workspaces.
 export const sourceCatalog = pgTable("source_catalog", {
   key: text("key").primaryKey(),

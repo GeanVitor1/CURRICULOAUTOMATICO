@@ -6,6 +6,8 @@ import { join } from "node:path";
 import { zipSync, strToU8 } from "fflate";
 import type { FastifyInstance } from "fastify";
 import { resumePdf } from "./pdf-fixture";
+import { and, eq } from "drizzle-orm";
+import { resumeFiles } from "../server/schema";
 let app: FastifyInstance,
   cookie = "",
   dir = "",
@@ -184,7 +186,13 @@ describe("Fluxos de ponta a ponta na API", () => {
     const w = (await request("GET", "/api/workspace")).json();
     const resumeId = w.resumes[0].id;
     const stored = (await dbModule.readWorkspace(`${userId}:live`))!.resumes[0];
-    expect(stored.storedFile?.ciphertext).toBeTruthy();
+    const archive = await dbModule.readResumeArchive(
+      `${userId}:live`,
+      resumeId,
+    );
+    expect(archive?.ciphertext).toBeTruthy();
+    expect(stored.storedFile).toBeUndefined();
+    expect(stored.originalFileAvailable).toBe(true);
     expect(w.resumes[0].storedFile).toBeUndefined();
     expect((await request("GET", "/api/export")).body).not.toContain(
       "ciphertext",
@@ -193,10 +201,14 @@ describe("Fluxos de ponta a ponta na API", () => {
     const download = await request("GET", `/api/resumes/${resumeId}/download`);
     expect(download.statusCode).toBe(200);
     expect(download.rawPayload).toEqual(resumePdf());
-    const archive = stored.storedFile;
-    await dbModule.mutateWorkspace(`${userId}:live`, (state) => {
-      delete state.resumes[0].storedFile;
-    });
+    await dbModule.db
+      .delete(resumeFiles)
+      .where(
+        and(
+          eq(resumeFiles.workspaceId, `${userId}:live`),
+          eq(resumeFiles.resumeId, resumeId),
+        ),
+      );
     try {
       const copy = await request("GET", `/api/resumes/${resumeId}/download`);
       expect(copy.statusCode).toBe(200);
@@ -210,7 +222,7 @@ describe("Fluxos de ponta a ponta na API", () => {
       );
     } finally {
       await dbModule.mutateWorkspace(`${userId}:live`, (state) => {
-        state.resumes[0].storedFile = archive;
+        state.resumes[0].storedFile = archive || undefined;
       });
     }
   });

@@ -25,7 +25,13 @@ import { submissionRoute, dailySubmissionAttempts } from "./submission-routing";
 import type { CandidatePortal } from "./portal-browser-policy";
 import { discoverCachedSource } from "./source-catalog";
 import { discoverPortal } from "./portal-discovery";
-import { db, dataDir, mutateWorkspace, readWorkspace } from "./db";
+import {
+  db,
+  dataDir,
+  mutateWorkspace,
+  readWorkspace,
+  readResumeArchive,
+} from "./db";
 import { localApplicationDraft } from "./application-draft";
 import { reserveApplication, workspaceDailyLimit } from "./billing";
 import { readPrivateResume, restoreResumeFile } from "./resume-storage";
@@ -553,8 +559,9 @@ export async function automaticSend(
         throw new RequestError(
           "O currículo original precisa estar disponível para o envio.",
         );
-      const bytes = resume.storedFile
-        ? restoreResumeFile(resume.storedFile)
+      const archive = await readResumeArchive(id, resume.id, tx);
+      const bytes = archive
+        ? restoreResumeFile(archive)
         : await readPrivateResume(
             resolve(
               dataDir,

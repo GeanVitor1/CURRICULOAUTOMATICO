@@ -7,7 +7,7 @@ import { randomUUID, randomBytes, createHash } from "node:crypto";
 import { isIP } from "node:net";
 import { mkdir, readFile, rm, stat } from "node:fs/promises";
 import { resolve, extname, relative } from "node:path";
-import { eq, and, lt } from "drizzle-orm";
+import { eq, and, lt, sql } from "drizzle-orm";
 import { z } from "zod";
 import { extractDocx } from "./documents";
 import { extractPdfText, PdfReaderUnavailableError } from "./pdf-text";
@@ -19,6 +19,8 @@ import {
   healthDb,
   mutateWorkspace,
   readWorkspace,
+  readResumeArchive,
+  workspaceRevision,
 } from "./db";
 import { users, sessions, workspaces } from "./schema";
 import { createWorkspace } from "./workspace";
@@ -543,6 +545,10 @@ export async function buildApp({ serveStatic = true } = {}) {
     reply.clearCookie("orbita_session", { path: "/" });
     return { ok: true };
   });
+  app.get("/api/workspace/version", async (req) => {
+    const { id } = await scope(req);
+    return { revision: await workspaceRevision(id) };
+  });
   app.get("/api/workspace", async (req) => {
     const { id, u } = await scope(req);
     const w = (await readWorkspace(id))!;
@@ -696,8 +702,13 @@ export async function buildApp({ serveStatic = true } = {}) {
   });
   app.get("/api/automation/sites", async (req) => {
     const u = await identity(req);
-    const resumeId =
-      (await readWorkspace(`${u.id}:live`))?.resumes[0]?.id || "";
+    const [workspace] = await db
+      .select({
+        resumeId: sql<string>`${workspaces.data}->'resumes'->0->>'id'`,
+      })
+      .from(workspaces)
+      .where(eq(workspaces.id, `${u.id}:live`));
+    const resumeId = workspace?.resumeId || "";
     const connections = await applicationCapabilities(u.id, resumeId);
     const linkedIdentity = await linkedinIdentity(u.id);
     return candidatePortals.map((site) => ({
@@ -1700,9 +1711,10 @@ export async function buildApp({ serveStatic = true } = {}) {
     const dir = resolve(dataDir, "resumes", u.id);
     let found: Buffer | null = null;
     let ext = ".pdf";
-    if (resume.storedFile) {
-      found = restoreResumeFile(resume.storedFile);
-      ext = resume.storedFile.extension;
+    const archive = await readResumeArchive(id, resumeId);
+    if (archive) {
+      found = restoreResumeFile(archive);
+      ext = archive.extension;
     }
     for (const e of [".pdf", ".docx"]) {
       if (found) break;
@@ -1779,7 +1791,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       );
     }
     for (const row of await db
-      .select()
+      .select({ id: workspaces.id })
       .from(workspaces)
       .where(eq(workspaces.userId, u.id)))
       await configureSchedule(row.id, false, "08:00");

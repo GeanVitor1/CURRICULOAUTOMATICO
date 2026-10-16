@@ -12,6 +12,7 @@ import { appOrigins } from "./auth-config";
 import { DailyLimitError, RequestError } from "./errors";
 import { plans, type BillingSummary, type PlanId } from "../shared/plans";
 import { dailySubmissionAttempts } from "./submission-routing";
+import type { Workspace } from "../shared/types";
 
 type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
 type Subscription = typeof subscriptions.$inferSelect;
@@ -81,7 +82,11 @@ export async function billingSummary(userId: string): Promise<BillingSummary> {
     );
   // Preserve the quota for applications sent before the ledger migration.
   const rows = await db
-    .select({ data: workspaces.data })
+    .select({
+      data: sql<
+        Pick<Workspace, "applications">
+      >`jsonb_build_object('applications', COALESCE(${workspaces.data}->'applications', '[]'::jsonb))`,
+    })
     .from(workspaces)
     .where(eq(workspaces.userId, userId));
   const historical = rows.reduce(

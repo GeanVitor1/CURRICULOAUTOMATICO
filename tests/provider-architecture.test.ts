@@ -197,6 +197,9 @@ describe("Permissões reais, OAuth e privacidade", () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
   it("salva apenas metadados cifrados e OAuth nunca habilita candidaturas", async () => {
+    // This case tests identity alone, independent of a developer's AI credentials.
+    vi.stubEnv("GEMINI_API_KEY", "");
+    vi.stubEnv("ANTIGRAVITY_ENABLED", "false");
     const sites = (
       await app.inject({ url: "/api/automation/sites", headers: headers() })
     ).json();
