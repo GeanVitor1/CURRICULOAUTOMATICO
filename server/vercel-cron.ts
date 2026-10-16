@@ -42,6 +42,8 @@ export default async function handler(
     });
     for (const task of pending) await dispatchDiscovery(task.id);
     const { dispatchNextApplication } = await import("./submission-dispatch");
+    const { recoverInterruptedSends } = await import("./operations");
+    await recoverInterruptedSends();
     const sending = await store.select("workspaces", {
       where: eq("demo", false),
       columns: ["id"],

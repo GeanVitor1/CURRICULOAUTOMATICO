@@ -6,8 +6,16 @@ import {
   type DocumentReference,
   type Transaction,
 } from "@google-cloud/firestore";
-import { createHash, randomUUID } from "node:crypto";
-import { gzipSync, gunzipSync } from "node:zlib";
+import { createHash } from "node:crypto";
+import { isDeepStrictEqual } from "node:util";
+import {
+  encodePayload,
+  decodePayload,
+  WORKSPACE_SECTIONS,
+  payloadCache,
+  payloadCacheKey,
+  type PayloadManifest,
+} from "./firestore-payload";
 import type { Workspace } from "../shared/types";
 import type {
   Condition,
@@ -20,6 +28,7 @@ import type {
 } from "./storage-types";
 import { collectionNames, keys, eq, and } from "./storage-types";
 import { firestoreAuth } from "./firestore-auth";
+import { submissionState } from "./submission-state";
 
 const BULK: Partial<Record<Table, string>> = {
   workspaces: "data",
@@ -27,7 +36,6 @@ const BULK: Partial<Record<Table, string>> = {
   sourceCatalog: "jobs",
 };
 // Each chunk stays well below Firestore's 1 MiB document limit, including metadata.
-const CHUNK = 512 * 1024;
 const hash = (value: string) =>
   createHash("sha256").update(value).digest("hex");
 const idFor = (table: Table, row: Record<string, any>) =>
@@ -195,6 +203,7 @@ function projections(w: Workspace) {
     _portals: w.infrastructure.portalConnections || {},
     _sending: w.applications.some((a) => a.status === "Enviando"),
     _attempts: attempts,
+    _submission: submissionState(w, ""),
   };
 }
 type Pending = {
@@ -205,6 +214,7 @@ type Pending = {
   original?: DocumentData;
 };
 export function firestoreStore(db: Firestore, native?: Transaction): Store {
+  const namespace = process.env.FIREBASE_PROJECT_ID || "firestore";
   const pending = new Map<string, Pending>(),
     cache = new Map<string, DocumentData | null>();
   const readRaw = async (
@@ -231,27 +241,27 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
     const row = { ...raw },
       field = BULK[table];
     if (field && (!columns || columns.includes(field)) && raw._payload) {
-      const p = raw._payload;
-      let bytes: Buffer;
-      if (p.inline) bytes = Buffer.from(p.inline);
-      else {
-        const parts: Buffer[] = [];
-        for (let i = 0; i < p.count; i++) {
-          const chunk = await readRaw(
-            ref.collection("chunks").doc(`${p.version}-${i}`),
-          );
-          if (!chunk?.bytes) throw new Error("Stored payload is incomplete");
-          parts.push(Buffer.from(chunk.bytes));
+      const load = async (p: PayloadManifest) => {
+        let parts: Promise<FirebaseFirestore.DocumentSnapshot[]> | undefined;
+        return decodePayload(`${namespace}/${ref.path}`, p, async (i) => {
+          if (!parts) {
+            const refs = Array.from({ length: p.count! }, (_, index) =>
+              ref.collection("chunks").doc(`${p.version}-${index}`),
+            );
+            parts = native ? native.getAll(...refs) : db.getAll(...refs);
+          }
+          const chunk = (await parts)[i].data();
+          if (!chunk?.bytes) throw Error("Stored payload is incomplete");
+          return Buffer.from(chunk.bytes);
+        });
+      };
+      row[field] = await load(raw._payload);
+      if (table === "workspaces" && raw._sections)
+        for (const section of WORKSPACE_SECTIONS) {
+          const manifest = raw._sections[section];
+          if (!manifest) throw Error("Workspace section is missing");
+          row[field][section] = await load(manifest);
         }
-        bytes = Buffer.concat(parts);
-      }
-      if (hash(bytes.toString("base64")) !== p.checksum)
-        throw new Error("Stored payload checksum mismatch");
-      row[field] = JSON.parse(
-        gunzipSync(bytes, { maxOutputLength: 32 * 1024 * 1024 }).toString(
-          "utf8",
-        ),
-      );
     }
     for (const k of Object.keys(row)) if (k.startsWith("_")) delete row[k];
     return columns ? Object.fromEntries(columns.map((k) => [k, row[k]])) : row;
@@ -349,13 +359,13 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
   ) {
     const markers: Pending[] = [];
     for (const field of uniqueFields[table] || []) {
-      if (row?.[field]) {
+      if (row?.[field] && row[field] !== original?.[field]) {
         const marker = uniqueRef(db, table, field, row[field]),
           existing = pending.has(marker.path)
             ? pending.get(marker.path)!.row
             : await readRaw(marker);
         if (existing && existing.owner !== ref.path) throw conflict();
-        markers.push({ ref: marker, row: { owner: ref.path } });
+        if (!existing) markers.push({ ref: marker, row: { owner: ref.path } });
       }
       if (original?.[field] && original[field] !== row?.[field]) {
         const marker = uniqueRef(db, table, field, original[field]);
@@ -410,6 +420,47 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
     // issuing any native writes. Firestore may retry the whole unit of work.
     const writes: { ref: DocumentReference; data: DocumentData | null }[] = [];
     const garbage: DocumentReference[] = [];
+    const cacheWrites: { key: string; bytes: Buffer }[] = [];
+    const collect = (
+      ref: DocumentReference,
+      old: PayloadManifest | undefined,
+      next: PayloadManifest | undefined,
+    ) => {
+      if (!old?.count || old.version === next?.version) return;
+      const task = db
+        .collection("_payload_gc")
+        .doc(hash(ref.path + ":" + old.version));
+      writes.push({
+        ref: task,
+        data: {
+          parent: ref.path,
+          version: old.version,
+          count: old.count,
+          createdAt: new Date(),
+        },
+      });
+      garbage.push(task);
+    };
+    const pack = (
+      ref: DocumentReference,
+      value: unknown,
+      old?: PayloadManifest,
+      inlineLimit?: number,
+    ) => {
+      const encoded = encodePayload(value, old, inlineLimit);
+      if (encoded.chunks.length)
+        cacheWrites.push({
+          key: payloadCacheKey(`${namespace}/${ref.path}`, encoded.manifest),
+          bytes: Buffer.concat(encoded.chunks),
+        });
+      encoded.chunks.forEach((bytes, i) =>
+        writes.push({
+          ref: ref.collection("chunks").doc(`${encoded.manifest.version}-${i}`),
+          data: { bytes },
+        }),
+      );
+      return encoded.manifest;
+    };
     for (const p of pending.values()) {
       if (!p.table) {
         writes.push({ ref: p.ref, data: p.row });
@@ -418,42 +469,44 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
       const field = BULK[p.table],
         raw = p.row ? { ...(p.original || {}), ...p.row } : null;
       if (raw && field && Object.hasOwn(p.row!, field)) {
-        const bytes = gzipSync(Buffer.from(JSON.stringify(p.row![field]))),
-          checksum = hash(bytes.toString("base64"));
-        delete raw[field];
-        if (bytes.length <= CHUNK) raw._payload = { inline: bytes, checksum };
-        else {
-          const count = Math.ceil(bytes.length / CHUNK),
-            version = randomUUID();
-          raw._payload = { count, version, checksum };
-          for (let i = 0; i < count; i++)
-            writes.push({
-              ref: p.ref.collection("chunks").doc(`${version}-${i}`),
-              data: { bytes: bytes.subarray(i * CHUNK, (i + 1) * CHUNK) },
-            });
-        }
-        if (p.table === "workspaces")
+        if (p.table === "workspaces") {
+          const body = { ...p.row!.data };
+          raw._sections = {};
+          for (const section of WORKSPACE_SECTIONS) {
+            raw._sections[section] = pack(
+              p.ref,
+              body[section],
+              p.original?._sections?.[section],
+              8 * 1024,
+            );
+            delete body[section];
+          }
+          raw._payload = pack(
+            p.ref,
+            body,
+            p.original?._sections ? p.original._payload : undefined,
+            32 * 1024,
+          );
           Object.assign(raw, projections(p.row!.data));
+        } else
+          raw._payload = pack(
+            p.ref,
+            p.row![field],
+            p.original?._payload,
+            p.table === "resumeFiles" ? 8 * 1024 : undefined,
+          );
+        delete raw[field];
         if (p.table === "sourceCatalog") raw._jobCount = p.row!.jobs.length;
       }
-      const old = p.original?._payload,
-        newPayload = raw?._payload;
-      if (old?.count && old.version !== newPayload?.version) {
-        const ref = db
-          .collection("_payload_gc")
-          .doc(hash(p.ref.path + ":" + old.version));
-        writes.push({
-          ref,
-          data: {
-            parent: p.ref.path,
-            version: old.version,
-            count: old.count,
-            createdAt: new Date(),
-          },
-        });
-        garbage.push(ref);
-      }
-      writes.push({ ref: p.ref, data: raw });
+      collect(p.ref, p.original?._payload, raw?._payload);
+      for (const section of WORKSPACE_SECTIONS)
+        collect(
+          p.ref,
+          p.original?._sections?.[section],
+          raw?._sections?.[section],
+        );
+      if (!raw || !isDeepStrictEqual(raw, p.original))
+        writes.push({ ref: p.ref, data: raw });
     }
     // Fail atomically before committing if a request could exceed Firestore limits.
     const bytesOf = (v: any): number =>
@@ -480,7 +533,7 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
     for (const w of writes)
       if (w.data) native.set(w.ref, w.data, { merge: false });
       else native.delete(w.ref);
-    return garbage;
+    return { garbage, cacheWrites };
   }
   async function cleanupGarbage(refs?: DocumentReference[]) {
     const snapshots = refs
@@ -637,12 +690,19 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
           const unit = firestoreStore(db, tx),
             result = await fn(unit);
           const garbage = await (
-            unit as Store & { _flush: () => Promise<DocumentReference[]> }
+            unit as Store & {
+              _flush: () => Promise<{
+                garbage: DocumentReference[];
+                cacheWrites: { key: string; bytes: Buffer }[];
+              }>;
+            }
           )._flush();
-          return { result, garbage };
+          return { result, ...garbage };
         },
         { maxAttempts: 5 },
       );
+      for (const entry of committed.cacheWrites)
+        payloadCache.set(entry.key, entry.bytes);
       if (committed.garbage.length)
         await cleanupGarbage(committed.garbage).catch(() =>
           console.error(
@@ -664,6 +724,15 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
         ["_latestResumeId"],
       );
       return raw?._latestResumeId || "";
+    },
+    async submissionState(id) {
+      const ref = db.collection("workspaces").doc(idFor("workspaces", { id })),
+        raw = await readRaw(ref, ["_submission", "userId"]);
+      if (!raw) return null;
+      if (raw._submission) return { ...raw._submission, userId: raw.userId };
+      // Existing workspaces acquire this projection on their next mutation.
+      const [row] = await store.select("workspaces", { where: eq("id", id) });
+      return row ? submissionState(row.data, row.userId) : null;
     },
     async portalMetadata(userId, portal) {
       const raw = await readRaw(

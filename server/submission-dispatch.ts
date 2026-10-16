@@ -1,29 +1,29 @@
 import { send } from "@vercel/queue";
-import { readWorkspace } from "./db";
+import { store } from "./db";
 import { vercelQueueEnabled } from "./automation-runtime";
-import { dailySubmissionAttempts } from "./submission-routing";
 import { accountPlan } from "./billing";
 
 export const SUBMISSION_TOPIC = "empregatos-submissions";
 export async function dispatchNextApplication(workspaceId: string) {
   if (!vercelQueueEnabled()) return false;
-  const w = await readWorkspace(workspaceId);
+  const w = await store.submissionState(workspaceId);
   if (
     !w ||
     w.demo ||
     !w.routine.enabled ||
     w.routine.mode !== "automatic" ||
-    w.applications.some((a) => a.status === "Enviando")
+    w.sending
   )
     return false;
-  const application = w.applications.find(
-    (a) => a.status === "Aguardando aprovação",
-  );
+  const application = w.next;
   if (!application) return false;
-  const userId = workspaceId.endsWith(":live") ? workspaceId.slice(0, -5) : "";
+  const userId = w.userId;
   const plan = userId ? await accountPlan(userId) : null;
   if (
-    dailySubmissionAttempts(w) >=
+    (w.day ===
+    new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" })
+      ? w.attempts
+      : 0) >=
     Math.min(w.routine.dailyLimit, plan?.dailyLimit ?? w.routine.dailyLimit)
   )
     return false;
@@ -34,7 +34,7 @@ export async function dispatchNextApplication(workspaceId: string) {
     SUBMISSION_TOPIC,
     { workspaceId, applicationId: application.id },
     {
-      idempotencyKey: `${application.id}:${application.history.length}:${day}`,
+      idempotencyKey: `${application.id}:${application.historyLength}:${day}`,
       retentionSeconds: 604800,
     },
   );

@@ -566,7 +566,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       queue: queue
         ? "BullMQ + Redis"
         : vercelQueueEnabled()
-          ? "Vercel Queues + PostgreSQL"
+          ? `Vercel Queues + ${databaseKind}`
           : "Agendador local persistente",
       automatic:
         sending.some(

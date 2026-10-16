@@ -140,13 +140,13 @@ test("preferences start a search and explain the daily schedule without promisin
   expect(starts).toBe(1);
   const queuedReads = workspaceReads;
   const queuedVersionReads = versionReads;
-  await page.clock.fastForward(2100);
+  await page.clock.fastForward(5100);
   await expect.poll(() => versionReads).toBeGreaterThan(queuedVersionReads);
   expect(workspaceReads).toBe(queuedReads);
   w.runs[0].status = "completed";
   w.revision = "completed";
   const completingReads = workspaceReads;
-  await page.clock.fastForward(2100);
+  await page.clock.fastForward(5100);
   await expect.poll(() => workspaceReads).toBeGreaterThan(completingReads);
   await expect(
     page.getByRole("button", { name: "Buscar agora", exact: true }),

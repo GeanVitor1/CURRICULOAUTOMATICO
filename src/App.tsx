@@ -477,13 +477,14 @@ export default function App() {
     refetchInterval: (q) => {
       if (q.state.status === "error") return 30000;
       const data = workspace.data;
+      if (data?.runs.some((run) => ["running", "queued"].includes(run.status)))
+        return 5000;
       if (
         data?.applications.some(
           (application) => application.status === "Enviando",
-        ) ||
-        data?.runs.some((run) => ["running", "queued"].includes(run.status))
+        )
       )
-        return 2000;
+        return 15000;
       // Wake near the scheduled daily search; idle dashboards do not poll.
       const next =
         data?.routine.enabled && data.routine.nextRun

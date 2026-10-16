@@ -62,6 +62,16 @@
     }
   ],
   "fieldOverrides": [
+    {
+      "collectionGroup": "workspaces",
+      "fieldPath": "_sections",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "workspaces",
+      "fieldPath": "_submission",
+      "indexes": []
+    },
     { "collectionGroup": "workspaces", "fieldPath": "_payload", "indexes": [] },
     { "collectionGroup": "workspaces", "fieldPath": "_routine", "indexes": [] },
     { "collectionGroup": "workspaces", "fieldPath": "_portals", "indexes": [] },

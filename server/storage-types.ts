@@ -1,6 +1,7 @@
 import type * as schema from "./schema";
 import type { Workspace } from "../shared/types";
 import type { CandidatePortal } from "./portal-browser-policy";
+import type { SubmissionState } from "./submission-state";
 
 export type Table = keyof typeof schema;
 export type Row<T extends Table> = (typeof schema)[T]["$inferSelect"];
@@ -64,6 +65,7 @@ export interface Store {
   transaction<T>(fn: (store: Store) => Promise<T>): Promise<T>;
   workspaceRevision(id: string): Promise<string | null>;
   latestResumeId(id: string): Promise<string>;
+  submissionState(id: string): Promise<SubmissionState | null>;
   portalMetadata(userId: string, portal: CandidatePortal): Promise<unknown>;
   routines(): Promise<{ id: string; routine: Workspace["routine"] }[]>;
   sendingWorkspaceIds(): Promise<{ id: string }[]>;

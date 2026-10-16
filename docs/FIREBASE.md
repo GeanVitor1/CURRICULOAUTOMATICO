@@ -1,5 +1,7 @@
 # Firestore na Vercel
 
+Para a meta de 20 assinantes, consulte a [análise de consumo e cenários](FIREBASE-20-ASSINANTES.md).
+
 A instalação usa o projeto `curriculoautomatico-a15fa`, banco `(default)`,
 Firestore **Standard**, região `southamerica-east1` (São Paulo), no plano Spark.
 O frontend e os workers continuam na Vercel. PostgreSQL/PGlite permanecem como
@@ -37,6 +39,10 @@ iniciada, mesmo que uma variável legada `DATABASE_URL` ainda exista.
 - Conteúdos grandes são comprimidos. Acima de 512 KiB comprimidos, usam blocos
   privados de até 512 KiB, com checksum e manifesto. Arquivos originais continuam
   criptografados e só são lidos para download ou envio. O limite de upload é 5 MiB.
+- As partes de currículo, vagas e candidaturas usam versões independentes para
+  regravar somente o conteúdo que mudou. Originais acima de 8 KiB comprimidos
+  ficam em blocos privados para permitir cache sem baixar o arquivo ao ler metadados.
+  Há cache por processo de até 64 MiB/10 minutos, com manifesto autoritativo no banco.
 - Transações preservam reservas diárias, propriedade das tarefas e idempotência
   das candidaturas. O contador diário evita reler todo o histórico a cada envio.
 - Blocos substituídos ou excluídos têm uma tarefa de limpeza persistida na mesma

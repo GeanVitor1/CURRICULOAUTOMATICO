@@ -4,7 +4,17 @@ const mocks = vi.hoisted(() => ({
   send: vi.fn(),
   plan: vi.fn(),
 }));
-vi.mock("../server/db", () => ({ readWorkspace: mocks.read }));
+vi.mock("../server/db", async () => {
+  const { submissionState } = await import("../server/submission-state");
+  return {
+    store: {
+      submissionState: async (id: string) => {
+        const w = await mocks.read(id);
+        return w ? submissionState(w, id.slice(0, -5)) : null;
+      },
+    },
+  };
+});
 vi.mock("@vercel/queue", () => ({ send: mocks.send }));
 vi.mock("../server/billing", () => ({ accountPlan: mocks.plan }));
 vi.mock("../server/automation-runtime", () => ({

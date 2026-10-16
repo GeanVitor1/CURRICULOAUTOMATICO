@@ -13,6 +13,7 @@ import { upgradeResumeTargets } from "./workspace-upgrade";
 import { lockLocalDatabase } from "./local-database-lock";
 import { hostedOnVercel, validateHostedRuntime } from "./auth-config";
 import { applyMigrations } from "./database-migrations";
+import { isDeepStrictEqual } from "node:util";
 import { postgresStore } from "./storage-postgres";
 import type { Store } from "./storage-types";
 validateHostedRuntime();
@@ -119,6 +120,7 @@ export async function mutateWorkspace<T>(
     const where = { field: "id", op: "==" as const, value: id };
     const [row] = await tx.select("workspaces", { where, lock: true });
     if (!row) throw new Error("Workspace não encontrado");
+    const previous = structuredClone(row.data);
     const previousResumeIds = row.data.resumes.map((resume) => resume.id);
     upgradeResumeTargets(row.data);
     const result = await fn(row.data, tx);
@@ -146,6 +148,7 @@ export async function mutateWorkspace<T>(
         ],
       });
     delete row.data.revision;
+    if (isDeepStrictEqual(previous, row.data)) return result;
     await tx.update(
       "workspaces",
       {

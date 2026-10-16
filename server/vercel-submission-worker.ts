@@ -2,7 +2,7 @@ import { QueueClient } from "@vercel/queue";
 import { z } from "zod";
 import { validateHostedRuntime } from "./auth-config";
 import { automaticSend, recoverInterruptedSends } from "./operations";
-import { readWorkspace, mutateWorkspace } from "./db";
+import { store, mutateWorkspace } from "./db";
 import { dispatchNextApplication } from "./submission-dispatch";
 import { DailyLimitError, RequestError } from "./errors";
 const payload = z.object({
@@ -18,19 +18,16 @@ export default client.handleNodeCallback(
       console.error(JSON.stringify({ event: "invalid_submission_message" }));
       return;
     }
-    await recoverInterruptedSends();
     const { workspaceId, applicationId } = parsed.data;
-    const before = await readWorkspace(workspaceId);
-    const application = before?.applications.find(
-      (a) => a.id === applicationId,
-    );
+    await recoverInterruptedSends(workspaceId);
+    const before = await store.submissionState(workspaceId);
     if (
       !before?.routine.enabled ||
       before.routine.mode !== "automatic" ||
-      !application
+      !before.next
     )
       return;
-    if (application.status !== "Aguardando aprovação") {
+    if (before.next.id !== applicationId || before.sending) {
       await dispatchNextApplication(workspaceId);
       return;
     }

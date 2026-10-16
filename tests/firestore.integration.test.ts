@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { GoogleAuth, OAuth2Client } from "google-auth-library";
-import { Firestore } from "@google-cloud/firestore";
+import { Firestore, Transaction } from "@google-cloud/firestore";
+import { payloadCache, encodePayload } from "../server/firestore-payload";
 import { randomBytes, randomUUID } from "node:crypto";
 import { mkdtemp, rm } from "node:fs/promises";
 import { join } from "node:path";
@@ -201,6 +202,95 @@ describe.skipIf(!process.env.FIRESTORE_TEST_ACCESS_TOKEN)(
       expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(5);
       expect((await billingSummary(userId)).remainingToday).toBe(0);
     }, 60000);
+    it("changes application status without rewriting the resume, skips no-op writes and keeps the queue projection small", async () => {
+      const id = `${userId}:live`,
+        appId = randomUUID();
+      await database.mutateWorkspace(id, (w) => {
+        w.applications.push({
+          id: appId,
+          jobId: "qa-only-job",
+          resumeId,
+          status: "Aguardando aprovação",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          receipt: null,
+          note: "",
+          history: [],
+          mode: "automatic",
+        });
+      });
+      const root = (
+          await raw.collection("workspaces").where("id", "==", id).get()
+        ).docs[0],
+        before = root.data();
+      expect(before._sections.resumes.count).toBeGreaterThan(1);
+      const writes = vi.spyOn(Transaction.prototype, "set");
+      await database.mutateWorkspace(id, (w) => {
+        w.applications.find((a) => a.id === appId)!.status = "Enviando";
+      });
+      expect(writes.mock.calls).toHaveLength(1);
+      expect(
+        writes.mock.calls.every(([ref]) => ref.path === root.ref.path),
+      ).toBe(true);
+      const after = (await root.ref.get()).data()!;
+      expect(after._sections.resumes).toEqual(before._sections.resumes);
+      expect((await database.store.submissionState(id))?.sending).toBe(true);
+      writes.mockClear();
+      const revision = await database.workspaceRevision(id);
+      await database.mutateWorkspace(id, () => {});
+      expect(writes.mock.calls).toHaveLength(0);
+      expect(await database.workspaceRevision(id)).toBe(revision);
+      writes.mockRestore();
+      await database.mutateWorkspace(id, (w) => {
+        w.applications = w.applications.filter((a) => a.id !== appId);
+      });
+    }, 30000);
+    it("upgrades the old payload format atomically and keeps its data readable", async () => {
+      const id = `${userId}:live`,
+        root = (await raw.collection("workspaces").where("id", "==", id).get())
+          .docs[0];
+      const current = (await database.readWorkspace(id))!;
+      delete current.revision;
+      const old = encodePayload(current);
+      const { FieldValue } = await import("@google-cloud/firestore");
+      const previous = root.data();
+      const legacy = raw.batch();
+      old.chunks.forEach((bytes, i) =>
+        legacy.set(
+          root.ref.collection("chunks").doc(`${old.manifest.version}-${i}`),
+          { bytes },
+        ),
+      );
+      legacy.update(root.ref, {
+        _payload: old.manifest,
+        _sections: FieldValue.delete(),
+        _submission: FieldValue.delete(),
+      });
+      await legacy.commit();
+      for (const manifest of Object.values(previous._sections) as any[])
+        if (manifest.count) {
+          const batch = raw.batch();
+          for (let i = 0; i < manifest.count; i++)
+            batch.delete(
+              root.ref.collection("chunks").doc(`${manifest.version}-${i}`),
+            );
+          await batch.commit();
+        }
+      payloadCache.clear();
+      expect((await database.readWorkspace(id))!.resumes[0].analysis).toBe(
+        current.resumes[0].analysis,
+      );
+      expect((await database.store.submissionState(id))?.next).toBeNull();
+      await database.mutateWorkspace(id, (w) => {
+        w.routine.dailyLimit = 4;
+      });
+      expect(
+        (await root.ref.get()).data()!._sections.resumes.count,
+      ).toBeGreaterThan(1);
+      expect((await database.readWorkspace(id))!.resumes[0].analysis).toBe(
+        current.resumes[0].analysis,
+      );
+    }, 30000);
     it("stores a full 5 MiB encrypted original in bounded chunks, then deletes the chunks", async () => {
       const { archiveResumeFile, restoreResumeFile } =
         await import("../server/resume-storage");
@@ -212,8 +302,19 @@ describe.skipIf(!process.env.FIRESTORE_TEST_ACCESS_TOKEN)(
         resumeId: id,
         ...archive,
       });
+      payloadCache.clear();
       const restored = await database.readResumeArchive(`${userId}:live`, id);
       expect(restoreResumeFile(restored!)).toEqual(bytes);
+      const reads = vi.spyOn(Firestore.prototype, "getAll");
+      expect(
+        restoreResumeFile(
+          (await database.readResumeArchive(`${userId}:live`, id))!,
+        ),
+      ).toEqual(bytes);
+      expect(
+        reads.mock.calls.some(([ref]) => (ref as any)?.parent?.id === "chunks"),
+      ).toBe(false);
+      reads.mockRestore();
       const snap = await raw
           .collection("resume_files")
           .where("resumeId", "==", id)

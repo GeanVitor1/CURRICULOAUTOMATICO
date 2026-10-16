@@ -494,9 +494,12 @@ export async function automaticSend(
   const nativeSites = workspaceOwner
     ? await connectedPortals(workspaceOwner.userId)
     : [];
-  const snapshot = await readWorkspace(id);
+  const pending = await store.submissionState(id);
   const applicationResumeId =
-    snapshot?.applications.find((a) => a.id === appId)?.resumeId || "";
+    pending?.next?.id === appId
+      ? pending.next.resumeId || ""
+      : (await readWorkspace(id))?.applications.find((a) => a.id === appId)
+          ?.resumeId || "";
   const profileSites = workspaceOwner
     ? await readyPortals(workspaceOwner.userId, applicationResumeId)
     : [];
@@ -739,8 +742,12 @@ export function recoverInterruptedApplications(
     );
   return count;
 }
-export async function recoverInterruptedSends() {
-  const rows = await store.sendingWorkspaceIds();
+export async function recoverInterruptedSends(workspaceId?: string) {
+  const rows = workspaceId
+    ? (await store.submissionState(workspaceId))?.sending
+      ? [{ id: workspaceId }]
+      : []
+    : await store.sendingWorkspaceIds();
   for (const row of rows)
     await mutateWorkspace(row.id, (w) => recoverInterruptedApplications(w));
 }

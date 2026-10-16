@@ -23,6 +23,7 @@ import type { Workspace } from "../shared/types";
 import type { CandidatePortal } from "./portal-browser-policy";
 import { keys } from "./storage-types";
 import { dailySubmissionAttempts } from "./submission-attempts";
+import { submissionState } from "./submission-state";
 
 export function postgresStore(
   connection: any,
@@ -129,6 +130,16 @@ export function postgresStore(
         .from(schema.workspaces)
         .where(eq(schema.workspaces.id, id));
       return row?.resumeId || "";
+    },
+    async submissionState(id) {
+      const [row] = await connection
+        .select({
+          userId: schema.workspaces.userId,
+          data: sql<Workspace>`jsonb_build_object('demo',${schema.workspaces.demo},'routine',${schema.workspaces.data}->'routine','applications',${schema.workspaces.data}->'applications')`,
+        })
+        .from(schema.workspaces)
+        .where(eq(schema.workspaces.id, id));
+      return row ? submissionState(row.data, row.userId) : null;
     },
     async portalMetadata(userId: string, portal: CandidatePortal) {
       const [row] = await connection
