@@ -1,0 +1,82 @@
+{
+  "at": "2026-10-23T12:29:42.191Z",
+  "applied": true,
+  "inspected": 8,
+  "recovered": 0,
+  "results": [
+    {
+      "jobId": "06c71f53-5d17-4975-84b4-9fcc7c0ebfa4",
+      "company": "Vem Pra Pixeon",
+      "title": "Analista Desenvolvedor(a) C#/.NET Pleno",
+      "url": "https://vemprapixeon.gupy.io/jobs/12725139",
+      "applyUrl": "https://vemprapixeon.gupy.io/candidates/jobs/12725139/apply?jobBoardSource=gupy_public_page",
+      "state": "login_required",
+      "recovered": false
+    },
+    {
+      "jobId": "7d9f16e1-2a6d-405e-8ac3-47dd042d2dd3",
+      "company": "Softplan",
+      "title": "Pessoa Desenvolvedora .NET Sr (Remoto) - 6791",
+      "url": "https://softplan.gupy.io/jobs/12726791",
+      "applyUrl": "https://softplan.gupy.io/candidates/jobs/12726791/apply?jobBoardSource=gupy_public_page",
+      "state": "login_required",
+      "recovered": false
+    },
+    {
+      "jobId": "bb0770a9-fdaf-48ad-877e-aede1553b921",
+      "company": "Víssimo",
+      "title": "Desenvolvedor(a) Full Stack (com ênfase em Frontend)",
+      "url": "https://vissimo.gupy.io/jobs/12722191",
+      "applyUrl": "https://vissimo.gupy.io/candidates/jobs/12722191/apply?jobBoardSource=gupy_public_page",
+      "state": "login_required",
+      "recovered": false
+    },
+    {
+      "jobId": "0db3bdc1-db2e-49c6-95b3-8f46bfb6e09a",
+      "company": "Oportunidades",
+      "title": "ANALISTA DE DESENVOLVIMENTO DE SISTEMAS",
+      "url": "https://bancorbras.gupy.io/jobs/12723856",
+      "applyUrl": "https://bancorbras.gupy.io/candidates/jobs/12723856/apply?jobBoardSource=gupy_public_page",
+      "state": "login_required",
+      "recovered": false
+    },
+    {
+      "jobId": "14bec83f-8f29-47bc-96dd-2f69a471746f",
+      "company": "Libbs Farmacêutica",
+      "title": "Analista de Sistemas Sênior (Ecommerce)",
+      "url": "https://vempralibbs.gupy.io/jobs/12741698",
+      "applyUrl": "https://vempralibbs.gupy.io/candidates/jobs/12741698/apply?jobBoardSource=gupy_public_page",
+      "state": "login_required",
+      "recovered": false
+    },
+    {
+      "jobId": "abadeed5-dc46-45da-b48b-b91511bc8a57",
+      "company": "domoinovacao",
+      "title": "Banco de Talentos | Analista de Sistemas Júnior (Afirmativa PCD)",
+      "url": "https://domo.gupy.io/jobs/12747984",
+      "applyUrl": "https://domo.gupy.io/candidates/jobs/12747984/apply?jobBoardSource=gupy_public_page",
+      "state": "login_required",
+      "recovered": false
+    },
+    {
+      "jobId": "2d886b1c-bd45-4d3f-89cd-db8e63a8a954",
+      "company": "Lanlink Informática",
+      "title": "Analista de Sistemas de Automação DevOps - Sênior",
+      "url": "https://vempralanlink.gupy.io/jobs/12753756",
+      "applyUrl": "https://vempralanlink.gupy.io/candidates/jobs/12753756/apply?jobBoardSource=gupy_public_page",
+      "state": "login_required",
+      "recovered": false
+    },
+    {
+      "jobId": "60ab3b4b-03d1-41f9-9985-67fd5bde3792",
+      "company": "Lanlink Informática",
+      "title": "Analista de Sistemas de Automação - Servidores de Aplicação Sênior",
+      "url": "https://vempralanlink.gupy.io/jobs/12753649",
+      "applyUrl": "https://vempralanlink.gupy.io/candidates/jobs/12753649/apply?jobBoardSource=gupy_public_page",
+      "state": "login_required",
+      "recovered": false
+    }
+  ],
+  "filtersUnchanged": true,
+  "historyUnchanged": true
+}

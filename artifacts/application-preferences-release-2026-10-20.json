@@ -1,0 +1,16 @@
+{
+  "deploymentId": "dpl_CUmW7cEW6SZ71nu77gn8Cg8GukHi",
+  "productionUrl": "https://curriculoautomatico.vercel.app",
+  "state": "published",
+  "tests": { "passed": 495, "skipped": 11, "failed": 0 },
+  "build": "passed",
+  "browserVerification": {
+    "browser": "Chrome",
+    "preferencesSectionVisible": true,
+    "providedLinkedinSavedAndRetainedAfterReload": true,
+    "unansweredQualificationsRemainPending": true,
+    "screenshot": "artifacts/application-preferences-production-2026-10-20.jpg"
+  },
+  "realCiandtSubmission": "pending_candidate_answers_and_required_consents",
+  "newApplicationsSent": 0
+}

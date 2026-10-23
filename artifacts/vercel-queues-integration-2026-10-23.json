@@ -1,0 +1,245 @@
+{
+  "at": "2026-10-23T12:08:23.664Z",
+  "deploymentId": "dpl_Gu5EfSNjkS4FSRFGDwJsq3aBUNnL",
+  "actualVercelQueueTransport": true,
+  "fictitiousOnly": true,
+  "realEmployerSubmissions": 0,
+  "workspaceId": "00cba8ba-310a-44a2-a2d0-b318f9ebf219:live",
+  "applicationId": "8c765f57-7a2b-4d91-a6bd-e5484b0d0938",
+  "checkedAt": "2026-10-23T12:24:11.021Z",
+  "receiver": {
+    "counts": {
+      "0": 1,
+      "1": 1,
+      "2": 1
+    },
+    "files": {
+      "0": "24b8d19ecceb5f38ffd599f1fa655a3020323688f190ad2b145756b96426ac84",
+      "1": "24b8d19ecceb5f38ffd599f1fa655a3020323688f190ad2b145756b96426ac84",
+      "2": "24b8d19ecceb5f38ffd599f1fa655a3020323688f190ad2b145756b96426ac84"
+    },
+    "candidates": {
+      "0": true,
+      "1": true,
+      "2": true
+    }
+  },
+  "applications": [
+    {
+      "id": "f856b75c-2f10-4e8a-adc1-bb3b5fa93c3b",
+      "jobId": "6751aaa3-c07f-4bc8-a234-0688244690cd",
+      "status": "Requer ação manual",
+      "receipt": null,
+      "execution": {
+        "correlationId": "48cec65a-88af-4688-b8a6-87f75ac7e7af",
+        "runId": "a0aa780b-9147-4898-a263-3a78036003e7",
+        "origin": "user_triggered_automation"
+      },
+      "history": [
+        {
+          "at": "2026-10-23T12:19:39.228Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T12:19:39.228Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-23T12:19:41.650Z",
+          "actor": "Sistema",
+          "message": "Preparação antes do envio: O formulário não confirmou a vaga e a empresa autorizadas."
+        }
+      ]
+    },
+    {
+      "id": "7f7eeb98-0bac-4708-851e-4c4b8e77158b",
+      "jobId": "24068a9a-f965-482c-b73a-661fc220ac0a",
+      "status": "Resultado desconhecido",
+      "receipt": null,
+      "execution": {
+        "correlationId": "eca93d93-724f-4923-abae-df18ce4fc0bb",
+        "runId": "a0aa780b-9147-4898-a263-3a78036003e7",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "eca93d93-724f-4923-abae-df18ce4fc0bb",
+          "runId": "a0aa780b-9147-4898-a263-3a78036003e7",
+          "origin": "user_triggered_automation",
+          "id": "da441885-ea72-4bb7-83a3-6c7b4506dcf1",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T12:19:57.797Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T12:19:58.132Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-23T12:19:39.224Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T12:19:39.224Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-23T12:19:57.797Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T12:19:58.133Z",
+          "actor": "Sistema",
+          "message": "O formulário retornou HTTP 503 após o envio. Confira antes de repetir."
+        }
+      ]
+    },
+    {
+      "id": "f9361389-8b0b-4d6e-8836-344fe8f360b2",
+      "jobId": "3fc4a12a-fa22-49d0-a59c-d6ded8b0b913",
+      "status": "Enviada",
+      "receipt": "Formulário da empresa: Candidatura recebida [resposta 717e4539022a0218]",
+      "execution": {
+        "correlationId": "d5cf1356-b344-4980-bbd7-d914957c1a0d",
+        "runId": "a0aa780b-9147-4898-a263-3a78036003e7",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "d5cf1356-b344-4980-bbd7-d914957c1a0d",
+          "runId": "a0aa780b-9147-4898-a263-3a78036003e7",
+          "origin": "user_triggered_automation",
+          "id": "665d10e7-39ea-4ed3-ac4e-807e3cd617e8",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T12:20:22.299Z",
+          "outcome": "confirmed",
+          "finishedAt": "2026-10-23T12:20:22.682Z",
+          "receipt": "Formulário da empresa: Candidatura recebida [resposta 717e4539022a0218]"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-23T12:19:39.220Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T12:19:39.221Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-23T12:20:22.299Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T12:20:22.682Z",
+          "actor": "Sistema",
+          "message": "Envio confirmado pela integração. Recibo: Formulário da empresa: Candidatura recebida [resposta 717e4539022a0218]"
+        }
+      ]
+    },
+    {
+      "id": "8c765f57-7a2b-4d91-a6bd-e5484b0d0938",
+      "jobId": "ea081ab9-0aef-4943-8979-8a252978ffe8",
+      "status": "Enviada",
+      "receipt": "Formulário da empresa: Candidatura recebida [resposta bf45d9b7a17072dc]",
+      "execution": {
+        "correlationId": "6df682ee-fcf6-4849-9ea8-716a687d9b4c",
+        "runId": "a0aa780b-9147-4898-a263-3a78036003e7",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "6df682ee-fcf6-4849-9ea8-716a687d9b4c",
+          "runId": "a0aa780b-9147-4898-a263-3a78036003e7",
+          "origin": "user_triggered_automation",
+          "id": "94403119-9e54-4efb-afec-44d313625486",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T12:18:59.784Z",
+          "outcome": "confirmed",
+          "finishedAt": "2026-10-23T12:19:00.126Z",
+          "receipt": "Formulário da empresa: Candidatura recebida [resposta bf45d9b7a17072dc]"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-23T12:02:55.922Z",
+          "actor": "Sistema",
+          "message": "Preparação controlada de integração."
+        },
+        {
+          "at": "2026-10-23T12:18:59.785Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T12:19:00.126Z",
+          "actor": "Sistema",
+          "message": "Envio confirmado pela integração. Recibo: Formulário da empresa: Candidatura recebida [resposta bf45d9b7a17072dc]"
+        }
+      ]
+    }
+  ],
+  "quota": 3,
+  "confirmed": 2,
+  "assertions": {
+    "continuedPreparation": true,
+    "twoConfirmed": true,
+    "uncertainNotConfirmed": true,
+    "noDuplicates": true,
+    "captchaUntouched": true
+  },
+  "producerEnvironment": "production",
+  "producer": "dedicated hosted deployment",
+  "hostedPublications": [
+    {
+      "at": "2026-10-23T12:16:23.232Z",
+      "replay": false,
+      "messageId": "2e-1M1lfdKUkGmMALBHCOt63yapQaHucepO"
+    },
+    {
+      "at": "2026-10-23T12:18:57.268Z",
+      "replay": true,
+      "messageId": "6A-1M1eB4A5TyuiZUHBpKVuGsluWyjTt2tG"
+    },
+    {
+      "at": "2026-10-23T12:23:02.756Z",
+      "replay": true,
+      "messageId": "4v-1M1ee1sTzkjLq9JuKgYc4QsAiUr1NcTy"
+    },
+    {
+      "at": "2026-10-23T12:35:31.507Z",
+      "replay": false,
+      "discovery": true,
+      "id": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+      "status": "queued",
+      "message": "Busca na fila. Os resultados serão atualizados automaticamente."
+    }
+  ],
+  "progress": {
+    "day": "2026-10-23",
+    "target": 5,
+    "sent": 2,
+    "usedToday": 3,
+    "remaining": 2,
+    "state": "waiting",
+    "message": "Os destinos das vagas disponíveis foram verificados. Ainda há saldo diário, mas nenhum outro envio foi liberado pelos formulários consultados.",
+    "updatedAt": "2026-10-23T12:23:05.063Z"
+  },
+  "initialSetupDeploymentId": "dpl_CTJcPbmkFsK6D4geqCzYbY7rv2y4",
+  "unvalidatedExternalPublications": [
+    {
+      "messageId": "4x-1M1eB3o9095CTd5twYVdK70IZrqT3hVC"
+    },
+    {
+      "messageId": "4x-1M1eB3o9095CTd5twaqgRqmTFbWgqMba"
+    }
+  ],
+  "externalPublicationLimitation": "Initial external producer used development OIDC; only hostedPublications and cloud consumer events establish production transport."
+}

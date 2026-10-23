@@ -1,0 +1,326 @@
+{
+  "at": "2026-10-23T14:07:46.350Z",
+  "runs": [
+    {
+      "origin": "user_triggered_automation",
+      "continuation": false,
+      "id": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "at": "2026-10-23T13:27:27.466Z",
+      "status": "completed",
+      "discovered": 5,
+      "processed": 0,
+      "errors": [],
+      "message": "5 novas oportunidades, sem duplicações. 437 registros publicados consultados.",
+      "searchSuggestions": []
+    },
+    {
+      "id": "8acfd302-430f-4532-9e3a-1dc8363ebc73",
+      "at": "2026-10-23T11:09:15.154Z",
+      "status": "partial",
+      "discovered": 9,
+      "processed": 0,
+      "errors": [
+        "Páginas de carreira das empresas: As referências encontradas não confirmaram páginas oficiais legíveis. A busca será reavaliada."
+      ],
+      "message": "9 novas oportunidades, sem duplicações. 434 registros publicados consultados.",
+      "searchSuggestions": []
+    },
+    {
+      "id": "4ca93b29-e0b9-4b0c-b0d9-b758fad9e28d",
+      "at": "2026-10-22T19:17:12.479Z",
+      "status": "completed",
+      "discovered": 12,
+      "processed": 0,
+      "errors": [],
+      "message": "12 novas oportunidades, sem duplicações. 433 registros publicados consultados.",
+      "searchSuggestions": []
+    },
+    {
+      "id": "36c02fe6-ae37-44cd-9656-db37ec43a00f",
+      "at": "2026-10-22T15:47:10.921Z",
+      "status": "completed",
+      "discovered": 411,
+      "processed": 1,
+      "errors": [],
+      "message": "411 novas oportunidades, sem duplicações. 429 registros publicados consultados.",
+      "searchSuggestions": []
+    }
+  ],
+  "tasks": [
+    {
+      "table": "discoveryTasks",
+      "items": [
+        {
+          "id": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-23T13:27:16.856Z",
+          "updatedAt": "2026-10-23T13:32:05.740Z",
+          "lastError": null
+        },
+        {
+          "id": "8acfd302-430f-4532-9e3a-1dc8363ebc73",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-23T11:09:07.201Z",
+          "updatedAt": "2026-10-23T11:13:38.263Z",
+          "lastError": "Páginas de carreira das empresas: As referências encontradas não confirmaram páginas oficiais legíveis. A busca será reavaliada."
+        },
+        {
+          "id": "4ca93b29-e0b9-4b0c-b0d9-b758fad9e28d",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-22T19:17:02.034Z",
+          "updatedAt": "2026-10-22T19:21:34.753Z",
+          "lastError": null
+        },
+        {
+          "id": "36c02fe6-ae37-44cd-9656-db37ec43a00f",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-22T15:47:03.574Z",
+          "updatedAt": "2026-10-22T15:51:13.486Z",
+          "lastError": null
+        }
+      ]
+    },
+    {
+      "table": "resolutionTasks",
+      "items": [
+        {
+          "id": "96c471c9-a830-4973-a433-2b0840dd7d1b",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-23T13:32:06.466Z",
+          "updatedAt": "2026-10-23T13:33:09.977Z",
+          "lastError": null
+        },
+        {
+          "id": "db96e311-941e-42ca-b053-f793fbbafd37",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-23T11:17:14.831Z",
+          "updatedAt": "2026-10-23T11:18:08.788Z",
+          "lastError": null
+        },
+        {
+          "id": "96bceb6a-bd5c-4dca-831a-df12696f7147",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-23T11:16:26.065Z",
+          "updatedAt": "2026-10-23T11:17:08.768Z",
+          "lastError": null
+        },
+        {
+          "id": "f7df2c15-3612-4525-998a-12638f095207",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-23T11:14:58.447Z",
+          "updatedAt": "2026-10-23T11:16:19.757Z",
+          "lastError": null
+        }
+      ]
+    }
+  ],
+  "quickinJobs": [
+    {
+      "id": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "url": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+      "title": "Desenvolvedor Full Stack - PL/SR",
+      "company": "Global TI",
+      "match": {
+        "score": 85,
+        "strengths": [
+          "Competências em comum: C#, .NET, SQL Server, Entity Framework, APIs REST, TypeScript, JavaScript, Git, HTML, CSS.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: React.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "Entity Framework",
+          "APIs REST",
+          "TypeScript",
+          "JavaScript",
+          "Git",
+          "HTML",
+          "CSS"
+        ],
+        "missingSkills": [
+          "React"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 54.55,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 54.55/60; Cargo e área desejados: 20/20; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "automation": {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:02.486Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:50.865Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T13:51:53.129Z",
+            "stage": "preparation",
+            "code": "automatic_queued"
+          },
+          {
+            "at": "2026-10-23T13:52:02.907Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T13:52:21.765Z",
+            "stage": "submission",
+            "code": "executor_started"
+          },
+          {
+            "at": "2026-10-23T13:52:39.795Z",
+            "stage": "confirmation",
+            "code": "result_unknown"
+          },
+          {
+            "at": "2026-10-23T13:52:44.502Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          }
+        ],
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a"
+      },
+      "resolution": {
+        "state": "verified",
+        "complete": true,
+        "checkedAt": "2026-10-23T13:27:35.667Z",
+        "retryAt": "2026-10-24T13:27:35.667Z",
+        "consulted": [
+          {
+            "source": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+            "count": 1,
+            "outcome": "Publicação e link de formulário identificados."
+          }
+        ],
+        "matches": [],
+        "message": "Formulário Quickin identificado; campos obrigatórios serão conferidos antes de qualquer transmissão."
+      }
+    }
+  ],
+  "applications": [
+    {
+      "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "status": "Resultado desconhecido",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "receipt": null,
+      "execution": {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+          "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+          "origin": "user_triggered_automation",
+          "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T13:52:21.765Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T13:52:39.795Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-23T13:51:53.129Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T13:51:53.129Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-23T13:52:21.765Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T13:52:39.796Z",
+          "actor": "Sistema",
+          "message": "A Quickin não confirmou o recebimento. Confira o resultado antes de repetir."
+        }
+      ]
+    }
+  ],
+  "routine": {
+    "enabled": true,
+    "mode": "automatic",
+    "time": "08:00",
+    "dailyLimit": 5,
+    "minScore": 70,
+    "lastRun": "2026-10-23T13:31:58.286Z",
+    "nextRun": "2026-10-24T11:00:00.000Z",
+    "destinationPolicy": "official",
+    "progress": {
+      "day": "2026-10-23",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 1,
+      "remaining": 4,
+      "state": "waiting",
+      "message": "5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-23T13:53:12.119Z"
+    },
+    "discoveryCheckpoints": {
+      "official-abler-email": {
+        "cursor": "276f88830db396c4:0",
+        "pending": false
+      },
+      "company-board:alleasy.com.br": {
+        "cursor": "{\"url\":\"https://alleasy.com.br/jobs/\",\"offset\":0}",
+        "pending": false
+      }
+    },
+    "researchBudget": {
+      "day": "2026-10-23",
+      "used": 27
+    }
+  },
+  "sourceStatus": []
+}

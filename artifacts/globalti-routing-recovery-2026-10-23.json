@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-23T13:37:22.004Z",
+  "readOnly": true,
+  "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+  "sourceAllowed": true,
+  "objectiveFiltersPassed": true,
+  "resumeTargetsPassed": true,
+  "score": 85,
+  "minimum": 70,
+  "blockers": [],
+  "route": "ats_browser",
+  "excluded": false,
+  "approvedOriginalResume": true,
+  "interviewComplete": true,
+  "applicationAlreadyExists": false
+}

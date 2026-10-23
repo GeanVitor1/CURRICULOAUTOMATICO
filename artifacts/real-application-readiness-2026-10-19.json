@@ -1,0 +1,58 @@
+{
+  "at": "2026-10-19T12:58:20.915Z",
+  "realVacancySaved": true,
+  "newRecord": true,
+  "job": {
+    "title": "Pessoa Desenvolvedora Backend C#/.NET - Pleno",
+    "company": "SmartTravel",
+    "url": "https://smart.gupy.io/job/eyJqb2JJZCI6MTI1ODI2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+    "modality": "Remoto"
+  },
+  "candidateReadiness": {
+    "resumeFound": true,
+    "resumeApproved": false,
+    "profileConfirmed": false,
+    "preferencesCompleted": false,
+    "connectedPortals": 0
+  },
+  "routineEnabled": false,
+  "applicationsCreated": 0,
+  "resumesTransmitted": 0,
+  "realEmployerSubmissions": 0,
+  "resolution": {
+    "state": "partial",
+    "checkedAt": "2026-10-19T12:58:16.471Z",
+    "retryAt": "2026-10-19T13:58:16.471Z",
+    "complete": false,
+    "consulted": [
+      {
+        "source": "catalog",
+        "outcome": "Publicações comparadas por empresa, identificadores e conteúdo.",
+        "count": 0
+      },
+      {
+        "source": "https://smart.gupy.io/job/eyJqb2JJZCI6MTI1ODI2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      },
+      {
+        "source": "public_search",
+        "outcome": "Mecanismo de busca não configurado.",
+        "count": 0
+      }
+    ],
+    "matches": [],
+    "message": "Busca cruzada parcial. Há fontes pendentes; a oportunidade será reavaliada."
+  },
+  "candidateReadinessAfterConfirmation": {
+    "checkedAt": "2026-10-19T13:22:44.093Z",
+    "resumeApproved": true,
+    "profileConfirmed": true,
+    "basicDetailsConfirmed": true,
+    "locationUnicodeVerified": true,
+    "connectedPortals": 0,
+    "routineEnabled": false,
+    "applicationsCreated": 0,
+    "realEmployerSubmissions": 0
+  }
+}

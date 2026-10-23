@@ -1,0 +1,685 @@
+[
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-backend-net-s%C3%AAnior-at-jobbol-4480388919",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-17T12:50:32.000Z",
+        "description": "Consultoria de tecnologia da informação busca profissional Desenvolvedor Backend .NET Sênior em São Paulo (Morumbi).&lt;br&gt;&lt;br&gt;A IVO Services é uma empresa de tecnologia que conecta inovação, pessoas e negócios. Atuam com soluções em TI, recrutamento especializado, outsourcing, squads dedicadas e desenvolvimento de software, apoiando empresas na busca pelos melhores talentos e na construção de soluções que geram resultados. Com DNA Tech e foco em pessoas, buscam conectar profissionais a oportunidades alinhadas às suas experiências e objetivos de carreira.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Responsabilidades&lt;br&gt;&lt;br&gt;&lt;/strong&gt;Atuar ativamente em time ágil de desenvolvimento. Entender, questionar e ajudar no planejamento e estimativa de escopo. Desenvolver soluções em APIs e microsserviços. Executar e sustentar aplicações e integrações existentes. Garantir a qualidade do código através da realização de testes unitários. Manter ambientes de desenvolvimento atualizados e reportar status.&lt;br&gt;&lt;br&gt;Atuações anteriores em Engenheiro de Software .NET Sênior, Desenvolvedor Backend C# Sênior, Programador .NET Sênior ou Desenvolvedor Backend ASP.NET Sênior podem indicar afinidade com algumas das atividades desta posição.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Requisitos Desejáveis&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt;Escolaridade:&lt;/strong&gt; Ensino superior completo&lt;br&gt;&lt;br&gt;&lt;strong&gt;Experiência:&lt;/strong&gt; Necessário experiência&lt;br&gt;&lt;br&gt;&lt;strong&gt;Remuneração e Benefícios&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Salário: Faixa salarial será informada na entrevista.&lt;/li&gt;&lt;li&gt;A combinar.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Informações Adicionais&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Contrato: Home Office. Modalidade 100% remota. Candidatos de São Caetano do Sul, Taboão da Serra, Guarulhos ou Osasco também são considerados para esta vaga.&lt;/li&gt;&lt;li&gt;Período: Tempo integral&lt;/li&gt;&lt;li&gt;Jornada: Segunda a Sexta-feira. Escala 5x2.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Jobbol",
+          "sameAs": "https://br.linkedin.com/company/jobbol-empregos",
+          "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEUwreILeGS7Q/company-logo_200_200/B4DZ5wJQzAG4AI-/0/1779997937122/jobbol_empregos_logo?e=2147483647&amp;v=beta&amp;t=qc4NI8gP2YkFNIB0m4ABQdHpDyvrJwbnHuDIrf0orKM"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "Jobbol",
+          "value": "29387144842"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4D0BAQEUwreILeGS7Q/company-logo_100_100/B4DZ5wJQzAG4AM-/0/1779997937122/jobbol_empregos_logo?e=2147483647&amp;v=beta&amp;t=47i8HzJ8kSKiMu7089w8KVQJJkXRPs0z7qrtMet3AcA",
+        "industry": "Tecnologia, Informação e Internet",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "São Paulo",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -23.549833,
+          "longitude": -46.63224
+        },
+        "skills": "",
+        "title": "Desenvolvedor Backend .NET Sênior",
+        "validThrough": "2026-11-16T12:50:32.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        },
+        "jobLocationType": "TELECOMMUTE",
+        "applicantLocationRequirements": {
+          "@type": "Country",
+          "name": "São Paulo, São Paulo, Brasil"
+        }
+      }
+    ],
+    "description": "Consultoria de tecnologia da informação busca profissional Desenvolvedor Backend .NET Sênior em São Paulo (Morumbi).A IVO Services é uma empresa de tecnologia que conecta inovação, pessoas e negócios. Atuam com soluções em TI, recrutamento especializado, outsourcing, squads dedicadas e desenvolvimento de software, apoiando empresas na busca pelos melhores talentos e na construção de soluções que geram resultados. Com DNA Tech e foco em pessoas, buscam conectar profissionais a oportunidades alinhadas às suas experiências e objetivos de carreira.ResponsabilidadesAtuar ativamente em time ágil de desenvolvimento. Entender, questionar e ajudar no planejamento e estimativa de escopo. Desenvolver soluções em APIs e microsserviços. Executar e sustentar aplicações e integrações existentes. Garantir a qualidade do código através da realização de testes unitários. Manter ambientes de desenvolvimento atualizados e reportar status.Atuações anteriores em Engenheiro de Software .NET Sênior, Desenvolvedor Backend C# Sênior, Programador .NET Sênior ou Desenvolvedor Backend ASP.NET Sênior podem indicar afinidade com algumas das atividades desta posição.Requisitos DesejáveisEscolaridade: Ensino superior completoExperiência: Necessário experiênciaRemuneração e BenefíciosSalário: Faixa salarial será informada na entrevista.A combinar.Informações AdicionaisContrato: Home Office. Modalidade 100% remota. Candidatos de São Caetano do Sul, Taboão da Serra, Guarulhos ou Osasco também são considerados para esta vaga.Período: Tempo integralJornada: Segunda a Sexta-feira. Escala 5x2.",
+    "offsite": [
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-backend-net-s%25C3%25AAnior-at-jobbol-4480388919&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link",
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-backend-net-s%25C3%25AAnior-at-jobbol-4480388919&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link"
+    ],
+    "emails": null
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-a-net-j%C3%BAnior-at-stoque-4480408078",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-19T00:00:00.000Z",
+        "description": "&lt;strong&gt;Sobre a oportunidade&lt;br&gt;&lt;br&gt;&lt;/strong&gt;Se você gosta de desenvolver soluções, resolver problemas e aprender na prática dentro de um time de tecnologia, essa vaga pode ser para você.&lt;br&gt;&lt;br&gt;Aqui na Stoque, você vai atuar em um projeto estratégico, com impacto direto nas entregas do time e na continuidade de uma posição faturável para a operação. É uma oportunidade para quem quer crescer tecnicamente, colaborar com a squad e participar do ciclo de desenvolvimento de ponta a ponta.&lt;br&gt;&lt;br&gt;&lt;strong&gt;O que você vai fazer por aqui&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Desenvolver e manter aplicações web corporativas em C# e .NET.&lt;/li&gt;&lt;li&gt;Criar e evoluir funcionalidades em sistemas ASP.NET MVC.&lt;/li&gt;&lt;li&gt;Desenvolver e consumir APIs REST.&lt;/li&gt;&lt;li&gt;Apoiar rotinas de acesso a dados com Entity Framework, LINQ e SQL Server.&lt;/li&gt;&lt;li&gt;Atuar na correção de bugs, incidentes e melhoria contínua das entregas.&lt;/li&gt;&lt;li&gt;Participar de cerimônias ágeis, revisões de código e acompanhamento das atividades no Azure Boards.&lt;/li&gt;&lt;li&gt;Trabalhar com Git no controle de versão e colaboração com o time.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;O que esperamos de você&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Base em desenvolvimento com C# e .NET / .NET Framework.&lt;/li&gt;&lt;li&gt;Noções consistentes de orientação a objetos, SQL Server e consumo de APIs.&lt;/li&gt;&lt;li&gt;Vivência ou familiaridade com ASP.NET MVC, HTML, CSS, JavaScript e Bootstrap.&lt;/li&gt;&lt;li&gt;Boa comunicação, vontade de aprender e disposição para trabalhar em equipe.&lt;/li&gt;&lt;li&gt;Perfil júnior, com abertura para curva de aprendizado e rotina semipresencial.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Não é obrigatório, mas é um diferencial&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Vivência com Azure DevOps, Azure Boards e Swagger/OpenAPI.&lt;/li&gt;&lt;li&gt;Conhecimento em testes unitários, CI/CD, microsserviços e Azure Cloud.&lt;/li&gt;&lt;li&gt;Participação em projetos pessoais, acadêmicos ou open source.&lt;/li&gt;&lt;li&gt;Certificações Microsoft ligadas ao ecossistema .NET ou Azure.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Benefícios&lt;/strong&gt; &lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt;Plano de Saúde com opção de cobertura Nacional&lt;/li&gt;&lt;li&gt;Plano Odontológico&lt;/li&gt;&lt;li&gt;Cartão Caju: flexibilidade para usar o seu vale alimentação&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Feirinha da Caju: descontos especiais no aplicativo da Caju para aproveitar com até 30% de desconto&lt;/li&gt;&lt;li&gt;Vale mobilidade: também no cartão Caju, para maior comodidade&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;Conexa Saúde: 2 consultas gratuitas por mês com psicólogos e/ou nutricionistas + descontos em farmácias &lt;/li&gt;&lt;li&gt;Wellhub: as melhores redes de parcerias para atividades físicas, mindfulness, terapia, nutrição e qualidade do sono, com diversos planos disponíveis&lt;/li&gt;&lt;li&gt;Day off no mês do seu aniversário&lt;/li&gt;&lt;li&gt;Cultura: ambiente inovador, colaborativo, com incentivo ao uso de inteligência artificial no dia a dia e foco em aprendizado e desenvolvimento contínuo.&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Como é trabalhar na Stoque? &lt;br&gt;&lt;br&gt;&lt;/strong&gt;Aqui, a cultura não é discurso, é prática. Nossos princípios estão no dia a dia:&lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt;Saltamos sempre para frente: incentivo real para aprender, testar e errar pequeno para acertar grande.&lt;/li&gt;&lt;li&gt;Crescemos e ajudamos a crescer: você terá espaço para desenvolvimento e gente disposta a te apoiar.&lt;/li&gt;&lt;li&gt;Confiamos no bando: autonomia com responsabilidade, conversas claras e ambiente de parceria.&lt;/li&gt;&lt;li&gt;Colocamos o cliente no centro: você verá diariamente como seu trabalho melhora a experiência dos nossos clientes.&lt;/li&gt;&lt;li&gt;Buscamos novos movimentos: IA, automações e novas formas de trabalhar fazem parte da nossa rotina.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;Se você gosta de aprender, se mover rápido e ter clareza no que precisa entregar, você vai se sentir em casa!",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Stoque",
+          "sameAs": "https://br.linkedin.com/company/stoque",
+          "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGrWes1RZiZoA/company-logo_200_200/B4DZyuTZ_uKYAI-/0/1772450849176/stoque_logo?e=2147483647&amp;v=beta&amp;t=-RVEIfI-40S0JvKOwVVSbUh_Y0QrXdVSugki6RoDZSE"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "Stoque",
+          "value": "a4b52c9a-4754-4a37-a1e7-dca1ae86f1f5"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4D0BAQGrWes1RZiZoA/company-logo_100_100/B4DZyuTZ_uKYAQ-/0/1772450849176/stoque_logo?e=2147483647&amp;v=beta&amp;t=Aq8IceQ0wWYxpyicgqTj6tgMOFviHkJsfBwTbfZ3yUc",
+        "industry": "Atividades dos serviços de tecnologia da informação",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "São Paulo",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -23.550652,
+          "longitude": -46.63338
+        },
+        "skills": "",
+        "title": "Desenvolvedor(a) .NET Júnior",
+        "validThrough": "2026-11-19T00:00:24.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        }
+      },
+      {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {
+              "str": "Vagas"
+            },
+            "item": "https://br.linkedin.com/jobs/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Vagas de Desenvolvedor .Net",
+            "item": "https://br.linkedin.com/jobs/desenvolvedor-%2Enet-vagas"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Desenvolvedor(a) .NET Júnior",
+            "item": "https://br.linkedin.com/jobs/view/desenvolvedor-a-net-j%C3%BAnior-at-stoque-4480408078"
+          }
+        ]
+      }
+    ],
+    "description": "Sobre a oportunidadeSe você gosta de desenvolver soluções, resolver problemas e aprender na prática dentro de um time de tecnologia, essa vaga pode ser para você.Aqui na Stoque, você vai atuar em um projeto estratégico, com impacto direto nas entregas do time e na continuidade de uma posição faturável para a operação. É uma oportunidade para quem quer crescer tecnicamente, colaborar com a squad e participar do ciclo de desenvolvimento de ponta a ponta.O que você vai fazer por aquiDesenvolver e manter aplicações web corporativas em C# e .NET.Criar e evoluir funcionalidades em sistemas ASP.NET MVC.Desenvolver e consumir APIs REST.Apoiar rotinas de acesso a dados com Entity Framework, LINQ e SQL Server.Atuar na correção de bugs, incidentes e melhoria contínua das entregas.Participar de cerimônias ágeis, revisões de código e acompanhamento das atividades no Azure Boards.Trabalhar com Git no controle de versão e colaboração com o time.O que esperamos de vocêBase em desenvolvimento com C# e .NET / .NET Framework.Noções consistentes de orientação a objetos, SQL Server e consumo de APIs.Vivência ou familiaridade com ASP.NET MVC, HTML, CSS, JavaScript e Bootstrap.Boa comunicação, vontade de aprender e disposição para trabalhar em equipe.Perfil júnior, com abertura para curva de aprendizado e rotina semipresencial.Não é obrigatório, mas é um diferencialVivência com Azure DevOps, Azure Boards e Swagger/OpenAPI.Conhecimento em testes unitários, CI/CD, microsserviços e Azure Cloud.Participação em projetos pessoais, acadêmicos ou open source.Certificações Microsoft ligadas ao ecossistema .NET ou Azure.Benefícios Plano de Saúde com opção de cobertura NacionalPlano OdontológicoCartão Caju: flexibilidade para usar o seu vale alimentaçãoFeirinha da Caju: descontos especiais no aplicativo da Caju para aproveitar com até 30% de descontoVale mobilidade: também no cartão Caju, para maior comodidadeConexa Saúde: 2 consultas gratuitas por mês com psicólogos e/ou nutricionistas + descontos em farmácias Wellhub: as melhores redes de parcerias para atividades físicas, mindfulness, terapia, nutrição e qualidade do sono, com diversos planos disponíveisDay off no mês do seu aniversárioCultura: ambiente inovador, colaborativo, com incentivo ao uso de inteligência artificial no dia a dia e foco em aprendizado e desenvolvimento contínuo.Como é trabalhar na Stoque? Aqui, a cultura não é discurso, é prática. Nossos princípios estão no dia a dia:Saltamos sempre para frente: incentivo real para aprender, testar e errar pequeno para acertar grande.Crescemos e ajudamos a crescer: você terá espaço para desenvolvimento e gente disposta a te apoiar.Confiamos no bando: autonomia com responsabilidade, conversas claras e ambiente de parceria.Colocamos o cliente no centro: você verá diariamente como seu trabalho melhora a experiência dos nossos clientes.Buscamos novos movimentos: IA, automações e novas formas de trabalhar fazem parte da nossa rotina.Se você gosta de aprender, se mover rápido e ter clareza no que precisa entregar, você vai se sentir em casa!",
+    "offsite": [
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-a-net-j%25C3%25BAnior-at-stoque-4480408078&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link",
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-a-net-j%25C3%25BAnior-at-stoque-4480408078&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link"
+    ],
+    "emails": null
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-a-net-s%C3%AAnior-at-vetta-4475262930",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-10T01:15:22.000Z",
+        "description": "Descrição da vaga&lt;br&gt;&lt;br&gt;&lt;strong&gt;Estamos buscando uma pessoa Desenvolvedor (a) .NET Sênior&lt;/strong&gt;&lt;strong&gt; para o Time Vetta! &lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt;VOCÊ JÁ CONHECE A VETTA? &lt;br&gt;&lt;br&gt;&lt;/strong&gt;Na Vetta, acreditamos que a tecnologia e a inovação são essenciais para criar um futuro mais sustentável e eficiente para todos. Como uma empresa líder em digitalização industrial, nossas soluções estão ajudando clientes em todo o mundo a reduzir o consumo de energia, a melhorar a eficiência operacional e apoiar a transição energética através da descarbonização.&lt;br&gt;&lt;br&gt;Ao se juntar à nossa equipe, você terá a oportunidade de trabalhar em &lt;strong&gt;projetos emocionantes e desafiadores com alguns dos maiores especialistas da indústria&lt;/strong&gt;. Além disso, você fará parte de uma equipe dedicada em gerar um impacto positivo no mundo e em ajudar nossos clientes a alcançar seus objetivos de negócios. O Time Vetta sabe a importância do trabalho em equipe e da colaboração para alcançar resultados que atingem todo o globo – ao mesmo tempo que &lt;strong&gt;a carreira de cada um é transformada.&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt;Se você quer compartilhar a sua perspectiva para um mundo mais sustentável, venha ser parte do Time Vetta!&lt;/strong&gt; 💙&lt;br&gt;&lt;br&gt;Responsabilidades e atribuições&lt;br&gt;&lt;br&gt;&lt;strong&gt;Nesse Time, Você Terá a Oportunidade De&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;O (A) profissional será responsável por participar ativamente em todas as fases do ciclo de vida do desenvolvimento de software, desde a concepção e design até a implementação, testes, entrega e sustentação. &lt;/li&gt;&lt;li&gt;Terá papel fundamental na modernização dos processos, utilizando ferramentas de IA para acelerar e otimizar as entregas dentro de metodologias ágeis.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Responsabilidades&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Participar ativamente de reuniões técnicas e de negócio, contribuindo com insights e soluções. &lt;/li&gt;&lt;li&gt;Aplicar metodologias ágeis integradas ao uso de Inteligência Artificial como SDD (Specification-Driven Development / Desenvolvimento Orientado a Especificações) para traduzir requisitos em arquitetura e código de forma eficiente. &lt;/li&gt;&lt;li&gt;Desenvolvimento de soluções em .NET C#. &lt;/li&gt;&lt;li&gt;Desenvolvimento de Integrações com soluções internas e externas. &lt;/li&gt;&lt;li&gt;Utilizar assistentes de IA e ferramentas generativas para otimizar a criação de código, refatoração, cobertura de testes e code reviews. &lt;/li&gt;&lt;li&gt;Acompanhar e tirar dúvidas dos usuários durante o processo de homologação. &lt;/li&gt;&lt;li&gt;Suporte/sustentação das soluções elaboradas. &lt;/li&gt;&lt;li&gt;Geração de documentação automatizada ou assistida por IA (Manuais e procedimentos de trabalho). &lt;/li&gt;&lt;li&gt;Forte comprometimento com datas e entregas de valor contínuo.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;Requisitos e qualificações&lt;br&gt;&lt;br&gt;&lt;strong&gt;&lt;em&gt;Oportunidade exclusiva para profissionais da região metropolitana de São Paulo - SP. Oportunidade híbrida, 2x presencial na Avenida Brigadeiro Faria Lima.&lt;br&gt;&lt;br&gt;&lt;/em&gt;&lt;/strong&gt;&lt;strong&gt;O Que Esperamos De Você Para Essa Vaga&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Análise e Desenvolvimento de Sistemas, Ciência da Computação, Engenharia de Software ou áreas relacionadas. &lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Proficiência Em Desenvolvimento Com&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt; C#&lt;/li&gt;&lt;li&gt;MVC&lt;/li&gt;&lt;li&gt;Angular&lt;/li&gt;&lt;li&gt;SQL Server (Procedure, Function, Triggers, Views)&lt;/li&gt;&lt;li&gt;JavaScript, jQuery&lt;/li&gt;&lt;li&gt;MVC - Bootstrap&lt;/li&gt;&lt;li&gt;Web API, Web Service, WCF&lt;/li&gt;&lt;li&gt;Sólido conhecimento em Domain-Driven Design (DDD). &lt;/li&gt;&lt;li&gt;Experiência com camada de persistência ORM (Dapper). &lt;/li&gt;&lt;li&gt;Experiência com DevOps (Git/TFS - Azure DevOps). &lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Competências&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Desenvolvimento Ágil com IA: Habilidade prática na utilização de Inteligência Artificial como SDD (Specification-Driven Development) no ciclo ágil, criando prompts arquitetônicos e especificações claras para geração, análise e validação de software. &lt;/li&gt;&lt;li&gt;Excelentes habilidades analíticas e conceituais, com capacidade de resolver problemas complexos. &lt;/li&gt;&lt;li&gt;Fortes habilidades didáticas, com capacidade de explicar conceitos técnicos de forma clara e acessível, tanto para humanos quanto na construção de contexto para modelos de IA. &lt;/li&gt;&lt;li&gt;Objetividade, fluência verbal e escrita, e postura profissional. &lt;/li&gt;&lt;li&gt;Excelentes habilidades de relacionamento interpessoal e capacidade de trabalhar em equipe multidisciplinar. &lt;/li&gt;&lt;li&gt;Alta capacidade de concentração, iniciativa, organização, planejamento e proatividade. &lt;/li&gt;&lt;li&gt;Forte senso de comprometimento e capacidade de tomar decisões eficazes baseadas em dados. &lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt; Diferenciais: &lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Conhecimento avançado na integração de APIs de LLMs (OpenAI, Claude, etc.) em soluções corporativas.&lt;/li&gt;&lt;li&gt;Conhecimento em cloud Azure. &lt;/li&gt;&lt;li&gt;Forte vivência anterior em frameworks ágeis (Scrum, Kanban). &lt;/li&gt;&lt;li&gt;Certificações relevantes na área de desenvolvimento de software ou Cloud/IA. &lt;/li&gt;&lt;li&gt;Conhecimento em aplicações conteinerizadas (Docker/Kubernetes).&lt;/li&gt;&lt;li&gt;Experiência com tecnologias de mensageria (RabbitMQ ou similares). &lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;Informações adicionais&lt;br&gt;&lt;br&gt;&lt;strong&gt;Nossos Benefícios&lt;br&gt;&lt;br&gt;&lt;/strong&gt;Sendo uma empresa voltada para pessoas, buscamos sempre valorizar a nossa equipe. Ao entrar para o Time Vetta, oferecemos:&lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt;Cartão Flash com vale-alimentação/refeição de R$ 32,00 por dia, aceito em diversos estabelecimentos para você usar como preferir.&lt;/li&gt;&lt;li&gt;Auxílio home office de R$ 100,00/mês e flexibilidade no horário de trabalho.&lt;/li&gt;&lt;li&gt;Pensando na sua saúde e bem-estar, oferecemos Plano de Saúde SulAmérica e Plano Odontológico Bradesco,com a possibilidade de inclusão dos seus dependentes. &lt;/li&gt;&lt;li&gt;WellHub, TotalPass e UniCamente, para você cuidar da sua saúde integralmente, com acesso a atividades físicas e a profissionais de diversas áreas da saúde.&lt;/li&gt;&lt;li&gt;Onhappy, uma plataforma de viagens corporativas e lazer com descontos exclusivos em hospedagens, passagens e experiências para você aproveitar momentos de descanso e lazer com mais praticidade e economia. &lt;/li&gt;&lt;li&gt;Plano de Saúde Pet da Guapeco, para você cuidar da saúde e bem-estar do seu melhor amigo com acesso a consultas, exames e outros serviços veterinários.&lt;/li&gt;&lt;li&gt;Clube de Descontos e Recompensas, com descontos em diversas redes de produtos e de serviços. &lt;/li&gt;&lt;li&gt;Licença maternidade e paternidade estendida, para os pais e mães viverem essa fase com tranquilidade. &lt;/li&gt;&lt;li&gt;Seguro de Vida, para proporcionar mais tranquilidade e segurança.&lt;/li&gt;&lt;li&gt;Convênio com o SESC, oferecendo acesso a atividades de lazer, cultura, turismo, educação e bem-estar para você e sua família.&lt;/li&gt;&lt;li&gt;PLR - conforme tabela do sindicato.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;E TEM MAIS...&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Day-Off de Aniversário.&lt;/li&gt;&lt;li&gt;No Dress Code. Vista-se com o que te deixa confortável!&lt;/li&gt;&lt;li&gt;Programa de Incentivo à Formação Contínua e Capacitação, para que você possa continuar aprendendo e compartilhando experiências.&lt;/li&gt;&lt;li&gt;Quer indicar alguém para a Vetta? Temos Programa de Indicação de Talentos.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Se interessou em fazer parte do time? Cadastre-se agora! Ficaremos felizes em ter você conosco. 💙&lt;br&gt;&lt;br&gt;&lt;/strong&gt;TRANSFORMING BUSINESS TO IMPROVE THE WORLD&lt;br&gt;&lt;br&gt;&lt;strong&gt;Somos uma empresa global de digitalização industrial&lt;/strong&gt;, com duas décadas de experiência no segmento, que contribui com a eficiência operacional e com a&lt;strong&gt; redução do consumo de energia e de gases através da descarbonização&lt;/strong&gt;. Acreditamos que, com &lt;strong&gt;inovação e ação&lt;/strong&gt;, podemos tornar o mundo mais sustentável e os processos industriais mais eficientes.&lt;br&gt;&lt;br&gt;Atuamos em conjunto com a SMS group, líder mundial no segmento de metais, e somos responsáveis pelo desenvolvimento de soluções digitais para nossos clientes em mais de 14 países pelo mundo. As nossas soluções contam com a combinação de experiência em processos, know-how de inteligência artificial (IA) e recursos de desenvolvimento de software para resultar em tecnologias de ponta e de otimização.&lt;br&gt;&lt;br&gt;Queremos trazer soluções inovadoras, buscando melhores formas de tornar a indústria e o futuro mais sustentável por meio da descarbonização. &lt;strong&gt;Quer fazer parte dessa história? &lt;/strong&gt;&lt;strong&gt;#VemSerVetta &lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;em&gt;Todas as nossas vagas são inclusivas e abertas a todos e todas sem distinção por deficiência (PCD), raça, cor, religião, gênero, nacionalidade ou qualquer outra forma de diversidade.&lt;/em&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Vetta",
+          "sameAs": "https://br.linkedin.com/company/vettadigital",
+          "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHG3WnGgvpS4g/company-logo_200_200/company-logo_200_200/0/1630577417798/vettadigital_logo?e=2147483647&amp;v=beta&amp;t=5hTmrBPHjiqhJ4ndSQYw6buUwpqIRQVuNkUTV59Vc5Y"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "Vetta",
+          "value": "e2a7e4628060d675564ba63ba0717e55"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/C4D0BAQHG3WnGgvpS4g/company-logo_100_100/company-logo_100_100/0/1630577417798/vettadigital_logo?e=2147483647&amp;v=beta&amp;t=zrFwTCqPZHJ3sZZROp-RYClQV4lpMVmiNGitXHOs_rU",
+        "industry": "Atividades dos serviços de tecnologia da informação",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "São Paulo",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -23.550652,
+          "longitude": -46.63338
+        },
+        "skills": "",
+        "title": "Desenvolvedor(a) .NET Sênior",
+        "validThrough": "2026-11-09T01:15:21.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        }
+      },
+      {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {
+              "str": "Vagas"
+            },
+            "item": "https://br.linkedin.com/jobs/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Vagas de Desenvolvedor .Net",
+            "item": "https://br.linkedin.com/jobs/desenvolvedor-%2Enet-vagas"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Desenvolvedor(a) .NET Sênior",
+            "item": "https://br.linkedin.com/jobs/view/desenvolvedor-a-net-s%C3%AAnior-at-vetta-4475262930"
+          }
+        ]
+      }
+    ],
+    "description": "Descrição da vagaEstamos buscando uma pessoa Desenvolvedor (a) .NET Sênior para o Time Vetta! VOCÊ JÁ CONHECE A VETTA? Na Vetta, acreditamos que a tecnologia e a inovação são essenciais para criar um futuro mais sustentável e eficiente para todos. Como uma empresa líder em digitalização industrial, nossas soluções estão ajudando clientes em todo o mundo a reduzir o consumo de energia, a melhorar a eficiência operacional e apoiar a transição energética através da descarbonização.Ao se juntar à nossa equipe, você terá a oportunidade de trabalhar em projetos emocionantes e desafiadores com alguns dos maiores especialistas da indústria. Além disso, você fará parte de uma equipe dedicada em gerar um impacto positivo no mundo e em ajudar nossos clientes a alcançar seus objetivos de negócios. O Time Vetta sabe a importância do trabalho em equipe e da colaboração para alcançar resultados que atingem todo o globo – ao mesmo tempo que a carreira de cada um é transformada.Se você quer compartilhar a sua perspectiva para um mundo mais sustentável, venha ser parte do Time Vetta! 💙Responsabilidades e atribuiçõesNesse Time, Você Terá a Oportunidade DeO (A) profissional será responsável por participar ativamente em todas as fases do ciclo de vida do desenvolvimento de software, desde a concepção e design até a implementação, testes, entrega e sustentação. Terá papel fundamental na modernização dos processos, utilizando ferramentas de IA para acelerar e otimizar as entregas dentro de metodologias ágeis.ResponsabilidadesParticipar ativamente de reuniões técnicas e de negócio, contribuindo com insights e soluções. Aplicar metodologias ágeis integradas ao uso de Inteligência Artificial como SDD (Specification-Driven Development / Desenvolvimento Orientado a Especificações) para traduzir requisitos em arquitetura e código de forma eficiente. Desenvolvimento de soluções em .NET C#. Desenvolvimento de Integrações com soluções internas e externas. Utilizar assistentes de IA e ferramentas generativas para otimizar a criação de código, refatoração, cobertura de testes e code reviews. Acompanhar e tirar dúvidas dos usuários durante o processo de homologação. Suporte/sustentação das soluções elaboradas. Geração de documentação automatizada ou assistida por IA (Manuais e procedimentos de trabalho). Forte comprometimento com datas e entregas de valor contínuo.Requisitos e qualificaçõesOportunidade exclusiva para profissionais da região metropolitana de São Paulo - SP. Oportunidade híbrida, 2x presencial na Avenida Brigadeiro Faria Lima.O Que Esperamos De Você Para Essa VagaAnálise e Desenvolvimento de Sistemas, Ciência da Computação, Engenharia de Software ou áreas relacionadas. Proficiência Em Desenvolvimento Com C#MVCAngularSQL Server (Procedure, Function, Triggers, Views)JavaScript, jQueryMVC - BootstrapWeb API, Web Service, WCFSólido conhecimento em Domain-Driven Design (DDD). Experiência com camada de persistência ORM (Dapper). Experiência com DevOps (Git/TFS - Azure DevOps). CompetênciasDesenvolvimento Ágil com IA: Habilidade prática na utilização de Inteligência Artificial como SDD (Specification-Driven Development) no ciclo ágil, criando prompts arquitetônicos e especificações claras para geração, análise e validação de software. Excelentes habilidades analíticas e conceituais, com capacidade de resolver problemas complexos. Fortes habilidades didáticas, com capacidade de explicar conceitos técnicos de forma clara e acessível, tanto para humanos quanto na construção de contexto para modelos de IA. Objetividade, fluência verbal e escrita, e postura profissional. Excelentes habilidades de relacionamento interpessoal e capacidade de trabalhar em equipe multidisciplinar. Alta capacidade de concentração, iniciativa, organização, planejamento e proatividade. Forte senso de comprometimento e capacidade de tomar decisões eficazes baseadas em dados.  Diferenciais: Conhecimento avançado na integração de APIs de LLMs (OpenAI, Claude, etc.) em soluções corporativas.Conhecimento em cloud Azure. Forte vivência anterior em frameworks ágeis (Scrum, Kanban). Certificações relevantes na área de desenvolvimento de software ou Cloud/IA. Conhecimento em aplicações conteinerizadas (Docker/Kubernetes).Experiência com tecnologias de mensageria (RabbitMQ ou similares). Informações adicionaisNossos BenefíciosSendo uma empresa voltada para pessoas, buscamos sempre valorizar a nossa equipe. Ao entrar para o Time Vetta, oferecemos:Cartão Flash com vale-alimentação/refeição de R$ 32,00 por dia, aceito em diversos estabelecimentos para você usar como preferir.Auxílio home office de R$ 100,00/mês e flexibilidade no horário de trabalho.Pensando na sua saúde e bem-estar, oferecemos Plano de Saúde SulAmérica e Plano Odontológico Bradesco,com a possibilidade de inclusão dos seus dependentes. WellHub, TotalPass e UniCamente, para você cuidar da sua saúde integralmente, com acesso a atividades físicas e a profissionais de diversas áreas da saúde.Onhappy, uma plataforma de viagens corporativas e lazer com descontos exclusivos em hospedagens, passagens e experiências para você aproveitar momentos de descanso e lazer com mais praticidade e economia. Plano de Saúde Pet da Guapeco, para você cuidar da saúde e bem-estar do seu melhor amigo com acesso a consultas, exames e outros serviços veterinários.Clube de Descontos e Recompensas, com descontos em diversas redes de produtos e de serviços. Licença maternidade e paternidade estendida, para os pais e mães viverem essa fase com tranquilidade. Seguro de Vida, para proporcionar mais tranquilidade e segurança.Convênio com o SESC, oferecendo acesso a atividades de lazer, cultura, turismo, educação e bem-estar para você e sua família.PLR - conforme tabela do sindicato.E TEM MAIS...Day-Off de Aniversário.No Dress Code. Vista-se com o que te deixa confortável!Programa de Incentivo à Formação Contínua e Capacitação, para que você possa continuar aprendendo e compartilhando experiências.Quer indicar alguém para a Vetta? Temos Programa de Indicação de Talentos.Se interessou em fazer parte do time? Cadastre-se agora! Ficaremos felizes em ter você conosco. 💙TRANSFORMING BUSINESS TO IMPROVE THE WORLDSomos uma empresa global de digitalização industrial, com duas décadas de experiência no segmento, que contribui com a eficiência operacional e com a redução do consumo de energia e de gases através da descarbonização. Acreditamos que, com inovação e ação, podemos tornar o mundo mais sustentável e os processos industriais mais eficientes.Atuamos em conjunto com a SMS group, líder mundial no segmento de metais, e somos responsáveis pelo desenvolvimento de soluções digitais para nossos clientes em mais de 14 países pelo mundo. As nossas soluções contam com a combinação de experiência em processos, know-how de inteligência artificial (IA) e recursos de desenvolvimento de software para resultar em tecnologias de ponta e de otimização.Queremos trazer soluções inovadoras, buscando melhores formas de tornar a indústria e o futuro mais sustentável por meio da descarbonização. Quer fazer parte dessa história? #VemSerVetta Todas as nossas vagas são inclusivas e abertas a todos e todas sem distinção por deficiência (PCD), raça, cor, religião, gênero, nacionalidade ou qualquer outra forma de diversidade.",
+    "offsite": [
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-a-net-s%25C3%25AAnior-at-vetta-4475262930&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link",
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-a-net-s%25C3%25AAnior-at-vetta-4475262930&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link"
+    ],
+    "emails": null
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-net-angular-s%C3%AAnior-at-add-4480730004",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-21T21:09:08.000Z",
+        "description": "&lt;p&gt;&lt;strong&gt;LOUCOS POR INOVAÇÃO E TRANSFORMAÇÃO:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;A .add é uma empresa de TI e inovação, com 25 anos no mercado. Estamos localizados em São Paulo, Rio de Janeiro e Miami.&lt;/p&gt;&lt;p&gt;Com atuação marcante no mercado brasileiro, desenvolvemos soluções eficientes de forma singular para entregar os melhores serviços e produtos nas áreas de Inovação e Tecnologia.&lt;/p&gt;&lt;p&gt;Nosso diferencial está na expertise de um time multidisciplinar e comprometido com as melhores práticas ágeis utilizadas para superar desafios corporativos e garantir resultados extraordinários com precisão, agilidade e segurança.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Tecnologia, Liderança, Agilidade, Inovação e Pessoas, são os pontos que formam a essência da .add.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Aqui na .add você vai encontrar:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Ambiente colaborativo&lt;/li&gt;&lt;li&gt;Circuito de treinamentos&lt;/li&gt;&lt;li&gt;Programa de Educação Continuada&lt;/li&gt;&lt;li&gt;Flash Benefícios&lt;/li&gt;&lt;li&gt;Plano de Saúde&lt;/li&gt;&lt;li&gt;Desafios e oportunidades de crescimento&lt;/li&gt;&lt;li&gt;Híbrido RJ (1x por semana no escritório)&lt;/li&gt;&lt;li&gt;TotalPass&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Skill Técnico:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Buscamos um profissional experiente em desenvolvimento de aplicações .NET e front-end em Angular para integrar nossa equipe de tecnologia. O profissional atuará em projetos de alta complexidade, contribuindo para o desenvolvimento e a sustentação de soluções robustas, escaláveis e integradas a diferentes sistemas, em parceria com arquitetos, designers e demais desenvolvedores.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Responsabilidades:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Desenvolver e manter APIs RESTful e serviços utilizando C#, ASP.NET Core e Entity Framework Core.&lt;/li&gt;&lt;li&gt;Implementar componentes e interfaces utilizando Angular 13+, TypeScript e boas práticas de desenvolvimento front-end.&lt;/li&gt;&lt;li&gt;Projetar, modelar e otimizar bancos de dados em SQL Server.&lt;/li&gt;&lt;li&gt;Atuar no desenvolvimento e na sustentação de aplicações distribuídas, integrações entre sistemas e arquiteturas de microsserviços.&lt;/li&gt;&lt;li&gt;Trabalhar com mensageria, filas, tópicos, processamento assíncrono e arquiteturas orientadas a eventos.&lt;/li&gt;&lt;li&gt;Implementar mecanismos de resiliência em integrações, incluindo retentativas, idempotência e tratamento de falhas.&lt;/li&gt;&lt;li&gt;Investigar e solucionar incidentes em produção, utilizando logs, telemetria e ferramentas de observabilidade para identificar a causa raiz dos problemas.&lt;/li&gt;&lt;li&gt;Desenvolver e executar testes unitários e de integração, contribuindo para a qualidade e a confiabilidade das soluções.&lt;/li&gt;&lt;li&gt;Participar de revisões de código, discussões arquiteturais e definição de boas práticas de desenvolvimento.&lt;/li&gt;&lt;li&gt;Contribuir para a automação de processos de build, deploy e pipelines de CI/CD.&lt;/li&gt;&lt;li&gt;Colaborar com equipes multidisciplinares em ambientes ágeis, utilizando metodologias como Scrum e Kanban.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Conhecimentos essenciais para a posição:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Experiência sólida em desenvolvimento com C# e .NET Core, incluindo ASP.NET Core.&lt;/li&gt;&lt;li&gt;Domínio de Angular 13+ e TypeScript para desenvolvimento de interfaces.&lt;/li&gt;&lt;li&gt;Conhecimento sólido em SQL Server, modelagem de dados e Entity Framework Core.&lt;/li&gt;&lt;li&gt;Experiência no desenvolvimento e consumo de APIs RESTful e na integração entre serviços.&lt;/li&gt;&lt;li&gt;Conhecimento de arquitetura distribuída, microsserviços, mensageria e processamento assíncrono.&lt;/li&gt;&lt;li&gt;Experiência com Azure, especialmente Azure Service Bus, Azure Functions e Application Insights/Azure Monitor, ou tecnologias equivalentes.&lt;/li&gt;&lt;li&gt;Conhecimento em observabilidade, troubleshooting e sustentação de sistemas corporativos críticos.&lt;/li&gt;&lt;li&gt;Prática com testes automatizados, versionamento de código e pipelines de CI/CD.&lt;/li&gt;&lt;li&gt;Conhecimento de tratamento de falhas, retentativas e idempotência em integrações.&lt;/li&gt;&lt;li&gt;Experiência com metodologias ágeis, como Scrum e Kanban.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Diferenciais:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Experiência com BPM, workflows e modelagem de processos utilizando BPMN, especialmente com Camunda ou ferramentas equivalentes.&lt;/li&gt;&lt;li&gt;Familiaridade com ferramentas de Inteligência Artificial aplicadas ao desenvolvimento de software, como apoio à codificação, geração de testes, revisão de código e produtividade.&lt;/li&gt;&lt;li&gt;Experiência com Replit ou outras plataformas de desenvolvimento assistido por IA e prototipação rápida.&lt;/li&gt;&lt;li&gt;Conhecimento de práticas de observabilidade e monitoramento de aplicações em produção.&lt;/li&gt;&lt;li&gt;Experiência nos segmentos de Seguros, Previdência ou mercado financeiro.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": ".add",
+          "sameAs": "https://br.linkedin.com/company/somosadd",
+          "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHJcNlb8h-Ahg/company-logo_200_200/company-logo_200_200/0/1704196093304/somosadd_logo?e=2147483647&amp;v=beta&amp;t=UGLrvIDQzcfUascxj4_hAzLRvymrmYmfl53Axj8HYQg"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": ".add"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4D0BAQHJcNlb8h-Ahg/company-logo_100_100/company-logo_100_100/0/1704196093304/somosadd_logo?e=2147483647&amp;v=beta&amp;t=IZ4EggkgliNdj7S1XqONN9msM6aE4Z6pW-CbyCkj4mw",
+        "industry": "Atividades dos serviços de tecnologia da informação",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "Rio de Janeiro",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -22.275276,
+          "longitude": -42.419415
+        },
+        "skills": "",
+        "title": "Desenvolvedor .Net|Angular Sênior",
+        "validThrough": "2026-12-19T20:33:51.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        }
+      }
+    ],
+    "description": "LOUCOS POR INOVAÇÃO E TRANSFORMAÇÃO:A .add é uma empresa de TI e inovação, com 25 anos no mercado. Estamos localizados em São Paulo, Rio de Janeiro e Miami.Com atuação marcante no mercado brasileiro, desenvolvemos soluções eficientes de forma singular para entregar os melhores serviços e produtos nas áreas de Inovação e Tecnologia.Nosso diferencial está na expertise de um time multidisciplinar e comprometido com as melhores práticas ágeis utilizadas para superar desafios corporativos e garantir resultados extraordinários com precisão, agilidade e segurança.Tecnologia, Liderança, Agilidade, Inovação e Pessoas, são os pontos que formam a essência da .add.Aqui na .add você vai encontrar:Ambiente colaborativoCircuito de treinamentosPrograma de Educação ContinuadaFlash BenefíciosPlano de SaúdeDesafios e oportunidades de crescimentoHíbrido RJ (1x por semana no escritório)TotalPassSkill Técnico:Buscamos um profissional experiente em desenvolvimento de aplicações .NET e front-end em Angular para integrar nossa equipe de tecnologia. O profissional atuará em projetos de alta complexidade, contribuindo para o desenvolvimento e a sustentação de soluções robustas, escaláveis e integradas a diferentes sistemas, em parceria com arquitetos, designers e demais desenvolvedores.Responsabilidades:Desenvolver e manter APIs RESTful e serviços utilizando C#, ASP.NET Core e Entity Framework Core.Implementar componentes e interfaces utilizando Angular 13+, TypeScript e boas práticas de desenvolvimento front-end.Projetar, modelar e otimizar bancos de dados em SQL Server.Atuar no desenvolvimento e na sustentação de aplicações distribuídas, integrações entre sistemas e arquiteturas de microsserviços.Trabalhar com mensageria, filas, tópicos, processamento assíncrono e arquiteturas orientadas a eventos.Implementar mecanismos de resiliência em integrações, incluindo retentativas, idempotência e tratamento de falhas.Investigar e solucionar incidentes em produção, utilizando logs, telemetria e ferramentas de observabilidade para identificar a causa raiz dos problemas.Desenvolver e executar testes unitários e de integração, contribuindo para a qualidade e a confiabilidade das soluções.Participar de revisões de código, discussões arquiteturais e definição de boas práticas de desenvolvimento.Contribuir para a automação de processos de build, deploy e pipelines de CI/CD.Colaborar com equipes multidisciplinares em ambientes ágeis, utilizando metodologias como Scrum e Kanban.Conhecimentos essenciais para a posição:Experiência sólida em desenvolvimento com C# e .NET Core, incluindo ASP.NET Core.Domínio de Angular 13+ e TypeScript para desenvolvimento de interfaces.Conhecimento sólido em SQL Server, modelagem de dados e Entity Framework Core.Experiência no desenvolvimento e consumo de APIs RESTful e na integração entre serviços.Conhecimento de arquitetura distribuída, microsserviços, mensageria e processamento assíncrono.Experiência com Azure, especialmente Azure Service Bus, Azure Functions e Application Insights/Azure Monitor, ou tecnologias equivalentes.Conhecimento em observabilidade, troubleshooting e sustentação de sistemas corporativos críticos.Prática com testes automatizados, versionamento de código e pipelines de CI/CD.Conhecimento de tratamento de falhas, retentativas e idempotência em integrações.Experiência com metodologias ágeis, como Scrum e Kanban.Diferenciais:Experiência com BPM, workflows e modelagem de processos utilizando BPMN, especialmente com Camunda ou ferramentas equivalentes.Familiaridade com ferramentas de Inteligência Artificial aplicadas ao desenvolvimento de software, como apoio à codificação, geração de testes, revisão de código e produtividade.Experiência com Replit ou outras plataformas de desenvolvimento assistido por IA e prototipação rápida.Conhecimento de práticas de observabilidade e monitoramento de aplicações em produção.Experiência nos segmentos de Seguros, Previdência ou mercado financeiro.",
+    "offsite": [],
+    "emails": null
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-full-stack-c%23-angular-at-jobbol-4478361903",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-12T01:51:52.000Z",
+        "description": "Empresa de Engenharia e Tecnologia busca profissional Desenvolvedor Full Stack C# Angular em Manaus.&lt;br&gt;&lt;br&gt;A Soditech é uma empresa especializada em soluções tecnológicas e inovação. Oferece serviços de desenvolvimento de software e consultoria em tecnologia da informação.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Responsabilidades&lt;br&gt;&lt;br&gt;&lt;/strong&gt;Desenvolver, manter e evoluir aplicações desktop e web de alta complexidade. Atuar no desenvolvimento Full Stack utilizando C# e Angular. Criar e integrar soluções entre sistemas desktop e aplicações web por meio de APIs e serviços. Participar da definição de arquitetura, implementação de melhorias e resolução de problemas técnicos. Realizar testes, debugging e otimização de performance das aplicações. Trabalhar em conjunto com equipes multidisciplinares seguindo metodologias ágeis. Elaborar documentação técnica e contribuir para a evolução contínua das soluções desenvolvidas.&lt;br&gt;&lt;br&gt;Atuações anteriores em Desenvolvedor Full Stack Java, Desenvolvedor Full Stack .NET, Engenheiro de Software ou Programador Web podem indicar afinidade com algumas das atividades desta posição.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Requisitos Desejáveis&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt;Escolaridade:&lt;/strong&gt; Ensino superior completo&lt;br&gt;&lt;br&gt;&lt;strong&gt;Experiência:&lt;/strong&gt; Necessário experiência&lt;br&gt;&lt;br&gt;&lt;strong&gt;Remuneração e Benefícios&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Salário: Faixa salarial será informada na entrevista.&lt;/li&gt;&lt;li&gt;TotalPass&lt;/li&gt;&lt;li&gt;StarBem.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Informações Adicionais&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Contrato: Home Office. Modalidade 100% remota.&lt;/li&gt;&lt;li&gt;Período: Tempo Integral&lt;/li&gt;&lt;li&gt;Jornada: A combinar&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Jobbol",
+          "sameAs": "https://br.linkedin.com/company/jobbol-empregos",
+          "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEUwreILeGS7Q/company-logo_200_200/B4DZ5wJQzAG4AI-/0/1779997937122/jobbol_empregos_logo?e=2147483647&amp;v=beta&amp;t=qc4NI8gP2YkFNIB0m4ABQdHpDyvrJwbnHuDIrf0orKM"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "Jobbol",
+          "value": "29387139620"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4D0BAQEUwreILeGS7Q/company-logo_100_100/B4DZ5wJQzAG4AM-/0/1779997937122/jobbol_empregos_logo?e=2147483647&amp;v=beta&amp;t=47i8HzJ8kSKiMu7089w8KVQJJkXRPs0z7qrtMet3AcA",
+        "industry": "Tecnologia, Informação e Internet",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "Manaus",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -3.1299136,
+          "longitude": -59.984703
+        },
+        "skills": "",
+        "title": "Desenvolvedor Full Stack C# Angular",
+        "validThrough": "2026-11-11T01:51:52.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        },
+        "jobLocationType": "TELECOMMUTE",
+        "applicantLocationRequirements": {
+          "@type": "Country",
+          "name": "Manaus, Amazonas, Brasil"
+        }
+      },
+      {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {
+              "str": "Vagas"
+            },
+            "item": "https://br.linkedin.com/jobs/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Vagas de Desenvolvedor Javascript",
+            "item": "https://br.linkedin.com/jobs/desenvolvedor-javascript-vagas"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Desenvolvedor Full Stack C# Angular",
+            "item": "https://br.linkedin.com/jobs/view/desenvolvedor-full-stack-c%23-angular-at-jobbol-4478361903"
+          }
+        ]
+      }
+    ],
+    "description": "Empresa de Engenharia e Tecnologia busca profissional Desenvolvedor Full Stack C# Angular em Manaus.A Soditech é uma empresa especializada em soluções tecnológicas e inovação. Oferece serviços de desenvolvimento de software e consultoria em tecnologia da informação.ResponsabilidadesDesenvolver, manter e evoluir aplicações desktop e web de alta complexidade. Atuar no desenvolvimento Full Stack utilizando C# e Angular. Criar e integrar soluções entre sistemas desktop e aplicações web por meio de APIs e serviços. Participar da definição de arquitetura, implementação de melhorias e resolução de problemas técnicos. Realizar testes, debugging e otimização de performance das aplicações. Trabalhar em conjunto com equipes multidisciplinares seguindo metodologias ágeis. Elaborar documentação técnica e contribuir para a evolução contínua das soluções desenvolvidas.Atuações anteriores em Desenvolvedor Full Stack Java, Desenvolvedor Full Stack .NET, Engenheiro de Software ou Programador Web podem indicar afinidade com algumas das atividades desta posição.Requisitos DesejáveisEscolaridade: Ensino superior completoExperiência: Necessário experiênciaRemuneração e BenefíciosSalário: Faixa salarial será informada na entrevista.TotalPassStarBem.Informações AdicionaisContrato: Home Office. Modalidade 100% remota.Período: Tempo IntegralJornada: A combinar",
+    "offsite": [
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-full-stack-c%2523-angular-at-jobbol-4478361903&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link",
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-full-stack-c%2523-angular-at-jobbol-4478361903&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link"
+    ],
+    "emails": null
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-net-senior-at-performa-it-4476466407",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-13T16:19:51.000Z",
+        "description": "&lt;strong&gt;Descrição&lt;br&gt;&lt;br&gt;&lt;/strong&gt;Estamos em busca de um(a) &lt;strong&gt;Desenvolvedor(a) .NET&lt;/strong&gt; para integrar nosso time e participar de projetos desafiadores e inovadores. Se você é apaixonado(a) por tecnologia e tem vontade de trabalhar em um ambiente colaborativo, esta é sua oportunidade de fazer parte da Performa!&lt;br&gt;&lt;br&gt;&lt;strong&gt;Responsabilidades e atribuições&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Desenvolver e manter APIs em .NET 9 / ASP.NET Core com Clean Architecture.&lt;/li&gt;&lt;li&gt;Implementar autenticação e autorização com SSO corporativo.&lt;/li&gt;&lt;li&gt;Integrar com serviços internos e externos e persistir dados em PostgreSQL.&lt;/li&gt;&lt;li&gt;Escrever testes automatizados e documentar decisões técnicas.&lt;/li&gt;&lt;li&gt;Atuar no ciclo de entrega com Azure DevOps, Docker e Kubernetes.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Requisitos e qualificações&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;C#, .NET 6+ e ASP.NET Core Web API.&lt;/li&gt;&lt;li&gt;Clean Architecture, SOLID e injeção de dependência.&lt;/li&gt;&lt;li&gt;Entity Framework Core e banco relacional.&lt;/li&gt;&lt;li&gt;JWT, OAuth 2.0 / OpenID Connect.&lt;/li&gt;&lt;li&gt;Integração entre sistemas e padrões de resiliência.&lt;/li&gt;&lt;li&gt;Testes automatizados (xUnit/NUnit, Moq).&lt;/li&gt;&lt;li&gt;Git, code review, Docker e CI/CD.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Benefícios&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt;Para Te Apoiar Nessa Jornada Com a Gente&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt; Jornada de Trabalho: 40h semanais&lt;/li&gt;&lt;li&gt; Convênio médico&lt;/li&gt;&lt;li&gt; Ajuda de Custo&lt;/li&gt;&lt;li&gt;️♀️ Gympass&lt;/li&gt;&lt;li&gt; Plano Odontológico&lt;/li&gt;&lt;li&gt; Parceria com escolas de Inglês e espanhol&lt;/li&gt;&lt;li&gt; Day Off de Aniversário&lt;/li&gt;&lt;li&gt; / Subsídio da máquina (notebook, computador)&lt;/li&gt;&lt;li&gt;️ Descanso Remunerado&lt;/li&gt;&lt;li&gt; Bônus Anual&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Aqui você...&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Vivenciará uma Cultura Horizontal e Mindset Ágil através de um ambiente de colaboração e melhoria contínua, estamos sempre buscando melhorar e aprender. Com o propósito de desenvolver pessoas para construir o futuro!&lt;/li&gt;&lt;li&gt;Trabalhamos com autonomia junto com responsabilidade e comprometimento para atingir ótimos resultados.&lt;/li&gt;&lt;li&gt;Trabalhamos com tecnologias de ponta, modernas e rentáveis, nós aceleramos jornadas digitais através da parceria com nossos clientes e hoje atendemos a diversos projetos nacionais e internacionais dos mais variados setores do mercado.&lt;/li&gt;&lt;/ul&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Performa_IT",
+          "sameAs": "https://br.linkedin.com/company/performait",
+          "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFZwYNuqbGz0g/img-crop_100/B4DZW1_HuOGkAM-/0/1742514978333?e=2147483647&amp;v=beta&amp;t=dKkA8yYFo79mIXRNlfQ8FleQzYpHjxF1AgoH3f_EN-4"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "Performa_IT",
+          "value": "9f5f2d1c-3e0b-40a4-a8c3-379a02b3d007"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4D0BAQFZwYNuqbGz0g/img-crop_100/B4DZW1_HuOGkAM-/0/1742514978333?e=2147483647&amp;v=beta&amp;t=dKkA8yYFo79mIXRNlfQ8FleQzYpHjxF1AgoH3f_EN-4",
+        "industry": "Atividades dos serviços de tecnologia da informação",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "Fortaleza",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -3.730451,
+          "longitude": -38.521797
+        },
+        "skills": "",
+        "title": "Desenvolvedor .Net Senior",
+        "validThrough": "2026-11-12T16:19:50.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        }
+      },
+      {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {
+              "str": "Vagas"
+            },
+            "item": "https://br.linkedin.com/jobs/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Vagas de Desenvolvedor .Net",
+            "item": "https://br.linkedin.com/jobs/desenvolvedor-%2Enet-vagas"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Desenvolvedor .Net Senior",
+            "item": "https://br.linkedin.com/jobs/view/desenvolvedor-net-senior-at-performa-it-4476466407"
+          }
+        ]
+      }
+    ],
+    "description": "DescriçãoEstamos em busca de um(a) Desenvolvedor(a) .NET para integrar nosso time e participar de projetos desafiadores e inovadores. Se você é apaixonado(a) por tecnologia e tem vontade de trabalhar em um ambiente colaborativo, esta é sua oportunidade de fazer parte da Performa!Responsabilidades e atribuiçõesDesenvolver e manter APIs em .NET 9 / ASP.NET Core com Clean Architecture.Implementar autenticação e autorização com SSO corporativo.Integrar com serviços internos e externos e persistir dados em PostgreSQL.Escrever testes automatizados e documentar decisões técnicas.Atuar no ciclo de entrega com Azure DevOps, Docker e Kubernetes.Requisitos e qualificaçõesC#, .NET 6+ e ASP.NET Core Web API.Clean Architecture, SOLID e injeção de dependência.Entity Framework Core e banco relacional.JWT, OAuth 2.0 / OpenID Connect.Integração entre sistemas e padrões de resiliência.Testes automatizados (xUnit/NUnit, Moq).Git, code review, Docker e CI/CD.BenefíciosPara Te Apoiar Nessa Jornada Com a Gente Jornada de Trabalho: 40h semanais Convênio médico Ajuda de Custo️‍♀️ Gympass Plano Odontológico Parceria com escolas de Inglês e espanhol Day Off de Aniversário / Subsídio da máquina (notebook, computador)️ Descanso Remunerado Bônus AnualAqui você...Vivenciará uma Cultura Horizontal e Mindset Ágil através de um ambiente de colaboração e melhoria contínua, estamos sempre buscando melhorar e aprender. Com o propósito de desenvolver pessoas para construir o futuro!Trabalhamos com autonomia junto com responsabilidade e comprometimento para atingir ótimos resultados.Trabalhamos com tecnologias de ponta, modernas e rentáveis, nós aceleramos jornadas digitais através da parceria com nossos clientes e hoje atendemos a diversos projetos nacionais e internacionais dos mais variados setores do mercado.",
+    "offsite": [
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-net-senior-at-performa-it-4476466407&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link",
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-net-senior-at-performa-it-4476466407&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link"
+    ],
+    "emails": null
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-net-backend-trabalho-remoto-at-bairesdev-4480216772",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-19T13:30:08.000Z",
+        "description": "&lt;p&gt;Há mais de 15 anos, a BairesDev® é líder em projetos tecnológicos. Entregamos soluções inovadoras para gigantes como Google e Rolls-Royce e as startups mais inovadoras do Vale do Silício.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Temos uma equipe diversa de mais de 4.000 profissionais formada pelo Top 1% dos talentos de tecnologia do mundo, trabalhando remotamente em cargos de impacto global.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Ao se candidatar para este cargo, você está dando o primeiro passo em um processo que vai além do comum. Nosso objetivo é alinhar suas paixões, habilidades, e expectativas às nossas vagas, colocando você no caminho para desenvolver uma carreira de sucesso excepcional.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Desenvolvedor .NET Backend na BairesDev&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Buscamos um excelente Desenvolvedor Backend.NET para se juntar à equipe de Pesquisa e Desenvolvimento (P&amp;amp;D) da BairesDev. Nossa equipe de P&amp;amp;D é uma parte essencial nas soluções de tecnologia que geram milhões em receitas todos os anos, portanto, contratamos apenas os melhores entre os melhores.&lt;/p&gt;&lt;p&gt;Você irá se deparar com diversos desafios: análise de dados, machine learning e desenvolvimento web são alguns dos mais relevantes no momento, mas para impulsionar a inovação, você perceberá que oportunidades novas surgem todos os dias!&lt;/p&gt;&lt;p&gt;A área de P&amp;amp;D é sem dúvida a área mais desafiadora de toda a empresa, e embora a BairesDev seja formada por pessoas realmente talentosas em todas as funções, aqui você encontrará profissionais com vasta experiência e também de nível intelectual e criativo, muito acima da média.&lt;/p&gt;&lt;p&gt;Queremos gente que curta o desafio!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Responsabilidades&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;- Arquitetar e desenvolver diversos serviços e APIs para o produto.&lt;/p&gt;&lt;p&gt;- Usar os princípios SOLID na criação de código sustentável e de alta qualidade.&lt;/p&gt;&lt;p&gt;- Colaborar com os proprietários do produto para garantir que os recursos / alterações atendam aos requisitos de negócios e cumpram a estratégia da Degreed.&lt;/p&gt;&lt;p&gt;- Trabalhar em estreita colaboração com designers, UX e outros desenvolvedores para obter uma compreensão dos novos recursos, dependências e detalhes técnicos.&lt;/p&gt;&lt;p&gt;- Outras funções atribuídas.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Esperamos que você tenha:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;- 4+ anos de experiência prática em projetos Web, C#, SQL Server.&lt;/p&gt;&lt;p&gt;- Experiência com frameworks HTML / CSS e Javascript.&lt;/p&gt;&lt;p&gt;- Experiência com MVC.&lt;/p&gt;&lt;p&gt;- Experiência em desenvolvimento com programação orientada a objetos é desejável.&lt;/p&gt;&lt;p&gt;- Nível avançado de inglês.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Como tornamos seu trabalho (e sua vida) mais fácil:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;- Modalidade 100% remota - trabalhe de qualquer lugar.&lt;/p&gt;&lt;p&gt;- Excelente remuneração em USD ou na sua moeda local, como preferir.&lt;/p&gt;&lt;p&gt;- Hardware para você trabalhar de casa.&lt;/p&gt;&lt;p&gt;- Horários flexíveis - faça seu próprio horário.&lt;/p&gt;&lt;p&gt;- Licença parental remunerada, férias, e feriados nacionais.&lt;/p&gt;&lt;p&gt;- Ambiente de trabalho inovador e multicultural.&lt;/p&gt;&lt;p&gt;- Colabore e aprenda com o Top 1% global dos talentos de cada área.&lt;/p&gt;&lt;p&gt;- Ambiente de apoio com mentoria, promoções, desenvolvimento de habilidades, e diversas oportunidades de crescimento.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Junte-se a uma equipe global onde seus talentos excepcionais podem se destacar!&lt;/p&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "BairesDev",
+          "sameAs": "https://www.linkedin.com/company/bairesdev",
+          "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGNvQASzrdL_w/company-logo_200_200/company-logo_200_200/0/1687874736484/bairesdev_logo?e=2147483647&amp;v=beta&amp;t=1x4m_AFUqlUMZRbye1rU_IE4xDg5VLZsJ8HB0tg4Svk"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "BairesDev"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4E0BAQGNvQASzrdL_w/company-logo_100_100/company-logo_100_100/0/1687874736484/bairesdev_logo?e=2147483647&amp;v=beta&amp;t=O-1i-F9arEGwUjngSlvE7NWxL-mpYFwN_XZxHy0C03s",
+        "industry": "Atividades dos serviços de tecnologia da informação",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "Curitiba",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -25.429596,
+          "longitude": -49.27127
+        },
+        "skills": "",
+        "title": "Desenvolvedor .NET Backend - Trabalho Remoto",
+        "validThrough": "2026-11-18T13:30:08.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        },
+        "jobLocationType": "TELECOMMUTE",
+        "applicantLocationRequirements": {
+          "@type": "Country",
+          "name": "Curitiba, Paraná, Brasil"
+        }
+      },
+      {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {
+              "str": "Vagas"
+            },
+            "item": "https://br.linkedin.com/jobs/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Vagas de Desenvolvedor .Net",
+            "item": "https://br.linkedin.com/jobs/desenvolvedor-%2Enet-vagas"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Desenvolvedor .NET Backend - Trabalho Remoto",
+            "item": "https://br.linkedin.com/jobs/view/desenvolvedor-net-backend-trabalho-remoto-at-bairesdev-4480216772"
+          }
+        ]
+      }
+    ],
+    "description": "Há mais de 15 anos, a BairesDev® é líder em projetos tecnológicos. Entregamos soluções inovadoras para gigantes como Google e Rolls-Royce e as startups mais inovadoras do Vale do Silício.Temos uma equipe diversa de mais de 4.000 profissionais formada pelo Top 1% dos talentos de tecnologia do mundo, trabalhando remotamente em cargos de impacto global.Ao se candidatar para este cargo, você está dando o primeiro passo em um processo que vai além do comum. Nosso objetivo é alinhar suas paixões, habilidades, e expectativas às nossas vagas, colocando você no caminho para desenvolver uma carreira de sucesso excepcional.Desenvolvedor .NET Backend na BairesDevBuscamos um excelente Desenvolvedor Backend.NET para se juntar à equipe de Pesquisa e Desenvolvimento (P&D) da BairesDev. Nossa equipe de P&D é uma parte essencial nas soluções de tecnologia que geram milhões em receitas todos os anos, portanto, contratamos apenas os melhores entre os melhores.Você irá se deparar com diversos desafios: análise de dados, machine learning e desenvolvimento web são alguns dos mais relevantes no momento, mas para impulsionar a inovação, você perceberá que oportunidades novas surgem todos os dias!A área de P&D é sem dúvida a área mais desafiadora de toda a empresa, e embora a BairesDev seja formada por pessoas realmente talentosas em todas as funções, aqui você encontrará profissionais com vasta experiência e também de nível intelectual e criativo, muito acima da média.Queremos gente que curta o desafio!Responsabilidades- Arquitetar e desenvolver diversos serviços e APIs para o produto.- Usar os princípios SOLID na criação de código sustentável e de alta qualidade.- Colaborar com os proprietários do produto para garantir que os recursos / alterações atendam aos requisitos de negócios e cumpram a estratégia da Degreed.- Trabalhar em estreita colaboração com designers, UX e outros desenvolvedores para obter uma compreensão dos novos recursos, dependências e detalhes técnicos.- Outras funções atribuídas.Esperamos que você tenha:- 4+ anos de experiência prática em projetos Web, C#, SQL Server.- Experiência com frameworks HTML / CSS e Javascript.- Experiência com MVC.- Experiência em desenvolvimento com programação orientada a objetos é desejável.- Nível avançado de inglês.Como tornamos seu trabalho (e sua vida) mais fácil:- Modalidade 100% remota - trabalhe de qualquer lugar.- Excelente remuneração em USD ou na sua moeda local, como preferir.- Hardware para você trabalhar de casa.- Horários flexíveis - faça seu próprio horário.- Licença parental remunerada, férias, e feriados nacionais.- Ambiente de trabalho inovador e multicultural.- Colabore e aprenda com o Top 1% global dos talentos de cada área.- Ambiente de apoio com mentoria, promoções, desenvolvimento de habilidades, e diversas oportunidades de crescimento.Junte-se a uma equipe global onde seus talentos excepcionais podem se destacar!",
+    "offsite": [
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-net-backend-trabalho-remoto-at-bairesdev-4480216772&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link",
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-net-backend-trabalho-remoto-at-bairesdev-4480216772&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link"
+    ],
+    "emails": null
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-net-backend-trabalho-remoto-at-bairesdev-4480236108",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-19T13:29:57.000Z",
+        "description": "&lt;p&gt;Há mais de 15 anos, a BairesDev® é líder em projetos tecnológicos. Entregamos soluções inovadoras para gigantes como Google e Rolls-Royce e as startups mais inovadoras do Vale do Silício.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Temos uma equipe diversa de mais de 4.000 profissionais formada pelo Top 1% dos talentos de tecnologia do mundo, trabalhando remotamente em cargos de impacto global.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Ao se candidatar para este cargo, você está dando o primeiro passo em um processo que vai além do comum. Nosso objetivo é alinhar suas paixões, habilidades, e expectativas às nossas vagas, colocando você no caminho para desenvolver uma carreira de sucesso excepcional.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Desenvolvedor .NET Backend na BairesDev&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Buscamos um excelente Desenvolvedor Backend.NET para se juntar à equipe de Pesquisa e Desenvolvimento (P&amp;amp;D) da BairesDev. Nossa equipe de P&amp;amp;D é uma parte essencial nas soluções de tecnologia que geram milhões em receitas todos os anos, portanto, contratamos apenas os melhores entre os melhores.&lt;/p&gt;&lt;p&gt;Você irá se deparar com diversos desafios: análise de dados, machine learning e desenvolvimento web são alguns dos mais relevantes no momento, mas para impulsionar a inovação, você perceberá que oportunidades novas surgem todos os dias!&lt;/p&gt;&lt;p&gt;A área de P&amp;amp;D é sem dúvida a área mais desafiadora de toda a empresa, e embora a BairesDev seja formada por pessoas realmente talentosas em todas as funções, aqui você encontrará profissionais com vasta experiência e também de nível intelectual e criativo, muito acima da média.&lt;/p&gt;&lt;p&gt;Queremos gente que curta o desafio!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Responsabilidades&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;- Arquitetar e desenvolver diversos serviços e APIs para o produto.&lt;/p&gt;&lt;p&gt;- Usar os princípios SOLID na criação de código sustentável e de alta qualidade.&lt;/p&gt;&lt;p&gt;- Colaborar com os proprietários do produto para garantir que os recursos / alterações atendam aos requisitos de negócios e cumpram a estratégia da Degreed.&lt;/p&gt;&lt;p&gt;- Trabalhar em estreita colaboração com designers, UX e outros desenvolvedores para obter uma compreensão dos novos recursos, dependências e detalhes técnicos.&lt;/p&gt;&lt;p&gt;- Outras funções atribuídas.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Esperamos que você tenha:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;- 4+ anos de experiência prática em projetos Web, C#, SQL Server.&lt;/p&gt;&lt;p&gt;- Experiência com frameworks HTML / CSS e Javascript.&lt;/p&gt;&lt;p&gt;- Experiência com MVC.&lt;/p&gt;&lt;p&gt;- Experiência em desenvolvimento com programação orientada a objetos é desejável.&lt;/p&gt;&lt;p&gt;- Nível avançado de inglês.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Como tornamos seu trabalho (e sua vida) mais fácil:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;- Modalidade 100% remota - trabalhe de qualquer lugar.&lt;/p&gt;&lt;p&gt;- Excelente remuneração em USD ou na sua moeda local, como preferir.&lt;/p&gt;&lt;p&gt;- Hardware para você trabalhar de casa.&lt;/p&gt;&lt;p&gt;- Horários flexíveis - faça seu próprio horário.&lt;/p&gt;&lt;p&gt;- Licença parental remunerada, férias, e feriados nacionais.&lt;/p&gt;&lt;p&gt;- Ambiente de trabalho inovador e multicultural.&lt;/p&gt;&lt;p&gt;- Colabore e aprenda com o Top 1% global dos talentos de cada área.&lt;/p&gt;&lt;p&gt;- Ambiente de apoio com mentoria, promoções, desenvolvimento de habilidades, e diversas oportunidades de crescimento.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Junte-se a uma equipe global onde seus talentos excepcionais podem se destacar!&lt;/p&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "BairesDev",
+          "sameAs": "https://www.linkedin.com/company/bairesdev",
+          "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGNvQASzrdL_w/company-logo_200_200/company-logo_200_200/0/1687874736484/bairesdev_logo?e=2147483647&amp;v=beta&amp;t=1x4m_AFUqlUMZRbye1rU_IE4xDg5VLZsJ8HB0tg4Svk"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "BairesDev"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4E0BAQGNvQASzrdL_w/company-logo_100_100/company-logo_100_100/0/1687874736484/bairesdev_logo?e=2147483647&amp;v=beta&amp;t=O-1i-F9arEGwUjngSlvE7NWxL-mpYFwN_XZxHy0C03s",
+        "industry": "Atividades dos serviços de tecnologia da informação",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "Curitiba e Região",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -25.529974,
+          "longitude": -49.176056
+        },
+        "skills": "",
+        "title": "Desenvolvedor .NET Backend - Trabalho Remoto",
+        "validThrough": "2026-11-18T13:29:56.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        },
+        "jobLocationType": "TELECOMMUTE",
+        "applicantLocationRequirements": {
+          "@type": "Country",
+          "name": "Curitiba e Região"
+        }
+      }
+    ],
+    "description": "Há mais de 15 anos, a BairesDev® é líder em projetos tecnológicos. Entregamos soluções inovadoras para gigantes como Google e Rolls-Royce e as startups mais inovadoras do Vale do Silício.Temos uma equipe diversa de mais de 4.000 profissionais formada pelo Top 1% dos talentos de tecnologia do mundo, trabalhando remotamente em cargos de impacto global.Ao se candidatar para este cargo, você está dando o primeiro passo em um processo que vai além do comum. Nosso objetivo é alinhar suas paixões, habilidades, e expectativas às nossas vagas, colocando você no caminho para desenvolver uma carreira de sucesso excepcional.Desenvolvedor .NET Backend na BairesDevBuscamos um excelente Desenvolvedor Backend.NET para se juntar à equipe de Pesquisa e Desenvolvimento (P&D) da BairesDev. Nossa equipe de P&D é uma parte essencial nas soluções de tecnologia que geram milhões em receitas todos os anos, portanto, contratamos apenas os melhores entre os melhores.Você irá se deparar com diversos desafios: análise de dados, machine learning e desenvolvimento web são alguns dos mais relevantes no momento, mas para impulsionar a inovação, você perceberá que oportunidades novas surgem todos os dias!A área de P&D é sem dúvida a área mais desafiadora de toda a empresa, e embora a BairesDev seja formada por pessoas realmente talentosas em todas as funções, aqui você encontrará profissionais com vasta experiência e também de nível intelectual e criativo, muito acima da média.Queremos gente que curta o desafio!Responsabilidades- Arquitetar e desenvolver diversos serviços e APIs para o produto.- Usar os princípios SOLID na criação de código sustentável e de alta qualidade.- Colaborar com os proprietários do produto para garantir que os recursos / alterações atendam aos requisitos de negócios e cumpram a estratégia da Degreed.- Trabalhar em estreita colaboração com designers, UX e outros desenvolvedores para obter uma compreensão dos novos recursos, dependências e detalhes técnicos.- Outras funções atribuídas.Esperamos que você tenha:- 4+ anos de experiência prática em projetos Web, C#, SQL Server.- Experiência com frameworks HTML / CSS e Javascript.- Experiência com MVC.- Experiência em desenvolvimento com programação orientada a objetos é desejável.- Nível avançado de inglês.Como tornamos seu trabalho (e sua vida) mais fácil:- Modalidade 100% remota - trabalhe de qualquer lugar.- Excelente remuneração em USD ou na sua moeda local, como preferir.- Hardware para você trabalhar de casa.- Horários flexíveis - faça seu próprio horário.- Licença parental remunerada, férias, e feriados nacionais.- Ambiente de trabalho inovador e multicultural.- Colabore e aprenda com o Top 1% global dos talentos de cada área.- Ambiente de apoio com mentoria, promoções, desenvolvimento de habilidades, e diversas oportunidades de crescimento.Junte-se a uma equipe global onde seus talentos excepcionais podem se destacar!",
+    "offsite": [
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-net-backend-trabalho-remoto-at-bairesdev-4480236108&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link",
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-net-backend-trabalho-remoto-at-bairesdev-4480236108&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link"
+    ],
+    "emails": null
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/desenvolvedor-fullstack-net-s%C3%AAnior-at-add-4481785758",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-20T21:55:23.000Z",
+        "description": "&lt;strong&gt;Candidate-se rapidamente pelo email: vaga-399395@vagas.abler.in&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt;Nível: &lt;/strong&gt;Sênior&lt;br&gt;&lt;br&gt;&lt;strong&gt;Cursos de: &lt;/strong&gt; ANÁLISE E DESENVOLVIMENTO DE SISTEMAS&lt;br&gt;&lt;br&gt;&lt;strong&gt;Escolaridade: &lt;/strong&gt;Graduação - ANÁLISE E DESENVOLVIMENTO DE SISTEMAS - Completo&lt;br&gt;&lt;br&gt;&lt;strong&gt;Tipo de contrato: &lt;/strong&gt;CLT&lt;br&gt;&lt;br&gt;&lt;strong&gt;Jornada de trabalho: &lt;/strong&gt;Segunda à Sexta - 09:00 às 18:00&lt;br&gt;&lt;br&gt;&lt;strong&gt;Benefícios: &lt;/strong&gt;Plano de saúde, Assistência odontológica, Vale Alimentação ou Refeição, Seguro de vida&lt;br&gt;&lt;br&gt;&lt;strong&gt;Responsabilidades Da Posição&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt;LOUCOS POR INOVAÇÃO E TRANSFORMAÇÃO:&lt;br&gt;&lt;br&gt;&lt;/strong&gt;A .add é uma empresa de TI e inovação, com 28 anos no mercado. Estamos localizados em São Paulo, Rio de Janeiro e Miami.&lt;br&gt;&lt;br&gt;Com atuação marcante no mercado brasileiro, desenvolvemos soluções eficientes de forma singular para entregar os melhores serviços e produtos nas áreas de Inovação e Tecnologia.&lt;br&gt;&lt;br&gt;Nosso diferencial está na expertise de um time multidisciplinar e comprometido com as melhores práticas ágeis utilizadas para superar desafios corporativos e garantir resultados extraordinários com precisão, agilidade e segurança.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Tecnologia, Liderança, Agilidade, Inovação e Pessoas, são os pontos que formam a essência da .add.&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;strong&gt;Aqui Na .add Você Vai Encontrar&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Ambiente colaborativo&lt;/li&gt;&lt;li&gt;Circuito de treinamentos&lt;/li&gt;&lt;li&gt;Programa de Educação Continuada&lt;/li&gt;&lt;li&gt;Flash Benefícios&lt;/li&gt;&lt;li&gt;Plano de Saúde&lt;/li&gt;&lt;li&gt;Desafios e oportunidades de crescimento&lt;/li&gt;&lt;li&gt;Híbrido RJ (1x por semana no escritório)&lt;/li&gt;&lt;li&gt;TotalPass&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Skill Técnico&lt;br&gt;&lt;br&gt;&lt;/strong&gt;Buscamos um profissional experiente em desenvolvimento de aplicações .NET e front-end em Angular para integrar nossa equipe de tecnologia. O profissional atuará em projetos de alta complexidade, contribuindo para o desenvolvimento e a sustentação de soluções robustas, escaláveis e integradas a diferentes sistemas, em parceria com arquitetos, designers e demais desenvolvedores.&lt;br&gt;&lt;br&gt;&lt;strong&gt;Requisitos Obrigatórios Para a Posição&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Desenvolver e manter APIs RESTful e serviços utilizando C#, ASP.NET Core e Entity Framework Core.&lt;/li&gt;&lt;li&gt;Implementar componentes e interfaces utilizando Angular 13+, TypeScript e boas práticas de desenvolvimento front-end.&lt;/li&gt;&lt;li&gt;Projetar, modelar e otimizar bancos de dados em SQL Server.&lt;/li&gt;&lt;li&gt;Atuar no desenvolvimento e na sustentação de aplicações distribuídas, integrações entre sistemas e arquiteturas de microsserviços.&lt;/li&gt;&lt;li&gt;Trabalhar com mensageria, filas, tópicos, processamento assíncrono e arquiteturas orientadas a eventos.&lt;/li&gt;&lt;li&gt;Implementar mecanismos de resiliência em integrações, incluindo retentativas, idempotência e tratamento de falhas.&lt;/li&gt;&lt;li&gt;Investigar e solucionar incidentes em produção, utilizando logs, telemetria e ferramentas de observabilidade para identificar a causa raiz dos problemas.&lt;/li&gt;&lt;li&gt;Desenvolver e executar testes unitários e de integração, contribuindo para a qualidade e a confiabilidade das soluções.&lt;/li&gt;&lt;li&gt;Participar de revisões de código, discussões arquiteturais e definição de boas práticas de desenvolvimento.&lt;/li&gt;&lt;li&gt;Contribuir para a automação de processos de build, deploy e pipelines de CI/CD.&lt;/li&gt;&lt;li&gt;Colaborar com equipes multidisciplinares em ambientes ágeis, utilizando metodologias como Scrum e Kanban.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Conhecimentos Essenciais Para a Posição&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Experiência sólida em desenvolvimento com C# e .NET Core, incluindo ASP.NET Core.&lt;/li&gt;&lt;li&gt;Domínio de Angular 13+ e TypeScript para desenvolvimento de interfaces.&lt;/li&gt;&lt;li&gt;Conhecimento sólido em SQL Server, modelagem de dados e Entity Framework Core.&lt;/li&gt;&lt;li&gt;Experiência no desenvolvimento e consumo de APIs RESTful e na integração entre serviços.&lt;/li&gt;&lt;li&gt;Conhecimento de arquitetura distribuída, microsserviços, mensageria e processamento assíncrono.&lt;/li&gt;&lt;li&gt;Experiência com Azure, especialmente Azure Service Bus, Azure Functions e Application Insights/Azure Monitor, ou tecnologias equivalentes.&lt;/li&gt;&lt;li&gt;Conhecimento em observabilidade, troubleshooting e sustentação de sistemas corporativos críticos.&lt;/li&gt;&lt;li&gt;Prática com testes automatizados, versionamento de código e pipelines de CI/CD.&lt;/li&gt;&lt;li&gt;Conhecimento de tratamento de falhas, retentativas e idempotência em integrações.&lt;/li&gt;&lt;li&gt;Experiência com metodologias ágeis, como Scrum e Kanban.&lt;br&gt;&lt;br&gt;&lt;/li&gt;&lt;/ul&gt;&lt;strong&gt;Diferenciais&lt;br&gt;&lt;br&gt;&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;Experiência com BPM, workflows e modelagem de processos utilizando BPMN, especialmente com Camunda ou ferramentas equivalentes.&lt;/li&gt;&lt;li&gt;Familiaridade com ferramentas de Inteligência Artificial aplicadas ao desenvolvimento de software, como apoio à codificação, geração de testes, revisão de código e produtividade.&lt;/li&gt;&lt;li&gt;Experiência com Replit ou outras plataformas de desenvolvimento assistido por IA e prototipação rápida.&lt;/li&gt;&lt;li&gt;Conhecimento de práticas de observabilidade e monitoramento de aplicações em produção.&lt;/li&gt;&lt;li&gt;Experiência nos segmentos de Seguros, Previdência ou mercado financeiro.&lt;/li&gt;&lt;/ul&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": ".add",
+          "sameAs": "https://br.linkedin.com/company/somosadd",
+          "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHJcNlb8h-Ahg/company-logo_200_200/company-logo_200_200/0/1704196093304/somosadd_logo?e=2147483647&amp;v=beta&amp;t=UGLrvIDQzcfUascxj4_hAzLRvymrmYmfl53Axj8HYQg"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": ".add",
+          "value": "399395"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4D0BAQHJcNlb8h-Ahg/company-logo_100_100/company-logo_100_100/0/1704196093304/somosadd_logo?e=2147483647&amp;v=beta&amp;t=IZ4EggkgliNdj7S1XqONN9msM6aE4Z6pW-CbyCkj4mw",
+        "industry": "Atividades dos serviços de tecnologia da informação",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "Rio de Janeiro",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -22.911015,
+          "longitude": -43.209373
+        },
+        "skills": "",
+        "title": "Desenvolvedor Fullstack .Net Sênior",
+        "validThrough": "2026-11-19T21:55:23.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        }
+      }
+    ],
+    "description": "Candidate-se rapidamente pelo email: vaga-399395@vagas.abler.inNível: SêniorCursos de:  ANÁLISE E DESENVOLVIMENTO DE SISTEMASEscolaridade: Graduação - ANÁLISE E DESENVOLVIMENTO DE SISTEMAS - CompletoTipo de contrato: CLTJornada de trabalho: Segunda à Sexta - 09:00 às 18:00Benefícios: Plano de saúde, Assistência odontológica, Vale Alimentação ou Refeição, Seguro de vidaResponsabilidades Da PosiçãoLOUCOS POR INOVAÇÃO E TRANSFORMAÇÃO:A .add é uma empresa de TI e inovação, com 28 anos no mercado. Estamos localizados em São Paulo, Rio de Janeiro e Miami.Com atuação marcante no mercado brasileiro, desenvolvemos soluções eficientes de forma singular para entregar os melhores serviços e produtos nas áreas de Inovação e Tecnologia.Nosso diferencial está na expertise de um time multidisciplinar e comprometido com as melhores práticas ágeis utilizadas para superar desafios corporativos e garantir resultados extraordinários com precisão, agilidade e segurança.Tecnologia, Liderança, Agilidade, Inovação e Pessoas, são os pontos que formam a essência da .add.Aqui Na .add Você Vai EncontrarAmbiente colaborativoCircuito de treinamentosPrograma de Educação ContinuadaFlash BenefíciosPlano de SaúdeDesafios e oportunidades de crescimentoHíbrido RJ (1x por semana no escritório)TotalPassSkill TécnicoBuscamos um profissional experiente em desenvolvimento de aplicações .NET e front-end em Angular para integrar nossa equipe de tecnologia. O profissional atuará em projetos de alta complexidade, contribuindo para o desenvolvimento e a sustentação de soluções robustas, escaláveis e integradas a diferentes sistemas, em parceria com arquitetos, designers e demais desenvolvedores.Requisitos Obrigatórios Para a PosiçãoDesenvolver e manter APIs RESTful e serviços utilizando C#, ASP.NET Core e Entity Framework Core.Implementar componentes e interfaces utilizando Angular 13+, TypeScript e boas práticas de desenvolvimento front-end.Projetar, modelar e otimizar bancos de dados em SQL Server.Atuar no desenvolvimento e na sustentação de aplicações distribuídas, integrações entre sistemas e arquiteturas de microsserviços.Trabalhar com mensageria, filas, tópicos, processamento assíncrono e arquiteturas orientadas a eventos.Implementar mecanismos de resiliência em integrações, incluindo retentativas, idempotência e tratamento de falhas.Investigar e solucionar incidentes em produção, utilizando logs, telemetria e ferramentas de observabilidade para identificar a causa raiz dos problemas.Desenvolver e executar testes unitários e de integração, contribuindo para a qualidade e a confiabilidade das soluções.Participar de revisões de código, discussões arquiteturais e definição de boas práticas de desenvolvimento.Contribuir para a automação de processos de build, deploy e pipelines de CI/CD.Colaborar com equipes multidisciplinares em ambientes ágeis, utilizando metodologias como Scrum e Kanban.Conhecimentos Essenciais Para a PosiçãoExperiência sólida em desenvolvimento com C# e .NET Core, incluindo ASP.NET Core.Domínio de Angular 13+ e TypeScript para desenvolvimento de interfaces.Conhecimento sólido em SQL Server, modelagem de dados e Entity Framework Core.Experiência no desenvolvimento e consumo de APIs RESTful e na integração entre serviços.Conhecimento de arquitetura distribuída, microsserviços, mensageria e processamento assíncrono.Experiência com Azure, especialmente Azure Service Bus, Azure Functions e Application Insights/Azure Monitor, ou tecnologias equivalentes.Conhecimento em observabilidade, troubleshooting e sustentação de sistemas corporativos críticos.Prática com testes automatizados, versionamento de código e pipelines de CI/CD.Conhecimento de tratamento de falhas, retentativas e idempotência em integrações.Experiência com metodologias ágeis, como Scrum e Kanban.DiferenciaisExperiência com BPM, workflows e modelagem de processos utilizando BPMN, especialmente com Camunda ou ferramentas equivalentes.Familiaridade com ferramentas de Inteligência Artificial aplicadas ao desenvolvimento de software, como apoio à codificação, geração de testes, revisão de código e produtividade.Experiência com Replit ou outras plataformas de desenvolvimento assistido por IA e prototipação rápida.Conhecimento de práticas de observabilidade e monitoramento de aplicações em produção.Experiência nos segmentos de Seguros, Previdência ou mercado financeiro.",
+    "offsite": [
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-fullstack-net-s%25C3%25AAnior-at-add-4481785758&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link",
+      "https://www.linkedin.com/signup/cold-join?source=jobs_registration&session_redirect=https%3A%2F%2Fbr.linkedin.com%2Fjobs%2Fview%2Fdesenvolvedor-fullstack-net-s%25C3%25AAnior-at-add-4481785758&trk=public_jobs_apply-link-offsite_contextual-sign-in-modal_join-link"
+    ],
+    "emails": [
+      "vaga-399395@vagas.abler.inN"
+    ]
+  },
+  {
+    "url": "https://br.linkedin.com/jobs/view/pessoa-desenvolvedora-fullstack-net-jr-at-knewin-4476830773",
+    "status": 200,
+    "records": [
+      {
+        "@context": "http://schema.org",
+        "@type": "JobPosting",
+        "datePosted": "2026-10-09T19:00:03.000Z",
+        "description": "&lt;p&gt;Estamos buscando um &lt;strong&gt;Desenvolvedor Fullstack .NET Júnior&lt;/strong&gt; para acelerar a evolução dos nossos produtos e entregar soluções que encantam nossos clientes. Você atuará desde a manutenção até a criação de novas funcionalidades em APIs REST e aplicações web, trabalhando com tecnologias atuais e contribuindo diretamente para projetos de alto impacto.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Atribuições&lt;/strong&gt;:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Desenvolver e manter funcionalidades em nossas aplicações web, serviços e APIs;&lt;/li&gt;&lt;li&gt;Implementar melhorias em sistemas existentes e solucionar desafios e problemas com criatividade;&lt;/li&gt;&lt;li&gt;Realizar evoluções am banco de dados;&lt;/li&gt;&lt;li&gt;Executar testes para garantir o atendimento do escopo solicitado;&lt;/li&gt;&lt;li&gt;Manter o controle de versões (branches, pull requests e merges);&lt;/li&gt;&lt;li&gt;Manter documentação mínima, contribuindo com a disseminação do conhecimento no time;&lt;/li&gt;&lt;li&gt;Participar de avaliações técnicas de alterações, considerando estabilidade, desempenho, escalabilidade e segurança da informação;&lt;/li&gt;&lt;li&gt;Participar das interações com Product Manager para esclarecimento de requisitos;&lt;/li&gt;&lt;li&gt;Atender demandas prioritárias com agilidade e profundidade, garantindo a continuidade dos serviços e a resolução da causa-raiz;&lt;/li&gt;&lt;li&gt;Colaborar com o time na adoção de boas práticas de desenvolvimento.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Requisitos:&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Desejável Ensino superior completo ou em andamento em Ciência da Computação, Engenharia de Computação, Engenharia Elétrica, Sistemas de Informação ou áreas afins;&lt;/li&gt;&lt;li&gt;Backend: conhecimentos em C# / .NET Framework e APIs REST;&lt;/li&gt;&lt;li&gt;Frontend: conhecimento em ASP.NET MVC, ASP.NET Web API, Razor, JQuery, Angular para construir interfaces dinâmicas;&lt;/li&gt;&lt;li&gt;Bancos de dados: conhecimento de SQL; Conhecimento em HTML, CSS e JavaScript para criar jornadas fluidas;&lt;/li&gt;&lt;li&gt;Conhecimento em Git (GitHub/GitLab) para controle de versões;&lt;/li&gt;&lt;li&gt;Boa comunicação, proatividade e espírito de equipe.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Diferenciais:&lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Conhecimento em Machine Learning e Inteligência Artificial Generativa;&lt;/li&gt;&lt;li&gt;Conhecimento em testes automatizados;&lt;/li&gt;&lt;li&gt;Conhecimento em RabbitMQ para sistemas de mensageria;&lt;/li&gt;&lt;li&gt;Conhecimento em Docker para ambientes conteinerizados;&lt;/li&gt;&lt;li&gt;Inglês técnico para leitura de documentação.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Knewin",
+          "sameAs": "https://br.linkedin.com/company/knewinoficial",
+          "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG34P0l_r5XPA/company-logo_200_200/company-logo_200_200/0/1721250499383/knewinoficial_logo?e=2147483647&amp;v=beta&amp;t=ikKZ0iAL-VyN0Yxp_PWYmTdHzsCmqCydpX8AAbtwbj4"
+        },
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "Knewin"
+        },
+        "image": "https://media.licdn.com/dms/image/v2/D4D0BAQG34P0l_r5XPA/company-logo_100_100/company-logo_100_100/0/1721250499384/knewinoficial_logo?e=2147483647&amp;v=beta&amp;t=DV2jjIBwLTHAb5PdlRX2cill_O9C8oLM3YnUKhW-S4E",
+        "industry": "Serviços de informação",
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR",
+            "addressLocality": "Florianópolis",
+            "addressRegion": null,
+            "streetAddress": null
+          },
+          "latitude": -27.5973,
+          "longitude": -48.54961
+        },
+        "skills": "",
+        "title": "Pessoa Desenvolvedora Fullstack .NET JR",
+        "validThrough": "2026-11-08T19:00:03.000Z",
+        "educationRequirements": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "bachelor degree"
+        },
+        "jobLocationType": "TELECOMMUTE",
+        "applicantLocationRequirements": {
+          "@type": "Country",
+          "name": "Florianópolis, Santa Catarina, Brasil"
+        }
+      },
+      {
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {
+              "str": "Vagas"
+            },
+            "item": "https://br.linkedin.com/jobs/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Vagas de Desenvolvedor .Net",
+            "item": "https://br.linkedin.com/jobs/desenvolvedor-%2Enet-vagas"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Pessoa Desenvolvedora Fullstack .NET JR",
+            "item": "https://br.linkedin.com/jobs/view/pessoa-desenvolvedora-fullstack-net-jr-at-knewin-4476830773"
+          }
+        ]
+      }
+    ],
+    "description": "Estamos buscando um Desenvolvedor Fullstack .NET Júnior para acelerar a evolução dos nossos produtos e entregar soluções que encantam nossos clientes. Você atuará desde a manutenção até a criação de novas funcionalidades em APIs REST e aplicações web, trabalhando com tecnologias atuais e contribuindo diretamente para projetos de alto impacto.Atribuições:Desenvolver e manter funcionalidades em nossas aplicações web, serviços e APIs;Implementar melhorias em sistemas existentes e solucionar desafios e problemas com criatividade;Realizar evoluções am banco de dados;Executar testes para garantir o atendimento do escopo solicitado;Manter o controle de versões (branches, pull requests e merges);Manter documentação mínima, contribuindo com a disseminação do conhecimento no time;Participar de avaliações técnicas de alterações, considerando estabilidade, desempenho, escalabilidade e segurança da informação;Participar das interações com Product Manager para esclarecimento de requisitos;Atender demandas prioritárias com agilidade e profundidade, garantindo a continuidade dos serviços e a resolução da causa-raiz;Colaborar com o time na adoção de boas práticas de desenvolvimento.Requisitos:Desejável Ensino superior completo ou em andamento em Ciência da Computação, Engenharia de Computação, Engenharia Elétrica, Sistemas de Informação ou áreas afins;Backend: conhecimentos em C# / .NET Framework e APIs REST;Frontend: conhecimento em ASP.NET MVC, ASP.NET Web API, Razor, JQuery, Angular para construir interfaces dinâmicas;Bancos de dados: conhecimento de SQL; Conhecimento em HTML, CSS e JavaScript para criar jornadas fluidas;Conhecimento em Git (GitHub/GitLab) para controle de versões;Boa comunicação, proatividade e espírito de equipe.Diferenciais:Conhecimento em Machine Learning e Inteligência Artificial Generativa;Conhecimento em testes automatizados;Conhecimento em RabbitMQ para sistemas de mensageria;Conhecimento em Docker para ambientes conteinerizados;Inglês técnico para leitura de documentação.",
+    "offsite": [],
+    "emails": null
+  }
+]

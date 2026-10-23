@@ -1,5 +1,7 @@
 # Antigravity CLI remoto
 
+O motor de candidaturas também usa as referências verificáveis dessa busca para procurar a mesma vaga em outros destinos. A conexão Antigravity não autentica candidatos nos portais nem autoriza enviar currículos a empregadores. A descoberta e a resolução podem seguir APIs e links públicos independentemente dessa conexão. Veja o [relatório do motor](MOTOR-CANDIDATURAS-2026-10-16.md).
+
 A instalação usa o CLI oficial `agy` 1.3.5 em um Vercel Sandbox Linux chamado `empregatos-antigravity`, no mesmo projeto da aplicação. O computador do titular não precisa ficar ligado. Não utiliza a chave Gemini nem ativa faturamento do Google Cloud.
 
 ## Conectar a conta
@@ -24,6 +26,7 @@ Teste da fila de produção em 14/10/2026: tarefa concluída sem erros, 57 anún
 - O Sandbox é retomado sob demanda e parado ao concluir as tarefas. Uma abertura da tela de conexão pode deixá-lo ativo até o timeout configurado de 10 minutos. A política mantém apenas o último snapshot, com expiração desativada para esse snapshot, dentro da cota de armazenamento.
 - O login fica no perfil privado do CLI e no Secret Service Linux dentro do Sandbox. O backend usa OIDC Vercel para controlar a máquina; essas credenciais, a chave Gemini e a conexão do banco não são passadas ao CLI. O código OAuth vai pelo stdin de um terminal com echo desativado; não é salvo no banco, exportado ou colocado em argumentos de processo.
 - `useG1Credits: false` impede fallback para créditos extras. Há permissões de leitura somente nos domínios de busca e vagas; comandos, leitura/escrita de arquivos pelo agente, MCP e atuação em páginas estão bloqueados.
+- A política também permite leitura dos domínios Greenhouse, Lever, Ashby e SmartRecruiters. Ela é reaplicada antes da busca para que uma conexão existente receba correções sem refazer OAuth. Os URLs retornados pelo agente são pistas: a aplicação lê o anúncio e confirma os fatos independentemente, com data atual explícita e distinção entre cidade presencial e trabalho remoto no Brasil.
 - `ANTIGRAVITY_ENABLED=true`, `ANTIGRAVITY_OWNER_ID` e o nome opcional `ANTIGRAVITY_SANDBOX_NAME` são configuração de servidor. A cota pessoal não é compartilhada com outras contas da aplicação. Desconectar remove o perfil Google e substitui o snapshot anterior.
 
 ## Limites e candidaturas

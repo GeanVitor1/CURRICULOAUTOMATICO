@@ -5,7 +5,7 @@
   "outputDirectory": "dist",
   "functions": {
     "api/server.mjs": {
-      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs}",
+      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs,dist-server/ats-browser-runner.mjs}",
       "maxDuration": 60
     },
     "api/search-worker.mjs": {
@@ -15,7 +15,9 @@
         {
           "type": "queue/v2beta",
           "topic": "empregatos-discovery",
-          "retryAfterSeconds": 420
+          "retryAfterSeconds": 420,
+          "maxConcurrency": 2,
+          "maxDeliveries": 5
         }
       ]
     },
@@ -24,13 +26,28 @@
       "maxDuration": 300
     },
     "api/submission-worker.mjs": {
-      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs}",
+      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs,dist-server/ats-browser-runner.mjs}",
       "maxDuration": 300,
       "experimentalTriggers": [
         {
           "type": "queue/v2beta",
           "topic": "empregatos-submissions",
-          "retryAfterSeconds": 240
+          "retryAfterSeconds": 240,
+          "maxConcurrency": 2,
+          "maxDeliveries": 5
+        }
+      ]
+    },
+    "api/destination-worker.mjs": {
+      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs,dist-server/ats-browser-runner.mjs}",
+      "maxDuration": 300,
+      "experimentalTriggers": [
+        {
+          "type": "queue/v2beta",
+          "topic": "empregatos-destinations",
+          "retryAfterSeconds": 420,
+          "maxConcurrency": 2,
+          "maxDeliveries": 5
         }
       ]
     }
@@ -61,6 +78,10 @@
     {
       "src": "/api/submission-worker",
       "dest": "/api/submission-worker"
+    },
+    {
+      "src": "/api/destination-worker",
+      "dest": "/api/destination-worker"
     },
     {
       "src": "/api/daily-routine",

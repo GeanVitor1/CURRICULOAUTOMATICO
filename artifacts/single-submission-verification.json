@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-19T17:35:42.260Z",
+  "environment": "Browser → API → PGlite temporário → consumidor → receptor HTTP local controlado → recibo na interface",
+  "passed": true,
+  "originalFileMatched": true,
+  "received": 1,
+  "otherApplicationsSent": 0,
+  "generalRoutineEnabled": false,
+  "browserErrors": 0,
+  "realEmployerSubmissions": 0,
+  "candidateDetailsCollectedThroughBrowser": true
+}

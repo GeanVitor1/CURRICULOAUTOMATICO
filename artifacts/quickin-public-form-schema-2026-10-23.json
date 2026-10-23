@@ -1,0 +1,114 @@
+[
+  {
+    "name": "resume_media_id",
+    "type": "media",
+    "label": "Arquivo do Currículo",
+    "required": true,
+    "validation": {
+      "accept": [
+        "txt",
+        "pdf",
+        "doc",
+        "rtf",
+        "docx",
+        "odt"
+      ]
+    }
+  },
+  {
+    "name": "name",
+    "type": "short_text",
+    "label": "Nome completo",
+    "required": true,
+    "validation": {
+      "minLength": 2,
+      "maxLength": 60
+    }
+  },
+  {
+    "name": "email",
+    "type": "email",
+    "label": "E-mail",
+    "required": true,
+    "validation": {
+      "minLength": 5,
+      "maxLength": 60
+    }
+  },
+  {
+    "name": "phones",
+    "type": "array",
+    "label": "Telefone",
+    "required": true,
+    "validation_items": {
+      "minLength": 2,
+      "maxLength": 60
+    }
+  },
+  {
+    "name": "experience_level",
+    "type": "single_choice",
+    "label": "Nível de experiência",
+    "required": true,
+    "options": [
+      {
+        "value": "entry_level",
+        "label": "Júnior"
+      },
+      {
+        "value": "mid_level",
+        "label": "Pleno"
+      },
+      {
+        "value": "trainee",
+        "label": "Trainee"
+      },
+      {
+        "value": "executive",
+        "label": "Diretoria"
+      },
+      {
+        "value": "manager",
+        "label": "Supervisão / Coordenação"
+      },
+      {
+        "value": "senior_manager",
+        "label": "Gerência"
+      },
+      {
+        "value": "student_college",
+        "label": "Estágio"
+      },
+      {
+        "value": "student_high_school",
+        "label": "Aprendiz"
+      },
+      {
+        "value": "senior",
+        "label": "Sênior"
+      }
+    ]
+  },
+  {
+    "name": "salary",
+    "type": "number",
+    "label": "Pretensão salarial",
+    "required": true,
+    "validation": {
+      "minimum": 1,
+      "maximum": 99999999
+    }
+  },
+  {
+    "name": "pages",
+    "type": "array",
+    "label": "Redes Sociais/Páginas",
+    "required": false,
+    "nullable": true,
+    "validation_items": {
+      "format": "url",
+      "minLength": 2,
+      "maxLength": 600
+    }
+  }
+]

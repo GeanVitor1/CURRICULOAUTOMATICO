@@ -31,7 +31,7 @@ const server = createServer(async (req, res) => {
     return;
   }
   if (req.method === "GET" && req.url === "/health") {
-    res.end('{"ok":true,"version":8}');
+    res.end('{"ok":true,"version":10}');
     return;
   }
   if (req.method !== "POST" || req.url !== "/command") {
@@ -49,7 +49,7 @@ const server = createServer(async (req, res) => {
     let data, error;
     try {
       data = await service.execute(request);
-      if (request.op === "open" && request.viewerOrigin) {
+      if (["open", "import-browser-session"].includes(request.op) && request.viewerOrigin) {
         const frame = data as { viewerId: string; live?: unknown };
         frame.live = live.issue(frame.viewerId, request.viewerOrigin);
       }

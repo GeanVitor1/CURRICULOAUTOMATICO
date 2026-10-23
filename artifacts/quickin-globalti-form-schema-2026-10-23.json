@@ -1,0 +1,384 @@
+[
+  {
+    "name": "resume_media_id",
+    "type": "media",
+    "label": "Arquivo do Currículo",
+    "required": true,
+    "validation": {
+      "accept": [
+        "txt",
+        "pdf",
+        "doc",
+        "rtf",
+        "docx",
+        "odt"
+      ]
+    }
+  },
+  {
+    "name": "name",
+    "type": "short_text",
+    "label": "Nome completo",
+    "required": true,
+    "validation": {
+      "minLength": 2,
+      "maxLength": 60
+    }
+  },
+  {
+    "name": "email",
+    "type": "email",
+    "label": "E-mail",
+    "required": true,
+    "validation": {
+      "minLength": 5,
+      "maxLength": 60
+    }
+  },
+  {
+    "name": "phones",
+    "type": "array",
+    "label": "Telefone",
+    "required": true,
+    "validation_items": {
+      "minLength": 2,
+      "maxLength": 60
+    }
+  },
+  {
+    "name": "summary",
+    "type": "long_text",
+    "label": "Resumo das qualificações",
+    "required": false,
+    "validation": {
+      "minLength": 0,
+      "maxLength": 3200
+    }
+  },
+  {
+    "name": "birth_date",
+    "type": "date",
+    "date_format": "year-month-day",
+    "label": "Data de nascimento",
+    "required": false
+  },
+  {
+    "name": "disability",
+    "type": "multiple_choice",
+    "label": "PcD",
+    "options": [
+      {
+        "value": "hearing",
+        "label": "Hearing"
+      },
+      {
+        "value": "vision",
+        "label": "Vision"
+      },
+      {
+        "value": "intellectual",
+        "label": "Intellectual"
+      },
+      {
+        "value": "physical",
+        "label": "Physical"
+      }
+    ]
+  },
+  {
+    "name": "disability_comment",
+    "type": "long_text",
+    "label": "Comentário sobre Deficiência",
+    "placeholder": "Detalhes adicionais...",
+    "show_if": {
+      "disability": {
+        "$exists": true,
+        "$ne": []
+      }
+    },
+    "validation": {
+      "maxLength": 1000
+    }
+  },
+  {
+    "name": "salary",
+    "type": "number",
+    "label": "Pretensão salarial",
+    "required": true,
+    "validation": {
+      "minimum": 1,
+      "maximum": 99999999
+    }
+  },
+  {
+    "name": "educations",
+    "type": "group",
+    "label": "Formação",
+    "required": false,
+    "nullable": true,
+    "fields": [
+      {
+        "name": "education_degree",
+        "type": "single_choice",
+        "label": "Grau de Educação",
+        "required": true,
+        "options": [
+          {
+            "value": "master_degree",
+            "label": "Mestrado"
+          },
+          {
+            "value": "bachelor_degree",
+            "label": "Graduação"
+          },
+          {
+            "value": "high_school",
+            "label": "Ensino médio"
+          },
+          {
+            "value": "certification",
+            "label": "Certificação"
+          },
+          {
+            "value": "vocational",
+            "label": "Técnico"
+          },
+          {
+            "value": "associate_degree",
+            "label": "Tecnólogo"
+          },
+          {
+            "value": "postdoctorate",
+            "label": "Pós doutorado"
+          },
+          {
+            "value": "graduate_degree",
+            "label": "Pós graduação/MBA"
+          },
+          {
+            "value": "doctorate",
+            "label": "Doutorado"
+          }
+        ]
+      },
+      {
+        "name": "course",
+        "type": "short_text",
+        "label": "Curso",
+        "required": true,
+        "validation": {
+          "minLength": 2,
+          "maxLength": 100
+        }
+      },
+      {
+        "name": "institution",
+        "type": "short_text",
+        "label": "Instituição",
+        "required": true,
+        "validation": {
+          "minLength": 2,
+          "maxLength": 100
+        }
+      },
+      {
+        "name": "start_date",
+        "type": "date",
+        "date_format": "year-month",
+        "label": "Data de Início",
+        "required": true
+      },
+      {
+        "name": "end_date",
+        "type": "date",
+        "nullable": true,
+        "date_format": "year-month",
+        "label": "Data de Término"
+      },
+      {
+        "name": "incomplete",
+        "type": "boolean",
+        "label": "Incompleto"
+      }
+    ]
+  },
+  {
+    "name": "experiences",
+    "type": "group",
+    "label": "Experiência",
+    "required": false,
+    "nullable": true,
+    "fields": [
+      {
+        "name": "company",
+        "type": "short_text",
+        "label": "Empresa",
+        "required": true,
+        "validation": {
+          "minLength": 2,
+          "maxLength": 100
+        }
+      },
+      {
+        "name": "position",
+        "type": "short_text",
+        "label": "Cargo",
+        "required": true,
+        "validation": {
+          "minLength": 2,
+          "maxLength": 100
+        }
+      },
+      {
+        "name": "attributes",
+        "type": "long_text",
+        "label": "Atributos/Descrição do Cargo",
+        "required": true,
+        "validation": {
+          "minLength": 2,
+          "maxLength": 3200
+        }
+      },
+      {
+        "name": "start_date",
+        "type": "date",
+        "date_format": "year-month",
+        "label": "Data de Início",
+        "required": true
+      },
+      {
+        "name": "end_date",
+        "type": "date",
+        "nullable": true,
+        "date_format": "year-month",
+        "label": "Data de Término",
+        "show_if": {
+          "current_job": false
+        },
+        "required_if": {
+          "current_job": false
+        }
+      },
+      {
+        "name": "current_job",
+        "type": "boolean",
+        "label": "Emprego Atual"
+      }
+    ]
+  },
+  {
+    "name": "languages",
+    "type": "group",
+    "label": "Idiomas",
+    "required": false,
+    "nullable": true,
+    "fields": [
+      {
+        "name": "language",
+        "type": "single_choice",
+        "label": "Idioma",
+        "required": true,
+        "options": [
+          {
+            "value": "de",
+            "label": "Alemão"
+          },
+          {
+            "value": "pt",
+            "label": "Português"
+          },
+          {
+            "value": "ja",
+            "label": "Japonês"
+          },
+          {
+            "value": "fr",
+            "label": "Francês"
+          },
+          {
+            "value": "en",
+            "label": "Inglês"
+          },
+          {
+            "value": "es",
+            "label": "Espanhol"
+          },
+          {
+            "value": "it",
+            "label": "Italiano"
+          },
+          {
+            "value": "zh",
+            "label": "Chinês"
+          }
+        ]
+      },
+      {
+        "name": "level",
+        "type": "single_choice",
+        "label": "Nível",
+        "required": true,
+        "options": [
+          {
+            "value": 1,
+            "label": "Básico"
+          },
+          {
+            "value": 2,
+            "label": "Intermediário"
+          },
+          {
+            "value": 3,
+            "label": "Avançado"
+          },
+          {
+            "value": 4,
+            "label": "Nativo/Fluente"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "pages",
+    "type": "array",
+    "label": "Redes Sociais/Páginas",
+    "required": false,
+    "nullable": true,
+    "validation_items": {
+      "format": "url",
+      "minLength": 2,
+      "maxLength": 600
+    }
+  },
+  {
+    "name": "gdpr_privacy_message",
+    "gdpr": true,
+    "type": "message",
+    "label": "Li e compreendi o conteúdo do Aviso de Privacidade."
+  },
+  {
+    "name": "job_question_692e07e480d7340012bd38fd",
+    "job_question": true,
+    "type": "short_text",
+    "label": "Qual sua pretensão Salarial ?",
+    "required": true,
+    "options": [],
+    "validation": {
+      "minLength": 1,
+      "maxLength": 60
+    }
+  },
+  {
+    "name": "job_question_69a9a48967f6d000131a9530",
+    "job_question": true,
+    "type": "long_text",
+    "label": "Qual seu CPF? Ressaltamos que os dados serão utilizados exclusivamente para fins de seleção e eventual contratação, em conformidade com a LGPD, e tratados com total confidencialidade.",
+    "required": true,
+    "options": [],
+    "validation": {
+      "minLength": 1,
+      "maxLength": 1000
+    }
+  }
+]

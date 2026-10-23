@@ -33,7 +33,7 @@ export function evidenceLines(text: string) {
           n,
         ),
       negated:
-        /\b(?:sem experiencia (?:em|como)|nao (?:tenho|possuo|atuei|trabalhei)|nenhuma experiencia)\b/.test(
+        /\b(?:sem experiencia (?:em|como)|nao (?:tenho|possuo|atuei|trabalhei)|nenhuma experiencia|does not require|do not require|doesn't require|no (?:coding|programming) (?:skills|experience) required)\b/.test(
           n,
         ),
       previous,

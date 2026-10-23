@@ -1,0 +1,20 @@
+{
+  "observedAt": "2026-10-20T18:38:19.783Z",
+  "applicationId": "de158b8b-4708-4047-9006-c2baacd94335",
+  "jobId": "e4402e4c-c304-4dcd-8872-96fe15483516",
+  "mode": "automatic",
+  "status": "Requer ação manual",
+  "receipt": null,
+  "actualResult": "Há perguntas que precisam de respostas aprovadas.",
+  "missingQuestionsCount": 15,
+  "verifiedInfrastructureFixes": [
+    "Queue cached eligible vacancies without another discovery",
+    "Remove unsupported IPv6 CIDRs from Sandbox network policy",
+    "Resolve Playwright from snapshot portal-runtime/node_modules"
+  ],
+  "sandboxCreationProbePassed": true,
+  "chromiumLaunchProbePassed": true,
+  "compiledRunnerProbePassed": true,
+  "deploymentId": "dpl_SnsrVHXNVvxVqTswcvGRZK4kwNsM",
+  "newConfirmedSubmissions": 0
+}

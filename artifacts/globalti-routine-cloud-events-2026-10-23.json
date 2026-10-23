@@ -1,0 +1,65 @@
+[
+  {
+    "at": "2026-10-23T13:39:07.046Z",
+    "deploymentId": "dpl_ANH8iED1o9Sf6dcsUMZk4r4Eb89z",
+    "path": "/api/search-worker",
+    "event": "discovery_queue_received",
+    "taskId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+    "messageId": "2f-1M1embufvu0YhLsoBqqi7KbqF5eCTL5m",
+    "deliveryCount": 2,
+    "topic": "empregatos-discovery",
+    "consumer": "api_Ssearch-worker_Dmjs"
+  },
+  {
+    "at": "2026-10-23T13:34:26.523Z",
+    "deploymentId": "dpl_ANH8iED1o9Sf6dcsUMZk4r4Eb89z",
+    "path": "/api/submission-worker",
+    "event": "submission_queue_received",
+    "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+    "applicationId": "be38f1c8-6659-44db-9457-5215aea3340f",
+    "messageId": "5v-1M1eB47ME45IW0jTjvnBknIztqY18vre",
+    "deliveryCount": 1,
+    "topic": "empregatos-submissions",
+    "consumer": "api_Ssubmission-worker_Dmjs",
+    "revision": "2b232ff2d94263ad5c6543378d7361d05915ec81bead4d7631bca023f2fc9d84"
+  },
+  {
+    "at": "2026-10-23T13:34:03.111Z",
+    "deploymentId": "dpl_ANH8iED1o9Sf6dcsUMZk4r4Eb89z",
+    "path": "/api/submission-worker",
+    "event": "submission_queue_received",
+    "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+    "applicationId": "e0004acd-37b0-4929-9812-6adf488cbb22",
+    "messageId": "6E-1M1eB49fly865F87SAfvixya2Cv0dq2k",
+    "deliveryCount": 1,
+    "topic": "empregatos-submissions",
+    "consumer": "api_Ssubmission-worker_Dmjs",
+    "revision": "2b232ff2d94263ad5c6543378d7361d05915ec81bead4d7631bca023f2fc9d84"
+  },
+  {
+    "at": "2026-10-23T13:33:34.067Z",
+    "deploymentId": "dpl_ANH8iED1o9Sf6dcsUMZk4r4Eb89z",
+    "path": "/api/submission-worker",
+    "event": "submission_queue_received",
+    "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+    "applicationId": "5d28259a-7ce5-45b7-ac01-44e3be3e0f07",
+    "messageId": "23-1M1lczQYooD3RhdjfA3TYqMmN5LMZ0Ec",
+    "deliveryCount": 1,
+    "topic": "empregatos-submissions",
+    "consumer": "api_Ssubmission-worker_Dmjs",
+    "revision": "2b232ff2d94263ad5c6543378d7361d05915ec81bead4d7631bca023f2fc9d84"
+  },
+  {
+    "at": "2026-10-23T13:33:14.084Z",
+    "deploymentId": "dpl_ANH8iED1o9Sf6dcsUMZk4r4Eb89z",
+    "path": "/api/submission-worker",
+    "event": "submission_queue_received",
+    "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+    "applicationId": "e5352b83-22cb-4d61-898d-a93469f69792",
+    "messageId": "4E-1M1eB3jpBqa4D0gW13EMiIfZZrKxBzv8",
+    "deliveryCount": 1,
+    "topic": "empregatos-submissions",
+    "consumer": "api_Ssubmission-worker_Dmjs",
+    "revision": "2b232ff2d94263ad5c6543378d7361d05915ec81bead4d7631bca023f2fc9d84"
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "width": 1440,
+    "tableCount": 2,
+    "pageWidth": 1440,
+    "fixtureIdentityOnly": true,
+    "path": "artifacts/conversion-indicators-1440-2026-10-23.png"
+  },
+  {
+    "width": 375,
+    "tableCount": 2,
+    "pageWidth": 375,
+    "fixtureIdentityOnly": true,
+    "path": "artifacts/conversion-indicators-375-2026-10-23.png"
+  }
+]

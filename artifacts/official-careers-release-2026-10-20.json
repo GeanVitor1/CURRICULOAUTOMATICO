@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-20",
+  "deploymentId": "dpl_DmnSt5ZjJykZKV9km9WRoFuvxBkG",
+  "deploymentUrl": "https://curriculoautomatico-ibygmxgia-geans-projects-da7db03c.vercel.app",
+  "productionUrl": "https://curriculoautomatico.vercel.app",
+  "readyState": "READY",
+  "productionPromotionConfirmed": true,
+  "health": { "status": "ok", "database": "Cloud Firestore" },
+  "tests": { "passed": 490, "skipped": 11, "files": 60, "productionBuildPassed": true },
+  "configuredPublicFormPlatforms": ["lever", "greenhouse"],
+  "configuredPublicBoards": ["ciandt", "gympass"],
+  "liveAuthenticatedCapabilities": { "independentAutomatic": true, "worker": true },
+  "productionDiscovery": {
+    "runId": "5d4a2866-46d2-4848-98bc-59d1bfc6a5cf",
+    "startedAt": "2026-10-20T11:11:38.685Z",
+    "status": "partial",
+    "newOfficialJobs": 251,
+    "totalUniqueJobs": 404,
+    "leverJobs": 180,
+    "greenhouseJobs": 71,
+    "compatibleJobsDisplayed": 25,
+    "compatibleJobsNote": "Total displayed across all sources, not a count of deliverable official forms.",
+    "remainingDiscoveryErrors": ["LinkedIn: no verifiable Gemini sources", "Glassdoor: no verifiable Gemini sources", "InfoJobs: no verifiable Gemini sources"]
+  },
+  "accountRoutineMode": "approval",
+  "automaticSendingActivatedForUser": false,
+  "newRealEmployerSubmissions": 0,
+  "existingAssistedSubmissions": 1,
+  "runtimeErrorsObserved": 0,
+  "runtimeErrorWindow": "2026-10-20T11:02:38.248Z/2026-10-20T11:12:38.248Z",
+  "qaAccountSmokeTest": "Not executed: automatic approval review rejected the proposed create/delete QA account command. Validation used authenticated read-only Chrome inspection instead.",
+  "screenshot": "artifacts/official-careers-production-2026-10-20.jpg"
+}

@@ -1,0 +1,115 @@
+{
+  "at": "2026-10-23T16:22:03.331Z",
+  "deploymentId": "dpl_3iMxZ3n2pYU1SRVRYTnu1vM47w3D",
+  "readyState": "READY",
+  "url": "curriculoautomatico-c7f4k3a62-geans-projects-da7db03c.vercel.app",
+  "aliasDeploymentId": "dpl_3iMxZ3n2pYU1SRVRYTnu1vM47w3D",
+  "health": {
+    "httpStatus": 200,
+    "status": "ok",
+    "database": "Cloud Firestore",
+    "revision": "2521c5f400cdb18f6a5a9947a35804367ae685d80defe7bfda9d7df4d7043044"
+  },
+  "sourceChecks": [
+    {
+      "path": "server/discovery-quality.ts",
+      "identical": true,
+      "sha256": "64ca1e13fd2b68d2cace0df6fc38d77d7dc70af2e9445e088b6c796ee07ce87b"
+    },
+    {
+      "path": "server/mandatory-requirements.ts",
+      "identical": true,
+      "sha256": "3feed0ab22294a58abfc033af33bddb8d5d63a27da1ee6a4d7e8720308c809f9"
+    },
+    {
+      "path": "server/official-discovery.ts",
+      "identical": true,
+      "sha256": "5bd9a22de2b4af189841b28463c85e50111e2e403b0749c5c8d5467276e10dbd"
+    },
+    {
+      "path": "server/connectors.ts",
+      "identical": true,
+      "sha256": "c10d308338277e22a7960c28a50d3b1337a51614cccd4e913438c7830421c855"
+    },
+    {
+      "path": "server/engine.ts",
+      "identical": true,
+      "sha256": "ec5258c02fb63773798e16d8ed00d1a909a78c3f0751199b57da17d8670647fb"
+    },
+    {
+      "path": "server/professional-evidence.ts",
+      "identical": true,
+      "sha256": "5ed924137a0902b6c53ab93a3d93c106f7b37583cf1b2ab9c763853691cca3c1"
+    },
+    {
+      "path": "server/quickin-board.ts",
+      "identical": true,
+      "sha256": "b5c480d857bf9fe3f2b0d1cea6f6745177f5f150f389e3929c93063718ef8989"
+    },
+    {
+      "path": "server/candidate-answers.ts",
+      "identical": true,
+      "sha256": "66ea2829353da33691f626d91705360f6f713e05d6962f9ea06b77899f720c26"
+    },
+    {
+      "path": "server/operations.ts",
+      "identical": true,
+      "sha256": "99dab361439e1284f3933f9246cf93444ef828296fb3529eabecdca079f06b3c"
+    },
+    {
+      "path": "server/automation-conversion.ts",
+      "identical": true,
+      "sha256": "c5e09c4e1d371565ea4f6af618c654cb8f369c8ab8b2c08df6fee0e9b93c4e73"
+    },
+    {
+      "path": "shared/types.ts",
+      "identical": true,
+      "sha256": "88aec673e7c95a07e723378ca328dca007da239417c68b8d06f5c545a7fc20cf"
+    },
+    {
+      "path": "vercel.json",
+      "identical": true,
+      "sha256": "0f93a1effc61adaeccb83fccfc24b5889aa53989396335097def1e703c76ee9d"
+    }
+  ],
+  "cron": {
+    "project": {
+      "enabledAt": 1791892914669,
+      "disabledAt": null,
+      "updatedAt": 1792772512876,
+      "deploymentId": "dpl_3iMxZ3n2pYU1SRVRYTnu1vM47w3D",
+      "definitions": [
+        {
+          "host": "curriculoautomatico-c7f4k3a62-geans-projects-da7db03c.vercel.app",
+          "path": "/api/daily-routine",
+          "schedule": "0 11 * * *"
+        }
+      ]
+    },
+    "deployment": [
+      {
+        "path": "/api/daily-routine",
+        "schedule": "0 11 * * *"
+      }
+    ],
+    "configuration": [
+      {
+        "path": "/api/daily-routine",
+        "schedule": "0 11 * * *"
+      }
+    ]
+  },
+  "validation": {
+    "typecheck": "passed",
+    "build": "passed",
+    "focusedTestsPassed": 99,
+    "details": "99 focused tests passed across eight files, including exact-scope affirmative eligibility, new-board discovery, empty-window scheduling, unknown-outcome protection and confirmed-facts mapping."
+  },
+  "observer": {
+    "automationId": "verificar-cron-real-do-empregatos",
+    "time": "09:15 America/Sao_Paulo",
+    "nextDate": "2026-10-24",
+    "readOnly": true,
+    "doesNotTriggerBackend": true
+  }
+}

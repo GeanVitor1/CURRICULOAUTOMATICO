@@ -1,0 +1,219 @@
+{
+  "at": "2026-10-23T16:27:28.324Z",
+  "status": "AUTOMAÇÃO AINDA NÃO VALIDADA",
+  "runs": [
+    {
+      "id": "00a7e756-1a5c-4261-9f77-3a2eb78c8cca",
+      "origin": "user_triggered_automation",
+      "status": "completed",
+      "newJobs": 0,
+      "prepared": 0,
+      "message": "0 novas oportunidades, sem duplicações. 348 registros publicados consultados; 15 preservados após filtros antecipados.",
+      "errors": [],
+      "examined": 348,
+      "retained": 15,
+      "classifierCompatible": 3
+    },
+    {
+      "id": "f1bd1208-799d-4160-be22-a0bf98f006b3",
+      "origin": "user_triggered_automation",
+      "status": "partial",
+      "newJobs": 0,
+      "prepared": 0,
+      "message": "0 novas oportunidades, sem duplicações. 476 registros publicados consultados; 20 preservados após filtros antecipados.",
+      "errors": [
+        "InfoJobs: A busca Antigravity não retornou fontes verificáveis. Use a busca no portal ou tente novamente."
+      ],
+      "examined": 476,
+      "retained": 20,
+      "classifierCompatible": 5
+    }
+  ],
+  "currentCompatible": [
+    {
+      "id": "06c71f53-5d17-4975-84b4-9fcc7c0ebfa4",
+      "title": "Analista Desenvolvedor(a) C#/.NET Pleno",
+      "url": "https://vemprapixeon.gupy.io/job/eyJqb2JJZCI6MTI3MjUxMzksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "company": "Vem Pra Pixeon",
+      "score": 92,
+      "destinationStates": [
+        "login_required"
+      ],
+      "blocker": "O link oficial exige autenticação na Gupy. Não há executor independente autorizado para esse fluxo. Não foi encontrado canal alternativo publicado nas páginas corporativas examinadas."
+    },
+    {
+      "id": "bb0770a9-fdaf-48ad-877e-aede1553b921",
+      "title": "Desenvolvedor(a) Full Stack (com ênfase em Frontend)",
+      "url": "https://vissimo.gupy.io/job/eyJqb2JJZCI6MTI3MjIxOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "company": "Víssimo",
+      "score": 70,
+      "destinationStates": [
+        "login_required"
+      ],
+      "blocker": "O link oficial exige autenticação na Gupy. Não há executor independente autorizado para esse fluxo. Não foi encontrado canal alternativo publicado nas páginas corporativas examinadas."
+    },
+    {
+      "id": "0db3bdc1-db2e-49c6-95b3-8f46bfb6e09a",
+      "title": "ANALISTA DE DESENVOLVIMENTO DE SISTEMAS",
+      "url": "https://bancorbras.gupy.io/job/eyJqb2JJZCI6MTI3MjM4NTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "company": "Oportunidades",
+      "score": 78,
+      "destinationStates": [
+        "login_required"
+      ],
+      "blocker": "O link oficial exige autenticação na Gupy. Não há executor independente autorizado para esse fluxo. Não foi encontrado canal alternativo publicado nas páginas corporativas examinadas."
+    }
+  ],
+  "newJobs": 0,
+  "newApplications": 0,
+  "newAttempts": 0,
+  "newReceipts": 0,
+  "confirmedAutomaticToday": 0,
+  "usedToday": 1,
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "globalTi": {
+    "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+    "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+    "company": "Global TI",
+    "createdAt": "2026-10-23T13:51:53.116Z",
+    "status": "Resultado desconhecido",
+    "execution": {
+      "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation"
+    },
+    "attempts": [
+      {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation",
+        "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+        "executor": "ats_browser",
+        "startedAt": "2026-10-23T13:52:21.765Z",
+        "outcome": "unknown",
+        "finishedAt": "2026-10-23T13:52:39.795Z"
+      }
+    ],
+    "receipt": null,
+    "submittedAt": null,
+    "missingQuestions": [],
+    "history": [
+      {
+        "at": "2026-10-23T13:51:53.129Z",
+        "actor": "Sistema",
+        "message": "Candidatura preparada. O envio ainda não foi confirmado."
+      },
+      {
+        "at": "2026-10-23T13:51:53.129Z",
+        "actor": "Sistema",
+        "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+      },
+      {
+        "at": "2026-10-23T13:52:21.765Z",
+        "actor": "Sistema",
+        "message": "Envio iniciado. Aguardando recibo verificável da integração."
+      },
+      {
+        "at": "2026-10-23T13:52:39.796Z",
+        "actor": "Sistema",
+        "message": "A Quickin não confirmou o recebimento. Confira o resultado antes de repetir."
+      }
+    ]
+  },
+  "cron": {
+    "enabled": true,
+    "mode": "automatic",
+    "nextRun": "2026-10-24T11:00:00.000Z",
+    "observedScheduledRun": false
+  },
+  "events": [
+    {
+      "timestamp": "2026-10-23T16:15:29.638Z",
+      "deploymentId": "dpl_HrKVtRWYXH216gcG8QbQevKkyMrg",
+      "requestId": "98g9b-1792772126567-36cb03b47463",
+      "requestPath": "/api/destination-worker",
+      "event": "destination_queue_received",
+      "taskId": "e1f8dab8-b2aa-4a36-bff7-4d4042b2fa25",
+      "messageId": "4c-1M1hHhRvczgHDO3xAKRB4lrihi1pHDdq",
+      "deliveryCount": 1,
+      "topic": "empregatos-destinations",
+      "consumer": "api_Sdestination-worker_Dmjs"
+    },
+    {
+      "timestamp": "2026-10-23T16:15:04.788Z",
+      "deploymentId": "dpl_HrKVtRWYXH216gcG8QbQevKkyMrg",
+      "requestId": "lv8mm-1792771884206-fdb457d0db30",
+      "requestPath": "/api/search-worker",
+      "event": "discovery_source_failed",
+      "runId": "f1bd1208-799d-4160-be22-a0bf98f006b3",
+      "sourceId": "d3f3a3a0-3093-46ad-ab81-472d76b198de",
+      "type": "Error"
+    },
+    {
+      "timestamp": "2026-10-23T16:11:24.406Z",
+      "deploymentId": "dpl_HrKVtRWYXH216gcG8QbQevKkyMrg",
+      "requestId": "lv8mm-1792771884206-fdb457d0db30",
+      "requestPath": "/api/search-worker",
+      "event": "discovery_queue_received",
+      "taskId": "f1bd1208-799d-4160-be22-a0bf98f006b3",
+      "messageId": "5x-1M1eB47QVjY4GCFOdI0gyJbjwczgdP5m",
+      "deliveryCount": 1,
+      "topic": "empregatos-discovery",
+      "consumer": "api_Ssearch-worker_Dmjs"
+    },
+    {
+      "timestamp": "2026-10-23T16:24:58.110Z",
+      "deploymentId": "dpl_3iMxZ3n2pYU1SRVRYTnu1vM47w3D",
+      "requestId": "bsh2j-1792772698001-ec7ecfb2dcd3",
+      "requestPath": "/api/destination-worker",
+      "event": "destination_queue_received",
+      "taskId": "ed74b71d-f132-49fb-ad2e-c80cdee8eb4d",
+      "messageId": "54-1M1eB3q2q2LNYqZF2uwjEbK1ty5hUr0k",
+      "deliveryCount": 1,
+      "topic": "empregatos-destinations",
+      "consumer": "api_Sdestination-worker_Dmjs"
+    },
+    {
+      "timestamp": "2026-10-23T16:22:40.363Z",
+      "deploymentId": "dpl_3iMxZ3n2pYU1SRVRYTnu1vM47w3D",
+      "requestId": "r9wn8-1792772560191-662c687d3d6d",
+      "requestPath": "/api/search-worker",
+      "event": "discovery_queue_received",
+      "taskId": "00a7e756-1a5c-4261-9f77-3a2eb78c8cca",
+      "messageId": "5G-1M1gLi5EuLTCr0Zro4xHsm7ORP4uTf3i",
+      "deliveryCount": 1,
+      "topic": "empregatos-discovery",
+      "consumer": "api_Ssearch-worker_Dmjs"
+    }
+  ],
+  "queries": [
+    {
+      "source": "discovery-quality-events",
+      "type": "summary",
+      "recordsReturned": 3,
+      "timeRange": {
+        "start": "2026-10-23T16:11:00.000Z",
+        "end": "2026-10-23T16:25:36.898Z"
+      },
+      "pagination": {
+        "hasMore": false,
+        "next": null
+      },
+      "excludedIntervals": []
+    },
+    {
+      "source": "discovery-quality-eligibility-events",
+      "type": "summary",
+      "recordsReturned": 2,
+      "timeRange": {
+        "start": "2026-10-23T16:22:00.000Z",
+        "end": "2026-10-23T16:25:20.684Z"
+      },
+      "pagination": {
+        "hasMore": false,
+        "next": null
+      },
+      "excludedIntervals": []
+    }
+  ]
+}

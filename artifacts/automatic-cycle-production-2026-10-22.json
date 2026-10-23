@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-22T11:54:05.474Z",
+  "progress": {
+    "day": "2026-10-22",
+    "target": 5,
+    "sent": 0,
+    "remaining": 5,
+    "state": "waiting",
+    "message": "A pesquisa de destinos de hoje terminou. Ainda faltam oportunidades com envio disponível; a rotina retoma na próxima busca.",
+    "updatedAt": "2026-10-22T11:18:47.337Z"
+  },
+  "run": {
+    "status": "completed",
+    "at": "2026-10-22T11:09:15.241Z",
+    "errors": []
+  },
+  "state": {
+    "sending": false,
+    "attempts": 0,
+    "next": null
+  },
+  "today": [],
+  "fingerprinted": 12
+}

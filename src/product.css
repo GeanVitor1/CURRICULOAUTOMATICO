@@ -1074,6 +1074,21 @@
   color: var(--muted);
   line-height: 1.7;
 }
+.conversion-indicators {
+  min-width: 0;
+}
+.conversion-indicators table {
+  width: 100%;
+  table-layout: fixed;
+}
+.conversion-indicators :is(th, td) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  padding: 10px 8px;
+}
+.conversion-indicators :is(th, td):last-child {
+  width: 25%;
+}
 .interview-progress {
   display: flex;
   align-items: center;

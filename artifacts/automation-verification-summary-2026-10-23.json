@@ -1,0 +1,67 @@
+{
+  "at": "2026-10-23T11:45:02.761Z",
+  "status": "AUTOMAÇÃO AINDA NÃO VALIDADA",
+  "unitTests": {
+    "passed": 607,
+    "skipped": 11
+  },
+  "browserTests": {
+    "passed": 1
+  },
+  "controlled": [
+    {
+      "adapter": "ats_browser",
+      "at": "2026-10-23T11:05:00.359Z",
+      "confirmed": 5,
+      "distinct": 5,
+      "duplicatesPrevented": true,
+      "blockedReceiverUntouched": true,
+      "realEmployerSubmissions": 0,
+      "actualVercelQueueTransport": false
+    },
+    {
+      "adapter": "company_wp_jobs",
+      "at": "2026-10-23T11:05:13.041Z",
+      "confirmed": 5,
+      "distinct": 5,
+      "duplicatesPrevented": true,
+      "blockedReceiverUntouched": true,
+      "realEmployerSubmissions": 0,
+      "actualVercelQueueTransport": false
+    }
+  ],
+  "production": {
+    "deploymentId": "dpl_HtNmg61GjxZe15xJR8UEwLY4Rtyu",
+    "state": "READY",
+    "counts": {
+      "found": 432,
+      "compatible": 14,
+      "compatiblePublishedEmail": 1,
+      "newCompatiblePublishedEmail": 0,
+      "preflightBlocked": 5,
+      "preflightBlockedToday": 1,
+      "submissionStartedToday": 0,
+      "confirmedToday": 0,
+      "verifiedAutomaticToday": 0,
+      "quotaUsed": 0
+    },
+    "queries": [
+      {
+        "table": "resolutionTasks",
+        "ok": true,
+        "count": 0
+      },
+      {
+        "table": "discoveryTasks",
+        "ok": true,
+        "count": 0
+      }
+    ],
+    "nextRun": "2026-10-24T11:00:00.000Z"
+  },
+  "remaining": [
+    "Candidatura nova a empregador compatível pelo executor do produto",
+    "Cinco oportunidades reais distintas e submetíveis",
+    "Execução agendada independente após a correção"
+  ]
+}

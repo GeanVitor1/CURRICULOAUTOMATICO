@@ -3,6 +3,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import { decode } from "./html";
 import { discoverySignal, discoveryBudgetExpired } from "./discovery-budget";
 import { classify, extractSkills } from "./engine";
+import {mandatoryTechnicalSkills} from './mandatory-requirements';
 import type { Job, Source } from "../shared/types";
 
 export interface Connector {
@@ -191,6 +192,108 @@ function compensation(
   job.salaryPeriod = text(period) || "Não informado";
 }
 export const connectors: Record<string, Connector> = {
+  smartrecruiters: {
+    discovery: true,
+    application: false,
+    async discover(s) {
+      const jobs: Job[] = [];
+      const maxPostings = Math.max(
+        1,
+        Math.min(100, Number(process.env.SMARTRECRUITERS_MAX_POSTINGS) || 30),
+      );
+      for (let offset = 0; offset < maxPostings; offset += 100) {
+        const data = await get(
+          `https://api.smartrecruiters.com/v1/companies/${board(s)}/postings?limit=100&offset=${offset}`,
+        );
+        const entries = list(data.content);
+        for (const summary of entries) {
+          if (jobs.length >= maxPostings) return jobs;
+          if (!/^[a-zA-Z0-9-]+$/.test(String(summary.id))) continue;
+          const entry = await get(
+            `https://api.smartrecruiters.com/v1/companies/${board(s)}/postings/${encodeURIComponent(summary.id)}`,
+          );
+          if (!entry.postingUrl || entry.active === false) continue;
+          const location = [
+            entry.location?.city,
+            entry.location?.region,
+            entry.location?.country,
+          ]
+            .filter(Boolean)
+            .join(", ");
+          const description = Object.values(entry.jobAd?.sections || {})
+            .map((section: any) => decode(text(section.text)))
+            .join("\n");
+          const job = make(
+            s,
+            entry.id,
+            entry.name,
+            entry.postingUrl,
+            description,
+            location,
+            date(entry.releasedDate),
+            text(entry.company?.name) || s.company,
+          );
+          job.department = text(entry.department?.label);
+          job.requisitionId = text(entry.refNumber) || undefined;
+          if (validUrl(entry.applyUrl))
+            job.applicationUrls = [
+              {
+                url: validUrl(entry.applyUrl),
+                source: "SmartRecruiters Posting API",
+              },
+            ];
+          if (entry.location?.remote) job.modality = "Remoto";
+          jobs.push(job);
+        }
+        if (entries.length < 100 || offset + entries.length >= data.totalFound)
+          break;
+      }
+      return jobs;
+    },
+  },
+  jooble: {
+    discovery: true,
+    application: false,
+    async discover(s) {
+      if (!process.env.JOOBLE_API_KEY)
+        throw new SourceError(
+          "Configure uma chave Jooble autorizada para a região brasileira.",
+        );
+      const response = await fetch(
+        `https://br.jooble.org/api/${encodeURIComponent(process.env.JOOBLE_API_KEY)}`,
+        {
+          method: "POST",
+          redirect: "error",
+          signal: discoverySignal(20000),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            keywords: s.board,
+            location: "Brasil",
+            page: "1",
+          }),
+        },
+      );
+      if (!response.ok)
+        throw new SourceError(
+          `A consulta Jooble retornou HTTP ${response.status}.`,
+        );
+      const data = (await response.json()) as any;
+      return list(data.jobs).map((entry) => {
+        const job = make(
+          s,
+          entry.id,
+          entry.title,
+          entry.link,
+          decode(text(entry.snippet)),
+          text(entry.location),
+          null,
+          text(entry.company),
+        );
+        job.availability = "unknown";
+        return job;
+      });
+    },
+  },
   greenhouse: {
     discovery: true,
     application: false,
@@ -199,8 +302,8 @@ export const connectors: Record<string, Connector> = {
         `https://boards-api.greenhouse.io/v1/boards/${board(s)}/jobs?content=true`,
       );
       // updated_at is not the publication date. Unknown dates remain unknown.
-      return list(data.jobs).map((j) =>
-        make(
+      return list(data.jobs).map((j) => {
+        const job = make(
           s,
           j.id,
           j.title,
@@ -208,8 +311,14 @@ export const connectors: Record<string, Connector> = {
           decode(text(j.content)),
           text(j.location?.name),
           date(j.first_published),
-        ),
-      );
+        );
+        job.requisitionId = text(j.requisition_id) || undefined;
+        job.requiredSkills=mandatoryTechnicalSkills(text(j.content));
+        job.department = Array.isArray(j.departments)
+          ? j.departments.map((v: any) => text(v.name)).join(" / ")
+          : undefined;
+        return job;
+      });
     },
   },
   lever: {
@@ -237,6 +346,11 @@ export const connectors: Record<string, Connector> = {
             text(j.categories?.location),
             date(j.createdAt),
           );
+          if (validUrl(j.applyUrl))
+            job.applicationUrls = [
+              { url: validUrl(j.applyUrl), source: "Lever Postings API" },
+            ];
+          job.requiredSkills=mandatoryTechnicalSkills([text(j.descriptionPlain),text(j.description),...list(j.lists||[]).map(l=>`<h3>${text(l.text)}</h3>${text(l.content)}`)].join('\n'));
           if (j.workplaceType)
             job.modality =
               (
@@ -295,6 +409,11 @@ export const connectors: Record<string, Connector> = {
             location,
             date(j.publishedAt),
           );
+          if (validUrl(j.applyUrl))
+            job.applicationUrls = [
+              { url: validUrl(j.applyUrl), source: "Ashby Job Postings API" },
+            ];
+          job.requiredSkills=mandatoryTechnicalSkills(text(j.descriptionHtml)||text(j.descriptionPlain));
           job.modality =
             (
               {

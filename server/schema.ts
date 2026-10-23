@@ -185,3 +185,46 @@ export const discoveryTasks = pgTable(
   },
   (t) => [index("discovery_tasks_due_idx").on(t.status, t.createdAt)],
 );
+
+// Public opportunities only. No resume, user profile, answers or candidate state.
+export const opportunityCatalog = pgTable(
+  "opportunity_catalog",
+  {
+    key: text("key").primaryKey(),
+    companyKey: text("company_key").notNull(),
+    job: jsonb("job").$type<Job>().notNull(),
+    fetchedAt: timestamp("fetched_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    leaseToken: text("lease_token"),
+    leaseUntil: timestamp("lease_until", { withTimezone: true }),
+  },
+  (t) => [index("opportunity_company_idx").on(t.companyKey)],
+);
+
+export const resolutionTasks = pgTable(
+  "resolution_tasks",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    status: text("status").notNull().default("queued"),
+    attempts: integer("attempts").notNull().default(0),
+    requestedJobIds: jsonb("requested_job_ids")
+      .$type<string[]>()
+      .notNull()
+      .default([]),
+    leaseToken: text("lease_token"),
+    leaseUntil: timestamp("lease_until", { withTimezone: true }),
+    lastError: text("last_error"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("resolution_tasks_due_idx").on(t.status, t.createdAt)],
+);

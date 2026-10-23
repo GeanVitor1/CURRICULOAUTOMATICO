@@ -1,0 +1,64 @@
+{
+  "at": "2026-10-16T20:13:19.654Z",
+  "deployment": "curriculoautomatico-qfkc9cbqr-geans-projects-da7db03c.vercel.app",
+  "environment": "Rotas autenticadas → Vercel Queues real → função publicada → Firestore Standard real",
+  "taskAccepted": true,
+  "resolutionRecorded": true,
+  "resolutionState": "verified",
+  "consulted": [
+    {
+      "source": "catalog",
+      "outcome": "Publicações comparadas por empresa, identificadores e conteúdo.",
+      "count": 1
+    },
+    {
+      "source": "https://www.infojobs.com.br/vaga-de-desenvolvedor-junior-net-react-ia-em-__12110291.aspx",
+      "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+      "count": 0
+    },
+    {
+      "source": "https://www.infojobs.com.br/empresa-king-of-languages__-10228058.aspx",
+      "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+      "count": 0
+    },
+    {
+      "source": "https://kingoflanguages.com.br/",
+      "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+      "count": 0
+    },
+    {
+      "source": "https://kingoflanguages.pandape.infojobs.com.br/",
+      "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+      "count": 0
+    },
+    {
+      "source": "https://www.infojobs.com.br/vaga-de-desenvolvedora-junior-net,-react-ia-em-__12110291.aspx",
+      "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+      "count": 0
+    },
+    {
+      "source": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+      "outcome": "Correspondência verificada.",
+      "count": 1
+    },
+    {
+      "source": "public_search",
+      "outcome": "Consulta indisponível; reavaliar posteriormente.",
+      "count": 0
+    }
+  ],
+  "destinationCount": 1,
+  "destinations": [
+    {
+      "url": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+      "platform": "pandape",
+      "state": "verified",
+      "method": "assisted",
+      "formFound": false
+    }
+  ],
+  "applications": 0,
+  "resumeUploaded": false,
+  "employerSubmissions": 0,
+  "disposableAccountRemoved": true
+}

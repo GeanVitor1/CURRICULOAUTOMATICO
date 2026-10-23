@@ -1,0 +1,539 @@
+{
+  "at": "2026-10-23T15:50:37.671Z",
+  "readOnly": true,
+  "employerWrites": 0,
+  "results": [
+    {
+      "board": "cadmus",
+      "company": "Cadmus",
+      "method": "formulários públicos; 4 publicações examinadas; 1 compatíveis",
+      "jobs": [
+        {
+          "url": "https://jobs.quickin.io/cadmus/jobs/6ad7b356cc70ac0013cd030b",
+          "title": "Desenvolvedor(a) Fullstack .NET",
+          "company": "Cadmus",
+          "publishedAt": "2026-10-20T18:30:46.446Z",
+          "score": 79,
+          "blockers": [],
+          "modality": "Remoto",
+          "alreadyApplied": false,
+          "missingRequired": [
+            "Foto",
+            "Cargo pretendido",
+            "Nível de experiência",
+            "País",
+            "Estado/Região",
+            "Bairro",
+            "Endereço",
+            "CEP",
+            "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura.",
+            "Qual sua expectativa salarial como Prestador(a) ?"
+          ],
+          "requiredFields": [
+            {
+              "name": "resume_media_id",
+              "label": "Arquivo do Currículo",
+              "type": "media"
+            },
+            {
+              "name": "name",
+              "label": "Nome completo",
+              "type": "short_text"
+            },
+            {
+              "name": "email",
+              "label": "E-mail",
+              "type": "email"
+            },
+            {
+              "name": "phones",
+              "label": "Telefone",
+              "type": "array"
+            },
+            {
+              "name": "photo_media_id",
+              "label": "Foto",
+              "type": "media"
+            },
+            {
+              "name": "headline",
+              "label": "Cargo pretendido",
+              "type": "short_text"
+            },
+            {
+              "name": "experience_level",
+              "label": "Nível de experiência",
+              "type": "single_choice"
+            },
+            {
+              "name": "country",
+              "label": "País",
+              "type": "single_choice"
+            },
+            {
+              "name": "region",
+              "label": "Estado/Região",
+              "type": "short_text"
+            },
+            {
+              "name": "city",
+              "label": "Cidade",
+              "type": "short_text"
+            },
+            {
+              "name": "neighborhood",
+              "label": "Bairro",
+              "type": "short_text"
+            },
+            {
+              "name": "address",
+              "label": "Endereço",
+              "type": "short_text"
+            },
+            {
+              "name": "zipcode",
+              "label": "CEP",
+              "type": "short_text"
+            },
+            {
+              "name": "gdpr_consent",
+              "label": "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura.",
+              "type": "boolean"
+            },
+            {
+              "name": "job_question_6ad7c146845ace001383b01e",
+              "label": "Qual sua expectativa salarial como Prestador(a) ?",
+              "type": "short_text"
+            }
+          ],
+          "description": "Estamos em busca de um(a) Desenvolvedor(a) Fullstack .NET/Next para atuar em uma squad responsável pela evolução de plataformas corporativas de uma empresa do segmento financeiro.\nBuscamos um profissional com sólida experiência em desenvolvimento Fullstack, que participe ativamente das decisões técnicas e da construção de soluções escaláveis, seguras e de alta disponibilidade.\nNão é necessário possuir experiência com core bancário.\nResponsabilidadesDesenvolver e evoluir aplicações web utilizando .NET e Next.js.Desenvolver e manter APIs REST e integrações entre sistemas.Participar da definição de arquitetura e das decisões técnicas da squad.Implementar novas funcionalidades e realizar manutenção de aplicações existentes.Garantir qualidade de código por meio de boas práticas, testes e code review.Trabalhar em conjunto com Product Owner, QA, UX e demais membros da equipe.Participar das cerimônias ágeis e contribuir para a evolução contínua da plataforma.\nPerfil desejadoPerfil colaborativo e proativo.Facilidade para trabalhar em equipe.Boa capacidade analítica e resolução de problemas.Senso de responsabilidade e autonomia.Interesse por melhoria contínua e qualidade de software.\nModelo de atuaçãoSquad de Plataformas.Desenvolvimento de produtos e plataformas corporativas.Ambiente ágil e colaborativo.Não é necessário possuir conhecimento em core bancário.Requisitos ObrigatóriosExperiência sólida com .NET (Core ou versões mais recentes).Experiência sólida com Next.js.Experiência no desenvolvimento de APIs REST.Conhecimento em Entity Framework.Experiência com bancos de dados postgresql, etc.Experiência com Dynamo db(aws) e Api gateway(aws)Experiência prática com serviços AWS, como EC2, ECS, Lambda, S3, RDS, CloudWatch, IAM, API Gateway, SQS ou SNS.Experiência com Git.Conhecimento em metodologias ágeis (Scrum/Kanban).Conhecimento em boas práticas de desenvolvimento, Clean Code e princípios SOLID.\nConhecimento em plataformas de IA.\n \nDiferenciais:\nConhecimento em Node e Angular."
+        }
+      ]
+    },
+    {
+      "board": "kalendae",
+      "company": "Kalendae",
+      "method": "formulários públicos; 4 publicações examinadas; 0 compatíveis",
+      "jobs": []
+    },
+    {
+      "board": "indt",
+      "company": "INDT INNOVATION & TECH SERVICES",
+      "method": "formulários públicos; 3 publicações examinadas; 0 compatíveis",
+      "jobs": []
+    },
+    {
+      "board": "talentfour",
+      "company": "Talent Four",
+      "method": "formulários públicos; 5 publicações examinadas; 0 compatíveis",
+      "jobs": []
+    },
+    {
+      "board": "elaw",
+      "company": "Elaw Tecnologia",
+      "method": "formulários públicos; 1 publicações examinadas; 0 compatíveis",
+      "jobs": []
+    },
+    {
+      "board": "evtit",
+      "company": "EVT",
+      "method": "formulários públicos; 0 publicações examinadas; 0 compatíveis",
+      "jobs": []
+    },
+    {
+      "board": "starta",
+      "company": "Starta",
+      "method": "formulários públicos; 7 publicações examinadas; 3 compatíveis",
+      "jobs": [
+        {
+          "url": "https://jobs.quickin.io/starta/jobs/6ada4b70cc70ac0013bc0418",
+          "title": "Desenvolvedor Full Stack Sênior",
+          "company": "Starta",
+          "publishedAt": "2026-10-22T17:44:16.905Z",
+          "score": 90,
+          "blockers": [],
+          "modality": "Remoto",
+          "alreadyApplied": false,
+          "missingRequired": [
+            "Resumo das qualificações",
+            "Data de nascimento",
+            "País",
+            "Estado/Região",
+            "Bairro",
+            "Endereço",
+            "CEP",
+            "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura."
+          ],
+          "requiredFields": [
+            {
+              "name": "resume_media_id",
+              "label": "Arquivo do Currículo",
+              "type": "media"
+            },
+            {
+              "name": "name",
+              "label": "Nome completo",
+              "type": "short_text"
+            },
+            {
+              "name": "email",
+              "label": "E-mail",
+              "type": "email"
+            },
+            {
+              "name": "phones",
+              "label": "Telefone",
+              "type": "array"
+            },
+            {
+              "name": "summary",
+              "label": "Resumo das qualificações",
+              "type": "long_text"
+            },
+            {
+              "name": "birth_date",
+              "label": "Data de nascimento",
+              "type": "date"
+            },
+            {
+              "name": "salary",
+              "label": "Pretensão salarial",
+              "type": "number"
+            },
+            {
+              "name": "country",
+              "label": "País",
+              "type": "single_choice"
+            },
+            {
+              "name": "region",
+              "label": "Estado/Região",
+              "type": "short_text"
+            },
+            {
+              "name": "city",
+              "label": "Cidade",
+              "type": "short_text"
+            },
+            {
+              "name": "neighborhood",
+              "label": "Bairro",
+              "type": "short_text"
+            },
+            {
+              "name": "address",
+              "label": "Endereço",
+              "type": "short_text"
+            },
+            {
+              "name": "zipcode",
+              "label": "CEP",
+              "type": "short_text"
+            },
+            {
+              "name": "gdpr_consent",
+              "label": "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura.",
+              "type": "boolean"
+            }
+          ],
+          "description": "Na Starta, evoluímos todos os dias para sermos a força motriz por trás da performance e dos resultados que impulsionam nossos clientes. Nossa trajetória começou com a missão de transformar ideias em negócios digitais, mas hoje, nossa visão vai além. Somos especialistas em elevar negócios ao próximo nível, com soluções gerenciais que fazem a diferença em um mercado global cada vez mais competitivo.\nNossa equipe é o coração da Starta. Nossos desenvolvedores são a prova viva de uma cultura que valoriza o comprometimento, a inclusão, o respeito às diferenças e o bem-estar. Acreditamos que o sucesso das empresas vem da cooperação e do reconhecimento de seus profissionais.\nA Starta é sobre transformar negócios em potências, guiados por uma visão estratégica clara e o compromisso de criar soluções que superam as expectativas. Estamos preparados para enfrentar os desafios do futuro, criando parcerias de sucesso e entregando resultados que fazem a diferença.\nEstamos em busca de um Desenvolvedor Full Stack Sênior III para integrar uma equipe de Engenharia de Software. O profissional será responsável pelo desenvolvimento, evolução e manutenção de aplicações web robustas, seguras e escaláveis, atuando tanto no back-end, com C# e .NET, quanto no front-end, com Angular e TypeScript.\nBuscamos alguém com sólida experiência técnica, visão sistêmica e capacidade de propor soluções eficientes, contribuindo para a qualidade, a performance e a evolução contínua dos sistemas.Responsabilidades e atribuições\nDesenvolver, testar e implementar soluções full stack, utilizando C# e .NET no back-end e Angular e TypeScript no front-end.Desenvolver, integrar e manter APIs RESTful e web services, garantindo a comunicação eficiente entre aplicações.Construir interfaces web responsivas, acessíveis e performáticas, seguindo boas práticas de desenvolvimento front-end.Realizar manutenção evolutiva e corretiva de aplicações, identificando oportunidades de melhoria em desempenho, segurança e usabilidade.Participar da definição de soluções técnicas e decisões arquiteturais, considerando escalabilidade, manutenibilidade e qualidade de software.Colaborar com equipes multidisciplinares para compreender requisitos de negócio e transformá-los em soluções técnicas eficazes.Desenvolver e manter testes automatizados, incluindo testes unitários e de integração.Participar de revisões de código, disseminando boas práticas de desenvolvimento e padrões de qualidade.Identificar e solucionar problemas técnicos complexos, contribuindo para a estabilidade e a confiabilidade das aplicações.Documentar soluções técnicas e participar de cerimônias ágeis, contribuindo para a melhoria contínua do time.Experiência sólida com desenvolvimento back-end utilizando C#, .NET e .NET 6 ou versões superiores.Experiência com desenvolvimento front-end utilizando Angular e TypeScript.Conhecimento em HTML5, CSS3 e JavaScript para desenvolvimento de interfaces web.Experiência no desenvolvimento e consumo de APIs RESTful e integração entre sistemas.Experiência com bancos de dados relacionais e conhecimentos em modelagem, consultas e otimização de desempenho.Conhecimento em testes automatizados, incluindo testes unitários e de integração.Conhecimento em padrões de projeto, princípios SOLID e boas práticas de arquitetura de software.Conhecimentos em segurança da informação e desenvolvimento seguro de aplicações.Familiaridade com Git, controle de versão e práticas de revisão de código.Conhecimento em metodologias ágeis, como Scrum e Kanban.Capacidade de atuar na análise e resolução de problemas complexos, com autonomia e visão crítica.DiferenciaisExperiência prévia no setor financeiro, bancário, cooperativas de crédito, investimentos ou meios de pagamento."
+        },
+        {
+          "url": "https://jobs.quickin.io/starta/jobs/6ad26683e86976001391c1bc",
+          "title": "Desenvolvedor .Net / C# Sênior",
+          "company": "Starta",
+          "publishedAt": "2026-10-16T18:01:39.528Z",
+          "score": 85,
+          "blockers": [],
+          "modality": "Remoto",
+          "alreadyApplied": false,
+          "missingRequired": [
+            "Resumo das qualificações",
+            "Data de nascimento",
+            "País",
+            "Estado/Região",
+            "Bairro",
+            "Endereço",
+            "CEP",
+            "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura."
+          ],
+          "requiredFields": [
+            {
+              "name": "resume_media_id",
+              "label": "Arquivo do Currículo",
+              "type": "media"
+            },
+            {
+              "name": "name",
+              "label": "Nome completo",
+              "type": "short_text"
+            },
+            {
+              "name": "email",
+              "label": "E-mail",
+              "type": "email"
+            },
+            {
+              "name": "phones",
+              "label": "Telefone",
+              "type": "array"
+            },
+            {
+              "name": "summary",
+              "label": "Resumo das qualificações",
+              "type": "long_text"
+            },
+            {
+              "name": "birth_date",
+              "label": "Data de nascimento",
+              "type": "date"
+            },
+            {
+              "name": "salary",
+              "label": "Pretensão salarial",
+              "type": "number"
+            },
+            {
+              "name": "country",
+              "label": "País",
+              "type": "single_choice"
+            },
+            {
+              "name": "region",
+              "label": "Estado/Região",
+              "type": "short_text"
+            },
+            {
+              "name": "city",
+              "label": "Cidade",
+              "type": "short_text"
+            },
+            {
+              "name": "neighborhood",
+              "label": "Bairro",
+              "type": "short_text"
+            },
+            {
+              "name": "address",
+              "label": "Endereço",
+              "type": "short_text"
+            },
+            {
+              "name": "zipcode",
+              "label": "CEP",
+              "type": "short_text"
+            },
+            {
+              "name": "gdpr_consent",
+              "label": "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura.",
+              "type": "boolean"
+            }
+          ],
+          "description": "Na Starta, evoluímos todos os dias para sermos a força motriz por trás da performance e dos resultados que impulsionam nossos clientes. Nossa trajetória começou com a missão de transformar ideias em negócios digitais, mas hoje, nossa visão vai além. Somos especialistas em elevar negócios ao próximo nível, com soluções gerenciais que fazem a diferença em um mercado global cada vez mais competitivo.\nNossa equipe é o coração da Starta. Nossos desenvolvedores são a prova viva de uma cultura que valoriza o comprometimento, a inclusão, o respeito às diferenças e o bem-estar. Acreditamos que o sucesso das empresas vem da cooperação e do reconhecimento de seus profissionais.A Starta é sobre transformar negócios em potências, guiados por uma visão estratégica clara e o compromisso de criar soluções que superam as expectativas. Estamos preparados para enfrentar os desafios do futuro, criando parcerias de sucesso e entregando resultados que fazem a diferença.Estamos em busca de um Desenvolvedor Back-end .NET Sênior III para integrar uma equipe na área de Engenharia de Software. O profissional será responsável por desenvolver e manter soluções robustas, seguras e escaláveis, utilizando tecnologias do ecossistema .NET.\nResponsabilidades e atribuições\nDesenvolver, testar e implementar soluções de software utilizando C# e .NET, garantindo a qualidade, a segurança e a performance das aplicações.Colaborar com equipes multidisciplinares para compreender requisitos de negócio e propor soluções técnicas eficazes.Realizar a manutenção e otimização de sistemas existentes, identificando oportunidades de melhoria.Desenvolver e integrar APIs e web services, garantindo a comunicação eficiente entre sistemas.Participar de revisões de código e promover boas práticas de desenvolvimento, padrões de arquitetura e qualidade de software.Documentar processos e soluções desenvolvidas, assegurando a transparência e a continuidade do trabalho.Requisitos e qualificações\nExperiência sólida com C# e plataforma .NET, incluindo .NET 6 ou versões superiores.Experiência no desenvolvimento de APIs RESTful e web services, utilizando JSON ou XML sobre HTTP.Experiência com bancos de dados relacionais e NoSQL.Experiência com desenvolvimento de aplicações em ambientes de Cloud Computing, preferencialmente Microsoft Azure, AWS ou Google Cloud Platform.Experiência com containers e orquestração, utilizando Docker, Kubernetes ou OpenShift.Experiência com arquitetura orientada a eventos e mensageria, preferencialmente Apache Kafka.Experiência com automação de testes e testes unitários e de integração.Conhecimentos em arquitetura de aplicações distribuídas, programação assíncrona e concorrência.Conhecimentos em segurança da informação e boas práticas de desenvolvimento seguro.Experiência com metodologias ágeis, como Scrum e XP, e familiaridade com conceitos Lean.Conhecimentos em padrões de projeto, princípios SOLID e boas práticas de arquitetura de software.Se você é um profissional apaixonado por tecnologia, que busca desafios e deseja fazer parte de uma equipe inovadora, essa é a oportunidade ideal."
+        },
+        {
+          "url": "https://jobs.quickin.io/starta/jobs/6ad1099ae8697600130fd0a8",
+          "title": "Desenvolvedor Clipper/PlSql Sênior",
+          "company": "Starta",
+          "publishedAt": "2026-10-15T17:12:58.338Z",
+          "score": 78,
+          "blockers": [],
+          "modality": "Remoto",
+          "alreadyApplied": false,
+          "missingRequired": [
+            "Resumo das qualificações",
+            "Data de nascimento",
+            "País",
+            "Estado/Região",
+            "Bairro",
+            "Endereço",
+            "CEP",
+            "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura."
+          ],
+          "requiredFields": [
+            {
+              "name": "resume_media_id",
+              "label": "Arquivo do Currículo",
+              "type": "media"
+            },
+            {
+              "name": "name",
+              "label": "Nome completo",
+              "type": "short_text"
+            },
+            {
+              "name": "email",
+              "label": "E-mail",
+              "type": "email"
+            },
+            {
+              "name": "phones",
+              "label": "Telefone",
+              "type": "array"
+            },
+            {
+              "name": "summary",
+              "label": "Resumo das qualificações",
+              "type": "long_text"
+            },
+            {
+              "name": "birth_date",
+              "label": "Data de nascimento",
+              "type": "date"
+            },
+            {
+              "name": "salary",
+              "label": "Pretensão salarial",
+              "type": "number"
+            },
+            {
+              "name": "country",
+              "label": "País",
+              "type": "single_choice"
+            },
+            {
+              "name": "region",
+              "label": "Estado/Região",
+              "type": "short_text"
+            },
+            {
+              "name": "city",
+              "label": "Cidade",
+              "type": "short_text"
+            },
+            {
+              "name": "neighborhood",
+              "label": "Bairro",
+              "type": "short_text"
+            },
+            {
+              "name": "address",
+              "label": "Endereço",
+              "type": "short_text"
+            },
+            {
+              "name": "zipcode",
+              "label": "CEP",
+              "type": "short_text"
+            },
+            {
+              "name": "gdpr_consent",
+              "label": "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura.",
+              "type": "boolean"
+            }
+          ],
+          "description": "Na Starta, evoluímos todos os dias para sermos a força motriz por trás da performance e dos resultados que impulsionam nossos clientes. Nossa trajetória começou com a missão de transformar ideias em negócios digitais, mas hoje, nossa visão vai além. Somos especialistas em elevar negócios ao próximo nível, com soluções gerenciais que fazem a diferença em um mercado global cada vez mais competitivo.\nNossa equipe é o coração da Starta. Nossos desenvolvedores são a prova viva de uma cultura que valoriza o comprometimento, a inclusão, o respeito às diferenças e o bem-estar. Acreditamos que o sucesso das empresas vem da cooperação e do reconhecimento de seus profissionais.\nA Starta é sobre transformar negócios em potências, guiados por uma visão estratégica clara e o compromisso de criar soluções que superam as expectativas. Estamos preparados para enfrentar os desafios do futuro, criando parcerias de sucesso e entregando resultados que fazem a diferença.Estamos em busca de um profissional para a posição de Desenvolvedor com foco em Clipper e PL/SQL, que atuará na área de Engenharia de Software, especificamente na subárea de Soluções de Crédito. Este cargo de nível sênior III exige um forte conhecimento técnico e experiência prática nas tecnologias mencionadas, além de habilidades para contribuir com o desenvolvimento e a manutenção de sistemas críticos para a cooperativa.\nAs principais atribuições incluem:\n- Desenvolvimento e manutenção de aplicações utilizando Clipper e PL/SQL, garantindo a eficiência e a qualidade do código.- Colaboração com equipes multidisciplinares para entender as necessidades do negócio e traduzir requisitos em soluções técnicas eficazes.- Análise de sistemas existentes, propondo melhorias e otimizações que visem aumentar a performance e a usabilidade das aplicações.- Participação em todas as fases do ciclo de vida do desenvolvimento de software, desde a concepção até a implementação e suporte.- Documentação técnica dos processos e sistemas desenvolvidos, assegurando que as informações estejam acessíveis para futuras manutenções.- Mentoramento de desenvolvedores menos experientes, promovendo o compartilhamento de conhecimento e boas práticas de programação.\nOs requisitos para esta posição incluem:\n- Sólida experiência em desenvolvimento com Clipper e PL/SQL.- Conhecimento em outras linguagens de programação como C# e Delphi será considerado um diferencial.- Capacidade de trabalhar em equipe e de se comunicar efetivamente com diferentes áreas da organização.- Habilidade para resolver problemas de forma autônoma e proativa.- Formação superior em Ciência da Computação, Engenharia de Software ou áreas correlatas.\nExperiências desejáveis:\n- Vivência em projetos de desenvolvimento de sistemas para o setor financeiro ou cooperativas de crédito.- Familiaridade com metodologias ágeis de desenvolvimento de software.- Experiência em análise de requisitos e design de sistemas.\nSe você possui o perfil desejado e está em busca de novos desafios em um ambiente colaborativo e inovador, esta pode ser a oportunidade ideal para você."
+        }
+      ]
+    },
+    {
+      "board": "verity",
+      "company": "Verity",
+      "method": "formulários públicos; 3 publicações examinadas; 0 compatíveis",
+      "jobs": []
+    },
+    {
+      "board": "beltis",
+      "company": "BELTIS TECNOLOGIA",
+      "method": "formulários públicos; 1 publicações examinadas; 1 compatíveis",
+      "jobs": [
+        {
+          "url": "https://jobs.quickin.io/beltis/jobs/6ad65952dd63cb0013761316",
+          "title": "Desenvolvedor Full Stack Sr.",
+          "company": "BELTIS TECNOLOGIA",
+          "publishedAt": "2026-10-19T17:54:26.245Z",
+          "score": 78,
+          "blockers": [],
+          "modality": "Remoto",
+          "alreadyApplied": false,
+          "missingRequired": [
+            "Categoria profissional",
+            "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura.",
+            "Qual é o seu nível de experiência prática com Vue.js em ambiente profissional?",
+            "Com quais das tecnologias abaixo você possui experiência profissional efetiva em desenvolvimento e manutenção de aplicações? (Pode selecionar mais de uma)",
+            "Em relação ao desenvolvimento e integração de APIs RESTful, qual alternativa melhor representa sua experiência?",
+            "Qual alternativa melhor representa sua experiência com SQL Server?"
+          ],
+          "requiredFields": [
+            {
+              "name": "resume_media_id",
+              "label": "Arquivo do Currículo",
+              "type": "media"
+            },
+            {
+              "name": "name",
+              "label": "Nome completo",
+              "type": "short_text"
+            },
+            {
+              "name": "email",
+              "label": "E-mail",
+              "type": "email"
+            },
+            {
+              "name": "phones",
+              "label": "Telefone",
+              "type": "array"
+            },
+            {
+              "name": "position_category",
+              "label": "Categoria profissional",
+              "type": "single_choice"
+            },
+            {
+              "name": "salary",
+              "label": "Pretensão salarial",
+              "type": "number"
+            },
+            {
+              "name": "gdpr_consent",
+              "label": "Li e compreendi o conteúdo do Aviso de Privacidade e autorizo o processamento dos meus dados como parte da candidatura.",
+              "type": "boolean"
+            },
+            {
+              "name": "job_question_6ab1a0493299af00133c3b60",
+              "label": "Qual é o seu nível de experiência prática com Vue.js em ambiente profissional?",
+              "type": "single_choice"
+            },
+            {
+              "name": "job_question_6ab1a0493299af00133c3b66",
+              "label": "Com quais das tecnologias abaixo você possui experiência profissional efetiva em desenvolvimento e manutenção de aplicações? (Pode selecionar mais de uma)",
+              "type": "multiple_choice"
+            },
+            {
+              "name": "job_question_6ab1a0493299af00133c3b6b",
+              "label": "Em relação ao desenvolvimento e integração de APIs RESTful, qual alternativa melhor representa sua experiência?",
+              "type": "single_choice"
+            },
+            {
+              "name": "job_question_6ab1a0493299af00133c3b70",
+              "label": "Qual alternativa melhor representa sua experiência com SQL Server?",
+              "type": "single_choice"
+            }
+          ],
+          "description": "Buscamos um(a) Desenvolvedor(a) Full Stack Sênior para atuar em um ambiente de tecnologia voltado ao segmento financeiro, participando da evolução, sustentação e desenvolvimento de aplicações e soluções digitais.\nA posição exige perfil técnico sólido, autonomia para análise e resolução de problemas e capacidade de atuar tanto no desenvolvimento Front-End quanto Back-End, interagindo com diferentes sistemas, APIs e bases de dados.\nResponsabilidades:\n\nDesenvolver e evoluir aplicações web, atuando nas camadas de Front-End e Back-End;\nImplementar novas funcionalidades e realizar melhorias em soluções já existentes;\nParticipar da análise técnica de demandas, propondo alternativas de implementação e arquitetura;\nDesenvolver e manter integrações entre aplicações e serviços por meio de APIs REST;\nAtuar na manutenção, sustentação e evolução de sistemas legados e aplicações atuais;\nDesenvolver interfaces utilizando Vue.js, considerando desempenho, usabilidade e integração com serviços Back-End;\nImplementar soluções utilizando Node.js e tecnologias do ecossistema .NET;\nRealizar consultas, criação e manutenção de estruturas e procedimentos em banco de dados SQL Server;\nExecutar testes e validações das funcionalidades desenvolvidas, contribuindo para a estabilidade e qualidade das entregas;\nInvestigar falhas e problemas em aplicações, identificando causas e implementando correções;\nTrabalhar de forma integrada com as demais áreas técnicas envolvidas nos projetos.\n\nNode.js;\nVue.js;\nC# / .NET Core;\nVB.NET;\nExperiência no desenvolvimento e consumo de APIs RESTful;\nSQL Server;\nExperiência com desenvolvimento de aplicações Front-End e Back-End;\nConhecimento de arquitetura e integração entre sistemas;\nConhecimentos em microsserviços serão considerados um diferencial.\n\nInformações Adicionais:\n\nModelo de Contratação: Pessoa Jurídica (PJ);\nSalário: R$13.500,00 fixo mensal + convênio médico Amil;\nJornada de segunda a sexta em horário comercial;\nModelo de trabalho: predominantemente remoto;\nPoderá haver necessidade pontual de comparecimento presencial ao escritório para alinhamento, de acordo com demandas específicas do projeto."
+        }
+      ]
+    },
+    {
+      "board": "qintess",
+      "error": "Unverified board"
+    },
+    {
+      "board": "iebtinovacao",
+      "company": "IEBT Innovation",
+      "method": "formulários públicos; 5 publicações examinadas; 0 compatíveis",
+      "jobs": []
+    },
+    {
+      "board": "domvsit",
+      "company": "Domvs IT",
+      "method": "formulários públicos; 3 publicações examinadas; 0 compatíveis",
+      "jobs": []
+    },
+    {
+      "board": "hregroup",
+      "error": "Unverified board"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "EmpreGatos — conexão Gupy",
+  "version": "1.0.0",
+  "background": { "service_worker": "background.js" },
+  "description": "Conecta, por sua autorização, apenas a sessão da Gupy ao EmpreGatos. Não acessa sua conta Google.",
+  "permissions": ["cookies", "scripting"],
+  "host_permissions": ["https://*.gupy.io/*", "https://curriculoautomatico.vercel.app/*"],
+  "action": { "default_popup": "popup.html", "default_title": "Conectar Gupy ao EmpreGatos" },
+  "content_scripts": [{
+    "matches": ["https://curriculoautomatico.vercel.app/app*"],
+    "js": ["content.js"]
+  }]
+}

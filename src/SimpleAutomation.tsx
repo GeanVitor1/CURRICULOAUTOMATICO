@@ -1,5 +1,7 @@
+import { confirmedApplication } from "../shared/confirmed-applications";
 import { useQuery } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useRef,useState } from "react";
+import type {AutomationConversion} from '../server/automation-conversion';
 import { Play, Pause, FileText, ArrowRight, Search, Info } from "lucide-react";
 import { Button, Mascot, PageHead, DiscoveryStatus } from "./components";
 import { api, date, useAction, useApp } from "./lib";
@@ -13,6 +15,8 @@ export default function SimpleAutomation() {
   const a = useAction();
   const billing = useBilling();
   const saving = useRef(false);
+  const [showConversion,setShowConversion]=useState(false);
+  const conversion=useQuery({queryKey:['automation-conversion'],queryFn:()=>api<AutomationConversion>('/automation/conversion'),enabled:showConversion,refetchInterval:showConversion?30000:false});
   const sites = useQuery({
     queryKey: ["automation-sites"],
     queryFn: () => api<SiteCapability[]>("/automation/sites"),
@@ -22,15 +26,23 @@ export default function SimpleAutomation() {
     w.interview.answers.resumeId === w.resumes[0]?.id &&
     w.resumes[0]?.approved &&
     w.profile.confirmed;
+  const officialAvailable =
+    sites.data?.some((site) => site.independentAutomatic) || false;
   const available =
     !!ready &&
     w.interview!.answers.sites.some((site) =>
-      sites.data?.some((item) => item.id === site && item.automatic),
+      sites.data?.some(
+        (item) =>
+          item.id === site && (item.automatic || item.independentAutomatic),
+      ),
     );
   const allAvailable =
     available &&
     w.interview!.answers.sites.every((site) =>
-      sites.data?.some((item) => item.id === site && item.automatic),
+      sites.data?.some(
+        (item) =>
+          item.id === site && (item.automatic || item.independentAutomatic),
+      ),
     );
   const cloudAvailable = sites.data?.some(
     (site) =>
@@ -58,6 +70,9 @@ export default function SimpleAutomation() {
           ...w.routine,
           enabled,
           mode,
+          ...(officialAvailable && enabled
+            ? { destinationPolicy: "official" }
+            : {}),
         },
       },
       {
@@ -79,7 +94,7 @@ export default function SimpleAutomation() {
     );
   };
   const waiting = ["queued", "running"].includes(w.runs[0]?.status || "");
-  const sent = w.applications.filter((item) => !!item.submittedAt).length;
+  const sent = w.applications.filter(confirmedApplication).length;
   return (
     <div className="career-flow">
       <PageHead
@@ -87,6 +102,27 @@ export default function SimpleAutomation() {
         description="Seu currículo, suas preferências e suas candidaturas. Tudo em um só lugar."
       />
       <AntigravityConnection />
+      <details className="interview-card conversion-indicators" onToggle={e=>setShowConversion(e.currentTarget.open)}>
+        <summary>Indicadores técnicos da automação</summary>
+        <p>Inventário preservado e etapas de candidatura. Um executor disponível ainda pode encontrar perguntas ou verificação humana no formulário.</p>
+        {conversion.isPending&&showConversion&&<p role="status">Consultando indicadores…</p>}
+        {conversion.isError&&<p role="alert">Não foi possível consultar os indicadores agora.</p>}
+        {conversion.data&&<>
+          <table><caption>Etapas no inventário atual</caption><thead><tr><th scope="col">Etapa</th><th scope="col">Quantidade</th></tr></thead><tbody>
+            {([
+              ['Vagas descobertas',conversion.data.totals.discovered],['Vagas compatíveis',conversion.data.totals.compatible],
+              ['Destino válido',conversion.data.totals.validDestination],['Executor disponível',conversion.data.totals.executorAvailable],
+              ['Candidaturas preparadas',conversion.data.totals.prepared],['Transmissões iniciadas',conversion.data.totals.transmissionsStarted],
+              ['Envios confirmados',conversion.data.totals.confirmed],['Automáticos com origem comprovada',conversion.data.totals.confirmedAutomatic],
+            ] as const).map(([label,value])=><tr key={label}><th scope="row">{label}</th><td>{value}</td></tr>)}
+          </tbody></table>
+          <p>Hoje: {conversion.data.today.discovered} novas vagas, {conversion.data.today.prepared} preparações, {conversion.data.today.transmissionsStarted} transmissões e {conversion.data.today.confirmedAutomatic} envios automáticos confirmados.</p>
+          <table><caption>Bloqueios por plataforma e categoria</caption><thead><tr><th scope="col">Plataforma</th><th scope="col">Categoria</th><th scope="col">Quantidade</th></tr></thead><tbody>
+          {Object.entries(conversion.data.platforms).flatMap(([platform,counts])=>Object.entries(counts).filter(([code])=>code.startsWith('blocked:')).map(([code,count])=><tr key={platform+code}><th scope="row">{platform}</th><td>{code.slice(8)}</td><td>{count}</td></tr>))}
+          </tbody></table>
+          <p>Registros removidos anteriormente não são reconstruídos. Atualizado em {date(conversion.data.at)}.</p>
+        </>}
+      </details>
       {billing.data && (
         <div className="automation-quota">
           <span>
@@ -96,6 +132,14 @@ export default function SimpleAutomation() {
           </span>
           <Button onClick={() => navigate("conta")}>Ver planos</Button>
         </div>
+      )}
+      {w.routine.enabled && w.routine.mode==='automatic' && w.routine.progress?.day===new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}) && (
+        <section className="interview-card" aria-label="Candidaturas automáticas de hoje" role="status">
+          <h2>{w.routine.progress.sent} de {w.routine.progress.target} candidaturas automáticas confirmadas hoje</h2>
+          <p>{`${w.routine.progress.remaining} envios disponíveis hoje. `}{w.routine.progress.message}</p>
+          {(w.routine.progress.usedToday || 0)>w.routine.progress.sent && <p>A cota usada também inclui outras tentativas ou envios fora deste contador automático.</p>}
+          <p>O plano permite até {w.routine.progress.target} envios por dia. O sistema continua nas vagas compatíveis com envio disponível.</p>
+        </section>
       )}
       {!ready ? (
         <section className="interview-card journey-start">
@@ -157,7 +201,9 @@ export default function SimpleAutomation() {
                   {w.routine.enabled
                     ? w.routine.mode === "automatic"
                       ? available
-                        ? "Envio automático ativo"
+                        ? w.routine.destinationPolicy === "official"
+                          ? "Envio automático nas empresas ativo"
+                          : "Envio automático ativo"
                         : "Conecte um site para iniciar os envios"
                       : "Busca diária ativa · envio pelo site"
                     : "Automação pausada"}
@@ -212,30 +258,39 @@ export default function SimpleAutomation() {
                 </Button>
               </div>
             )}
-            {!allAvailable && (
+            {(officialAvailable || !allAvailable) && (
               <div className="automation-scope" role="status">
                 <Info size={19} aria-hidden="true" />
                 <div>
                   <strong>
-                    {available
-                      ? "Envio automático nas fontes autorizadas"
-                      : cloudAvailable
-                        ? "Conecte suas contas para enviar automaticamente"
-                        : "Você conclui o envio no site da empresa"}
+                    {officialAvailable
+                      ? "Candidaturas nos formulários oficiais das empresas"
+                      : available
+                        ? "Envio automático nas fontes autorizadas"
+                        : cloudAvailable
+                          ? "Buscamos destinos oficiais para suas candidaturas"
+                          : "Você conclui o envio no site da empresa"}
                   </strong>
                   <p>
-                    {available
-                      ? "Nos sites sem integração de envio, você conclui a candidatura no anúncio oficial."
-                      : cloudAvailable
-                        ? "Abra Contas dos sites, entre no portal e confirme seu currículo. Tentaremos concluir cada candidatura elegível usando seus dados confirmados. Se faltar uma resposta ou houver CAPTCHA, você verá o motivo na candidatura."
-                        : "Buscamos as vagas e preparamos as candidaturas compatíveis. Abra uma vaga para revisar o currículo e a apresentação, depois conclua o envio no portal. A candidatura só aparece como enviada após sua confirmação."}
+                    {officialAvailable
+                      ? "Enviamos seu currículo aprovado quando a vaga atende às suas preferências e possui um formulário compatível. Não é necessário conectar Gupy ou LinkedIn nem instalar extensões. A IA responde com base no currículo e nas preferências. Sem informação, usa “não” ou “prefiro não informar”. O histórico mostra apenas envios confirmados."
+                      : available
+                        ? "Buscamos destinos oficiais e processamos automaticamente os formulários compatíveis. Apenas envios confirmados aparecem nas candidaturas."
+                        : cloudAvailable
+                          ? "Procuramos a mesma vaga no site da empresa e em sistemas de recrutamento. Você só precisa conectar um portal quando optar por um destino que exige login. Envios dependem de formulário verificado, autorização e dados aprovados."
+                          : "Buscamos as vagas e preparamos as candidaturas compatíveis. Abra uma vaga para revisar o currículo e a apresentação, depois conclua o envio no portal. A candidatura só aparece como enviada após sua confirmação."}
                   </p>
                 </div>
               </div>
             )}
           </section>
           <details className="interview-extra">
-            <summary>Contas dos sites</summary>
+            <summary>Conexões opcionais com portais</summary>
+            <p>
+              Os portais são fontes de descoberta. Procuramos destinos oficiais
+              equivalentes antes de depender de uma conta de portal; cada envio
+              exige um destino verificado e autorizado.
+            </p>
             <PortalConnections selected={w.interview!.answers.sites} />
           </details>
           <div className="automation-counters">
@@ -249,12 +304,7 @@ export default function SimpleAutomation() {
               <strong>{sent}</strong>
               <span>Candidaturas enviadas</span>
             </button>
-            <button onClick={() => navigate("candidaturas")}>
-              <strong>
-                {w.applications.filter((item) => !item.submittedAt).length}
-              </strong>
-              <span>Pendentes</span>
-            </button>
+
           </div>
           <section className="automation-preferences">
             <div>
@@ -285,8 +335,13 @@ export default function SimpleAutomation() {
                 Ver vagas encontradas
                 <ArrowRight size={16} />
               </Button>
+              {w.routine.enabled && w.routine.mode === "automatic" && (
+                <Button disabled={a.isPending} onClick={() => a.mutate({path:"/routine/process"}, {onSuccess: result => toast(result.queued ? `${result.queued} candidatura(s) adicionada(s) à fila automática.` : "A rotina continuará buscando vagas com formulário compatível.")})}>
+                  Processar vagas encontradas
+                </Button>
+              )}
               <Button onClick={() => navigate("candidaturas")}>
-                Revisar candidaturas
+                Ver candidaturas enviadas
                 <ArrowRight size={16} />
               </Button>
             </div>

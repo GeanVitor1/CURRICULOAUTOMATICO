@@ -15,12 +15,13 @@ import type { LoginAction } from "./portal-sessions";
 import type { PortalApplication, PortalResult } from "./portal-application";
 import type { Workspace } from "../shared/types";
 import { RequestError } from "./errors";
+import type { GupyBrowserSession } from "./gupy-browser-session";
 
 type Metadata = NonNullable<
   Workspace["infrastructure"]["portalConnections"]
 >[string];
 const root = "/vercel/sandbox/portal-runtime";
-const probe = `const fs=require('node:fs');(async()=>{try{const k=fs.readFileSync('${root}/controller.key','utf8');const r=await fetch('http://127.0.0.1:3000/health',{headers:{Authorization:'Bearer '+k},signal:AbortSignal.timeout(1000)});process.exit(r.ok?((await r.json()).version===8?0:2):1)}catch{process.exit(1)}})()`;
+const probe = `const fs=require('node:fs');(async()=>{try{const k=fs.readFileSync('${root}/controller.key','utf8');const r=await fetch('http://127.0.0.1:3000/health',{headers:{Authorization:'Bearer '+k},signal:AbortSignal.timeout(1000)});process.exit(r.ok?((await r.json()).version===10?0:2):1)}catch{process.exit(1)}})()`;
 const clientSource = `import {readFile,writeFile,rm} from 'node:fs/promises';
 import{createDecipheriv,createCipheriv,randomBytes}from'node:crypto';
 const id=process.argv[2];if(!/^[a-f0-9-]{36}$/.test(id))throw Error('Invalid request');
@@ -131,6 +132,7 @@ export async function cloudPortalCommand<T = unknown>(
     viewportWidth?: number;
     viewportHeight?: number;
     viewerOrigin?: string;
+    browserSession?: GupyBrowserSession;
   },
 ) {
   if (!cloudPortalEnabled(userId, portal))
@@ -149,8 +151,15 @@ export async function cloudPortalCommand<T = unknown>(
       throw error;
     }
   }
-  const s = await runtime(userId, portal, request.op === "open");
-  if (request.op === "open" && request.viewerOrigin) {
+  const s = await runtime(userId, portal, ["open", "import-browser-session"].includes(request.op));
+  if (request.op === "apply") {
+    const health = await s.runCommand({ cmd: "node", args: ["-e", probe] });
+    if (health.exitCode !== 0)
+      throw new RequestError(
+        "Abra novamente a conexão da Gupy para atualizar o navegador antes de enviar candidaturas.",
+      );
+  }
+  if (["open", "import-browser-session"].includes(request.op) && request.viewerOrigin) {
     try {
       s.domain(3001);
     } catch {
@@ -206,7 +215,7 @@ export async function cloudPortalCommand<T = unknown>(
       response.canStop !== false &&
       ["confirm", "close", "disconnect", "apply"].includes(request.op);
     if (response.error) throw new RequestError(response.error);
-    if (request.op === "open" && response.data?.live) {
+    if (["open", "import-browser-session"].includes(request.op) && response.data?.live) {
       const url = new URL("/live", s.domain(3001));
       url.protocol = "wss:";
       response.data.live.url = url.href;

@@ -1,0 +1,364 @@
+{
+  "at": "2026-10-22T13:45:18.524Z",
+  "jobs": [
+    {
+      "id": "d9c2fe5d-4589-4822-8195-5f00147292ca",
+      "title": "Analista de Sistemas Sênior",
+      "company": "Solucionare",
+      "url": "https://candidatos.abler.com.br/vagas/analista-de-sistemas-senior-724236",
+      "date": "2026-10-21T15:38:33.710Z",
+      "modality": "Remoto",
+      "contract": "CLT",
+      "email": "vaga-400246@vagas.abler.in",
+      "match": {
+        "score": 90,
+        "strengths": [
+          "Competências em comum: C#, SQL Server.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Período salarial não informado; o valor não foi comparado ao mínimo mensal."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "C#",
+          "SQL Server"
+        ],
+        "missingSkills": [],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 60,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 60/60; Cargo e área desejados: 20/20; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      }
+    },
+    {
+      "id": "14321e99-cbb4-4430-b404-d4386708e587",
+      "title": "Desenvolvedor Full Stack Python Pleno",
+      "company": "Global Tech",
+      "url": "https://candidatos.abler.com.br/vagas/desenvolvedor-phyton-919950",
+      "date": "2026-10-21T21:37:40.871Z",
+      "modality": "Remoto",
+      "contract": "PJ",
+      "email": "vaga-400376@vagas.abler.in",
+      "match": {
+        "score": 57,
+        "strengths": [
+          "Competências em comum: Angular, APIs REST, TypeScript, JavaScript, Docker, HTML, CSS.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: PostgreSQL, Python.",
+          "Exige 5 anos; você confirmou 1.",
+          "Período salarial não informado; o valor não foi comparado ao mínimo mensal."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "Angular",
+          "APIs REST",
+          "TypeScript",
+          "JavaScript",
+          "Docker",
+          "HTML",
+          "CSS"
+        ],
+        "missingSkills": [
+          "PostgreSQL",
+          "Python"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 46.67,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Tempo de experiência confirmado",
+            "earned": 0,
+            "possible": 5
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 46.67/60; Cargo e área desejados: 20/20; Competências citadas no cargo: 0/30; Modalidade preferida: 10/10; Tempo de experiência confirmado: 0/5; Localização: 0/10. Não representa a probabilidade de contratação."
+      }
+    },
+    {
+      "id": "f7b1326d-45fe-4c85-9e0e-937f6c4c4798",
+      "title": "Desenvolvedor Fullstack .Net Sênior",
+      "company": ".add",
+      "url": "https://candidatos.abler.com.br/vagas/desenvolvedor-fullstack-net-senior-200967",
+      "date": "2026-10-20T20:15:15.943Z",
+      "modality": "Híbrido",
+      "contract": "CLT",
+      "email": "vaga-399395@vagas.abler.in",
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: C#, .NET, ASP.NET Core, Angular, SQL Server, Entity Framework, APIs REST, TypeScript, Azure."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Período salarial não informado; o valor não foi comparado ao mínimo mensal."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas."
+        ],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "ASP.NET Core",
+          "Angular",
+          "SQL Server",
+          "Entity Framework",
+          "APIs REST",
+          "TypeScript",
+          "Azure"
+        ],
+        "missingSkills": [],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 60,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 30,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 60/60; Cargo e área desejados: 20/20; Competências citadas no cargo: 30/30; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      }
+    },
+    {
+      "id": "79987d04-80cc-4c55-9305-c4b9de9ae462",
+      "title": "Desenvolvedor(a) Júnior Full Stack — IA",
+      "company": "iFinance",
+      "url": "https://candidatos.abler.com.br/vagas/desenvolvedor-a-junior-full-stack-ia-e-bpo-digital-248906",
+      "date": "2026-10-18T01:04:15.088Z",
+      "modality": "Presencial",
+      "contract": "PJ",
+      "email": "vaga-399311@vagas.abler.in",
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: C#, .NET, ASP.NET Core, APIs REST, TypeScript, JavaScript, Git.",
+          "Modalidade presencial alinhada às preferências."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: React, PostgreSQL.",
+          "Período salarial não informado; o valor não foi comparado ao mínimo mensal."
+        ],
+        "blockers": [
+          "Localização fora das suas preferências; revise restrições geográficas."
+        ],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "ASP.NET Core",
+          "APIs REST",
+          "TypeScript",
+          "JavaScript",
+          "Git"
+        ],
+        "missingSkills": [
+          "React",
+          "PostgreSQL"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 46.67,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 46.67/60; Cargo e área desejados: 20/20; Modalidade preferida: 10/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      }
+    },
+    {
+      "id": "25fa10bf-39fc-4c38-b1ac-34c9083e8216",
+      "title": "Tech Lead – Integração de Sistemas - Reforma tributária",
+      "company": ".add",
+      "url": "https://candidatos.abler.com.br/vagas/tech-lead-integracao-de-sistemas-reforma-tributaria-549047",
+      "date": "2026-10-21T21:03:38.863Z",
+      "modality": "Remoto",
+      "contract": "PJ",
+      "email": "vaga-400379@vagas.abler.in",
+      "match": {
+        "score": 40,
+        "strengths": [
+          "Competências em comum: C#, SQL Server, APIs REST, Git, Azure.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: PostgreSQL, Node.js, Python, Java, AWS.",
+          "Período salarial não informado; o valor não foi comparado ao mínimo mensal."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "C#",
+          "SQL Server",
+          "APIs REST",
+          "Git",
+          "Azure"
+        ],
+        "missingSkills": [
+          "PostgreSQL",
+          "Node.js",
+          "Python",
+          "Java",
+          "AWS"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 30,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 0,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 30/60; Cargo e área desejados: 0/20; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      }
+    },
+    {
+      "id": "e497958b-f656-417c-9df0-555a158b08f2",
+      "title": "Analista de Recrutamento e Seleção",
+      "company": "Daju",
+      "url": "https://candidatos.abler.com.br/vagas/analista-de-recrutamento-e-selecao-925611",
+      "date": "2026-10-21T20:49:42.295Z",
+      "modality": "Presencial",
+      "contract": "CLT",
+      "email": "vaga-400378@vagas.abler.in",
+      "match": {
+        "score": 0,
+        "strengths": [
+          "Modalidade presencial alinhada às preferências."
+        ],
+        "gaps": [
+          "A fonte não identificou competências; revise a descrição.",
+          "Período salarial não informado; o valor não foi comparado ao mínimo mensal.",
+          "Dados insuficientes para comparar o perfil com os requisitos da vaga."
+        ],
+        "blockers": [
+          "Localização fora das suas preferências; revise restrições geográficas."
+        ],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "confidence": "insufficient",
+        "criteria": [
+          {
+            "label": "Cargo e área desejados",
+            "earned": 0,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Dados insuficientes. Complete seu perfil ou revise a descrição; a ausência de informação não significa baixa compatibilidade."
+      }
+    }
+  ]
+}

@@ -23,6 +23,8 @@
     "verify:connectors": "tsx scripts/verify-connectors.ts",
     "verify:zen": "tsx scripts/verify-zen.ts",
     "verify:workflow": "tsx scripts/verify-workflow.ts",
+    "verify:single-submission": "tsx scripts/verify-single-submission.ts",
+    "verify:gupy-submission": "tsx scripts/verify-gupy-submission.ts",
     "verify:persistence": "node scripts/verify-persistence.mjs",
     "verify:gemini": "tsx scripts/verify-gemini.ts",
     "evaluate:resume": "tsx scripts/evaluate-resume-analysis.ts"
@@ -42,7 +44,9 @@
     "@vercel/oidc": "^4.0.1",
     "@vercel/queue": "^0.8.0",
     "@vercel/sandbox": "^3.8.0",
+    "acorn": "^8.19.0",
     "bullmq": "^5.61.0",
+    "cheerio": "^1.2.0",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.4",
     "fastify": "^5.6.1",

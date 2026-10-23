@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-20",
+  "deploymentId": "dpl_6WGQFFQ6NYLLmi6HcL3CdufokJeX",
+  "productionUrl": "https://curriculoautomatico.vercel.app",
+  "readyState": "READY",
+  "health": { "status": "ok", "database": "Cloud Firestore" },
+  "connectorDownloadVerified": true,
+  "downloadContentsMatchSource": true,
+  "targetedTestsPassed": 46,
+  "controlledNativeGupyPipelinePassed": true,
+  "newRealEmployerSubmissions": 0,
+  "browserInventory": { "apps": [], "browsers": [] },
+  "remainingRealAccountSteps": [
+    "Attach Chrome to this conversation for browser control",
+    "Install and explicitly authorize the project Chrome connector",
+    "Verify that Gupy accepts the imported session in the project runner",
+    "Complete user preferences and confirm structured Gupy resume",
+    "Review a specific eligible job and execute the product submission"
+  ]
+}

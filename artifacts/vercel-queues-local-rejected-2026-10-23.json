@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-23T12:07:37.902Z",
+  "deploymentId": "dpl_CTJcPbmkFsK6D4geqCzYbY7rv2y4",
+  "actualVercelQueueTransport": false,
+  "fictitiousOnly": true,
+  "realEmployerSubmissions": 0,
+  "publications": [
+    {
+      "messageId": "4x-1M1eB3o9095CTd5tsM2glFASwwNEiqoc"
+    },
+    {
+      "messageId": "4x-1M1eB3o9095CTd5tsN7AbsESfu3q2ZUI"
+    }
+  ],
+  "workspaceId": "00cba8ba-310a-44a2-a2d0-b318f9ebf219:live",
+  "applicationId": "8c765f57-7a2b-4d91-a6bd-e5484b0d0938",
+  "invalidLocalAttempt": true
+}

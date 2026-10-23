@@ -6,6 +6,7 @@ import "./RemotePortalLogin.css";
 import { PortalLiveClient } from "./portal-live-client";
 import type { LiveInput, LiveTicket } from "../shared/portal-live";
 import { portalViewport } from "../shared/portal-display";
+import GupyChromeConnection from "./GupyChromeConnection";
 
 type Frame = {
   viewerId: string;
@@ -37,6 +38,7 @@ export default function RemotePortalLogin({
   const [done, setDone] = useState(false);
   const [automatic, setAutomatic] = useState(false);
   const [ending, setEnding] = useState(false);
+  const [chromeConnection, setChromeConnection] = useState(portal === "gupy");
   const current = useRef<Frame | null>(null);
   const live = useRef<PortalLiveClient | null>(null);
   const finished = useRef(false);
@@ -233,8 +235,29 @@ export default function RemotePortalLogin({
     }
   }, [portal, connectLive]);
   useEffect(() => {
-    void start();
-  }, [start]);
+    if (!chromeConnection) void start();
+  }, [start, chromeConnection]);
+  useEffect(() => {
+    if (portal !== "gupy") return;
+    const imported = (event: MessageEvent) => {
+      if (event.source !== window || event.origin !== location.origin ||
+        event.data?.type !== "empregatos:gupy-browser-session") return;
+      const next = event.data.frame as Frame;
+      if (!next?.authenticated || !next.viewerId || !next.image?.startsWith("data:image/")) return;
+      live.current?.close();
+      started.current = true;
+      finished.current = false;
+      failed.current = false;
+      closing.current = false;
+      setError("");
+      setDone(false);
+      receive(next);
+      connectLive(next);
+      setChromeConnection(false);
+    };
+    window.addEventListener("message", imported);
+    return () => window.removeEventListener("message", imported);
+  }, [portal, connectLive]);
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     const resize = () => {
@@ -294,14 +317,12 @@ export default function RemotePortalLogin({
       void enqueue({ type: "scroll", delta: value, ...scrollPosition.current });
     }, 120);
   };
-  const confirm = async () => {
+  const confirm = async (connectionOnly = false) => {
     await flush();
     if (
       failed.current ||
       !current.current ||
-      !approved ||
-      !ready ||
-      !resume ||
+      (!connectionOnly && (!approved || !ready || !resume)) ||
       finished.current
     )
       return;
@@ -316,9 +337,13 @@ export default function RemotePortalLogin({
         {
           method: "POST",
           headers: { "X-Portal-Viewer": current.current.viewerId },
-          body: JSON.stringify({
+          body: JSON.stringify(connectionOnly ? {
+            connectionOnly: true,
+            authorizeAutomation: false,
+            profileResumeId: null,
+          } : {
             authorizeAutomation: true,
-            profileResumeId: resume.id,
+            profileResumeId: resume!.id,
           }),
         },
       );
@@ -378,13 +403,14 @@ export default function RemotePortalLogin({
       className="remote-login"
       aria-label={`Login do ${name} no navegador da EmpreGatos`}
     >
-      {!frame && !error && (
+      {chromeConnection && <GupyChromeConnection onCloud={() => setChromeConnection(false)} />}
+      {!chromeConnection && !frame && !error && (
         <div className="remote-loading" role="status">
           <span className="remote-spinner" aria-hidden="true" />
           <span>Abrindo login do {name}…</span>
         </div>
       )}
-      {frame && !done && (
+      {!chromeConnection && frame && !done && (
         <>
           <div className="remote-screen" aria-busy={busy}>
             <img
@@ -548,6 +574,9 @@ export default function RemotePortalLogin({
                 >
                   {busy ? "Conectando…" : "Conectar e iniciar envios"}
                 </button>
+                <button className="remote-secondary" disabled={busy} onClick={() => void confirm(true)}>
+                  Salvar conexão sem ativar envios
+                </button>
                 <button
                   className="remote-secondary"
                   disabled={busy}
@@ -583,7 +612,7 @@ export default function RemotePortalLogin({
           </section>
         </div>
       )}
-      {frame?.challenge &&
+      {!chromeConnection && frame?.challenge &&
         !frame.authenticated &&
         !frame.blocked &&
         !frame.navigationError &&
@@ -591,13 +620,15 @@ export default function RemotePortalLogin({
         !done && (
           <div className="remote-verification" role="status">
             {frame.notice}
+            {portal === "gupy" && <button onClick={() => { live.current?.close(); setChromeConnection(true); }}>Não consigo concluir. Conectar pelo meu Chrome</button>}
           </div>
         )}
-      {frame?.navigationError && !error && !done && (
+      {!chromeConnection && frame?.navigationError && !error && !done && (
         <div className="remote-overlay">
           <section className="remote-confirm" role="alert">
             <h1>Não foi possível concluir o login</h1>
             <p>{frame.navigationError}</p>
+            {portal === "gupy" && <button onClick={() => { live.current?.close(); setChromeConnection(true); }}>Conectar pelo meu Chrome</button>}
             <button
               disabled={busy}
               onClick={() => {
@@ -617,7 +648,7 @@ export default function RemotePortalLogin({
           </section>
         </div>
       )}
-      {error && (
+      {!chromeConnection && error && (
         <div className="remote-overlay">
           <section className="remote-confirm" role="alert">
             <p>{error}</p>

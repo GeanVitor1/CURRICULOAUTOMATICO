@@ -130,6 +130,12 @@ export const antigravitySettings = {
       "read_url(glassdoor.com.br)",
       "read_url(infojobs.com.br)",
       "read_url(indeed.com)",
+      "read_url(indeed.com.br)",
+      "read_url(greenhouse.io)",
+      "read_url(lever.co)",
+      "read_url(ashbyhq.com)",
+      "read_url(smartrecruiters.com)",
+      "read_url(vertexaisearch.cloud.google.com)",
     ],
     deny: [
       "command(*)",

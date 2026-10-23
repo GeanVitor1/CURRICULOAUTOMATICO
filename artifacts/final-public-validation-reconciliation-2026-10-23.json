@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-23T18:36:43.938Z",
+  "query": "after:2026/10/23 (from:globalti.com.br OR from:mailquickin.com OR subject:IMW7499) -in:sent",
+  "messages": [
+    {
+      "id": "1a1693b983beb02d",
+      "threadId": "1a1690ffbb502c55",
+      "subject": "Acesso portal de carreiras - Global TI",
+      "date": "2026-10-23T14:47:55+00:00"
+    },
+    {
+      "id": "1a1690ffbb502c55",
+      "threadId": "1a1690ffbb502c55",
+      "subject": "Acesso portal de carreiras - Global TI",
+      "date": "2026-10-23T14:00:16+00:00"
+    }
+  ],
+  "nextPage": null,
+  "submissionReceiptFound": false,
+  "supportReplyFound": false,
+  "noNewMessageSent": true,
+  "interpretation": "Only the two known access-link messages were returned. Absence of confirmation does not prove non-receipt."
+}

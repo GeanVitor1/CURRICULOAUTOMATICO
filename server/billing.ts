@@ -6,9 +6,17 @@ import type { subscriptions } from "./schema";
 import { appOrigins } from "./auth-config";
 import { DailyLimitError, RequestError } from "./errors";
 import { plans, type BillingSummary, type PlanId } from "../shared/plans";
+import type { Workspace } from "../shared/types";
+import { pausedBeforeSubmission } from "./submission-attempts";
 
 type Transaction = Parameters<Parameters<typeof store.transaction>[0]>[0];
 type Subscription = typeof subscriptions.$inferSelect;
+export async function releasePausedReservations(tx: Transaction, userId: string, w: Workspace) {
+  const paused=w.applications.filter(pausedBeforeSubmission);
+  if(!paused.length) return;
+  await tx.select("users",{where:eq("id",userId),columns:["id"],lock:true});
+  for(const a of paused) await tx.delete("applicationUsage",and(eq("applicationId",a.id),eq("userId",userId)));
+}
 const priceId = (plan: string) =>
   plan === "plus"
     ? process.env.STRIPE_PRICE_PLUS

@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-20T10:07:49.789Z",
+  "environment": "Browser → API → PGlite temporário → worker real → sessão privada → adaptador Gupy → portal simulado → recibo na interface",
+  "passed": true,
+  "provider": "native Gupy adapter",
+  "connectedThroughPrivateSession": true,
+  "submissions": 1,
+  "accountUpdates": 0,
+  "receipt": "https://fixture.gupy.io/jobs/12345 · Candidatura finalizada! · https://fixture.gupy.io/candidates/applications/777/steps/888/curriculum · 2026-10-20T10:07:48.775Z",
+  "otherApplicationsSent": 0,
+  "generalRoutineEnabled": false,
+  "browserErrors": 0,
+  "realEmployerSubmissions": 0,
+  "candidateDetailsCollectedThroughBrowser": true
+}

@@ -8,6 +8,7 @@ import type { FastifyInstance } from "fastify";
 import { resumePdf } from "./pdf-fixture";
 import { and, eq } from "drizzle-orm";
 import { resumeFiles } from "../server/schema";
+import { confirmCandidateDetails } from "./fixtures/candidate-details";
 let app: FastifyInstance,
   cookie = "",
   dir = "",
@@ -72,6 +73,20 @@ describe("Fluxos de ponta a ponta na API", () => {
     cookie = String(r.headers["set-cookie"]).split(";")[0];
     userId = r.json().id;
   });
+  it("salva respostas confirmadas sem ativar envios e mantém as respostas ao editar o perfil", async () => {
+    const endpoint = "/api/application-preferences";
+    expect((await app.inject({method:"PUT", url:endpoint, headers:{origin:"http://127.0.0.1:5173", "x-orbita-request":"1"}, payload:{confirmation:true}})).statusCode).toBe(401);
+    expect((await request("PUT", endpoint, {english:"Avançado"})).statusCode).toBe(400);
+    const before = (await request("GET", "/api/workspace")).json();
+    expect((await request("PUT", endpoint, {confirmation:true, english:"Intermediário II", linkedin:"https://www.linkedin.com/in/pessoa/", confirmedAt:"forged"})).statusCode).toBe(200);
+    const saved = (await request("GET", "/api/workspace")).json();
+    expect(saved.profile.applicationPreferences.english).toBe("Intermediário II");
+    expect(saved.profile.applicationPreferences.confirmedAt).not.toBe("forged");
+    expect(saved.profile.applicationPreferences.spanish).toBeUndefined();
+    expect(saved.routine).toEqual(before.routine);
+    expect((await request("PUT", "/api/profile", saved.profile)).statusCode).toBe(200);
+    expect((await request("GET", "/api/workspace")).json().profile.applicationPreferences).toEqual(saved.profile.applicationPreferences);
+  });
   it("não abre um terminal para uma conta sem autorização Antigravity", async () => {
     vi.stubEnv("ANTIGRAVITY_ENABLED", "true");
     vi.stubEnv("ANTIGRAVITY_OWNER_ID", "different-owner");
@@ -83,6 +98,33 @@ describe("Fluxos de ponta a ponta na API", () => {
       (await request("POST", "/api/antigravity/login", {})).statusCode,
     ).toBe(400);
     vi.unstubAllEnvs();
+  });
+  it("recebe sessão Gupy pelo usuário autenticado, exige autorização e rejeita dados de terceiros", async () => {
+    const cloud = await import("../server/portal-cloud");
+    const run = vi.spyOn(cloud, "cloudPortalCommand").mockResolvedValue({viewerId:"fixture-viewer", authenticated:true});
+    vi.stubEnv("PORTAL_CLOUD_ENABLED", "true");
+    vi.stubEnv("PORTAL_CLOUD_SNAPSHOT_ID", "fixture");
+    vi.stubEnv("PORTAL_CLOUD_OWNER_ID", userId);
+    const state = {cookies:[{name:"candidate_session",value:"fake",domain:".gupy.io",path:"/",expires:-1,httpOnly:true,secure:true,sameSite:"Lax"}],origins:[]};
+    try {
+      const url = "/api/connections/gupy/browser-session";
+      expect((await app.inject({method:"POST",url,headers:{origin:"http://127.0.0.1:5173","x-orbita-request":"1"},payload:{state,authorizeSessionTransfer:true}})).statusCode).toBe(401);
+      expect((await request("POST",url,{state})).statusCode).toBe(400);
+      expect((await request("POST",url,{state:{...state,cookies:[{...state.cookies[0],domain:"accounts.google.com"}]},authorizeSessionTransfer:true})).statusCode).toBe(400);
+      expect(run).not.toHaveBeenCalled();
+      const result = await request("POST",url,{state,authorizeSessionTransfer:true});
+      expect(result.statusCode).toBe(200);
+      expect(result.json().authenticated).toBe(true);
+      expect(run).toHaveBeenCalledWith(userId,"gupy",expect.objectContaining({op:"import-browser-session",browserSession:state}));
+      const confirmHeaders = {...headers(),"x-portal-viewer":"a4912c8b-f95e-46d3-81a7-aa5142eb3bbd"};
+      const invalid = await app.inject({method:"POST",url:"/api/connections/gupy/confirm",headers:confirmHeaders,payload:{connectionOnly:true,authorizeAutomation:true,profileResumeId:null}});
+      expect(invalid.statusCode).toBe(400);
+      const connected = await app.inject({method:"POST",url:"/api/connections/gupy/confirm",headers:confirmHeaders,payload:{connectionOnly:true,authorizeAutomation:false,profileResumeId:null}});
+      expect(connected.statusCode).toBe(200);
+      expect(connected.json().automatic).toBe(false);
+      expect(run).toHaveBeenLastCalledWith(userId,"gupy",expect.objectContaining({op:"confirm",resumeId:null}));
+      expect((await request("GET","/api/workspace")).json().routine.enabled).toBe(false);
+    } finally { run.mockRestore(); vi.unstubAllEnvs(); }
   });
   it("workspace real começa vazio e não disponibiliza dados fictícios", async () => {
     const real = (await request("GET", "/api/workspace")).json();
@@ -525,6 +567,7 @@ describe("Fluxos de ponta a ponta na API", () => {
     process.env.APPLICATION_WEBHOOK_TOKEN = "test-token";
     const id = `${userId}:live`;
     await dbModule.mutateWorkspace(id, (w) => {
+      confirmCandidateDetails(w);
       w.sources.push({
         id: "auth",
         type: "authorized",
@@ -843,6 +886,22 @@ describe("Fluxos de ponta a ponta na API", () => {
           const job = {
             ...structuredClone(original),
             id: `native-job-${sequence}`,
+            resolution: {
+              state: "partial" as const,
+              checkedAt: new Date().toISOString(),
+              retryAt: new Date().toISOString(),
+              complete: false,
+              consulted: [
+                {
+                  source: "controlled-catalog",
+                  outcome:
+                    "Busca cruzada controlada para o cenário de envio nativo.",
+                  count: 0,
+                },
+              ],
+              matches: [],
+              message: "Nenhum destino alternativo no cenário controlado.",
+            },
             url: `https://empresa.gupy.io/jobs/${sequence}`,
             origins: [
               {

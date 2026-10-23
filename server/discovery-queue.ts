@@ -1,5 +1,6 @@
 import { RequestError, StaleDiscoveryClaimError } from "./errors";
 import { randomUUID } from "node:crypto";
+import type { ExecutionOrigin } from "../shared/types";
 import { and, asc, eq, inArray, lt, or } from "./storage-types";
 import { store, mutateWorkspace } from "./db";
 import { dispatchDiscovery } from "./vercel-dispatch";
@@ -10,7 +11,7 @@ import {
   recoverInterruptedSends,
 } from "./operations";
 
-export async function enqueueDiscovery(workspaceId: string) {
+export async function enqueueDiscovery(workspaceId: string, origin: ExecutionOrigin = "user_triggered_automation", continuation = false) {
   const result = await store.transaction(async (tx) => {
     // The workspace lock makes the uniqueness check/queue marker atomic across API processes.
     const [row] = await tx.select("workspaces", {
@@ -40,6 +41,8 @@ export async function enqueueDiscovery(workspaceId: string) {
       at = new Date();
     await tx.insert("discoveryTasks", { id, workspaceId, status: "queued" });
     row.data.runs.unshift({
+      origin,
+      continuation,
       id,
       at: at.toISOString(),
       status: "queued",
@@ -127,7 +130,14 @@ export async function processNextDiscoveryTask(taskId?: string) {
     );
     return { ...task, exhausted: false };
   });
-  if (!task) return false;
+  if (!task) {
+    if (taskId) {
+      const [previous] = await store.select("discoveryTasks", {where:eq("id",taskId),columns:["workspaceId","status"]});
+      if (previous?.status === "completed")
+        await (await import("./automatic-cycle")).continueAutomaticCycle(previous.workspaceId);
+    }
+    return false;
+  }
   const claim = and(eq("id", task.id), eq("leaseToken", leaseToken));
   // Renew long paginated runs so a second worker never reclaims a live task.
   const heartbeat = task.exhausted
@@ -152,26 +162,39 @@ export async function processNextDiscoveryTask(taskId?: string) {
           });
       }, 30000);
   heartbeat?.unref();
+  let discoveryCommitted = false;
   try {
     if (task.exhausted)
       throw new RequestError(
         "Busca interrompida duas vezes. Inicie uma nova busca.",
       );
     const run = await discover(task.workspaceId, task.id, leaseToken);
-    if (run.status !== "failed")
+    // Commit completion before enqueueing the next discovery window. Otherwise
+    // uniqueness returns this running task and silently loses continuation.
+    const completed = await store.update("discoveryTasks", {
+      status:run.status === "failed" ? "failed" : "completed",lastError:run.errors.join(" ") || null,
+      leaseToken:null,leaseUntil:null,updatedAt:new Date(),
+    },claim,["id"]);
+    if (!completed.length) throw new StaleDiscoveryClaimError();
+    discoveryCommitted = true;
+    if (run.status !== "failed") {
+      const current = await (
+        await import("./db")
+      ).readWorkspace(task.workspaceId);
+      if (
+        current?.profile.confirmed &&
+        current.resumes.some((r) => r.approved)
+      ) {
+        const { enqueueResolution } = await import("./resolution-queue");
+        await enqueueResolution(task.workspaceId);
+      }
       await processAutomaticApplications(task.workspaceId);
-    await store.update(
-      "discoveryTasks",
-      {
-        status: run.status === "failed" ? "failed" : "completed",
-        lastError: run.errors.join(" ") || null,
-        leaseToken: null,
-        leaseUntil: null,
-        updatedAt: new Date(),
-      },
-      claim,
-    );
+      await (await import("./automatic-cycle")).continueAutomaticCycle(task.workspaceId);
+    }
   } catch (error) {
+    // A publish/continuation failure must be retried without changing the
+    // already completed discovery into a failed run or rediscovering its jobs.
+    if (discoveryCommitted) throw error;
     if (error instanceof StaleDiscoveryClaimError) return true;
     const message =
       error instanceof Error
@@ -218,6 +241,18 @@ export function startDiscoveryWorker() {
   const recover = () => {
     if (stopped || recovery) return;
     recovery = recoverInterruptedSends()
+      .then(async () => {
+        for (const workspace of await store.pendingSingleSubmissionWorkspaceIds()) {
+          if (stopped) break;
+          await processAutomaticApplications(workspace.id);
+        }
+        for (const workspace of await store.routines()) {
+          if (stopped) break;
+          if (!workspace.routine.enabled || workspace.routine.mode !== "automatic") continue;
+          if ((await store.submissionState(workspace.id))?.next)
+            await processAutomaticApplications(workspace.id);
+        }
+      })
       .catch(() => {
         console.error(JSON.stringify({ event: "application_recovery_failed" }));
       })
@@ -234,6 +269,8 @@ export function startDiscoveryWorker() {
     try {
       activeTask = processNextDiscoveryTask();
       await activeTask;
+      const { processResolutionTask } = await import("./resolution-queue");
+      await processResolutionTask();
     } catch (error) {
       console.error(
         JSON.stringify({

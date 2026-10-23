@@ -499,6 +499,30 @@ describe("Cadastro e acesso Google com identidade verificada", () => {
     ).toContain("google_error=expired");
     expect(sender).not.toHaveBeenCalled();
   });
+  it("conecta Gmail com escopo somente de envio e mantém credenciais fora da API", async () => {
+    const challenge=await begin("gmail",googleSession);
+    expect(challenge.url.searchParams.get("scope")).toBe("openid email https://www.googleapis.com/auth/gmail.send");
+    expect(challenge.url.searchParams.get("access_type")).toBe("offline");
+    expect(challenge.url.searchParams.get("redirect_uri")).toBe(`${origin}/api/auth/google/callback`);
+    vi.spyOn(globalThis,"fetch").mockResolvedValue(new Response(JSON.stringify({
+      id_token:jwt(challenge.nonce), access_token:"private-gmail-access", refresh_token:"private-gmail-refresh",
+      expires_in:3600, scope:"openid email https://www.googleapis.com/auth/gmail.send",
+    })));
+    expect((await callback(challenge,googleSession)).headers.location).toBe("/app?gmail=connected#preferencias");
+    const connection=await request("/api/email/connection",{headers:{cookie:googleSession}});
+    expect(connection.json()).toMatchObject({connected:true,email:"google@example.test",permission:"send_only"});
+    expect(connection.body).not.toMatch(/private-gmail|refreshToken|accessToken/);
+    const [row]=await database.store.select("portalOAuthAccounts",{where:{field:"id",op:"==",value:`${googleUser}:gmail-send`}});
+    expect(row.encryptedData).not.toContain("private-gmail");
+    expect((await request("/api/email/connection",{method:"DELETE",headers:{cookie:googleSession}})).statusCode).toBe(200);
+    expect((await request("/api/email/connection",{headers:{cookie:googleSession}})).json().connected).toBe(false);
+  });
+  it("não confunde login Google com autorização Gmail e rejeita permissão parcial", async () => {
+    const challenge=await begin("gmail",googleSession);
+    exchange(challenge);
+    expect((await callback(challenge,googleSession)).headers.location).toContain("google_error=gmail_permission");
+    expect((await request("/api/email/connection",{headers:{cookie:googleSession}})).json().connected).toBe(false);
+  });
   it("exclusão de conta Google exige confirmação de e-mail e autenticação recente", async () => {
     await database.db
       .update(schema.sessions)

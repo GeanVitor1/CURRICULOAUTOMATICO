@@ -1,0 +1,15 @@
+﻿{
+    "at":  "2026-10-16T20:15:05.4968969Z",
+    "url":  "https://curriculoautomatico.vercel.app",
+    "deploymentId":  "dpl_5YMEQgqcg99FwULspoH37smUL6p2",
+    "health":  {
+                   "status":  "ok",
+                   "database":  "Cloud Firestore"
+               },
+    "frontendHttpStatus":  200,
+    "testsPassed":  427,
+    "testsSkipped":  11,
+    "browserTestsPassed":  21,
+    "controlledCloudPdfReceived":  true,
+    "realEmployerSubmissions":  0
+}

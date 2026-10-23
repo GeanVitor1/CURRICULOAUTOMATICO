@@ -1,0 +1,224 @@
+.question-review {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  overflow: hidden;
+  min-width: 0;
+}
+.question-review-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+}
+.question-review-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.question-review-heading > div {
+  flex: 1;
+  min-width: 0;
+}
+.question-review .question-review-heading h2 {
+  margin: 0 0 5px;
+  font-size: 20px;
+  letter-spacing: -0.4px;
+}
+.question-review .question-review-heading p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.question-review-body {
+  border-top: 1px solid var(--border);
+  padding: 24px;
+  display: grid;
+  gap: 18px;
+}
+.question-review-body .field {
+  margin: 0;
+  min-width: 0;
+}
+.question-review select,
+.question-review textarea {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.question-review-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.question-review-toolbar .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.question-review a {
+  color: var(--accent);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.question-review .question-review-help {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.question-review-feedback {
+  padding: 13px 16px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+}
+.question-review-feedback p {
+  margin: 6px 0 0;
+}
+.question-review-feedback.error {
+  border-color: #b96951;
+}
+.question-review-progress {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 12px;
+  gap: 12px;
+}
+.question-review-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.question-review-steps button {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.question-review-steps button.answered {
+  color: var(--accent);
+}
+.question-review-steps button[aria-current] {
+  background: var(--accent);
+  color: var(--bg, #17251d);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.question-review-question {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  display: grid;
+  gap: 15px;
+  background: color-mix(in srgb, var(--accent) 2%, transparent);
+}
+.question-review-source {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.2px;
+}
+.question-review-question .field > label {
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.question-review textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.65;
+}
+.question-review-evidence {
+  font-size: 12px;
+  color: var(--muted);
+}
+.question-review-evidence summary {
+  cursor: pointer;
+}
+.question-review-evidence blockquote {
+  margin: 12px 0 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+}
+.question-review-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.question-review-pagination .button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.question-review-pagination > span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.question-review-save {
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  display: grid;
+  gap: 15px;
+}
+.question-review-save .checkbox-field {
+  margin: 0;
+  align-items: flex-start;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.question-review-save .button {
+  justify-self: start;
+}
+.question-review-save > p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--muted);
+}
+@media (max-width: 600px) {
+  .question-review-heading {
+    padding: 18px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .question-review-heading > div {
+    flex-basis: calc(100% - 62px);
+  }
+  .question-review-heading > .button {
+    width: 100%;
+  }
+  .question-review-body {
+    padding: 16px;
+    gap: 16px;
+  }
+  .question-review-toolbar > .button {
+    width: 100%;
+    justify-content: center;
+  }
+  .question-review-question {
+    padding: 16px;
+  }
+  .question-review-save .button {
+    width: 100%;
+    white-space: normal;
+  }
+}

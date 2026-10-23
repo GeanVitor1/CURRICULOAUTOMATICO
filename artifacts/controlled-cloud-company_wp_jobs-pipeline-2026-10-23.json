@@ -1,0 +1,134 @@
+{
+  "at": "2026-10-23T11:05:13.041Z",
+  "environment": "Vercel Sandbox Linux real; banco PGlite temporário; filas persistidas processadas pelos consumidores do projeto",
+  "candidate": "Perfil e PDF fictícios QA",
+  "adapter": "company_wp_jobs",
+  "discovery": "completed",
+  "destinations": 1,
+  "databaseStatus": "Enviada",
+  "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]",
+  "receiverCount": 5,
+  "expectedCount": 5,
+  "distinctReceivers": 5,
+  "noDuplicateReceivers": true,
+  "blockedReceiverUntouched": true,
+  "confirmedApplications": [
+    {
+      "id": "22434af9-f691-4ecb-ae40-954e4f2d3209",
+      "execution": {
+        "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+        "origin": "user_triggered_automation",
+        "correlationId": "23d09c11-3549-45c4-a3bc-9fbc8b4c6d4b"
+      },
+      "attempts": [
+        {
+          "id": "c5378ca2-c4c4-476b-b035-658b80f5010c",
+          "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T11:05:12.712Z",
+          "finishedAt": "2026-10-23T11:05:12.782Z",
+          "correlationId": "23d09c11-3549-45c4-a3bc-9fbc8b4c6d4b"
+        }
+      ],
+      "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]"
+    },
+    {
+      "id": "c12ad0e4-75f8-4639-addf-de8cbb0ff84b",
+      "execution": {
+        "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+        "origin": "user_triggered_automation",
+        "correlationId": "3101f5f6-10cd-4623-aecf-9a13ba8261ad"
+      },
+      "attempts": [
+        {
+          "id": "57520efc-125b-41aa-b1cc-8ac258cf4d12",
+          "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T11:05:11.370Z",
+          "finishedAt": "2026-10-23T11:05:11.458Z",
+          "correlationId": "3101f5f6-10cd-4623-aecf-9a13ba8261ad"
+        }
+      ],
+      "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]"
+    },
+    {
+      "id": "6786fbc4-bfc8-4a87-bb51-862402c3af3a",
+      "execution": {
+        "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+        "origin": "user_triggered_automation",
+        "correlationId": "c260d01b-43f0-480f-a651-77f2185107b9"
+      },
+      "attempts": [
+        {
+          "id": "d0205052-85f5-45a8-98a7-1cfcf715fea4",
+          "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T11:05:11.639Z",
+          "finishedAt": "2026-10-23T11:05:11.721Z",
+          "correlationId": "c260d01b-43f0-480f-a651-77f2185107b9"
+        }
+      ],
+      "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]"
+    },
+    {
+      "id": "e42cbd8a-f859-45ca-8dd7-704fdafe5c3e",
+      "execution": {
+        "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+        "origin": "user_triggered_automation",
+        "correlationId": "4d5c1302-0720-4c12-ac92-00966e8b12a7"
+      },
+      "attempts": [
+        {
+          "id": "481900c1-b007-40a1-b6c0-fa8e38df039f",
+          "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T11:05:11.936Z",
+          "finishedAt": "2026-10-23T11:05:12.100Z",
+          "correlationId": "4d5c1302-0720-4c12-ac92-00966e8b12a7"
+        }
+      ],
+      "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]"
+    },
+    {
+      "id": "1b00f7ae-e624-42bb-868f-a32406af1b69",
+      "execution": {
+        "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+        "origin": "user_triggered_automation",
+        "correlationId": "95ae6fdc-9051-4caa-86ac-03a3c1a2bce0"
+      },
+      "attempts": [
+        {
+          "id": "480db8db-da69-4f18-a44f-e933833c1f9d",
+          "runId": "12f2be4f-b8f8-421c-af1a-933593863860",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T11:05:12.262Z",
+          "finishedAt": "2026-10-23T11:05:12.420Z",
+          "correlationId": "95ae6fdc-9051-4caa-86ac-03a3c1a2bce0"
+        }
+      ],
+      "receipt": "Formulário da empresa: application has been received [resposta c2f6e7c54df82770]"
+    }
+  ],
+  "blockedDestinations": 0,
+  "receivedCorrectFile": true,
+  "receivedCorrectCandidate": true,
+  "duplicateRejected": true,
+  "isolated": true,
+  "actualVercelQueueTransport": false,
+  "realEmployerSubmissions": 0
+}

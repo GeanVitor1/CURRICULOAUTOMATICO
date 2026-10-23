@@ -403,6 +403,6 @@ test("um site sem envio não bloqueia os sites autorizados e a interface informa
     page.getByRole("heading", { name: "Envio automático ativo", exact: true }),
   ).toBeVisible();
   await expect(page.locator(".automation-scope")).toContainText(
-    "Nesses sites, as candidaturas preparadas ficam pendentes",
+    "destino oficial com envio autorizado",
   );
 });

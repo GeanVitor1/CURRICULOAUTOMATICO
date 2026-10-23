@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-23T14:00:37.478Z",
+  "controlled": true,
+  "transport": "all writes intercepted and fulfilled locally; no employer submission",
+  "realCandidateDataUsed": false,
+  "result": {
+    "status": "sent",
+    "receipt": "Quickin: Candidatura enviada! [resposta 9ae18d8d11985870]",
+    "message": "O formulário público confirmou a candidatura após a submissão."
+  },
+  "intercepted": [
+    {
+      "method": "POST",
+      "path": "https://api.quickin.io/public/692a0e88fa9dcb00134dc379/media/multipart",
+      "bytes": 825
+    },
+    {
+      "method": "POST",
+      "path": "https://api.quickin.io/public/692a0e88fa9dcb00134dc379/apply",
+      "bytes": 476,
+      "fieldNames": [
+        "resume_media_id",
+        "name",
+        "email",
+        "phones",
+        "summary",
+        "birth_date",
+        "disability",
+        "disability_comment",
+        "salary",
+        "educations",
+        "experiences",
+        "languages",
+        "pages",
+        "job_question_692e07e480d7340012bd38fd",
+        "job_question_69a9a48967f6d000131a9530",
+        "job_id",
+        "origin"
+      ],
+      "syntheticIdentity": true
+    }
+  ],
+  "failedRequests": [
+    "https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css",
+    "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap",
+    "https://modfile.quickin.io/image/520x520x0/https%3A%2F%2Fquickin-media-production.s3.sa-east-1.amazonaws.com%2FASrCZjwirwYGFTd7aWW0qwMoc74Lvt69D7ZrPZ28chIlUI7KOUZKMJ35jB7uySMq%2FPerfil_linkedin_-_Empresas_2.jpg",
+    "https://modfile.quickin.io/image/520x520x0/https%3A%2F%2Fquickin-media-production.s3.sa-east-1.amazonaws.com%2FASrCZjwirwYGFTd7aWW0qwMoc74Lvt69D7ZrPZ28chIlUI7KOUZKMJ35jB7uySMq%2FPerfil_linkedin_-_Empresas_2.jpg"
+  ],
+  "visibleText": "Desenvolvedor Full Stack - PL/SR em São Paulo, SP | Global TI\nSITE DA EMPRESA\nVAGAS\nENVIAR CURRÍCULO\nLOGIN\nDesenvolvedor Full Stack - PL/SR\nDETALHES\nCANDIDATAR-SE\nCandidatura enviada!\n\nObrigado pela candidatura.\n\nVOLTAR PARA A VAGA\nSite da empresa\nVagas\nPortuguês\nby Quickin"
+}

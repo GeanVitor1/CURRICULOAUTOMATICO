@@ -1,0 +1,1918 @@
+{
+  "at": "2026-10-23T18:26:40.059Z",
+  "readOnly": true,
+  "workspaceWrites": 0,
+  "employerWrites": 0,
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "recent": 145,
+  "observedForms": 33,
+  "minimum": 70,
+  "objectivePass": 33,
+  "professionalPass": 0,
+  "eligibleForFreshPreflight": 0,
+  "results": [
+    {
+      "id": "fccff2b3-0b7a-40ef-a5fc-ca8e64606c14",
+      "title": "[Job - 31856]  Mid Data Developer ( Azure + Databricks ), Brasil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/0f43ee43-830b-43f0-9453-29c4568e6d9c",
+      "publishedAt": "2026-10-21T21:02:42.777Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 60,
+      "recomputedScore": 60,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: Databricks, Spark.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/0f43ee43-830b-43f0-9453-29c4568e6d9c/apply",
+          "expiresAt": "2026-10-24T11:16:06.863Z",
+          "verifiedAt": "2026-10-23T11:16:06.863Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "title": "Desenvolvedor Full Stack - PL/SR",
+      "company": "Global TI",
+      "url": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+      "publishedAt": "2026-10-19T16:59:17.397Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "São Paulo, SP, BR",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: React.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": true,
+      "uncertain": true,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "quickin",
+          "url": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0/apply",
+          "expiresAt": "2026-10-24T13:27:35.667Z",
+          "verifiedAt": "2026-10-23T13:27:35.667Z"
+        }
+      ],
+      "applications": [
+        {
+          "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+          "status": "Resultado desconhecido",
+          "receiptPresent": false,
+          "attempts": [
+            {
+              "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+              "outcome": "unknown"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "951291ed-95ea-4c49-adcc-7550ae30d7d9",
+      "title": "[Job-32371] Senior Angular Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/9ac4a93e-bf58-481c-a7dc-040ce7f6b728",
+      "publishedAt": "2026-10-20T18:52:39.967Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/9ac4a93e-bf58-481c-a7dc-040ce7f6b728/apply",
+          "expiresAt": "2026-10-23T19:22:19.852Z",
+          "verifiedAt": "2026-10-22T19:22:19.852Z"
+        }
+      ],
+      "applications": [
+        {
+          "id": "5d28259a-7ce5-45b7-ac01-44e3be3e0f07",
+          "status": "Requer ação manual",
+          "receiptPresent": false,
+          "attempts": []
+        }
+      ]
+    },
+    {
+      "id": "77d512b1-3ecb-4be4-b54c-70df9e46fc9f",
+      "title": "[Job - 31975] .NET Developer Senior, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/8d33fe81-e0c7-4708-9d69-2f1ee89daad3",
+      "publishedAt": "2026-10-22T17:18:11.741Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/8d33fe81-e0c7-4708-9d69-2f1ee89daad3/apply",
+          "expiresAt": "2026-10-23T19:22:14.601Z",
+          "verifiedAt": "2026-10-22T19:22:14.601Z"
+        }
+      ],
+      "applications": [
+        {
+          "id": "e0004acd-37b0-4929-9812-6adf488cbb22",
+          "status": "Requer ação manual",
+          "receiptPresent": false,
+          "attempts": []
+        }
+      ]
+    },
+    {
+      "id": "8a2fe10c-11c2-4600-a996-a5f27d90f1b3",
+      "title": "[Job-32382] Master AWS I .Net Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/4569f0fd-61e4-41b0-9c47-50790c749ee0",
+      "publishedAt": "2026-10-21T21:13:32.347Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Node.js, Python, Java, AWS.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/4569f0fd-61e4-41b0-9c47-50790c749ee0/apply",
+          "expiresAt": "2026-10-24T11:16:41.220Z",
+          "verifiedAt": "2026-10-23T11:16:41.220Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "7e98745c-6905-4b61-98f5-4d64869b9088",
+      "title": "[Job-32372] Mid level Angular Developer, vaga para pessoas PCD, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/79485904-1730-4a7a-a670-99d795acfa31",
+      "publishedAt": "2026-10-20T18:56:19.980Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Elegibilidade obrigatória da vaga afirmativa PcD exige confirmação específica; não foi presumida."
+      ],
+      "gaps": [
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/79485904-1730-4a7a-a670-99d795acfa31/apply",
+          "expiresAt": "2026-10-23T19:08:23.740Z",
+          "verifiedAt": "2026-10-22T19:08:23.740Z"
+        }
+      ],
+      "applications": [
+        {
+          "id": "be38f1c8-6659-44db-9457-5215aea3340f",
+          "status": "Requer ação manual",
+          "receiptPresent": false,
+          "attempts": []
+        }
+      ]
+    },
+    {
+      "id": "89d7d556-a2c4-4547-97a2-bc41501090f0",
+      "title": "[Job-32153] Senior Software Architect (Java e NodeJS/Angular e TypeScript), Brasil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/b4f5ecfc-192a-4a62-99bf-cf8a0d2b0d3c",
+      "publishedAt": "2026-10-14T11:49:52.868Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Node.js, Java, AWS.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/b4f5ecfc-192a-4a62-99bf-cf8a0d2b0d3c/apply",
+          "expiresAt": "2026-10-24T11:15:16.421Z",
+          "verifiedAt": "2026-10-23T11:15:16.421Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "c054c486-286a-4c10-bd9d-d5629424bfdc",
+      "title": "[Job-32146] AI Developer - Vaga exclusiva PCD, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/3f767b3d-ae14-4372-92e8-f319d4237936",
+      "publishedAt": "2026-10-13T16:37:12.421Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Elegibilidade obrigatória da vaga afirmativa PcD exige confirmação específica; não foi presumida."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Python, Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/3f767b3d-ae14-4372-92e8-f319d4237936/apply",
+          "expiresAt": "2026-10-24T11:16:40.989Z",
+          "verifiedAt": "2026-10-23T11:16:40.989Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "3429e934-7e20-48f2-b258-0ab6b48e97ec",
+      "title": "[Job-31871] Senior Data Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/2441bb59-c761-4f23-87d4-8a66d82117b3",
+      "publishedAt": "2026-10-15T19:19:49.326Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/2441bb59-c761-4f23-87d4-8a66d82117b3/apply",
+          "expiresAt": "2026-10-24T11:13:43.395Z",
+          "verifiedAt": "2026-10-23T11:13:43.395Z"
+        }
+      ],
+      "applications": [
+        {
+          "id": "e5352b83-22cb-4d61-898d-a93469f69792",
+          "status": "Requer ação manual",
+          "receiptPresent": false,
+          "attempts": []
+        }
+      ]
+    },
+    {
+      "id": "b7a26169-d4c6-4114-a9a9-545cb08b57dc",
+      "title": "[Job- 32083] Dev Fullstack Mid (Java + Angular) | Exclusiva PcD | Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/3319fb5a-40cd-4ad8-a340-5a5afb579119",
+      "publishedAt": "2026-10-19T15:34:52.279Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Elegibilidade obrigatória da vaga afirmativa PcD exige confirmação específica; não foi presumida."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Node.js, Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/3319fb5a-40cd-4ad8-a340-5a5afb579119/apply",
+          "expiresAt": "2026-10-23T19:13:41.236Z",
+          "verifiedAt": "2026-10-22T19:13:41.236Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "1f3ddd6f-d222-4e66-8aee-0dfe750f91a4",
+      "title": "[Job 31822] Software Architect (Tech Lead Java & IA Generativa)",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/ffa13e1a-a290-4a2e-9983-6e87a5fa3aff",
+      "publishedAt": "2026-10-19T14:25:03.775Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/ffa13e1a-a290-4a2e-9983-6e87a5fa3aff/apply",
+          "expiresAt": "2026-10-24T11:16:51.766Z",
+          "verifiedAt": "2026-10-23T11:16:51.766Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "3b857695-8a4d-4454-8b95-fe4a551a9777",
+      "title": "[Job - 32337] Senior Java Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/d4a8b25c-d25b-4ddb-b09a-74e37fb5cd11",
+      "publishedAt": "2026-10-21T17:17:22.520Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/d4a8b25c-d25b-4ddb-b09a-74e37fb5cd11/apply",
+          "expiresAt": "2026-10-24T11:15:59.047Z",
+          "verifiedAt": "2026-10-23T11:15:59.047Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "cf3e10fd-fc22-4376-877d-f178a6df2e47",
+      "title": "[ job -  32303] Senior Fullstack Developer ( Java + Angular ), Brasil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/64ff48a2-d683-4b16-8694-a61c06e133af",
+      "publishedAt": "2026-10-19T13:55:35.023Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 49,
+      "recomputedScore": 49,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/64ff48a2-d683-4b16-8694-a61c06e133af/apply",
+          "expiresAt": "2026-10-23T19:14:17.722Z",
+          "verifiedAt": "2026-10-22T19:14:17.722Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "250991c4-7a82-41dc-92b2-e28b5cc9c63f",
+      "title": "[Job-32370] Senior Java Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/e6f7f770-148d-492e-ae40-a3ead20ceb15",
+      "publishedAt": "2026-10-20T18:49:42.225Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 48,
+      "recomputedScore": 48,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: PostgreSQL, Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/e6f7f770-148d-492e-ae40-a3ead20ceb15/apply",
+          "expiresAt": "2026-10-23T19:22:30.287Z",
+          "verifiedAt": "2026-10-22T19:22:30.287Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "b30aa1ab-2483-4817-b53b-5d4b286b1c70",
+      "title": "[Job-32336] Mid-level IA Python Developer (Backend), Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/2f2ba376-84e3-4bce-96f9-6bfd7e919060",
+      "publishedAt": "2026-10-22T15:29:54.207Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 48,
+      "recomputedScore": 48,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Python, Redis.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/2f2ba376-84e3-4bce-96f9-6bfd7e919060/apply",
+          "expiresAt": "2026-10-23T19:22:25.058Z",
+          "verifiedAt": "2026-10-22T19:22:25.058Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "dfdbb691-2f5f-4bfd-852b-d31bfac2786f",
+      "title": "[Job-32271] Senior Java I Angular Fullstack Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/d054c93b-0242-43a5-889b-23c42d7d4955",
+      "publishedAt": "2026-10-14T17:24:48.391Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 48,
+      "recomputedScore": 48,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Node.js, Python, Java, AWS.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/d054c93b-0242-43a5-889b-23c42d7d4955/apply",
+          "expiresAt": "2026-10-23T19:15:49.127Z",
+          "verifiedAt": "2026-10-22T19:15:49.127Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "379e45e2-1ea0-4f8f-bf64-fdf2c165b2ea",
+      "title": "[Job-32142] Developer Fullstack Jr ( Java + Angular )",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/72c027a0-4ea6-426d-9ea6-22d3df661e93",
+      "publishedAt": "2026-10-21T14:32:43.141Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [
+        "Angular",
+        "APIs REST"
+      ],
+      "storedScore": 48,
+      "recomputedScore": 48,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/72c027a0-4ea6-426d-9ea6-22d3df661e93/apply",
+          "expiresAt": "2026-10-24T11:17:32.184Z",
+          "verifiedAt": "2026-10-23T11:17:32.184Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "9b25b803-566b-47ed-8518-9352f5086cdf",
+      "title": "[Job -  32190]  Senior Java Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/6b322292-03a4-45ab-91f6-9d6375e9fe77",
+      "publishedAt": "2026-10-09T19:16:01.953Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": 5,
+      "requiredSkills": [],
+      "storedScore": 47,
+      "recomputedScore": 47,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Java, AWS.",
+        "Exige 5 anos; você confirmou 1.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/6b322292-03a4-45ab-91f6-9d6375e9fe77/apply",
+          "expiresAt": "2026-10-24T11:17:50.632Z",
+          "verifiedAt": "2026-10-23T11:17:50.632Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "78c001a9-5bb0-43da-85d9-8f60c17dcfd7",
+      "title": "[Job-32191] Senior Backend IA Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/6b154391-b465-4ff7-b13e-85687129132d",
+      "publishedAt": "2026-10-14T01:01:49.104Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 45,
+      "recomputedScore": 45,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: PostgreSQL, Node.js, Java, Kotlin, AWS, Kubernetes, GCP.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/6b154391-b465-4ff7-b13e-85687129132d/apply",
+          "expiresAt": "2026-10-24T11:16:51.994Z",
+          "verifiedAt": "2026-10-23T11:16:51.994Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "a33ee8c2-a549-4be6-8287-229d710bdab9",
+      "title": "[Job-32244] Senior Java Developer - AWS, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/f02ce66f-6980-471f-960f-772b74929d0f",
+      "publishedAt": "2026-10-15T08:10:33.661Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 44,
+      "recomputedScore": 44,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: Python, Java, AWS, DynamoDB.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/f02ce66f-6980-471f-960f-772b74929d0f/apply",
+          "expiresAt": "2026-10-24T13:32:49.990Z",
+          "verifiedAt": "2026-10-23T13:32:49.990Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "28e32135-5fa5-4991-bb60-d86edfa41411",
+      "title": "[job-32214] Senior Developer Python, Brasil.",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/f9b6b38d-e97f-402e-8b73-500793409a23",
+      "publishedAt": "2026-10-15T22:52:43.564Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 41,
+      "recomputedScore": 41,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: PostgreSQL, Python, AWS, Kubernetes.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/f9b6b38d-e97f-402e-8b73-500793409a23/apply",
+          "expiresAt": "2026-10-24T11:17:52.172Z",
+          "verifiedAt": "2026-10-23T11:17:52.172Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "0739be82-7e50-47bb-871a-76cec1e84c4c",
+      "title": "[Job- 32405] Senior Back End Developer  (Python/Golang & SAP), Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/635f2b87-1382-4e27-982d-d8b585c273fe",
+      "publishedAt": "2026-10-22T16:03:07.315Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 39,
+      "recomputedScore": 39,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: PostgreSQL, Python, Redis.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/635f2b87-1382-4e27-982d-d8b585c273fe/apply",
+          "expiresAt": "2026-10-23T19:23:04.414Z",
+          "verifiedAt": "2026-10-22T19:23:04.414Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "885aad66-7d74-4ce6-9ebf-659a90b56fee",
+      "title": "[Job-32228] Developer SR  (Tech Lead Java & IA Generativa), Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/93d7b06b-1044-4236-9768-67315a13c46e",
+      "publishedAt": "2026-10-13T17:09:22.947Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 37,
+      "recomputedScore": 37,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/93d7b06b-1044-4236-9768-67315a13c46e/apply",
+          "expiresAt": "2026-10-23T19:17:42.100Z",
+          "verifiedAt": "2026-10-22T19:17:42.100Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "a4e71d37-13ae-4d91-b4a1-fc5f89be9a37",
+      "title": "[Job-32417] Senior Data Developer (Databricks/ Espanhol), Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/5613b599-71b0-4486-89a3-dd4606280c5a",
+      "publishedAt": "2026-10-23T13:30:44.782Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 32,
+      "recomputedScore": 32,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+        "Conhecimentos citados a confirmar: Atendimento ao público, Node.js, Python, Databricks, AWS, GCP.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/5613b599-71b0-4486-89a3-dd4606280c5a/apply",
+          "expiresAt": "2026-10-24T15:28:23.828Z",
+          "verifiedAt": "2026-10-23T15:28:23.828Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "5ff7b28a-414b-45bf-a531-ad52d9ab9d77",
+      "title": "[Job - 32120] Principal Data Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/a2ab7cb3-9304-4ddc-8d0d-847028bcc375",
+      "publishedAt": "2026-10-13T13:16:57.400Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 30,
+      "recomputedScore": 30,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Limpeza, Databricks, AWS, GCP.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/a2ab7cb3-9304-4ddc-8d0d-847028bcc375/apply",
+          "expiresAt": "2026-10-23T19:19:05.331Z",
+          "verifiedAt": "2026-10-22T19:19:05.331Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "360df2e6-a78e-42ec-b410-97a72b539514",
+      "title": "[Job-32275] Senior Mobile Developer ( Kotlin and Android SDK )",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/b8af2050-db34-44f0-bbbe-6fa052d5ba8a",
+      "publishedAt": "2026-10-20T20:18:58.333Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 29,
+      "recomputedScore": 29,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Kotlin, Android.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/b8af2050-db34-44f0-bbbe-6fa052d5ba8a/apply",
+          "expiresAt": "2026-10-23T19:19:10.104Z",
+          "verifiedAt": "2026-10-22T19:19:10.104Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "d37a07fb-fa84-44fb-9cb6-edc362877ac3",
+      "title": "[Job-32329] Java Backend Specialist, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/83cbf0e1-9d15-4965-bd71-3e23b038d03e",
+      "publishedAt": "2026-10-22T11:23:29.812Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 14,
+      "recomputedScore": 14,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/83cbf0e1-9d15-4965-bd71-3e23b038d03e/apply",
+          "expiresAt": "2026-10-23T19:19:47.672Z",
+          "verifiedAt": "2026-10-22T19:19:47.672Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "4484de72-7910-412d-a4b8-85bd6b5cf3de",
+      "title": "[Job-32327] Senior Java Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/df1a7c1b-81bc-4a55-8e55-90893977773f",
+      "publishedAt": "2026-10-22T11:26:27.031Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 14,
+      "recomputedScore": 14,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/df1a7c1b-81bc-4a55-8e55-90893977773f/apply",
+          "expiresAt": "2026-10-23T19:19:52.451Z",
+          "verifiedAt": "2026-10-22T19:19:52.451Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "8d95198e-9856-437e-a09a-75d1b295d3cf",
+      "title": "[Job-32240] Senior Java Developer",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/5ffb24f9-71b1-41b7-84e6-9aac49c6baa9",
+      "publishedAt": "2026-10-09T19:02:03.829Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 14,
+      "recomputedScore": 14,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "Conhecimentos citados a confirmar: Java.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/5ffb24f9-71b1-41b7-84e6-9aac49c6baa9/apply",
+          "expiresAt": "2026-10-23T19:19:57.220Z",
+          "verifiedAt": "2026-10-22T19:19:57.220Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "8e141517-8092-4514-8836-7cbdbbfd6044",
+      "title": "[Job - 32181] Master Full Stack Developer (Python + React), Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/1d2dcf3f-68e0-4716-bc21-5d2cbf1f5d4a",
+      "publishedAt": "2026-10-09T20:04:15.381Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 14,
+      "recomputedScore": 14,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [],
+      "gaps": [
+        "Conhecimentos citados a confirmar: React, Python.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/1d2dcf3f-68e0-4716-bc21-5d2cbf1f5d4a/apply",
+          "expiresAt": "2026-10-23T19:20:01.814Z",
+          "verifiedAt": "2026-10-22T19:20:01.814Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "71a0264d-617c-4aa3-b2d5-e319c149dea6",
+      "title": "[Job-32332] Senior IA Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/9a2ed6f6-f075-4bef-bdd5-752c5efae893",
+      "publishedAt": "2026-10-22T11:29:47.830Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 0,
+      "recomputedScore": 0,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "A fonte não identificou competências; revise a descrição.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio.",
+        "Dados insuficientes para comparar o perfil com os requisitos da vaga."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/9a2ed6f6-f075-4bef-bdd5-752c5efae893/apply",
+          "expiresAt": "2026-10-23T19:20:39.856Z",
+          "verifiedAt": "2026-10-22T19:20:39.856Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "630c8876-feb4-4f31-8218-99f71cb39d62",
+      "title": "[Job-32321]  Senior FICO Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/459a0e42-90a1-4265-afea-b147789d213e",
+      "publishedAt": "2026-10-22T11:38:39.845Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 0,
+      "recomputedScore": 0,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "gaps": [
+        "A fonte não identificou competências; revise a descrição.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio.",
+        "Dados insuficientes para comparar o perfil com os requisitos da vaga."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/459a0e42-90a1-4265-afea-b147789d213e/apply",
+          "expiresAt": "2026-10-23T19:21:33.572Z",
+          "verifiedAt": "2026-10-22T19:21:33.572Z"
+        }
+      ],
+      "applications": []
+    },
+    {
+      "id": "ed7a96fe-a991-4b8f-a4be-ce45a9e8c525",
+      "title": "[Job-32319] Mid Level Cobol Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/27a89e03-8e96-4b3b-a5dc-7067578537c4",
+      "publishedAt": "2026-10-19T20:23:50.437Z",
+      "availability": "active",
+      "modality": "Remoto",
+      "location": "Brazil",
+      "requiredYears": null,
+      "requiredSkills": [],
+      "storedScore": 0,
+      "recomputedScore": 0,
+      "minimum": 70,
+      "objectiveFiltersPass": true,
+      "blockers": [],
+      "gaps": [
+        "A fonte não identificou competências; revise a descrição.",
+        "Salário não divulgado.",
+        "Regime de contratação não informado no anúncio.",
+        "Dados insuficientes para comparar o perfil com os requisitos da vaga."
+      ],
+      "professionalPass": false,
+      "discarded": false,
+      "priorTransmission": false,
+      "uncertain": false,
+      "eligibleForFreshPreflight": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "url": "https://jobs.lever.co/ciandt/27a89e03-8e96-4b3b-a5dc-7067578537c4/apply",
+          "expiresAt": "2026-10-23T19:21:42.482Z",
+          "verifiedAt": "2026-10-22T19:21:42.482Z"
+        }
+      ],
+      "applications": []
+    }
+  ],
+  "gupy": [
+    {
+      "id": "5f13aa44-dac6-477d-ab89-318f6ae3f359",
+      "url": "https://equatorialenergia.gupy.io/job/eyJqb2JJZCI6MTI3NTY0OTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas JR em Cobrança e Arrecadação",
+      "publishedAt": "2026-10-20T20:04:11.770Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "4043f317-bd35-4387-af72-493f1a948391",
+      "url": "https://unimedfortaleza.gupy.io/job/eyJqb2JJZCI6MTI3NzMzNTQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Pessoa Analista de Sistemas SR - Sistemas Assistenciais",
+      "publishedAt": "2026-10-23T11:18:48.688Z",
+      "objectiveFiltersPass": false,
+      "score": 26,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "ebe2699a-25ff-4b6d-b11d-549e2bc2576d",
+      "url": "https://adimax.gupy.io/job/eyJqb2JJZCI6MTI0NjcxODYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "ANALISTA DE SUPORTE DE SISTEMAS JUNIOR",
+      "publishedAt": "2026-10-23T12:43:39.032Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "06c71f53-5d17-4975-84b4-9fcc7c0ebfa4",
+      "url": "https://vemprapixeon.gupy.io/job/eyJqb2JJZCI6MTI3MjUxMzksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista Desenvolvedor(a) C#/.NET Pleno",
+      "publishedAt": "2026-10-22T19:35:14.118Z",
+      "objectiveFiltersPass": true,
+      "score": 92,
+      "blockers": [],
+      "minimum": 70,
+      "professionalPass": true
+    },
+    {
+      "id": "44b49845-5fee-41cb-8dbf-ab4fc6200029",
+      "url": "https://weg.gupy.io/job/eyJqb2JJZCI6MTI3NjMwMTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "383370 - ITAJAI - DESENVOLVEDOR SOFTWARE",
+      "publishedAt": "2026-10-22T17:01:29.718Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "e2c6cf3b-7024-4768-95bf-69b9746e3be8",
+      "url": "https://specialdogcompany.gupy.io/job/eyJqb2JJZCI6MTI3NjcyNjIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas - Desenvolvimento de Software",
+      "publishedAt": "2026-10-22T18:40:57.503Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "7d9f16e1-2a6d-405e-8ac3-47dd042d2dd3",
+      "url": "https://softplan.gupy.io/job/eyJqb2JJZCI6MTI3MjY3OTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Pessoa Desenvolvedora .NET Sr (Remoto) - 6791",
+      "publishedAt": "2026-10-15T11:35:33.199Z",
+      "objectiveFiltersPass": true,
+      "score": 49,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "901588b9-882c-410e-b1b9-f1b751cbc5c3",
+      "url": "https://j-f.gupy.io/job/eyJqb2JJZCI6MTI3NDE1MzEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Desenvolvedor . NET Sênior",
+      "publishedAt": "2026-10-16T21:14:14.412Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "e787522b-0bf9-470e-8bd4-6845d1c68fdd",
+      "url": "https://grupoboticario.gupy.io/job/eyJqb2JJZCI6MTI1NjAxMDAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Pessoa Desenvolvedora .NET Especialista I (Estruturante) - Vaga Afirmativa para Pessoas com Deficiência (PcD)",
+      "publishedAt": "2026-10-20T18:27:29.691Z",
+      "objectiveFiltersPass": true,
+      "score": 49,
+      "blockers": [
+        "Elegibilidade obrigatória da vaga afirmativa PcD exige confirmação específica; não foi presumida."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "22d6f174-c2f0-45d6-9298-ecafdd98f7c1",
+      "url": "https://kryptus.gupy.io/job/eyJqb2JJZCI6MTI3MjU1NzAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "🟡Desenvolvedor de Software JR/PL | CAMPINAS/SP",
+      "publishedAt": "2026-10-14T19:42:35.271Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "f4b93281-69dd-4070-912c-618f4063ca99",
+      "url": "https://kryptus.gupy.io/job/eyJqb2JJZCI6MTI3MjUwNjAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "🟡Desenvolvedor(a) de Software Embarcado — Defesa | PRESENCIAL-CAMPINAS/SP",
+      "publishedAt": "2026-10-14T19:50:16.567Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "441f62a1-cbf4-49f6-bf4c-2d4b2d138e27",
+      "url": "https://lamoda.gupy.io/job/eyJqb2JJZCI6MTI2OTExMDMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "DESENVOLVEDOR FULL STACK | NODE.JS | REACT",
+      "publishedAt": "2026-10-13T16:44:22.797Z",
+      "objectiveFiltersPass": true,
+      "score": 46,
+      "blockers": [],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "bb0770a9-fdaf-48ad-877e-aede1553b921",
+      "url": "https://vissimo.gupy.io/job/eyJqb2JJZCI6MTI3MjIxOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Desenvolvedor(a) Full Stack (com ênfase em Frontend)",
+      "publishedAt": "2026-10-14T13:32:16.200Z",
+      "objectiveFiltersPass": true,
+      "score": 70,
+      "blockers": [],
+      "minimum": 70,
+      "professionalPass": true
+    },
+    {
+      "id": "c1526c31-2a60-4ada-abcb-661d730d5931",
+      "url": "https://alterdata.gupy.io/job/eyJqb2JJZCI6MTI3Mjk0NDIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Desenvolvedor Full Stack Java (Pleno) - Shop",
+      "publishedAt": "2026-10-16T17:49:43.035Z",
+      "objectiveFiltersPass": true,
+      "score": 37,
+      "blockers": [],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "8419a704-d312-4c5a-b14f-9aba9b46a473",
+      "url": "https://saquerstech.gupy.io/job/eyJqb2JJZCI6MTI3MTg4NjEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Desenvolvedor(a) III Full‑Stack (Tech Lead)",
+      "publishedAt": "2026-10-21T12:49:48.343Z",
+      "objectiveFiltersPass": false,
+      "score": 30,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "dae59d78-2aeb-4a13-ac77-851ce4f0677d",
+      "url": "https://consultoria-rh-recife.gupy.io/job/eyJqb2JJZCI6MTI3MDc5MDcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista Sênior Contábil | Foco em Sistemas, Dados e Automação (PJ)",
+      "publishedAt": "2026-10-09T19:15:36.157Z",
+      "objectiveFiltersPass": false,
+      "score": 30,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "246c2c4a-367c-4bc8-b5d1-3b3cf49a30b2",
+      "url": "https://vagasstefanini.gupy.io/job/eyJqb2JJZCI6MTI3MDIxMDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "ANALISTA SISTEMAS JR",
+      "publishedAt": "2026-10-09T20:04:52.517Z",
+      "objectiveFiltersPass": false,
+      "score": 26,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "85e6e330-595a-4227-9ac1-12362846b714",
+      "url": "https://brainfarma.gupy.io/job/eyJqb2JJZCI6MTI2OTU1MDcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Validação Júnior - Sistemas Computadorizados",
+      "publishedAt": "2026-10-13T19:21:54.406Z",
+      "objectiveFiltersPass": false,
+      "score": 0,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "7e2900a6-9067-4d87-8a1f-46af49a5854d",
+      "url": "https://essentiagroup.gupy.io/job/eyJqb2JJZCI6MTIxNzE0MzIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas Fiscal e Tributário (ERP Senior)",
+      "publishedAt": "2026-10-13T21:06:43.290Z",
+      "objectiveFiltersPass": false,
+      "score": 0,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "426b8979-09e4-49ea-bbdd-7958410c40bb",
+      "url": "https://jdrel.gupy.io/job/eyJqb2JJZCI6MTI3MjI5NzMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Implantação e Treinamento (Sistema Domínio)",
+      "publishedAt": "2026-10-14T14:25:01.982Z",
+      "objectiveFiltersPass": false,
+      "score": 10,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "0db3bdc1-db2e-49c6-95b3-8f46bfb6e09a",
+      "url": "https://bancorbras.gupy.io/job/eyJqb2JJZCI6MTI3MjM4NTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "ANALISTA DE DESENVOLVIMENTO DE SISTEMAS",
+      "publishedAt": "2026-10-14T16:44:53.129Z",
+      "objectiveFiltersPass": true,
+      "score": 78,
+      "blockers": [],
+      "minimum": 70,
+      "professionalPass": true
+    },
+    {
+      "id": "214175f3-9c61-4da8-a89e-0085c54fb8a5",
+      "url": "https://unijui.gupy.io/job/eyJqb2JJZCI6MTI3MjUzMzMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas Sênior",
+      "publishedAt": "2026-10-14T18:22:05.605Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "32a7dadf-aca0-437b-a664-156b8934959e",
+      "url": "https://ttech.gupy.io/job/eyJqb2JJZCI6MTI3MTY2OTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Segurança Eletrônica S. (Sistema de Segurança Patrimonial)",
+      "publishedAt": "2026-10-15T17:50:18.206Z",
+      "objectiveFiltersPass": false,
+      "score": 10,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "1c21b2a4-e120-4e23-a2af-c60fdc23e296",
+      "url": "https://brainfarma.gupy.io/job/eyJqb2JJZCI6MTI2OTU0MjksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Validação Pleno - Sistemas Computadorizados",
+      "publishedAt": "2026-10-15T18:35:54.570Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "d2881a57-e2c7-4194-9aa1-720c9b072299",
+      "url": "https://cepel.gupy.io/job/eyJqb2JJZCI6MTI3MjU2ODMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Desenvolvimento de Sistemas II - SCADA",
+      "publishedAt": "2026-10-16T11:05:07.584Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "8b989ba0-a6b3-4d42-866b-40a29a79078e",
+      "url": "https://brisanet.gupy.io/job/eyJqb2JJZCI6MTI3MjU1NzcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas | Scrum Master",
+      "publishedAt": "2026-10-16T12:22:40.827Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "a90820a6-133f-44b3-acd2-894933cb8d46",
+      "url": "https://seconci-sp.gupy.io/job/eyJqb2JJZCI6MTI3MzYyOTAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "ANALISTA DE SISTEMAS II - TASY",
+      "publishedAt": "2026-10-16T12:43:30.823Z",
+      "objectiveFiltersPass": false,
+      "score": 30,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "09dc6c2e-da57-4c36-a396-1e3510956a32",
+      "url": "https://cargolift.gupy.io/job/eyJqb2JJZCI6MTI3Mzk2NTcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas Jr",
+      "publishedAt": "2026-10-16T18:10:57.391Z",
+      "objectiveFiltersPass": false,
+      "score": 0,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "0ae2ea97-8cf2-4968-b15e-1b46b24a34d4",
+      "url": "https://randoncorp.gupy.io/job/eyJqb2JJZCI6MTI3MjQ1ODIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas de Gestão Integrado Júnior  - Nakata Extrema / MG",
+      "publishedAt": "2026-10-16T19:21:52.649Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "14bec83f-8f29-47bc-96dd-2f69a471746f",
+      "url": "https://vempralibbs.gupy.io/job/eyJqb2JJZCI6MTI3NDE2OTgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas Sênior (Ecommerce)",
+      "publishedAt": "2026-10-16T23:22:00.823Z",
+      "objectiveFiltersPass": true,
+      "score": 49,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "783f499c-7a02-440e-8823-1107537ee525",
+      "url": "https://makroengenharia.gupy.io/job/eyJqb2JJZCI6MTI3NDI2MDYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "ANALISTA DE SISTEMAS ERP PL (PROTHEUS)",
+      "publishedAt": "2026-10-19T11:58:54.246Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "c447b45f-4e71-4807-a299-5c6e695fe07c",
+      "url": "https://talentosinovasaude.gupy.io/job/eyJqb2JJZCI6MTI3NDQ4MDUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas Pleno | Hospital Regional de Mato Grosso do Sul",
+      "publishedAt": "2026-10-19T13:35:03.612Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "abadeed5-dc46-45da-b48b-b91511bc8a57",
+      "url": "https://domo.gupy.io/job/eyJqb2JJZCI6MTI3NDc5ODQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Banco de Talentos | Analista de Sistemas Júnior (Afirmativa PCD)",
+      "publishedAt": "2026-10-19T19:02:42.709Z",
+      "objectiveFiltersPass": true,
+      "score": 49,
+      "blockers": [
+        "Elegibilidade obrigatória da vaga afirmativa PcD exige confirmação específica; não foi presumida."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "6e9e7c06-c32e-4232-9f34-e7ede6dd62b0",
+      "url": "https://cresolcarreiras.gupy.io/job/eyJqb2JJZCI6MTI3NDg3MDYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas | SISTEMAS 6 | Cresol Confederação",
+      "publishedAt": "2026-10-19T20:14:50.009Z",
+      "objectiveFiltersPass": true,
+      "score": 55,
+      "blockers": [],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "715ad172-9164-4b64-9abe-f7cebade45fd",
+      "url": "https://yduqstech.gupy.io/job/eyJqb2JJZCI6MTI3NDk0MDEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "PESSOA ANALISTA DE SISTEMAS – SAP FI/CO",
+      "publishedAt": "2026-10-19T20:55:06.739Z",
+      "objectiveFiltersPass": true,
+      "score": 0,
+      "blockers": [],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "eb158e64-5a83-4855-a5c5-8bfb1ea789ab",
+      "url": "https://vemprasabesp.gupy.io/job/eyJqb2JJZCI6MTI3MjQ2NzYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista em Sistemas de Saúde e Segurança I",
+      "publishedAt": "2026-10-20T13:00:03.764Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "e8322725-446a-404f-a6e6-955afc240c14",
+      "url": "https://carreirasomie.gupy.io/job/eyJqb2JJZCI6MTI3NDc1NzgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas PL - Serviços Financeiros",
+      "publishedAt": "2026-10-20T13:25:57.954Z",
+      "objectiveFiltersPass": true,
+      "score": 0,
+      "blockers": [],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "ad18e338-d04c-4cab-b0e2-f6e00b7ae074",
+      "url": "https://rubeus.gupy.io/job/eyJqb2JJZCI6MTI3NTMwMDAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Suporte de Sistemas Júnior",
+      "publishedAt": "2026-10-20T15:00:13.759Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "b9b99cc7-bb98-494f-9748-0537c09c2ed3",
+      "url": "https://unimedsulcapixaba.gupy.io/job/eyJqb2JJZCI6MTI3NTMxNjAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas | TOTVS Protheus",
+      "publishedAt": "2026-10-20T15:10:27.516Z",
+      "objectiveFiltersPass": false,
+      "score": 0,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "7e2b70a3-e5f4-4d8c-a034-c93738233da0",
+      "url": "https://unimedsulcapixaba.gupy.io/job/eyJqb2JJZCI6MTI3NTMzNDMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas | MV Soul",
+      "publishedAt": "2026-10-20T15:15:27.081Z",
+      "objectiveFiltersPass": false,
+      "score": 0,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "2cde7a1e-1b1d-4913-a1be-62bd2d6cd48c",
+      "url": "https://grupojbs.gupy.io/job/eyJqb2JJZCI6MTI3NTM2NjcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistema de Gestão - ALP",
+      "publishedAt": "2026-10-20T16:06:07.737Z",
+      "objectiveFiltersPass": false,
+      "score": 18,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "97498833-170f-4219-916b-c91bf637a4f7",
+      "url": "https://adimax.gupy.io/job/eyJqb2JJZCI6MTI2NzU1MjAsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "ANALISTA DE SUPORTE DE SISTEMAS PLENO (NOTURNO)",
+      "publishedAt": "2026-10-20T20:26:56.304Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "d67b794b-47e8-49ca-bb19-b3c55e23cc6c",
+      "url": "https://empresavagasconfidenciais.gupy.io/job/eyJqb2JJZCI6MTI3NjAxNzMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas Pleno",
+      "publishedAt": "2026-10-21T14:35:49.204Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "7bbca6c5-b180-4e0e-8c2a-1f5012518d75",
+      "url": "https://waybrasil.gupy.io/job/eyJqb2JJZCI6MTI3NjE5MTUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistema I",
+      "publishedAt": "2026-10-21T16:39:56.133Z",
+      "objectiveFiltersPass": false,
+      "score": 35,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "2d886b1c-bd45-4d3f-89cd-db8e63a8a954",
+      "url": "https://vempralanlink.gupy.io/job/eyJqb2JJZCI6MTI3NTM3NTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas de Automação DevOps - Sênior",
+      "publishedAt": "2026-10-21T21:24:28.478Z",
+      "objectiveFiltersPass": true,
+      "score": 49,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "60ab3b4b-03d1-41f9-9985-67fd5bde3792",
+      "url": "https://vempralanlink.gupy.io/job/eyJqb2JJZCI6MTI3NTM2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas de Automação - Servidores de Aplicação Sênior",
+      "publishedAt": "2026-10-21T21:32:21.348Z",
+      "objectiveFiltersPass": true,
+      "score": 49,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    },
+    {
+      "id": "f131094c-e596-4bc8-9a2e-ac3ccb259629",
+      "url": "https://cargolift.gupy.io/job/eyJqb2JJZCI6MTI3NjY2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "title": "Analista de Sistemas Sr (TOTVS Protheus)",
+      "publishedAt": "2026-10-22T12:23:54.295Z",
+      "objectiveFiltersPass": false,
+      "score": 49,
+      "blockers": [
+        "Senioridade exigida ainda não confirmada no perfil.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "minimum": 70,
+      "professionalPass": false
+    }
+  ],
+  "dailyConfirmedAutomatic": 0
+}

@@ -1,0 +1,182 @@
+{
+  "at": "2026-10-23T17:47:23.592Z",
+  "readOnly": true,
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "filtersUnchanged": true,
+  "jobsInWorkspace": 476,
+  "uniquePublications": 476,
+  "recentNotKnownClosed": 146,
+  "cohortMethod": "Exclusive title regex families in existing personal inventory, known publication within rolling 14 days, not known closed. No new feed reads. Not other candidates' eligibility, fresh arrival rate, permission or available application capacity.",
+  "cohorts": {
+    "software_infra": {
+      "records": 97,
+      "withObservedPublicForm": 32,
+      "byHost": {
+        "job-boards.greenhouse.io": 4,
+        "jobs.lever.co": 42,
+        "equatorialenergia.gupy.io": 1,
+        "unimedfortaleza.gupy.io": 1,
+        "adimax.gupy.io": 2,
+        "jobs.quickin.io": 1,
+        "vemprapixeon.gupy.io": 1,
+        "candidatos.abler.com.br": 5,
+        "weg.gupy.io": 1,
+        "specialdogcompany.gupy.io": 1,
+        "softplan.gupy.io": 1,
+        "j-f.gupy.io": 1,
+        "grupoboticario.gupy.io": 1,
+        "kryptus.gupy.io": 2,
+        "2024conf.gupy.io": 1,
+        "lamoda.gupy.io": 1,
+        "vissimo.gupy.io": 1,
+        "alterdata.gupy.io": 1,
+        "saquerstech.gupy.io": 1,
+        "consultoria-rh-recife.gupy.io": 1,
+        "vagasstefanini.gupy.io": 1,
+        "brainfarma.gupy.io": 2,
+        "essentiagroup.gupy.io": 1,
+        "bancorbras.gupy.io": 1,
+        "unijui.gupy.io": 1,
+        "cepel.gupy.io": 1,
+        "brisanet.gupy.io": 1,
+        "seconci-sp.gupy.io": 1,
+        "cargolift.gupy.io": 2,
+        "randoncorp.gupy.io": 1,
+        "vempralibbs.gupy.io": 1,
+        "makroengenharia.gupy.io": 1,
+        "talentosinovasaude.gupy.io": 1,
+        "domo.gupy.io": 1,
+        "cresolcarreiras.gupy.io": 1,
+        "yduqstech.gupy.io": 1,
+        "vemprasabesp.gupy.io": 1,
+        "carreirasomie.gupy.io": 1,
+        "rubeus.gupy.io": 1,
+        "unimedsulcapixaba.gupy.io": 2,
+        "empresavagasconfidenciais.gupy.io": 1,
+        "vempralanlink.gupy.io": 2,
+        "alleasy.com.br": 1
+      }
+    },
+    "other_or_unclassified": {
+      "records": 30,
+      "withObservedPublicForm": 1,
+      "byHost": {
+        "job-boards.greenhouse.io": 7,
+        "jobs.lever.co": 16,
+        "jdrel.gupy.io": 1,
+        "ttech.gupy.io": 1,
+        "grupojbs.gupy.io": 1,
+        "waybrasil.gupy.io": 1,
+        "alleasy.com.br": 3
+      }
+    },
+    "data_analytics": {
+      "records": 11,
+      "withObservedPublicForm": 0,
+      "byHost": {
+        "job-boards.greenhouse.io": 4,
+        "jobs.lever.co": 7
+      }
+    },
+    "sales_marketing": {
+      "records": 5,
+      "withObservedPublicForm": 0,
+      "byHost": {
+        "job-boards.greenhouse.io": 3,
+        "jobs.lever.co": 2
+      }
+    },
+    "support_operations": {
+      "records": 3,
+      "withObservedPublicForm": 0,
+      "byHost": {
+        "jobs.lever.co": 3
+      }
+    }
+  },
+  "currentOwnerCompatible": [
+    {
+      "id": "06c71f53-5d17-4975-84b4-9fcc7c0ebfa4",
+      "title": "Analista Desenvolvedor(a) C#/.NET Pleno",
+      "url": "https://vemprapixeon.gupy.io/job/eyJqb2JJZCI6MTI3MjUxMzksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "score": 92,
+      "resolution": "no_destination",
+      "destinationStates": [
+        "login_required"
+      ],
+      "existingApplicationIds": []
+    },
+    {
+      "id": "bb0770a9-fdaf-48ad-877e-aede1553b921",
+      "title": "Desenvolvedor(a) Full Stack (com ênfase em Frontend)",
+      "url": "https://vissimo.gupy.io/job/eyJqb2JJZCI6MTI3MjIxOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "score": 70,
+      "resolution": "no_destination",
+      "destinationStates": [
+        "login_required"
+      ],
+      "existingApplicationIds": []
+    },
+    {
+      "id": "0db3bdc1-db2e-49c6-95b3-8f46bfb6e09a",
+      "title": "ANALISTA DE DESENVOLVIMENTO DE SISTEMAS",
+      "url": "https://bancorbras.gupy.io/job/eyJqb2JJZCI6MTI3MjM4NTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "score": 78,
+      "resolution": "no_destination",
+      "destinationStates": [
+        "login_required"
+      ],
+      "existingApplicationIds": []
+    }
+  ],
+  "dailyConfirmedAutomatic": 0,
+  "quotaReservedToday": 1,
+  "globalTi": {
+    "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+    "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+    "status": "Resultado desconhecido",
+    "receipt": null,
+    "submittedAt": null,
+    "attempts": [
+      {
+        "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+        "startedAt": "2026-10-23T13:52:21.765Z",
+        "finishedAt": "2026-10-23T13:52:39.795Z",
+        "outcome": "unknown",
+        "executor": "ats_browser",
+        "origin": "user_triggered_automation",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "receipt": null
+      }
+    ]
+  },
+  "gupyCloudMetadata": {
+    "saved": false
+  },
+  "routine": {
+    "enabled": true,
+    "mode": "automatic",
+    "destinationPolicy": "official",
+    "time": "08:00",
+    "dailyLimit": 5,
+    "minScore": 70,
+    "lastRun": "2026-10-23T16:24:47.306Z",
+    "nextRun": "2026-10-24T11:00:00.000Z",
+    "progress": {
+      "day": "2026-10-23",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 1,
+      "remaining": 4,
+      "state": "waiting",
+      "message": "1 tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente. 5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-23T16:26:17.467Z"
+    }
+  },
+  "latestRun": {
+    "id": "00a7e756-1a5c-4261-9f77-3a2eb78c8cca",
+    "at": "2026-10-23T16:22:43.502Z",
+    "origin": "user_triggered_automation",
+    "status": "completed"
+  }
+}

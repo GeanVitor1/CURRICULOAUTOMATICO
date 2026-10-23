@@ -69,6 +69,7 @@ export interface Store {
   portalMetadata(userId: string, portal: CandidatePortal): Promise<unknown>;
   routines(): Promise<{ id: string; routine: Workspace["routine"] }[]>;
   sendingWorkspaceIds(): Promise<{ id: string }[]>;
+  pendingSingleSubmissionWorkspaceIds(): Promise<{ id: string }[]>;
   historicalAttempts(userId: string, day: string): Promise<number>;
   catalogMetadata(): Promise<Record<string, any>[]>;
   health(): Promise<void>;
@@ -88,6 +89,8 @@ export const keys: Record<Table, string[]> = {
   applicationUsage: ["applicationId"],
   sourceCatalog: ["key"],
   discoveryTasks: ["id"],
+  resolutionTasks: ["id"],
+  opportunityCatalog: ["key"],
 };
 export const collectionNames: Record<Table, string> = {
   users: "users",
@@ -103,4 +106,6 @@ export const collectionNames: Record<Table, string> = {
   applicationUsage: "application_usage",
   sourceCatalog: "source_catalog",
   discoveryTasks: "discovery_tasks",
+  resolutionTasks: "resolution_tasks",
+  opportunityCatalog: "opportunity_catalog",
 };

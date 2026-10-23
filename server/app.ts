@@ -1,3 +1,4 @@
+import { sendAtsApplication } from "./ats-execution";
 import "dotenv/config";
 import Fastify, { type FastifyRequest, type FastifyReply } from "fastify";
 import cookie from "@fastify/cookie";
@@ -105,6 +106,17 @@ import {
   queuePreparedApplications,
 } from "./operations";
 import { requireResumeReview } from "./resume-state";
+import { submissionReadiness } from "./submission-eligibility";
+import { candidateDetailsReady } from "../shared/candidate-details";
+import { applicationPreferencesSchema } from "./application-preferences";
+import { gmailConnection, disconnectGmail } from "./gmail-connection";
+import { verifyEmailDestination } from "./email-destination";
+import {
+  applyCandidateDetails,
+  candidateDetailsSchema,
+} from "./candidate-details";
+import { workspaceDailyLimit, releasePausedReservations, billingDay } from "./billing";
+import { dailySubmissionAttempts } from "./submission-attempts";
 import { RequestError } from "./errors";
 import { queue, configureSchedule } from "./queue";
 import { enqueueDiscovery } from "./discovery-queue";
@@ -133,7 +145,15 @@ import {
   GOOGLE_COOKIE_PATH,
 } from "./google-oauth";
 import { applicationCapabilities } from "./automation-capabilities";
+import { independentExecutionAvailable } from "./ats-registry";
+import { sensitiveQuestion } from "./approved-answers";
+import { prepareQuestionDrafts, savedQuestionDrafts } from "./question-drafts";
+import { withDiscoveryBudget } from "./discovery-budget";
+import { applicationPreferenceFields } from "../shared/application-preferences";
+import { resolveApplicationDestinations } from "./destination-resolver";
 import { cloudPortalEnabled } from "./portal-cloud-policy";
+import { cloudPortalCommand } from "./portal-cloud";
+import { gupyBrowserSessionSchema } from "./gupy-browser-session";
 import { dispatchNextApplication } from "./submission-dispatch";
 import {
   accountPlan,
@@ -358,7 +378,7 @@ export async function buildApp({ serveStatic = true } = {}) {
   }
   app.get("/api/health", async () => {
     await healthDb();
-    return { status: "ok", database: databaseKind };
+    return { status: "ok", database: databaseKind, revision: process.env.EMPREGATOS_REVISION || "development" };
   });
   app.get("/api/auth/me", async (req) => {
     const { user: u, session } = await sessionIdentity(req);
@@ -415,7 +435,7 @@ export async function buildApp({ serveStatic = true } = {}) {
   async function startGoogle(
     req: FastifyRequest,
     reply: FastifyReply,
-    intent: "signin" | "link" | "reauthenticate",
+    intent: "signin" | "link" | "reauthenticate" | "gmail",
   ) {
     const config = googleOAuthConfig();
     if (!config)
@@ -459,7 +479,7 @@ export async function buildApp({ serveStatic = true } = {}) {
   });
   app.post("/api/auth/google/start", googleRateLimit, async (req, reply) => {
     const { intent } = z
-      .object({ intent: z.enum(["link", "reauthenticate"]) })
+      .object({ intent: z.enum(["link", "reauthenticate", "gmail"]) })
       .parse(req.body);
     const { session } = await sessionIdentity(req);
     // Existing sessions created before OAuth used Strict; let this one survive the redirect.
@@ -494,7 +514,7 @@ export async function buildApp({ serveStatic = true } = {}) {
         return reply.redirect("/app");
       }
       return reply.redirect(
-        `/app?google=${result.intent === "link" ? "linked" : "reauthenticated"}#conta`,
+        result.intent === "gmail" ? "/app?gmail=connected#preferencias" : `/app?google=${result.intent === "link" ? "linked" : "reauthenticated"}#conta`,
       );
     } catch (error) {
       const failure =
@@ -502,7 +522,7 @@ export async function buildApp({ serveStatic = true } = {}) {
           ? error
           : new GoogleOAuthError("failed");
       return reply.redirect(
-        `${failure.intent === "signin" ? "/login" : "/app"}?google_error=${encodeURIComponent(failure.reason)}${failure.intent === "signin" ? "" : "#conta"}`,
+        `${failure.intent === "signin" ? "/login" : "/app"}?google_error=${encodeURIComponent(failure.reason)}${failure.intent === "signin" ? "" : failure.intent === "gmail" ? "#preferencias" : "#conta"}`,
       );
     }
   });
@@ -579,6 +599,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     const sending = await applicationCapabilities(u.id, w.resumes[0]?.id || "");
     const workers = queue ? await queue.getWorkers().catch(() => []) : [];
     w.infrastructure = {
+      candidateDetailsRequired: !w.demo && !candidateDetailsReady(w.profile),
       database: databaseKind,
       queue: queue
         ? "BullMQ + Redis"
@@ -586,6 +607,7 @@ export async function buildApp({ serveStatic = true } = {}) {
           ? `Vercel Queues + ${databaseKind}`
           : "Agendador local persistente",
       automatic:
+        independentExecutionAvailable() ||
         sending.some(
           (site) =>
             site.automatic &&
@@ -718,7 +740,91 @@ export async function buildApp({ serveStatic = true } = {}) {
     const { id } = await scope(req);
     const p = profileSchema.parse(req.body);
     await mutateWorkspace(id, (w) => {
-      w.profile = p;
+      const previous = w.profile;
+      w.profile = {
+        ...p, approvedAnswers: previous.approvedAnswers,
+        applicationPreferences: previous.applicationPreferences,
+        answerPolicy: previous.answerPolicy,
+        acceptsPj: previous.acceptsPj,
+        compensationDisclosure: previous.compensationDisclosure,
+        currentCompensation: previous.currentCompensation,
+      };
+      if (
+        p.phone === previous.phone &&
+        p.location === previous.location &&
+        p.years === previous.years &&
+        p.salaryDesired === previous.salaryDesired
+      )
+        w.profile.candidateDetailsConfirmedAt =
+          previous.candidateDetailsConfirmedAt;
+      refreshMatches(w);
+    });
+    return { ok: true };
+  });
+  app.get("/api/email/connection", async req => {
+    const {u} = await scope(req); return gmailConnection(u.id);
+  });
+  app.get("/api/automation/conversion", async req => {
+    const {id,u}=await scope(req);
+    const w=(await readWorkspace(id))!;
+    const [{automationConversion},native,email]=await Promise.all([
+      import("./automation-conversion"),readyPortals(u.id,w.resumes[0]?.id||""),gmailConnection(u.id),
+    ]);
+    return automationConversion(w,native,email.connected);
+  });
+  app.post("/api/internal/queue-integration",async req=>{
+    const {publishQueueIntegration}=await import("./queue-integration-producer");
+    const body=z.object({replay:z.boolean().optional(),discovery:z.boolean().optional()}).parse(req.body);
+    return publishQueueIntegration(req.headers['x-queue-integration-key'],body.replay,body.discovery);
+  });
+  app.delete("/api/email/connection", async req => {
+    const {u,demo} = await scope(req);
+    if (demo) throw new RequestError("Use sua conta real.");
+    await disconnectGmail(u.id); return {ok:true};
+  });
+  app.put("/api/answer-policy", async req => {
+    const { id, demo } = await scope(req);
+    if (demo) throw new RequestError("Use sua conta real.");
+    const body=z.object({enabled:z.boolean(),confirmation:z.literal(true)}).parse(req.body);
+    await mutateWorkspace(id,w=>{
+      w.profile.answerPolicy={enabled:body.enabled,missing:"no",confirmedAt:new Date().toISOString()};
+      if (body.enabled && w.routine.enabled && w.routine.mode==="automatic") {
+        for (const a of w.applications) {
+          if (a.status!=="Requer ação manual" || !a.missingQuestions?.length || a.receipt || a.submittedAt || a.singleSubmission) continue;
+          // Only resume definitive pre-submit pauses; unknown submissions are never retried.
+          if (a.resumeState?.kind==="ats" || !a.history.some(event=>event.message.startsWith("Envio iniciado."))) {
+            a.status="Aguardando aprovação";
+            a.updatedAt=new Date().toISOString();
+            a.history.push({at:a.updatedAt,actor:"Usuário",message:"Autorizou respostas automáticas com resposta negativa na ausência de informação. Retomar preparação antes do envio."});
+          }
+        }
+      }
+    });
+    if (body.enabled) {
+      const {enqueueResolution}=await import("./resolution-queue");
+      await enqueueResolution(id);
+      await dispatchNextApplication(id);
+    }
+    return {ok:true};
+  });
+  app.put("/api/application-preferences", async (req) => {
+    const { id, demo } = await scope(req);
+    if (demo) throw new RequestError("Salve suas respostas na sua conta real.");
+    const { confirmation: _confirmation, ...answers } = applicationPreferencesSchema.parse(req.body);
+    await mutateWorkspace(id, (w) => {
+      w.profile.applicationPreferences = { ...answers, confirmedAt: new Date().toISOString() };
+    });
+    return { ok: true };
+  });
+  app.put("/api/candidate-details", async (req) => {
+    const { id, demo } = await scope(req);
+    if (demo)
+      throw new RequestError(
+        "Confirme seus dados no espaço da sua conta real.",
+      );
+    const details = candidateDetailsSchema.parse(req.body);
+    await mutateWorkspace(id, (w) => {
+      applyCandidateDetails(w, details);
       refreshMatches(w);
     });
     return { ok: true };
@@ -730,6 +836,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     const linkedIdentity = await linkedinIdentity(u.id);
     return candidatePortals.map((site) => ({
       id: site,
+      independentAutomatic: independentExecutionAvailable(),
       name: portals[site].name,
       discovery: publicDiscoveryAvailable(
         site,
@@ -772,6 +879,19 @@ export async function buildApp({ serveStatic = true } = {}) {
       automatic: connections.find((connection) => connection.id === site)!
         .automatic,
     }));
+  });
+  app.delete("/api/profile/answers/:answerId", async (req) => {
+    const { id } = await scope(req);
+    const answerId = z
+      .string()
+      .uuid()
+      .parse((req.params as any).answerId);
+    await mutateWorkspace(id, (w) => {
+      w.profile.approvedAnswers = w.profile.approvedAnswers?.filter(
+        (answer) => answer.id !== answerId,
+      );
+    });
+    return { ok: true };
   });
   const oauthProvider = z.enum(["linkedin", "infojobs-es"]);
   app.get("/api/oauth/connections", async (req) => {
@@ -863,6 +983,23 @@ export async function buildApp({ serveStatic = true } = {}) {
     }
     return { u, portal };
   };
+  app.post("/api/connections/:portal/browser-session", {
+    config: { rateLimit: { max: 4, timeWindow: "1 minute" } },
+  }, async (req, reply) => {
+    const { u, portal } = await connectionScope(req, true);
+    if (portal !== "gupy") throw new RequestError("Esta conexão está disponível somente para a Gupy.");
+    const body = z.object({
+      authorizeSessionTransfer: z.literal(true),
+      state: gupyBrowserSessionSchema,
+    }).strict().parse(req.body);
+    reply.header("Cache-Control", "no-store");
+    if (!cloudPortalEnabled(u.id, "gupy"))
+      throw new RequestError("A conexão da Gupy não está disponível para esta conta.");
+    return cloudPortalCommand(u.id, "gupy", {
+      op: "import-browser-session", browserSession: body.state,
+      viewerOrigin: req.headers.origin || appOrigins()[0],
+    });
+  });
   app.post(
     "/api/connections/:portal/open",
     { config: { rateLimit: { max: 6, timeWindow: "1 minute" } } },
@@ -971,21 +1108,29 @@ export async function buildApp({ serveStatic = true } = {}) {
         throw new RequestError("O currículo escolhido não foi encontrado.");
     }
     if (cloud) {
-      z.object({
-        authorizeAutomation: z.literal(true),
-        profileResumeId: z.string().min(1),
-      }).parse(req.body);
-      const w = await readWorkspace(`${u.id}:live`);
-      if (
-        !w?.profile.confirmed ||
-        !w.interview?.completed ||
-        w.interview.answers.resumeId !== profileResumeId ||
-        !w.interview.answers.sites.includes(portal) ||
-        !w.resumes.some((r) => r.id === profileResumeId && r.approved)
-      )
-        throw new RequestError(
-          "Confirme o currículo e conclua as preferências antes de liberar os envios.",
-        );
+      if ((req.body as any)?.connectionOnly === true) {
+        z.object({
+          connectionOnly: z.literal(true),
+          authorizeAutomation: z.literal(false),
+          profileResumeId: z.null(),
+        }).strict().parse(req.body);
+      } else {
+        z.object({
+          authorizeAutomation: z.literal(true),
+          profileResumeId: z.string().min(1),
+        }).parse(req.body);
+        const w = await readWorkspace(`${u.id}:live`);
+        if (
+          !w?.profile.confirmed ||
+          !w.interview?.completed ||
+          w.interview.answers.resumeId !== profileResumeId ||
+          !w.interview.answers.sites.includes(portal) ||
+          !w.resumes.some((r) => r.id === profileResumeId && r.approved)
+        )
+          throw new RequestError(
+            "Confirme o currículo e conclua as preferências antes de liberar os envios.",
+          );
+      }
     }
     const result = await finishPortalLogin(
       u.id,
@@ -1043,6 +1188,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     if (demo && body.start !== "save")
       throw new RequestError("A demonstração não inicia buscas ou envios.");
     const availableSites = [
+      ...(independentExecutionAvailable() ? ["independent"] : []),
       ...automaticPortals(),
       ...(await readyPortals(u.id, body.answers.resumeId)),
     ];
@@ -1242,15 +1388,21 @@ export async function buildApp({ serveStatic = true } = {}) {
       const w = (await readWorkspace(id))!;
       nativeSites = await readyPortals(u.id, w.resumes[0]?.id || "");
       const available = [...automaticPortals(), ...nativeSites];
+      const gmail = await gmailConnection(u.id);
+      const emailAvailable = gmail.connected && gmail.email?.toLowerCase() === w.profile.email.toLowerCase();
       const selected =
         w.interview?.answers.sites ||
         w.sources
           .filter((source) => source.enabled && source.type === "portal")
           .map((source) => source.board);
+      if (r.destinationPolicy === "official" && !independentExecutionAvailable() && !emailAvailable)
+        throw new RequestError("O envio pelos formulários oficiais ainda não está disponível nesta instalação. A busca e a preparação continuam disponíveis.");
       if (
-        (!selected.length && !supportsAutomatic()) ||
-        (selected.length > 0 &&
-          !selected.some((site) => available.includes(site)))
+        !independentExecutionAvailable() &&
+        !emailAvailable &&
+        ((!selected.length && !supportsAutomatic()) ||
+          (selected.length > 0 &&
+            !selected.some((site) => available.includes(site))))
       ) {
         const capabilities = await applicationCapabilities(
           u.id,
@@ -1284,8 +1436,46 @@ export async function buildApp({ serveStatic = true } = {}) {
       if (r.enabled && r.mode === "automatic")
         queuePreparedApplications(w, nativeSites);
     });
-    if (r.enabled && r.mode === "automatic") await dispatchNextApplication(id);
+    if (r.enabled && r.mode === "automatic") {
+      await dispatchNextApplication(id);
+      await (await import("./automatic-cycle")).continueAutomaticCycle(id);
+    }
     return { ok: true };
+  });
+  app.post("/api/routine/process", async (req) => {
+    const { id, u, demo } = await scope(req);
+    const { jobId } = z.object({jobId:z.string().min(1).max(100).optional()}).parse(req.body || {});
+    if (demo) throw new RequestError("Use sua conta real.");
+    const snapshot = (await readWorkspace(id))!;
+    if (!snapshot.routine.enabled || snapshot.routine.mode !== "automatic")
+      throw new RequestError("Ative o envio automático antes de processar as vagas.");
+    const nativeSites = await readyPortals(u.id, snapshot.interview?.answers.resumeId || snapshot.resumes[0]?.id || "");
+    const dailyLimit = (await accountPlan(u.id)).dailyLimit;
+    const queued = await mutateWorkspace(id, async (w,tx) => {
+      await releasePausedReservations(tx,u.id,w);
+      const used=await tx.count("applicationUsage",and(eq("userId",u.id),eq("day",billingDay())));
+      return queuePreparedApplications(w, nativeSites, dailyLimit-Math.max(0,used-dailySubmissionAttempts(w)), jobId);
+    });
+    await dispatchNextApplication(id);
+    await (await import("./automatic-cycle")).continueAutomaticCycle(id);
+    return { ok: true, queued };
+  });
+  app.post("/api/applications/:appId/confirm-not-submitted", async req => {
+    const {id,demo}=await scope(req);
+    if(demo) throw new RequestError("Use sua conta real.");
+    const body=z.object({confirmation:z.literal(true),reason:z.string().trim().min(10).max(1000)}).parse(req.body);
+    await mutateWorkspace(id,w=>{
+      const a=w.applications.find(a=>a.id===(req.params as {appId:string}).appId);
+      const job=a&&w.jobs.find(j=>j.id===a.jobId);
+      const destination=job?.destinations?.find(d=>d.state==="verified"&&d.formFound&&d.url===a?.destinationUrl);
+      if(!a || !job || !destination || a.receipt || a.submittedAt || !a.resumeId || !["Resultado desconhecido","Falha no envio"].includes(a.status))
+        throw new RequestError("Esta tentativa não permite revisão de ausência de envio.");
+      a.status="Requer ação manual";
+      a.updatedAt=new Date().toISOString();
+      a.resumeState={resumeId:a.resumeId,destinationUrl:job.url,targetUrl:destination.url,kind:"ats",recordedAt:a.updatedAt};
+      a.history.push({at:a.updatedAt,actor:"Usuário",message:`Confirmou após verificação que a candidatura não foi enviada: ${body.reason} O envio não foi reiniciado; é necessária nova autorização.`});
+    });
+    return {ok:true};
   });
   app.post(
     "/api/discover",
@@ -1394,12 +1584,331 @@ export async function buildApp({ serveStatic = true } = {}) {
     });
     return { ok: true };
   });
+  app.post(
+    "/api/jobs/:jobId/resolve",
+    { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } },
+    async (req) => {
+      const { id, demo } = await scope(req);
+      if (demo)
+        throw new RequestError(
+          "A demonstração não consulta destinos externos.",
+        );
+      const jobId = z
+        .string()
+        .uuid()
+        .parse((req.params as any).jobId);
+      const { enqueueResolution, researchAllowance } =
+        await import("./resolution-queue");
+      let cached = false;
+      await mutateWorkspace(id, (w) => {
+        const job = w.jobs.find((item) => item.id === jobId);
+        if (!job || job.discarded || job.availability === "closed")
+          throw new RequestError("Vaga indisponível para verificar destinos.");
+        cached =
+          !!job.resolution && Date.parse(job.resolution.retryAt) > Date.now();
+        if (!cached && researchAllowance(w) <= 0)
+          throw new RequestError(
+            "O limite diário de pesquisa de destinos foi atingido. Tente novamente amanhã.",
+          );
+      });
+      if (cached) return { taskId: null, status: "cached" };
+      return { taskId: await enqueueResolution(id, [jobId]), status: "queued" };
+    },
+  );
   app.post("/api/applications", async (req) => {
     const { id } = await scope(req);
-    const { jobId, resumeId } = z
-      .object({ jobId: z.string().uuid(), resumeId: z.string().optional() })
+    const { jobId, resumeId, acceptMissingData } = z
+      .object({ jobId: z.string().uuid(), resumeId: z.string().optional(), acceptMissingData: z.literal(true).optional() })
       .parse(req.body);
-    return mutateWorkspace(id, (w) => prepare(w, jobId, resumeId));
+    return mutateWorkspace(id, (w) => prepare(w, jobId, resumeId, acceptMissingData));
+  });
+  app.post("/api/jobs/:jobId/email-destination", async req => {
+    const {id,demo,u} = await scope(req);
+    if (demo) throw new RequestError("Use sua conta real.");
+    const body=z.object({employerUrl:z.string().url().max(2000).optional()}).parse(req.body);
+    const jobId=(req.params as {jobId:string}).jobId;
+    const w=await readWorkspace(id), job=w?.jobs.find(item=>item.id===jobId);
+    if (!job) throw new RequestError("Vaga não encontrada.");
+    const destination=await verifyEmailDestination(job,body.employerUrl);
+    const dailyLimit=(await accountPlan(u.id)).dailyLimit;
+    const nativeSites=await readyPortals(u.id,w!.interview?.answers.resumeId || w!.resumes[0]?.id || '');
+    await mutateWorkspace(id,async (current,tx)=>{
+      const currentJob=current.jobs.find(item=>item.id===jobId);
+      if (!currentJob || currentJob.url !== destination.publicationUrl || currentJob.company !== job.company || currentJob.title !== job.title)
+        throw new RequestError("A vaga mudou durante a verificação. Atualize a página.");
+      currentJob.emailDestination=destination;
+      if(destination.publishedAt) currentJob.publishedAt=destination.publishedAt;
+      await releasePausedReservations(tx,u.id,current);
+      queuePreparedApplications(current,nativeSites,dailyLimit,jobId);
+    });
+    await dispatchNextApplication(id);
+    return {ok:true,destination};
+  });
+  app.get("/api/applications/:appId/readiness", async (req) => {
+    const { id, u } = await scope(req);
+    const w = (await readWorkspace(id))!;
+    const application = w.applications.find(
+      (a) => a.id === (req.params as any).appId,
+    );
+    if (!application) throw new RequestError("Candidatura não encontrada.");
+    const sites = await readyPortals(u.id, application.resumeId || "");
+    const result = submissionReadiness(
+      w,
+      application,
+      sites,
+      (await accountPlan(u.id)).dailyLimit,
+    );
+    if (result.method === "email") {
+      const connection=await gmailConnection(u.id);
+      if (!connection.connected || connection.email?.toLowerCase() !== w.profile.email.toLowerCase()) {
+        result.blockers.push("Conecte seu Gmail para candidaturas nas preferências."); result.ready=false;
+      }
+    }
+    if (!automationAvailable()) {
+      result.blockers.push(
+        "O serviço de envio está indisponível. Tente novamente mais tarde.",
+      );
+      result.ready = false;
+    }
+    return result;
+  });
+  app.post("/api/applications/:appId/send", async (req) => {
+    const { id, u, demo } = await scope(req);
+    if (demo) throw new RequestError("Envios exigem uma conta real.");
+    if (!automationAvailable())
+      throw new RequestError("O serviço de envio está indisponível.");
+    const body = z
+      .object({
+        confirmation: z.literal(true),
+        resumeId: z.string().min(1).max(100),
+        destinationUrl: z.string().url().max(2000),
+        method: z.enum(["webhook", "browser", "ats_browser", "email"]),
+      })
+      .parse(req.body);
+    const nativeSites = await readyPortals(u.id, body.resumeId);
+    await mutateWorkspace(id, async (w, tx) => {
+      const application = w.applications.find(
+        (a) => a.id === (req.params as any).appId,
+      );
+      if (!application) throw new RequestError("Candidatura não encontrada.");
+      const readiness = submissionReadiness(
+        w,
+        application,
+        nativeSites,
+        await workspaceDailyLimit(tx, id, w.routine.dailyLimit),
+      );
+      if (!readiness.ready)
+        throw new RequestError(readiness.blockers.join(" "));
+      if (
+        readiness.resumeId !== body.resumeId ||
+        readiness.destinationUrl !== body.destinationUrl ||
+        readiness.method !== body.method
+      )
+        throw new RequestError(
+          "O currículo ou destino mudou. Atualize a revisão antes de autorizar.",
+        );
+      // Repeated clicks only republish the same durable authorization and idempotency key.
+      if (
+        application.status === "Aguardando aprovação" &&
+        application.singleSubmission &&
+        Date.parse(application.singleSubmission.expiresAt) > Date.now()
+      )
+        return;
+      const at = new Date().toISOString();
+      application.singleSubmission = {
+        confirmedAt: at,
+        expiresAt: new Date(Date.now() + 30 * 60000).toISOString(),
+        resumeId: body.resumeId,
+        destinationUrl: body.destinationUrl,
+        method: body.method,
+      };
+      application.status = "Aguardando aprovação";
+      application.mode = "single";
+      application.updatedAt = at;
+      application.history.push({
+        at,
+        actor: "Usuário",
+        message:
+          "Autorizou somente esta candidatura com o currículo e o destino revisados. A rotina geral não foi alterada.",
+      });
+    });
+    await dispatchNextApplication(id);
+    return { ok: true, status: "queued" };
+  });
+  app.delete("/api/applications/:appId/send", async (req) => {
+    const { id } = await scope(req);
+    await mutateWorkspace(id, (w) => {
+      const application = w.applications.find(
+        (a) => a.id === (req.params as any).appId,
+      );
+      if (
+        !application?.singleSubmission ||
+        application.status !== "Aguardando aprovação"
+      )
+        throw new RequestError(
+          "Só é possível cancelar antes de iniciar o envio.",
+        );
+      application.singleSubmission.expiresAt = new Date().toISOString();
+      application.status = "Requer ação manual";
+      application.updatedAt = new Date().toISOString();
+      application.history.push({
+        at: application.updatedAt,
+        actor: "Usuário",
+        message: "Cancelou a autorização individual antes do início do envio.",
+      });
+    });
+    return { ok: true };
+  });
+  app.post("/api/applications/:appId/questions/inspect", async req => {
+    const {id, demo} = await scope(req);
+    if (demo) throw new RequestError("Use sua conta real.");
+    const snapshot = (await readWorkspace(id))!;
+    const application = snapshot.applications.find(a => a.id === (req.params as any).appId);
+    const job = snapshot.jobs.find(j => j.id === application?.jobId);
+    if (!application || !job || application.receipt || application.submittedAt || !["Requer ação manual", "Aguardando aprovação"].includes(application.status))
+      throw new RequestError("Esta candidatura não permite preparação de perguntas.");
+    let destination = job.destinations?.find(d => d.state === "verified" && d.url === application.destinationUrl);
+    if (!destination) throw new RequestError("Verifique o destino oficial antes de preparar as perguntas.");
+    if (!Number.isFinite(Date.parse(destination.expiresAt)) || Date.parse(destination.expiresAt) <= Date.now()) {
+      const refreshed = await resolveApplicationDestinations({ ...job, url: destination.url, applicationUrls: [] }, { maxPages: 2, timeoutMs: 12000 });
+      const currentDestination = refreshed.destinations?.find(d => d.state === "verified" && d.url === application.destinationUrl && Date.parse(d.expiresAt) > Date.now());
+      if (!currentDestination) throw new RequestError("Não foi possível confirmar que este formulário continua disponível. Consulte a vaga original e tente atualizar novamente.");
+      destination = currentDestination;
+      await mutateWorkspace(id, w => {
+        const currentJob = w.jobs.find(j => j.id === job.id);
+        if (currentJob) currentJob.destinations = currentJob.destinations?.map(d => d.url === currentDestination.url ? currentDestination : d);
+      });
+    }
+    const destinationUrl = destination.url;
+    const result = await sendAtsApplication({inspectOnly:true, applicationId:application.id, profile:snapshot.profile,
+      job:{title:job.title,company:job.company,url:destination.url}, resume:{name:""}, destination});
+    await mutateWorkspace(id, w => {
+      const current = w.applications.find(a => a.id === application.id);
+      if (!current || current.destinationUrl !== destinationUrl || current.receipt || current.submittedAt || !["Requer ação manual", "Aguardando aprovação"].includes(current.status))
+        throw new RequestError("A candidatura mudou durante a preparação. Atualize a página.");
+      if (result.preflightReady || result.missingQuestions) {
+        current.missingQuestions = result.missingQuestions || [];
+        current.questionOptions = result.questionOptions;
+      }
+      if (!result.preflightReady) current.status = "Requer ação manual";
+      current.updatedAt = new Date().toISOString();
+      current.history.push({at:current.updatedAt, actor:"Sistema", message:`Preparação antes do envio: ${result.message}`});
+    });
+    return {ok:true, ready:!!result.preflightReady, message:result.message};
+  });
+  app.post("/api/applications/:appId/questions/draft", { config: { rateLimit: { max: 5, timeWindow: "1 minute" } } }, async req => {
+    const { id, u, demo } = await scope(req);
+    if (demo) throw new RequestError("Use sua conta real para preparar respostas.");
+    const snapshot = (await readWorkspace(id))!;
+    const application = snapshot.applications.find(a => a.id === (req.params as any).appId);
+    if (!application || application.status !== "Requer ação manual" || application.receipt || application.submittedAt || !application.missingQuestions?.length)
+      throw new RequestError("Esta candidatura não está aguardando respostas.");
+    const resume = snapshot.resumes.find(r => r.id === application.resumeId && r.approved);
+    if (!resume) throw new RequestError("Aprove o currículo desta candidatura antes de preparar respostas.");
+    if (!application.destinationUrl) throw new RequestError("Esta candidatura não possui destino confirmado.");
+    const saved = savedQuestionDrafts(application.missingQuestions, snapshot.profile, application.destinationUrl, application.questionOptions);
+    const remaining = application.missingQuestions.filter(q => !saved.some(a => a.question === q));
+    const config = await getIntelligence(u.id);
+    let warning = "";
+    let generated: Awaited<ReturnType<typeof prepareQuestionDrafts>> = [];
+    try {
+      if (config.provider === "gemini" && config.enabled && config.consent) {
+        const preferences = snapshot.profile.applicationPreferences;
+        const confirmedFacts = snapshot.profile.confirmed && preferences?.confirmedAt
+          ? applicationPreferenceFields.filter(field => !["accessibility", "linkedin", "currentCompany"].includes(field.key))
+            .flatMap(field => preferences[field.key] ? [`${field.label}: ${preferences[field.key]}`] : []) : [];
+        generated = await withDiscoveryBudget(35000, () => prepareQuestionDrafts({ resume: resume.text, questions: remaining, confirmedFacts,
+          options: application.questionOptions, title: snapshot.jobs.find(j => j.id === application.jobId)?.title || "", model: config.model }));
+      } else warning = "Autorize a análise por IA abaixo para gerar sugestões. As respostas do perfil continuam disponíveis.";
+    } catch {
+      warning = "A IA não respondeu. Suas respostas do perfil foram preservadas. Tente novamente para gerar as demais.";
+    }
+    const answers = [...saved, ...generated.map(answer => ({ ...answer, source: "ai" as const }))];
+    const unresolved = remaining.filter(q => !generated.some(a => a.question === q)).map(question => ({question,
+      reason: sensitiveQuestion(question) ? "Esta declaração exige sua resposta pessoal." : "Confira ou complete esta informação. Não há base suficiente para responder automaticamente."}));
+    return { answers, unresolved, warning, message: `${saved.length} do perfil · ${generated.length} da IA · ${unresolved.length} para você completar.` };
+  });
+  app.put("/api/applications/:appId/answers", async (req) => {
+    const { id, u, demo } = await scope(req);
+    if (demo)
+      throw new RequestError("Respostas de envio exigem uma conta real.");
+    const body = z
+      .object({
+        confirmation: z.literal(true),
+        answers: z
+          .array(
+            z.object({
+              question: z.string().trim().min(3).max(4000),
+              value: z.string().trim().min(1).max(3000),
+              reuse: z.boolean().default(false),
+            }),
+          )
+          .min(1)
+          .max(30),
+      })
+      .parse(req.body);
+    await mutateWorkspace(id, (w) => {
+      const application = w.applications.find(
+        (a) => a.id === (req.params as any).appId,
+      );
+      if (
+        !application ||
+        application.status !== "Requer ação manual" ||
+        !application.destinationUrl
+      )
+        throw new RequestError(
+          "Esta candidatura não está aguardando respostas.",
+        );
+      for (const answer of body.answers) {
+        if (!application.missingQuestions?.includes(answer.question))
+          throw new RequestError("Pergunta não encontrada nesta candidatura.");
+        const options = application.questionOptions?.[answer.question];
+        if (options?.length && !options.includes(answer.value))
+          throw new RequestError("Selecione uma das opções do formulário para esta pergunta.");
+        const destinationOrigin = new URL(application.destinationUrl).origin;
+        w.profile.approvedAnswers ||= [];
+        w.profile.approvedAnswers = w.profile.approvedAnswers.filter(
+          (a) =>
+            a.question !== answer.question ||
+            a.destinationOrigin !== destinationOrigin,
+        );
+        w.profile.approvedAnswers.push({
+          id: randomUUID(),
+          question: answer.question,
+          aliases: [],
+          value: answer.value,
+          confirmedAt: new Date().toISOString(),
+          destinationOrigin,
+          ...(!answer.reuse || sensitiveQuestion(answer.question)
+            ? { destinationUrl: application.destinationUrl }
+            : {}),
+        });
+        if (w.profile.approvedAnswers.length > 100)
+          throw new RequestError(
+            "Limite de respostas salvas atingido. Revise seu perfil.",
+          );
+      }
+      // Clear only explicitly confirmed questions; the worker must inspect the form again.
+      {
+        const answered = new Set(body.answers.map(answer=>answer.question));
+        application.missingQuestions = application.missingQuestions?.filter(question=>!answered.has(question));
+      }
+      application.history.push({
+        at: new Date().toISOString(),
+        actor: "Usuário",
+        message:
+          "Respostas confirmadas nas Preferências para este destino. A preparação deve conferir novamente o formulário antes do envio.",
+      });
+    });
+    const snapshot = (await readWorkspace(id))!;
+    const answeredApplication = snapshot.applications.find(a => a.id === (req.params as any).appId);
+    if (answeredApplication && !answeredApplication.missingQuestions?.length && !answeredApplication.singleSubmission && snapshot.routine.enabled && snapshot.routine.mode === "automatic") {
+      const sites = await readyPortals(u.id, answeredApplication.resumeId || "");
+      const limit = (await accountPlan(u.id)).dailyLimit;
+      await mutateWorkspace(id, w => queuePreparedApplications(w, sites, limit, answeredApplication.jobId));
+      await dispatchNextApplication(id);
+    }
+    return { ok: true };
   });
   app.post("/api/applications/manual", async (req) => {
     const { id } = await scope(req);

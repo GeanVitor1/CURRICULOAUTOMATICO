@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-23T14:45:39.046Z",
+  "previous": [
+    {
+      "type": "lever",
+      "company": "CI&T",
+      "board": "ciandt"
+    },
+    {
+      "type": "greenhouse",
+      "company": "Wellhub",
+      "board": "gympass"
+    }
+  ],
+  "next": [
+    {
+      "type": "lever",
+      "company": "CI&T",
+      "board": "ciandt"
+    },
+    {
+      "type": "greenhouse",
+      "company": "Wellhub",
+      "board": "gympass"
+    },
+    {
+      "type": "greenhouse",
+      "company": "Zup Innovation",
+      "board": "zupinnovation"
+    },
+    {
+      "type": "greenhouse",
+      "company": "CodeRoad",
+      "board": "coderoad"
+    }
+  ],
+  "changedVariable": "DISCOVERY_ATS_BOARDS",
+  "filtersChanged": false,
+  "existingGrantsChanged": false,
+  "requiresDeployment": true
+}

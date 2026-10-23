@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-21T16:01:43.993Z",
+  "deployment": "dpl_8MkNsXVBAdPaoquz3Dvb6XcSNRuE",
+  "provider": "antigravity-cli",
+  "run": {
+    "id": "9a8475ca-b12f-4651-8a41-3fab5e0f00ad",
+    "status": "completed",
+    "at": "2026-10-21T15:58:32.417Z",
+    "message": "3 novas oportunidades, sem duplicações. 422 registros publicados consultados.",
+    "errors": []
+  },
+  "sources": [
+    {
+      "board": "linkedin",
+      "status": "0 anúncios encontrados · busca pública com Antigravity",
+      "lastError": null
+    },
+    {
+      "board": "gupy",
+      "status": "156 anúncios encontrados · consulta oficial",
+      "lastError": null
+    },
+    {
+      "board": "glassdoor",
+      "status": "0 anúncios encontrados · busca pública com Antigravity",
+      "lastError": null
+    },
+    {
+      "board": "infojobs",
+      "status": "0 anúncios encontrados · busca pública com Antigravity",
+      "lastError": null
+    }
+  ],
+  "progress": {
+    "day": "2026-10-21",
+    "target": 5,
+    "sent": 1,
+    "remaining": 4,
+    "state": "waiting",
+    "message": "A pesquisa de destinos de hoje terminou. Ainda faltam oportunidades com envio disponível; a rotina retoma na próxima busca.",
+    "updatedAt": "2026-10-21T16:01:28.118Z"
+  }
+}

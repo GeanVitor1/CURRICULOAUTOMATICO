@@ -1,0 +1,476 @@
+{
+  "at": "2026-10-23T10:49:39.026Z",
+  "day": "2026-10-23",
+  "readOnly": true,
+  "filters": {
+    "remoteAnywhere": true,
+    "dateKnownOnly": true,
+    "salaryMax": 0,
+    "titles": [
+      "Analista de sistemas",
+      "Desenvolvedor full stack",
+      "Desenvolvedor de software",
+      "Desenvolvedor .NET"
+    ],
+    "skills": [],
+    "levels": [],
+    "modalities": [
+      "Remoto",
+      "Presencial"
+    ],
+    "contracts": [
+      "CLT",
+      "PJ"
+    ],
+    "salaryMin": 2600,
+    "salaryOnly": false,
+    "maxYears": 50,
+    "minScore": 0,
+    "blockedCompanies": [],
+    "ageDays": 14,
+    "locations": [
+      "Ilhéus, BA"
+    ],
+    "language": "",
+    "requiredSkills": [],
+    "excludedTerms": []
+  },
+  "routine": {
+    "enabled": true,
+    "mode": "automatic",
+    "time": "08:00",
+    "dailyLimit": 5,
+    "minScore": 70,
+    "lastRun": "2026-10-22T19:21:16.234Z",
+    "nextRun": "2026-10-23T11:00:00.000Z",
+    "destinationPolicy": "official",
+    "progress": {
+      "day": "2026-10-22",
+      "target": 5,
+      "sent": 1,
+      "usedToday": 2,
+      "remaining": 3,
+      "state": "waiting",
+      "message": "4 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-22T19:23:39.542Z"
+    }
+  },
+  "confirmedProfile": true,
+  "approvedOriginalResume": true,
+  "gmailCredentialStored": true,
+  "counts": {
+    "found": 423,
+    "compatible": 13,
+    "compatiblePublishedEmail": 1,
+    "confirmedToday": 0,
+    "verifiedAutomaticToday": 0,
+    "quotaUsed": 0
+  },
+  "runs": [
+    {
+      "id": "4ca93b29-e0b9-4b0c-b0d9-b758fad9e28d",
+      "at": "2026-10-22T19:17:12.479Z",
+      "status": "completed",
+      "discovered": 12,
+      "processed": 0,
+      "errors": [],
+      "message": "12 novas oportunidades, sem duplicações. 433 registros publicados consultados.",
+      "searchSuggestions": []
+    },
+    {
+      "id": "36c02fe6-ae37-44cd-9656-db37ec43a00f",
+      "at": "2026-10-22T15:47:10.921Z",
+      "status": "completed",
+      "discovered": 411,
+      "processed": 1,
+      "errors": [],
+      "message": "411 novas oportunidades, sem duplicações. 429 registros publicados consultados.",
+      "searchSuggestions": []
+    }
+  ],
+  "tasks": [
+    {
+      "table": "discoveryTasks",
+      "items": [
+        {
+          "id": "4ca93b29-e0b9-4b0c-b0d9-b758fad9e28d",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:21:34.753Z"
+        },
+        {
+          "id": "36c02fe6-ae37-44cd-9656-db37ec43a00f",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T15:51:13.486Z"
+        }
+      ]
+    },
+    {
+      "table": "resolutionTasks",
+      "items": [
+        {
+          "id": "b72f21b3-a9ce-415d-bad0-7e507c43b812",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:23:21.687Z"
+        },
+        {
+          "id": "79830b1c-a333-4234-a37a-ffd85c2ce72a",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:22:42.894Z"
+        },
+        {
+          "id": "90e31d24-0c46-4892-91d8-4cf277c12477",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:21:55.193Z"
+        },
+        {
+          "id": "4fdd875d-1ad7-4cbd-a4c8-48c3705b484d",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:20:14.229Z"
+        },
+        {
+          "id": "662ed846-a33a-4d00-9619-5c786e639b35",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:19:22.429Z"
+        },
+        {
+          "id": "1e0111c3-9815-4f04-a67d-c50a064a6543",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:17:54.329Z"
+        },
+        {
+          "id": "fce001b6-e197-4a6f-bcfc-f02280868aa4",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:17:05.590Z"
+        },
+        {
+          "id": "0f675b5f-acd2-4162-ac0d-7b6445ba55d6",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:16:13.694Z"
+        },
+        {
+          "id": "07b90c0d-dea2-4ca0-92a1-c0174dbb5116",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:15:25.064Z"
+        },
+        {
+          "id": "ddf92d9d-5f4d-455a-8e71-c08392029699",
+          "status": "completed",
+          "attempts": 1,
+          "updatedAt": "2026-10-22T19:14:40.623Z"
+        }
+      ]
+    }
+  ],
+  "applications": [
+    {
+      "id": "5d28259a-7ce5-45b7-ac01-44e3be3e0f07",
+      "jobId": "951291ed-95ea-4c49-adcc-7550ae30d7d9",
+      "status": "Requer ação manual",
+      "receipt": null,
+      "last": "Preparação antes do envio: Este formulário exige verificação humana para liberar a submissão. As demais candidaturas automáticas podem continuar.",
+      "confirmed": false,
+      "automaticProvenance": false
+    },
+    {
+      "id": "e0004acd-37b0-4929-9812-6adf488cbb22",
+      "jobId": "77d512b1-3ecb-4be4-b54c-70df9e46fc9f",
+      "status": "Requer ação manual",
+      "receipt": null,
+      "last": "Preparação antes do envio: Este formulário exige verificação humana para liberar a submissão. As demais candidaturas automáticas podem continuar.",
+      "confirmed": false,
+      "automaticProvenance": false
+    },
+    {
+      "id": "2e01b5ce-3a63-48cd-b9a2-510077c6be6c",
+      "jobId": "c66e5504-bc62-4973-b5af-deffc4d630b9",
+      "status": "Requer ação manual",
+      "receipt": null,
+      "last": "Preparação antes do envio: Este formulário exige verificação humana para liberar a submissão. As demais candidaturas automáticas podem continuar.",
+      "confirmed": false,
+      "automaticProvenance": false
+    },
+    {
+      "id": "be38f1c8-6659-44db-9457-5215aea3340f",
+      "jobId": "7e98745c-6905-4b61-98f5-4d64869b9088",
+      "status": "Requer ação manual",
+      "receipt": null,
+      "last": "Preparação antes do envio: Este formulário exige verificação humana para liberar a submissão. As demais candidaturas automáticas podem continuar.",
+      "confirmed": false,
+      "automaticProvenance": false
+    },
+    {
+      "id": "384344bb-69b6-4924-8d97-b56508379df4",
+      "jobId": "28160d40-6851-4de6-9dbf-6f730aa8e1de",
+      "status": "Enviada",
+      "receipt": "Gmail message ID: 1a1644f34c558e49",
+      "submittedAt": "2026-10-22T15:51:15.245Z",
+      "verification": {
+        "method": "email_provider_acceptance",
+        "at": "2026-10-22T15:51:15.245Z",
+        "destinationUrl": "mailto:vaga-400246@vagas.abler.in"
+      },
+      "last": "O Gmail confirmou a aceitação da mensagem com currículo. Isso não confirma entrega, leitura ou avanço no processo. Recibo: Gmail message ID: 1a1644f34c558e49",
+      "confirmed": true,
+      "automaticProvenance": false
+    }
+  ],
+  "jobs": [
+    {
+      "id": "951291ed-95ea-4c49-adcc-7550ae30d7d9",
+      "title": "[Job-32371] Senior Angular Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/9ac4a93e-bf58-481c-a7dc-040ce7f6b728",
+      "publishedAt": "2026-10-20T18:52:39.967Z",
+      "score": 81,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": true,
+          "expiresAt": "2026-10-23T19:22:19.852Z"
+        },
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false,
+          "expiresAt": "2026-10-23T19:22:19.575Z"
+        }
+      ],
+      "resolution": "Destino independente identificado; envio depende do formulário e das permissões.",
+      "application": "Requer ação manual"
+    },
+    {
+      "id": "77d512b1-3ecb-4be4-b54c-70df9e46fc9f",
+      "title": "[Job - 31975] .NET Developer Senior, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/8d33fe81-e0c7-4708-9d69-2f1ee89daad3",
+      "publishedAt": "2026-10-22T17:18:11.741Z",
+      "score": 83,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": true,
+          "expiresAt": "2026-10-23T19:22:14.601Z"
+        },
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false,
+          "expiresAt": "2026-10-23T19:22:14.290Z"
+        }
+      ],
+      "resolution": "Destino independente identificado; envio depende do formulário e das permissões.",
+      "application": "Requer ação manual"
+    },
+    {
+      "id": "7d9f16e1-2a6d-405e-8ac3-47dd042d2dd3",
+      "title": "Pessoa Desenvolvedora .NET Sr (Remoto) - 6791",
+      "company": "Softplan",
+      "url": "https://softplan.gupy.io/job/eyJqb2JJZCI6MTI3MjY3OTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-15T11:35:33.199Z",
+      "score": 86,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [],
+      "resolution": "Nenhum destino automatizável identificado nas fontes consultadas. Outros destinos podem existir."
+    },
+    {
+      "id": "bb0770a9-fdaf-48ad-877e-aede1553b921",
+      "title": "Desenvolvedor(a) Full Stack (com ênfase em Frontend)",
+      "company": "Víssimo",
+      "url": "https://vissimo.gupy.io/job/eyJqb2JJZCI6MTI3MjIxOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-14T13:32:16.200Z",
+      "score": 75,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [],
+      "resolution": "Nenhum destino automatizável identificado nas fontes consultadas. Outros destinos podem existir."
+    },
+    {
+      "id": "0db3bdc1-db2e-49c6-95b3-8f46bfb6e09a",
+      "title": "ANALISTA DE DESENVOLVIMENTO DE SISTEMAS",
+      "company": "Oportunidades",
+      "url": "https://bancorbras.gupy.io/job/eyJqb2JJZCI6MTI3MjM4NTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-14T16:44:53.129Z",
+      "score": 78,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [],
+      "resolution": "Nenhum destino automatizável identificado nas fontes consultadas. Outros destinos podem existir."
+    },
+    {
+      "id": "14bec83f-8f29-47bc-96dd-2f69a471746f",
+      "title": "Analista de Sistemas Sênior (Ecommerce)",
+      "company": "Libbs Farmacêutica",
+      "url": "https://vempralibbs.gupy.io/job/eyJqb2JJZCI6MTI3NDE2OTgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-16T23:22:00.823Z",
+      "score": 78,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [],
+      "resolution": "Nenhum destino automatizável identificado nas fontes consultadas. Outros destinos podem existir."
+    },
+    {
+      "id": "abadeed5-dc46-45da-b48b-b91511bc8a57",
+      "title": "Banco de Talentos | Analista de Sistemas Júnior (Afirmativa PCD)",
+      "company": "domoinovacao",
+      "url": "https://domo.gupy.io/job/eyJqb2JJZCI6MTI3NDc5ODQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-19T19:02:42.709Z",
+      "score": 90,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [],
+      "resolution": "Nenhum destino automatizável identificado nas fontes consultadas. Outros destinos podem existir."
+    },
+    {
+      "id": "2d886b1c-bd45-4d3f-89cd-db8e63a8a954",
+      "title": "Analista de Sistemas de Automação DevOps - Sênior",
+      "company": "Lanlink Informática",
+      "url": "https://vempralanlink.gupy.io/job/eyJqb2JJZCI6MTI3NTM3NTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-21T21:24:28.478Z",
+      "score": 90,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [],
+      "resolution": "Nenhum destino automatizável identificado nas fontes consultadas. Outros destinos podem existir."
+    },
+    {
+      "id": "60ab3b4b-03d1-41f9-9985-67fd5bde3792",
+      "title": "Analista de Sistemas de Automação - Servidores de Aplicação",
+      "company": "Lanlink Informática",
+      "url": "https://vempralanlink.gupy.io/job/eyJqb2JJZCI6MTI3NTM2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-21T21:32:21.348Z",
+      "score": 90,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [],
+      "resolution": "Nenhum destino automatizável identificado nas fontes consultadas. Outros destinos podem existir."
+    },
+    {
+      "id": "7e98745c-6905-4b61-98f5-4d64869b9088",
+      "title": "[Job-32372] Mid level Angular Developer, vaga para pessoas PCD, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/79485904-1730-4a7a-a670-99d795acfa31",
+      "publishedAt": "2026-10-20T18:56:19.980Z",
+      "score": 83,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": true,
+          "expiresAt": "2026-10-23T19:08:23.740Z"
+        },
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false,
+          "expiresAt": "2026-10-23T19:08:23.400Z"
+        }
+      ],
+      "resolution": "Destino independente identificado; envio depende do formulário e das permissões.",
+      "application": "Requer ação manual"
+    },
+    {
+      "id": "3429e934-7e20-48f2-b258-0ab6b48e97ec",
+      "title": "[Job-31871] Senior Data Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/2441bb59-c761-4f23-87d4-8a66d82117b3",
+      "publishedAt": "2026-10-15T19:19:49.326Z",
+      "score": 78,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false,
+          "expiresAt": "2026-10-23T19:12:50.130Z"
+        }
+      ],
+      "resolution": "Destino independente identificado; envio depende do formulário e das permissões."
+    },
+    {
+      "id": "c66e5504-bc62-4973-b5af-deffc4d630b9",
+      "title": "[Job - 32379] Mid-Level Fullstack Developer (.NET / Next.JS), Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/96cef720-7006-4885-8643-5e59209d9fb1",
+      "publishedAt": "2026-10-21T20:22:28.357Z",
+      "score": 83,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": false,
+      "destinations": [
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": true,
+          "expiresAt": "2026-10-23T11:13:25.731Z"
+        },
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false,
+          "expiresAt": "2026-10-23T11:13:25.335Z"
+        }
+      ],
+      "resolution": "Destino independente identificado; envio depende do formulário e das permissões.",
+      "application": "Requer ação manual"
+    },
+    {
+      "id": "28160d40-6851-4de6-9dbf-6f730aa8e1de",
+      "title": "Analista de Sistemas Sênior",
+      "company": "Solucionare",
+      "url": "https://candidatos.abler.com.br/vagas/analista-de-sistemas-senior-724236",
+      "publishedAt": "2026-10-21T15:38:33.710Z",
+      "score": 90,
+      "compatible": true,
+      "excluded": false,
+      "blockers": [],
+      "emailPublished": true,
+      "destinations": [],
+      "resolution": "Busca cruzada parcial. Há fontes pendentes; a oportunidade será reavaliada.",
+      "application": "Enviada"
+    }
+  ]
+}

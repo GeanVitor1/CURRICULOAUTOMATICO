@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-19",
+  "deploymentId": "dpl_5k8HwL5iyzLSDnsBxwzv1ZhYe114",
+  "productionUrl": "https://curriculoautomatico.vercel.app",
+  "readyState": "READY",
+  "health": { "status": "ok", "database": "Cloud Firestore" },
+  "testsPassed": 475,
+  "testsSkipped": 11,
+  "controlledNativeGupyPipelinePassed": true,
+  "newRealEmployerSubmissions": 0,
+  "productionNativeSession": "Waiting for user login inside EmpreGatos; Chrome assistant session is separate",
+  "previousRealApplication": "https://smart.gupy.io/candidates/applications/767851604"
+}

@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-23T15:27:10.820Z",
+  "classification": "Resultado ainda desconhecido",
+  "globaltiApplicationId": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+  "attemptId": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+  "duplicateBlockPreserved": true,
+  "userReportedNoConfirmation": true,
+  "emailSearch": {
+    "provider": "Gmail connector",
+    "scope": "all folders including spam and trash",
+    "queries": [
+      "in:anywhere after:2026/10/23 {from:(quickin.io) from:(globalti.com.br) \"IMW7499\" \"Desenvolvedor Full Stack\"}",
+      "in:anywhere {from:(quickin.io) from:(globalti.com.br)}"
+    ],
+    "absenceIsNotProofOfNonReceipt": true,
+    "initialQueryMatches": 0,
+    "expandedQuery": "in:anywhere newer_than:1d {\"Global TI\" quickin} -in:sent",
+    "expandedMatches": 2,
+    "classification": "Two official access-link messages; zero application receipts or definitive absence responses",
+    "accessMessageIds": [
+      "1a1690ffbb502c55",
+      "1a1693b983beb02d"
+    ],
+    "actualAccessSender": "noreply@mailquickin.com",
+    "lastCheckedAt": "2026-10-23T15:35:11.673Z",
+    "finalQuery": "in:anywhere after:2026/10/23 {from:(globalti.com.br) from:(mailquickin.com)} -in:sent",
+    "finalMatches": 2
+  },
+  "officialCandidateLogin": "https://jobs.quickin.io/globalti/login",
+  "candidateLoginAccessRequested": true,
+  "loginUiConfirmedLinkSent": true,
+  "support": {
+    "authorizedByUser": true,
+    "to": "contato@globalti.com.br",
+    "addressSource": "https://www.globalti.com.br/",
+    "subject": "Confirmação de recebimento de candidatura — IMW7499",
+    "gmailMessageId": "1a16937d1e63856d",
+    "gmailThreadId": "1a16937d1e63856d",
+    "sentAt": "2026-10-23T14:43:48.000Z",
+    "attachments": 0,
+    "cpfIncluded": false,
+    "isNewApplication": false,
+    "responsePending": true
+  },
+  "unknownReason": "Original apply HTTP refusal discarded its status and body; stopped Sandbox read returned HTTP 410. No provider receipt or definitive absence evidence recovered.",
+  "candidateAuthentication": {
+    "officialEmailLinkUsed": true,
+    "accessEmailId": "1a1693b983beb02d",
+    "tokenStoredInArtifacts": false,
+    "authenticatedMenuOptions": [
+      "candidate account",
+      "Sair"
+    ],
+    "historyLinkPublished": false,
+    "postingVisitedReadOnly": true,
+    "postingCode": "IMW7499",
+    "receiptObserved": false,
+    "absenceProved": false
+  }
+}

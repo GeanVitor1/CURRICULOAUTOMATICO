@@ -1,0 +1,13 @@
+import {Sandbox} from '@vercel/sandbox';
+import {readFile,writeFile} from 'node:fs/promises';
+import {homedir} from 'node:os';import {join} from 'node:path';
+const a=JSON.parse(await readFile(join(homedir(),'AppData/Roaming/com.vercel.cli/Data/auth.json'),'utf8')),p=JSON.parse(await readFile('.vercel/project.json','utf8')),q=JSON.parse(await readFile('.data/queue-integration-private.json','utf8'));
+const s=await Sandbox.get({name:q.sandboxName,token:a.token,teamId:p.orgId,projectId:p.projectId});
+const urls=process.argv.includes('--globalti')?['https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0/apply']:process.argv.includes('--posting')?['https://jobs.quickin.io/insightit/jobs/6ada4a95845ace001364ca99/apply']:['https://jobs.quickin.io/insightit/jobs','https://vempralanlink.gupy.io/candidates/jobs/12753756/apply?jobBoardSource=gupy_public_page','https://vempralanlink.gupy.io/candidates/jobs/12753649/apply?jobBoardSource=gupy_public_page'];
+const script=`import{chromium}from'playwright';import{writeFile}from'node:fs/promises';const b=await chromium.launch({headless:true});const out=[];for(const url of ${JSON.stringify(urls)}){const p=await b.newPage();const requests=[];p.on('response',r=>{if(/api|job/.test(r.url())&&r.status()<400)requests.push(r.url());});try{await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});await p.waitForTimeout(8000);out.push({url,finalUrl:p.url(),text:(await p.locator('body').innerText()).slice(0,20000),forms:await p.locator("form").evaluateAll(ns=>ns.map(n=>n.outerHTML)),structured:await p.locator('script[type="application/ld+json"]').allTextContents(),links:await p.locator('a[href]').evaluateAll(ns=>ns.map(n=>({label:n.innerText,url:n.href}))),requests});}catch(e){out.push({url,error:e.name});}await p.close();}await b.close();await writeFile('/vercel/sandbox/expanded-browser.json',JSON.stringify(out,null,2));`;
+await s.writeFiles([{path:'/vercel/sandbox/portal-runtime/expanded-browser.mjs',content:Buffer.from(script)}]);
+const run=await s.runCommand({cmd:'node',args:['/vercel/sandbox/portal-runtime/expanded-browser.mjs'],cwd:'/vercel/sandbox/portal-runtime'});
+if(run.exitCode!==0)throw Error('Read-only inspection failed');
+const bytes=(await s.readFileToBuffer({path:'/vercel/sandbox/expanded-browser.json'}))!;
+await writeFile(process.argv.includes('--globalti')?'artifacts/quickin-globalti-form-inspection-2026-10-23.json':process.argv.includes('--posting')?'artifacts/quickin-official-posting-2026-10-23.json':'artifacts/expanded-browser-channels-2026-10-23.json',bytes);
+console.log(bytes.toString());

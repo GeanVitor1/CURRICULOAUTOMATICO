@@ -39,6 +39,7 @@ import { fitLinkedInVerification } from "./portal-login-layout";
 import { portalViewport, portalPixelRatio } from "../shared/portal-display";
 import { providerLoginIssue } from "./portal-login-issue";
 import { portalAccess } from "./portal-access";
+import { gupyBrowserSessionSchema, type GupyBrowserSession } from "./gupy-browser-session";
 
 type Saved = {
   connectedAt: string;
@@ -279,7 +280,7 @@ export class PortalBrowserService {
       authenticated: signed,
       ...access,
       navigationError:
-        providerLoginIssue(page.url(), text) || this.navigationError,
+        providerLoginIssue(page.url(), text, this.portal === "gupy") || this.navigationError,
     };
   }
   async close() {
@@ -317,6 +318,33 @@ export class PortalBrowserService {
         .waitFor({ state: "visible", timeout: 5000 })
         .catch(() => {});
     return this.frame();
+  }
+  async importBrowserSession(value: GupyBrowserSession) {
+    if (this.portal !== "gupy") throw new Error("Operação indisponível.");
+    const state = gupyBrowserSessionSchema.parse(value);
+    await this.close();
+    this.viewerId = randomUUID();
+    this.context = await this.createContext({
+      connectedAt: new Date().toISOString(), verifiedAt: new Date().toISOString(),
+      profileResumeId: null, state,
+    }, this.viewport.width, true, this.viewport.height);
+    this.page = await this.context.newPage();
+    this.rootPage = this.page;
+    this.expires = Date.now() + 15 * 60000;
+    try {
+      await this.page.goto(portalRules.gupy.account, { waitUntil: "domcontentloaded", timeout: 25000 });
+      await this.page.locator('#header-message-icon, button').first().waitFor({timeout:5000}).catch(() => {});
+      const frame = await this.frame();
+      if (!frame.authenticated) {
+        await this.close();
+        throw new Error("O login do Chrome não foi aceito pelo servidor da Gupy. A conta não foi conectada. Nenhuma candidatura foi enviada.");
+      }
+      // Stage only. Existing confirm/resume approval remains mandatory before saving.
+      return frame;
+    } catch (error) {
+      await this.close();
+      throw error;
+    }
   }
   private async input(action: LoginAction | LiveInput) {
     if (!this.page || this.expires < Date.now())
@@ -531,7 +559,7 @@ export class PortalBrowserService {
         const signed = await authenticated(page, this.portal);
         const text = await page.locator("body").innerText({ timeout: 1000 });
         const access = await portalAccess(page, text);
-        const issue = providerLoginIssue(page.url(), text);
+        const issue = providerLoginIssue(page.url(), text, this.portal === "gupy");
         if (issue) this.navigationError = issue;
         if (!text.trim() && Date.now() - this.navigationStarted > 10000)
           this.navigationError ||=
@@ -624,13 +652,24 @@ export class PortalBrowserService {
       });
     } catch {
       const old = JSON.parse(await readFile(journal, "utf8"));
-      return (
-        old.result || {
-          status: "unknown",
-          message:
-            "Esta tentativa já foi iniciada. Confira no portal antes de repetir.",
-        }
-      );
+      if (
+        old.result?.status === "action_required" &&
+        old.result.retryable === true
+      ) {
+        await rm(journal);
+        await writeFile(journal, JSON.stringify({ started: true }), {
+          flag: "wx",
+          mode: 0o600,
+        });
+      } else {
+        return (
+          old.result || {
+            status: "unknown",
+            message:
+              "Esta tentativa já foi iniciada. Confira no portal antes de repetir.",
+          }
+        );
+      }
     }
     const context = await this.createContext(saved);
     const deadline = setTimeout(() => void context.close(), 115000);
@@ -670,6 +709,7 @@ export class PortalBrowserService {
     viewerId?: string;
     viewportWidth?: number;
     viewportHeight?: number;
+    browserSession?: GupyBrowserSession;
   }) {
     if (this.busy)
       throw new Error(
@@ -683,6 +723,8 @@ export class PortalBrowserService {
         );
       if (request.op === "open")
         return await this.open(request.viewportWidth, request.viewportHeight);
+      if (request.op === "import-browser-session" && request.browserSession)
+        return await this.importBrowserSession(request.browserSession);
       if (request.op === "action" && request.action)
         return await this.action(request.action);
       if (request.op === "confirm")

@@ -84,6 +84,19 @@ test("an assisted candidate can review the draft and open the real application, 
         },
       });
     if (path === "/api/workspace") return route.fulfill({ json: w });
+    if (path.endsWith("/readiness"))
+      return route.fulfill({
+        json: {
+          ready: false,
+          blockers: [
+            "Reenvie o arquivo original do currículo para permitir o envio.",
+          ],
+          resumeId: "resume",
+          resumeName: "Currículo fictício.pdf",
+          destinationUrl: null,
+          method: null,
+        },
+      });
     if (
       path === "/api/applications/application" &&
       route.request().method() === "PATCH"

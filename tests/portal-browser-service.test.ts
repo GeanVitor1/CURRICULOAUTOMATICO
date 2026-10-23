@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { PortalBrowserService } from "../server/portal-browser-service";
 import { defaultProfile } from "../shared/types";
+import * as applicationEngine from "../server/portal-application";
 let directory = "";
 let service: PortalBrowserService;
 const browsers: Awaited<ReturnType<typeof chromium.launch>>[] = [];
@@ -36,7 +37,7 @@ beforeAll(async () => {
           return route.fulfill({
             contentType: "text/html; charset=utf-8",
             body: signed
-              ? "<button>Sair</button><button onclick=\"location.href='/receipt'\">Candidatar-se</button>"
+              ? "<h1>Desenvolvedor</h1><button>Sair</button><button onclick=\"location.href='/receipt'\">Candidatar-se</button>"
               : '<form onsubmit="event.preventDefault();document.cookie=\'candidate_session=fixture-private-token; Secure; SameSite=Lax; path=/\';location.href=\'/candidates/applications\'"><label>E-mail<input type="email"></label><label>Senha<input type="password"></label><button>Entrar</button></form>',
           });
         });
@@ -55,6 +56,30 @@ afterAll(async () => {
   if (directory.startsWith(join(tmpdir(), "cloud-portal-test-")))
     await rm(directory, { recursive: true, force: true });
 });
+it("verifica sessão do Chrome sem salvar ou liberar envios antes da confirmação", async () => {
+  const isolated = await mkdtemp(join(tmpdir(), "cloud-portal-test-"));
+  const imported = new PortalBrowserService("gupy", isolated);
+  const state = {cookies:[{name:"candidate_session",value:"fixture-import",domain:"login.gupy.io",path:"/",expires:-1,httpOnly:true,secure:true as const,sameSite:"Lax" as const}],origins:[]};
+  try {
+    const frame = await imported.execute({op:"import-browser-session",browserSession:state}) as any;
+    expect(frame.authenticated).toBe(true);
+    expect(frame.viewerId).toBeTruthy();
+    expect(await imported.metadata()).toBeNull();
+    await imported.execute({op:"confirm",viewerId:frame.viewerId,resumeId:"resume-chrome"});
+    expect(await imported.metadata()).toMatchObject({profileResumeId:"resume-chrome"});
+    expect((await readFile(join(isolated,'session.enc'))).toString()).not.toContain('fixture-import');
+    await expect(imported.execute({op:"import-browser-session",browserSession:{cookies:[],origins:[]}})).rejects.toThrow();
+    expect(await imported.metadata()).toMatchObject({profileResumeId:"resume-chrome"});
+  } finally { await imported.close(); await rm(isolated,{recursive:true,force:true}); }
+}, 20000);
+it("não conecta uma sessão expirada ou aceita credenciais do Google", async () => {
+  const imported = new PortalBrowserService("gupy", directory);
+  const cookie = {name:"unrelated",value:"fake",domain:"login.gupy.io",path:"/",expires:-1,httpOnly:true,secure:true as const,sameSite:"Lax" as const};
+  try {
+    await expect(imported.execute({op:"import-browser-session",browserSession:{cookies:[cookie],origins:[]}})).rejects.toThrow("não foi aceito");
+    await expect(imported.execute({op:"import-browser-session",browserSession:{cookies:[{...cookie,domain:"accounts.google.com"}],origins:[]}})).rejects.toThrow();
+  } finally { await imported.close(); }
+}, 20000);
 it("salva login cifrado, restaura a sessão e não repete a candidatura após reiniciar", async () => {
   const obsolete = (await service.execute({ op: "open" })) as any;
   const mobile = (await service.execute({
@@ -156,3 +181,86 @@ it("salva login cifrado, restaura a sessão e não repete a candidatura após re
   ).toEqual(result);
   expect(submits).toBe(1);
 }, 30000);
+
+it("retoma uma pausa segura após respostas novas e mantém o recibo sem repetir envio", async () => {
+  const run = vi
+    .spyOn(applicationEngine, "applyOnPage")
+    .mockResolvedValueOnce({
+      status: "action_required",
+      message: "Resposta pendente",
+      retryable: true,
+      missingQuestions: ["PJ?"],
+    })
+    .mockResolvedValueOnce({
+      status: "sent",
+      message: "Confirmada",
+      receipt: "gupy-resumed-receipt",
+    });
+  const resumed = new PortalBrowserService("gupy", directory);
+  const request = {
+    op: "apply",
+    resumeId: "resume-1",
+    input: {
+      applicationId: "resume-after-answer",
+      job: {
+        url: "https://login.gupy.io/jobs/12345",
+        title: "Desenvolvedor",
+        company: "Fixture",
+      },
+      profile: defaultProfile,
+      resume: { name: "resume.pdf" },
+    },
+  };
+  try {
+    expect(((await resumed.execute(request)) as any).status).toBe(
+      "action_required",
+    );
+    const result = await resumed.execute(request);
+    expect(result).toMatchObject({
+      status: "sent",
+      receipt: "gupy-resumed-receipt",
+    });
+    expect(
+      await new PortalBrowserService("gupy", directory).execute(request),
+    ).toEqual(result);
+    expect(run).toHaveBeenCalledTimes(2);
+  } finally {
+    run.mockRestore();
+    await resumed.close();
+  }
+}, 15000);
+
+it("uma tentativa com resultado desconhecido não pode ser repetida ao reiniciar", async () => {
+  const run = vi
+    .spyOn(applicationEngine, "applyOnPage")
+    .mockResolvedValue({ status: "unknown", message: "Confira no portal" });
+  const pending = new PortalBrowserService("gupy", directory);
+  const request = {
+    op: "apply",
+    resumeId: "resume-1",
+    input: {
+      applicationId: "unknown-result",
+      job: {
+        url: "https://login.gupy.io/jobs/12345",
+        title: "Desenvolvedor",
+        company: "Fixture",
+      },
+      profile: defaultProfile,
+      resume: { name: "resume.pdf" },
+    },
+  };
+  try {
+    expect(((await pending.execute(request)) as any).status).toBe("unknown");
+    expect(
+      (
+        (await new PortalBrowserService("gupy", directory).execute(
+          request,
+        )) as any
+      ).status,
+    ).toBe("unknown");
+    expect(run).toHaveBeenCalledOnce();
+  } finally {
+    run.mockRestore();
+    await pending.close();
+  }
+}, 15000);

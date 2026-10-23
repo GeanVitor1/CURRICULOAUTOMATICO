@@ -1,0 +1,8 @@
+{
+  "at": "2026-10-23T11:37:56.377Z",
+  "url": "https://curriculoautomatico.vercel.app/api/health",
+  "httpStatus": 200,
+  "status": "ok",
+  "database": "Cloud Firestore",
+  "revision": "4a748f78f48c1a7b53af3b2bd52f41fd561a96dd3702e453fd568677db6daa88"
+}

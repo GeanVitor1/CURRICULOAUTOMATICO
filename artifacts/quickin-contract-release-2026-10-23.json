@@ -1,0 +1,85 @@
+{
+  "at": "2026-10-23T15:27:12.922Z",
+  "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+  "readyState": "READY",
+  "url": "curriculoautomatico-hcmhylktx-geans-projects-da7db03c.vercel.app",
+  "aliasDeploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+  "health": {
+    "httpStatus": 200,
+    "status": "ok",
+    "database": "Cloud Firestore",
+    "revision": "036ce1fb7afd7e0c1b045e106084b88d813db6533525fd640d3bdbdb9f3b9119"
+  },
+  "sourceChecks": [
+    {
+      "path": "server/quickin-form.ts",
+      "identical": true,
+      "sha256": "2c8ec8edfd0013d34a17ad2acb5bc454bd3fa126527f65594f88f3c261baffb9"
+    },
+    {
+      "path": "server/operations.ts",
+      "identical": true,
+      "sha256": "46c57134bdd000fb60683aec70fa8a6e7c5d601f13960cbe7cdc3d009e4fea7a"
+    },
+    {
+      "path": "server/application-verification.ts",
+      "identical": true,
+      "sha256": "d1fbdc30e2b9c54571a3f838687c25b5c9a383c0ad49a17c3aef928aeeb32a6c"
+    },
+    {
+      "path": "server/automatic-cycle.ts",
+      "identical": true,
+      "sha256": "b744b9d0cb0b821207bfe36314e8ea5615941cc9f338f59207224445ac7933d6"
+    },
+    {
+      "path": "shared/types.ts",
+      "identical": true,
+      "sha256": "0141c449f31f33e22e5c10f71526bbbc674e134787504c059af73d29658939c3"
+    },
+    {
+      "path": "vercel.json",
+      "identical": true,
+      "sha256": "0f93a1effc61adaeccb83fccfc24b5889aa53989396335097def1e703c76ee9d"
+    }
+  ],
+  "cron": {
+    "project": {
+      "enabledAt": 1791892914669,
+      "disabledAt": null,
+      "updatedAt": 1792768969504,
+      "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+      "definitions": [
+        {
+          "host": "curriculoautomatico-hcmhylktx-geans-projects-da7db03c.vercel.app",
+          "path": "/api/daily-routine",
+          "schedule": "0 11 * * *"
+        }
+      ]
+    },
+    "deployment": [
+      {
+        "path": "/api/daily-routine",
+        "schedule": "0 11 * * *"
+      }
+    ],
+    "configuration": [
+      {
+        "path": "/api/daily-routine",
+        "schedule": "0 11 * * *"
+      }
+    ]
+  },
+  "validation": {
+    "typecheck": "passed",
+    "build": "passed",
+    "focusedTestsPassed": 86,
+    "details": "31 Quickin tests; 54 backend tests; additional unknown-outcome continuation regression passed (14 cycle tests, previously 13)."
+  },
+  "observer": {
+    "automationId": "verificar-cron-real-do-empregatos",
+    "time": "09:15 America/Sao_Paulo",
+    "nextDate": "2026-10-24",
+    "readOnly": true,
+    "doesNotTriggerBackend": true
+  }
+}

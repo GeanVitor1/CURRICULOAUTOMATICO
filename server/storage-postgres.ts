@@ -167,6 +167,20 @@ export function postgresStore(
           sql`${schema.workspaces.data}->'applications' @> '[{"status":"Enviando"}]'::jsonb`,
         );
     },
+    async pendingSingleSubmissionWorkspaceIds() {
+      return connection
+        .select({ id: schema.workspaces.id })
+        .from(schema.workspaces)
+        .where(
+          and(
+            eq(schema.workspaces.demo, false),
+            sql`EXISTS (
+          SELECT 1 FROM jsonb_array_elements(${schema.workspaces.data}->'applications') AS a
+          WHERE a->>'status' = 'Aguardando aprovação' AND a->'singleSubmission' IS NOT NULL
+        )`,
+          ),
+        );
+    },
     async historicalAttempts(userId, _day) {
       const rows = await connection
         .select({

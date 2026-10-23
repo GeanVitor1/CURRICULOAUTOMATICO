@@ -1,0 +1,80 @@
+{
+  "checkedAt": "2026-10-21T14:16:35.154Z",
+  "production": "https://curriculoautomatico.vercel.app",
+  "routine": {
+    "enabled": true,
+    "mode": "automatic"
+  },
+  "searchWindowDays": 14,
+  "job": {
+    "id": "95d59a67-7310-4d00-91c3-762f59c1abb8",
+    "title": "Desenvolvedor .NET Pleno ou Sênior",
+    "company": "DB4SERV",
+    "url": "https://www.linkedin.com/feed/update/urn:li:activity:7513970124773642240/",
+    "publishedAt": "2026-10-08T14:34:40.559Z",
+    "score": 90,
+    "blockers": [],
+    "emailDestination": {
+      "email": "vagas@db4serv.com.br",
+      "publicationUrl": "https://www.linkedin.com/feed/update/urn:li:activity:7513970124773642240/",
+      "employerUrl": "https://www.db4serv.com.br/curriculo/",
+      "publishedAt": "2026-10-08T14:34:40.559Z",
+      "verifiedAt": "2026-10-21T14:16:13.362Z",
+      "expiresAt": "2026-10-28T14:16:13.362Z"
+    }
+  },
+  "application": {
+    "id": "8d4fa611-6c04-48b2-8f6d-97e53473ddee",
+    "status": "Enviada",
+    "mode": "automatic",
+    "resumeId": "3bfe4222-9c84-4008-b793-65e631eeffd8",
+    "singleSubmission": false,
+    "receipt": "Gmail message ID: 1a15ed222bb8c05e",
+    "submittedAt": "2026-10-21T14:16:32.491Z",
+    "verification": {
+      "method": "email_provider_acceptance",
+      "at": "2026-10-21T14:16:32.491Z",
+      "destinationUrl": "mailto:vagas@db4serv.com.br"
+    },
+    "history": [
+      {
+        "at": "2026-10-21T14:16:16.712Z",
+        "actor": "Sistema",
+        "message": "Candidatura preparada. O envio ainda não foi confirmado."
+      },
+      {
+        "at": "2026-10-21T14:16:16.712Z",
+        "actor": "Sistema",
+        "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+      },
+      {
+        "at": "2026-10-21T14:16:27.170Z",
+        "actor": "Sistema",
+        "message": "Envio iniciado. Aguardando recibo verificável da integração."
+      },
+      {
+        "at": "2026-10-21T14:16:32.491Z",
+        "actor": "Sistema",
+        "message": "O Gmail confirmou a aceitação da mensagem com currículo. Isso não confirma entrega, leitura ou avanço no processo. Recibo: Gmail message ID: 1a15ed222bb8c05e"
+      }
+    ]
+  },
+  "state": {
+    "userId": "4fd7837c-2823-4155-a1ab-1b7a48abb867",
+    "demo": false,
+    "routine": {
+      "enabled": true,
+      "mode": "automatic",
+      "time": "08:00",
+      "dailyLimit": 5,
+      "minScore": 70,
+      "lastRun": "2026-10-21T13:04:54.831Z",
+      "nextRun": "2026-10-22T11:00:00.000Z",
+      "destinationPolicy": "official"
+    },
+    "sending": false,
+    "day": "2026-10-21",
+    "attempts": 1,
+    "next": null
+  }
+}

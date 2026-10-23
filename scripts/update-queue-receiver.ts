@@ -1,0 +1,11 @@
+import {Sandbox} from '@vercel/sandbox';
+import {readFile,writeFile} from 'node:fs/promises';
+import {homedir} from 'node:os';import {join} from 'node:path';
+const a=JSON.parse(await readFile(join(homedir(),'AppData/Roaming/com.vercel.cli/Data/auth.json'),'utf8')),p=JSON.parse(await readFile('.vercel/project.json','utf8')),q=JSON.parse(await readFile('.data/queue-integration-private.json','utf8'));
+const s=await Sandbox.get({name:q.sandboxName,token:a.token,teamId:p.orgId,projectId:p.projectId});
+const phase1=await(await fetch(`${q.origin}/${q.secret}/status`)).json();
+await writeFile('artifacts/vercel-queues-phase1-receiver-final-2026-10-23.json',JSON.stringify({at:new Date().toISOString(),...phase1},null,2));
+await s.runCommand({cmd:'pkill',args:['-f','^node /vercel/sandbox/receiver.mjs$']});
+await s.writeFiles([{path:'/vercel/sandbox/receiver.mjs',content:await readFile('scripts/queue-controlled-receiver.mjs')}]);
+await s.runCommand({cmd:'node',args:['/vercel/sandbox/receiver.mjs'],env:{QA_RECEIVER_SECRET:q.secret},detached:true});
+console.log(JSON.stringify({phase2ReceiverReady:true,priorReceiptsPreservedInArtifact:true}));

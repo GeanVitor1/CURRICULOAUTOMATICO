@@ -1,5 +1,6 @@
 import { Sandbox } from "@vercel/sandbox";
 import { randomUUID } from "node:crypto";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { z } from "zod";
 import { RequestError } from "./errors";
 import { discoverySignal } from "./discovery-budget";
@@ -38,17 +39,54 @@ function requireOwner(userId: string) {
   if (!antigravityAvailable(userId))
     throw new RequestError("Antigravity não está disponível para esta conta.");
 }
+const searchSession = new AsyncLocalStorage<{ sandbox?: Promise<Sandbox> }>();
 async function sandbox() {
-  return Sandbox.get({ name: name() });
+  const session = searchSession.getStore();
+  if (session)
+    return (session.sandbox ??= Sandbox.get({
+      name: name(),
+      signal: discoverySignal(20000),
+    }));
+  return Sandbox.get({ name: name(), signal: discoverySignal(20000) });
+}
+async function stopSearchSandbox(s: Sandbox) {
+  // The VM's own timeout still stops/snapshots it if the control API is slow.
+  await s.stop({ signal: AbortSignal.timeout(10000) }).catch(() => {
+    console.error(JSON.stringify({ event: "antigravity_stop_pending" }));
+  });
+}
+export async function withAntigravitySearchSession<T>(run: () => Promise<T>) {
+  if (searchSession.getStore()) return run();
+  const session: { sandbox?: Promise<Sandbox> } = {};
+  return searchSession.run(session, async () => {
+    try {
+      return await run();
+    } finally {
+      if (session.sandbox) {
+        const s = await session.sandbox.catch(() => undefined);
+        if (s) await stopSearchSandbox(s);
+      }
+    }
+  });
 }
 async function readConnection(s: Sandbox): Promise<Connection> {
-  const bytes = await s.readFileToBuffer({ path: control });
+  const bytes = await s.readFileToBuffer(
+    { path: control },
+    { signal: discoverySignal(20000) },
+  );
   return bytes ? JSON.parse(bytes.toString("utf8")) : { connected: false };
 }
 async function writeConnection(s: Sandbox, value: Connection) {
-  await s.writeFiles([
-    { path: control, content: Buffer.from(JSON.stringify(value)), mode: 0o600 },
-  ]);
+  await s.writeFiles(
+    [
+      {
+        path: control,
+        content: Buffer.from(JSON.stringify(value)),
+        mode: 0o600,
+      },
+    ],
+    { signal: AbortSignal.timeout(10000) },
+  );
 }
 
 const runScript = `#!/bin/bash
@@ -265,6 +303,7 @@ export async function disconnectAntigravity(userId: string) {
 
 export async function searchAntigravity(userId: string, prompt: string) {
   requireOwner(userId);
+  const signal = discoverySignal(65000);
   const s = await sandbox();
   const connection = await readConnection(s);
   if (!connection.connected) {
@@ -274,7 +313,6 @@ export async function searchAntigravity(userId: string, prompt: string) {
       "Conecte sua conta Google em Automação → Antigravity na nuvem para usar a busca.",
     );
   }
-  const signal = discoverySignal(65000);
   let model = process.env.ANTIGRAVITY_SEARCH_MODEL || connection.model;
   if (!model) {
     const catalog = await s.runCommand({ cmd: wrapper, args: ["models"] });
@@ -285,11 +323,15 @@ export async function searchAntigravity(userId: string, prompt: string) {
   let command;
   let phase = "execution";
   try {
+    // A saved login outlives application deployments. Refresh only the search
+    // policy, preserving the authenticated profile and disabled extra credits.
+    await s.writeFiles([{path:`${home}/.gemini/antigravity-cli/settings.json`,
+      content:Buffer.from(JSON.stringify(antigravitySettings)),mode:0o600}],{signal});
     command = await s.runCommand({
       cmd: wrapper,
       args: [
         "-p",
-        prompt,
+        `${prompt}\nHoje é ${new Date().toISOString().slice(0,10)}. Faça no máximo duas consultas de pesquisa e finalize o JSON imediatamente. Retorne URLs de anúncios individuais efetivamente encontrados pela pesquisa, mesmo quando não conseguir abrir o site. O servidor abrirá cada anúncio e validará empresa, data e requisitos antes de usar os dados. Nunca invente URLs nem datas. Se a pesquisa não encontrar referências, retorne {"jobs":[]}. Não gaste o tempo tentando completar uma quantidade mínima.`,
         "--output-format",
         "stream-json",
         "--disable-slash-commands",
@@ -319,10 +361,12 @@ export async function searchAntigravity(userId: string, prompt: string) {
     );
     await command?.kill().catch(() => undefined);
     throw new RequestError(
-      "Antigravity não concluiu a busca. Confira a conexão e a cota da sua conta Google.",
+      phase === "results"
+        ? "Antigravity respondeu fora do formato esperado. Nenhuma vaga foi confirmada nesta consulta."
+        : "Antigravity não concluiu esta consulta no tempo disponível. Nenhuma falta de cota foi confirmada.",
     );
   } finally {
     await writeConnection(s, { connected: true, model });
-    await s.stop();
+    if (!searchSession.getStore()) await stopSearchSandbox(s);
   }
 }

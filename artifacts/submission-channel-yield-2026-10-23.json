@@ -1,0 +1,206 @@
+{
+  "at": "2026-10-23T14:02:00.611Z",
+  "readOnly": true,
+  "filtersUnchanged": true,
+  "realSubmissionsToday": 0,
+  "recoveredOriginalEight": 0,
+  "newEligibleWithPassedPreflight": 1,
+  "newOpportunitiesWithRealSubmission": 0,
+  "conversion": {
+    "at": "2026-10-23T14:01:48.810Z",
+    "day": "2026-10-23",
+    "scope": "retained_inventory",
+    "totals": {
+      "discovered": 437,
+      "compatible": 15,
+      "validDestination": 6,
+      "executorAvailable": 6,
+      "preflightBlocked": 5,
+      "prepared": 7,
+      "transmissionsStarted": 2,
+      "confirmed": 1,
+      "confirmedAutomatic": 0
+    },
+    "today": {
+      "discovered": 14,
+      "compatible": 2,
+      "prepared": 2,
+      "transmissionsStarted": 1,
+      "confirmed": 0,
+      "confirmedAutomatic": 0
+    },
+    "blocked": {
+      "uncertain_do_not_retry": 1,
+      "authenticated_destination": 8,
+      "human_verification": 5,
+      "already_confirmed": 1
+    },
+    "platforms": {
+      "gupy": {
+        "discovered": 164,
+        "compatible": 8,
+        "validDestination": 0,
+        "executorAvailable": 0,
+        "prepared": 0,
+        "transmissionsStarted": 0,
+        "confirmed": 0,
+        "blocked:authenticated_destination": 8
+      },
+      "quickin": {
+        "discovered": 1,
+        "compatible": 1,
+        "validDestination": 1,
+        "executorAvailable": 1,
+        "prepared": 1,
+        "transmissionsStarted": 1,
+        "confirmed": 0,
+        "blocked:uncertain_do_not_retry": 1
+      },
+      "greenhouse": {
+        "discovered": 70,
+        "compatible": 0,
+        "validDestination": 0,
+        "executorAvailable": 0,
+        "prepared": 0,
+        "transmissionsStarted": 0,
+        "confirmed": 0
+      },
+      "lever": {
+        "discovered": 187,
+        "compatible": 5,
+        "validDestination": 4,
+        "executorAvailable": 4,
+        "prepared": 5,
+        "transmissionsStarted": 0,
+        "confirmed": 0,
+        "blocked:human_verification": 5
+      },
+      "email": {
+        "discovered": 5,
+        "compatible": 1,
+        "validDestination": 1,
+        "executorAvailable": 1,
+        "prepared": 1,
+        "transmissionsStarted": 1,
+        "confirmed": 1,
+        "blocked:already_confirmed": 1
+      },
+      "company": {
+        "discovered": 10,
+        "compatible": 0,
+        "validDestination": 0,
+        "executorAvailable": 0,
+        "prepared": 0,
+        "transmissionsStarted": 0,
+        "confirmed": 0
+      }
+    },
+    "notes": [
+      "Disponibilidade de executor não confirma passagem pelo preflight nem envio.",
+      "Contagens históricas abrangem os registros preservados; não reconstroem dados removidos anteriormente."
+    ],
+    "capabilityBasis": "production configuration; stored email connection; no credential refresh or employer transmission performed"
+  },
+  "quickin": {
+    "inspectedPostings": 21,
+    "qualifiedByCurrentMatcher": [
+      {
+        "company": "Global TI",
+        "title": "Desenvolvedor Full Stack - PL/SR",
+        "url": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+        "score": 85,
+        "unresolvedPresence": false,
+        "missingRequiredAnswers": [],
+        "executorImplemented": true,
+        "preflightReady": true,
+        "confirmedByProject": false
+      },
+      {
+        "company": "BELTIS TECNOLOGIA",
+        "title": "Desenvolvedor Full Stack Sr.",
+        "url": "https://jobs.quickin.io/beltis/jobs/6ad65952dd63cb0013761316",
+        "score": 78,
+        "unresolvedPresence": true,
+        "missingRequiredAnswers": [],
+        "executorImplemented": false,
+        "preflightReady": false,
+        "confirmedByProject": false
+      }
+    ],
+    "globalTiMissingExistingAnswers": [],
+    "productionSourceConfigured": true,
+    "configuredBoard": "globalti",
+    "authorizedBoard": "quickin:globalti",
+    "actualApplication": {
+      "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "status": "Resultado desconhecido",
+      "receipt": null,
+      "execution": {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+          "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+          "origin": "user_triggered_automation",
+          "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T13:52:21.765Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T13:52:39.795Z"
+        }
+      ]
+    },
+    "reason": "Apenas o quadro Global TI foi configurado: 8 anúncios examinados pela fonte, 1 compatível e preflight aprovado. Teste da UI com escritas interceptadas é identificado separadamente; somente recibo real da rotina comprova candidatura."
+  },
+  "otherOfficialChannels": [
+    {
+      "company": "adn.tech",
+      "urls": [
+        "https://adn.com.br/jobs/analista-desenvolvedor-net/",
+        "https://adn.com.br/jobs/analista-desenvolvedor-net-delphi/"
+      ],
+      "channel": "Formulário próprio AWSM Job Openings",
+      "blocker": "date_outside_filter",
+      "publicationYears": [
+        2021,
+        2021
+      ]
+    },
+    {
+      "company": "Nortweb",
+      "url": "https://nortweb.com.br/carreiras",
+      "channel": "E-mail publicado e formulário",
+      "blocker": "publication_date_unverified"
+    },
+    {
+      "company": "PERIGO ZERO",
+      "url": "https://perigozero.com.br/carreiras",
+      "channel": "E-mail corporativo publicado",
+      "blocker": "publication_date_unverified"
+    },
+    {
+      "company": "TemporadaLivre",
+      "url": "https://www.temporadalivre.com/vagas",
+      "channel": "E-mail corporativo publicado",
+      "blocker": "month_only_cannot_verify_14_day_filter"
+    },
+    {
+      "company": "WebSisti",
+      "url": "https://pt.linkedin.com/posts/websisti-solu%C3%A7%C3%B5es-inteligentes_estamoscontratando-vagasti-desenvolvedorjunior-activity-7513620071009652736-ckcR",
+      "channel": "E-mail da própria empresa",
+      "blockers": [
+        "published_2026_10_07",
+        "onsite_sao_luis_outside_preferences"
+      ]
+    },
+    {
+      "company": "Ágape Consultoria",
+      "url": "https://br.linkedin.com/jobs/view/4477312564",
+      "channel": "E-mail descrito no anúncio da empresa",
+      "blocker": "posting_no_longer_accepting_on_linkedin_email_channel_not_reconfirmed"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "readOnly": true,
+  "employerWrites": 0,
+  "source": {
+    "id": "catalog:ashby:truelogic",
+    "board": "truelogic",
+    "company": "Truelogic",
+    "type": "ashby",
+    "enabled": true,
+    "discovery": true,
+    "application": false,
+    "status": ""
+  },
+  "profileYears": 1,
+  "languageSummary": "",
+  "productivity": {
+    "sourceId": "catalog:ashby:truelogic",
+    "company": "Truelogic",
+    "checkedAt": "2026-10-23T15:52:35.184Z",
+    "examined": 131,
+    "retained": 5,
+    "compatible": 1,
+    "channelVerified": 0,
+    "excluded": {
+      "Localização fora das suas preferências; revise restrições geográficas.": 104,
+      "Modalidade fora das suas preferências.": 5,
+      "Publicação fora do período configurado.": 12,
+      "objective_preferences": 5
+    }
+  },
+  "candidates": [
+    {
+      "url": "https://jobs.ashbyhq.com/truelogic/3fadeb2c-2d74-44c2-b0a7-5e68f6ac418b",
+      "title": "Form Builder - Technology",
+      "publishedAt": "2026-10-15T20:41:57.496Z",
+      "score": 72,
+      "blockers": [],
+      "description": "ABOUT TRUELOGIC\n\nAt Truelogic we are a leading provider of nearshore staff augmentation services headquartered in New York. For over two decades, we’ve been delivering top-tier technology solutions to companies of all sizes, from innovative startups to industry leaders, helping them achieve their digital transformation goals.\n\nOur team of 600+ highly skilled tech professionals, based in Latin America, drives digital disruption by partnering with U.S. companies on their most impactful projects. Whether collaborating with Fortune 500 giants or scaling startups, we deliver results that make a difference.\n\nBy applying for this position, you’re taking the first step in joining a dynamic team that values your expertise and aspirations. We aim to align your skills with opportunities that foster exceptional career growth and success while contributing to transformative projects that shape the future.\n\n\n\n\nOUR CLIENT\n\nA SaaS case management platform designed for mental health, behavioural health, and community service organizations.\n\n\n\nJOB SUMMARY\n\nThe Form Builder will support clients by creating and revising custom forms using an internal no-code form-building tool. The tool uses pre-coded configurations and does not require HTML, CSS, scripting, SQL, APIs, or other coding skills. The main responsibility is to understand the purpose and intent behind each client's form, configure it thoughtfully within the platform, ensure proper mapping to existing platform fields, and validate the final result through testing and QA. The role will also communicate directly with clients through Zendesk and provide support and training to end users.\n\n\n\n\nRESPONSIBILITIES\n\n - Build and revise custom forms using the internal no-code form-building tool.\n\n - Understand the purpose and business requirements of each form and translate them into effective configurations.\n\n - Communicate with clients through Zendesk to clarify requirements and provide support.\n\n - Collaborate with internal teams to understand client needs and platform capabilities.\n\n - Understand how forms map to existing fields within the platform.\n\n - Participate in application testing and quality assurance.\n\n - Provide training and support to end users building their own templates.\n\n - Manage multiple concurrent requests and shifting priorities.\n\n - Perform other duties as needed.\n\n\n\n\nQUALIFICATIONS AND JOB REQUIREMENTS\n\n - Strong customer service skills.\n\n - Ability to understand and translate client requirements.\n\n - Ability to learn new SaaS platforms and internal tools quickly.\n\n - Strong organizational and multitasking skills.\n\n - Ability to work independently and manage deadlines.\n\n - Professional client-facing communication.\n\n - Microsoft Office proficiency.\n\n - Ability to work in a fast-paced environment.\n\n\n\n\nWHAT WE OFFER\n\n - 100% Remote Work: Enjoy the freedom to work from the location that helps you thrive. All it takes is a laptop and a reliable internet connection.\n\n - Highly Competitive USD Pay: Earn an excellent, market-leading compensation in USD, that goes beyond typical market offerings.\n\n - Paid Time Off: We value your well-being. Our paid time off policies ensure you have the chance to unwind and recharge when needed.\n\n - Work with Autonomy: Enjoy the freedom to manage your time as long as the work gets done. Focus on results, not the clock.\n\n - Work with Top American Companies: Grow your expertise working on innovative, high-impact projects with Industry-Leading U.S. Companies.\n\n\n\n\nWHY YOU’LL LIKE WORKING HERE\n\n - A Culture That Values You: We prioritize well-being and work-life balance, offering engagement activities and fostering dynamic teams to ensure you thrive both personally and professionally.\n\n - Diverse, Global Network: Connect with over 600 professionals in 25+ countries, expand your network, and collaborate with a multicultural team from Latin America.\n\n - Team Up with Skilled Professionals: Join forces with senior talent. All of our team members are seasoned experts, ensuring you're working with the best in your field.\n\n\n\nApply now!"
+    }
+  ],
+  "technicalRecent": []
+}

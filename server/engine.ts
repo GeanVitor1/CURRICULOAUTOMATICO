@@ -4,11 +4,31 @@ import { evidenceLines } from "./professional-evidence";
 import { resumeSections } from "./resume-sections";
 import { isJobUrl, isPortalId } from "../shared/portals";
 import type { Workspace } from "../shared/types";
+import { expandSearchTitles } from "./job-identity";
 export function matchesSelectedSites(job: Job, workspace: Workspace): boolean {
   return (
+    (workspace.routine.destinationPolicy === 'official' && /^https:\/\/jobs\.quickin\.io\/[a-z0-9_-]+\/jobs\/[a-f0-9]{24}$/i.test(job.url) && !!job.destinations?.some(d=>d.platform==='quickin'&&d.publicationUrl===job.url&&d.url===`${job.url}/apply`&&d.company===job.company&&d.state==='verified'&&d.formFound&&Date.parse(d.expiresAt)>Date.now())) ||
+    (workspace.routine.destinationPolicy === 'official' && job.origins.some(o=>o.source==='company') && !!job.destinations?.some(d=>d.platform==='company'&&d.state==='verified'&&d.formFound&&Date.parse(d.expiresAt)>Date.now())) ||
+    (!!job.emailDestination && job.emailDestination.publicationUrl === job.url && Date.parse(job.emailDestination.expiresAt) > Date.now()) ||
     !workspace.interview?.completed ||
     workspace.interview.answers.sites.some(
-      (site) => isPortalId(site) && isJobUrl(site, job.url),
+      (site) =>
+        isPortalId(site) &&
+        [job.url, ...job.origins.map((o) => o.url)].some((url) =>
+          isJobUrl(site, url),
+        ),
+    ) ||
+    job.origins.some((origin) =>
+      [
+        "greenhouse",
+        "lever",
+        "ashby",
+        "smartrecruiters",
+        "quickin",
+        "jobicy",
+        "adzuna",
+        "jooble",
+      ].includes(origin.source),
     )
   );
 }
@@ -19,6 +39,25 @@ export const normalize = (s: string) =>
     .toLowerCase()
     .replace(/\s+/g, " ")
     .trim();
+/** A missing field in a discovery snippet can justify research, never an application. */
+export function eligibleForDestinationResearch(job: Job, workspace: Workspace) {
+  const assessment=analyze(job,workspace.profile,workspace.filters);
+  // Another public page cannot supply qualifications missing from the candidate.
+  if(assessment.blockers.some(b=>/indispensável|Senioridade exigida|Experiência exigida|Registro profissional obrigatório|Habilitação exigida|Elegibilidade obrigatória/i.test(b)))return false;
+  const unknown = (value: string) =>
+    !value || /^(não|nao|unknown|unspecified)/i.test(value);
+  return matchesObjectiveFilters(job, workspace.profile, {
+    ...workspace.filters,
+    contracts: unknown(job.contract) ? [] : workspace.filters.contracts,
+    modalities: unknown(job.modality) ? [] : workspace.filters.modalities,
+    locations: unknown(job.location) ? [] : workspace.filters.locations,
+    dateKnownOnly: !job.publishedAt ? false : workspace.filters.dateKnownOnly,
+    salaryOnly:
+      job.salaryMin === null && job.salaryMax === null
+        ? false
+        : workspace.filters.salaryOnly,
+  });
+}
 const vocabulary: Record<string, RegExp> = {
   "Atendimento ao público":
     /atend(?:imento|endo|er|ia|i)?\s+(?:ao |aos |a )?(?:publico|clientes?)|customer service/i,
@@ -46,6 +85,18 @@ const vocabulary: Record<string, RegExp> = {
   ".NET": /\.net\b|\bdotnet\b|\basp\.?net\b/i,
   "ASP.NET Core": /asp\.?net\s*core/i,
   Angular: /\bangular\b/i,
+  'Next.js': /\bnext(?:\.js|js)\b/i,
+  'NestJS': /\bnest(?:\.js|js)\b/i,
+  'Vue.js': /\bvue(?:\.js|js)?\b/i,
+  'VB.NET': /\bvb\.?net\b/i,
+  'DynamoDB': /\bdynamo\s?db\b/i,
+  'Kubernetes': /\bkubernetes\b|\bgke\b/i,
+  'GCP': /\bgcp\b|google cloud/i,
+  'Clipper': /\bclipper\b/i,
+  'PL/SQL': /\bpl\s*\/\s*sql\b/i,
+  'Delphi': /\bdelphi\b/i,
+  'Dapper': /\bdapper\b/i,
+  'Redis': /\bredis\b/i,
   React: /\breact(?:js|\.js)?\b/i,
   "SQL Server": /\bsql server\b|\bmssql\b/i,
   PostgreSQL: /\bpostgres(?:ql)?\b/i,
@@ -56,6 +107,12 @@ const vocabulary: Record<string, RegExp> = {
   "Node.js": /\bnode\.?js\b/i,
   Python: /\bpython\b/i,
   Java: /\bjava\b/i,
+  Swift: /\bswift\b/i,
+  Kotlin: /\bkotlin\b/i,
+  iOS: /\bios\b|objective[ -]?c\b/i,
+  Android: /\bandroid\b/i,
+  Databricks: /\bdatabricks\b/i,
+  Spark: /\b(?:apache )?spark\b|\bpyspark\b/i,
   Docker: /\bdocker\b/i,
   Git: /\bgit\b/i,
   Azure: /\bazure\b/i,
@@ -83,6 +140,8 @@ export function extractSkills(text: string, custom: string[] = []): string[] {
     ".NET",
     "ASP.NET Core",
     "Angular",
+    "Next.js", "NestJS", "Vue.js", "VB.NET", "DynamoDB", "Kubernetes", "GCP",
+    "Clipper", "PL/SQL", "Delphi", "Dapper", "Redis",
     "React",
     "SQL Server",
     "PostgreSQL",
@@ -93,6 +152,12 @@ export function extractSkills(text: string, custom: string[] = []): string[] {
     "Node.js",
     "Python",
     "Java",
+    "Swift",
+    "Kotlin",
+    "iOS",
+    "Android",
+    "Databricks",
+    "Spark",
     "Docker",
     "Git",
     "Azure",
@@ -196,7 +261,7 @@ export function parseResume(text: string): Partial<Profile> {
 }
 const roleFamilies = [
   /jovem aprendiz|aprendiz|primeiro emprego|sem experiencia|intern|estagi/,
-  /tecnologia|technology|software|desenvolv|developer|back.?end|full.?stack|front.?end|analista de sistemas|programador/,
+  /software|desenvolv|developer|back.?end|full.?stack|front.?end|analista de sistemas|programador/,
   /designer|design|\bux\b|\bui\b|criativo|creative/,
   /financ|contabil|contador|accountan|controller|auditor/,
   /venda|sales|comercial|account executive|business development/,
@@ -261,6 +326,61 @@ export function dedupKey(
     .update([job.title, job.company, job.location].map(normalize).join("|"))
     .digest("hex");
 }
+function experienceRequirements(text: string) {
+  const companyYears: number[] = [];
+  let requiredYears: number | null = null;
+  for (const raw of text.split(/\r?\n|(?<=[.!?;])\s+/)) {
+    const sentence = normalize(raw);
+    const match = sentence.match(
+      /(?:at least|minimo(?: de)?|minimum(?: of)?)?\s*(\d{1,2})\+?\s*(?:anos|years)\s+(?:de experiencia|of (?:relevant )?experience)|(?:at least|minimum of|minimo de)\s*(\d{1,2})\+?\s*(?:anos|years)|experiencia\s+(?:minima\s+)?(?:de\s+)?(\d{1,2})\+?\s*anos/,
+    );
+    if (!match) continue;
+    const years = Number(match[1] || match[2] || match[3]);
+    const companyHistory =
+      /\b(?:aceleramos|somos|atuamos|contamos|fundada|fundado|nossa empresa|nossa companhia|our company|we have|we are|we accelerate|no mercado|de mercado|historia da empresa)\b/.test(
+        sentence,
+      );
+    const candidateRequirement =
+      /\b(?:exigimos|exige|necessari[oa]|requisito|candidat[oa]|voce|you|must|required|at least|minimum|minimo|minima|pelo menos|profissional com)\b/.test(
+        sentence,
+      );
+    if (companyHistory && !candidateRequirement) companyYears.push(years);
+    else requiredYears ??= years;
+  }
+  return { requiredYears, companyYears };
+}
+const namedTechnologies = new Set([
+  "C#", ".NET", "ASP.NET Core", "Angular", "React", "SQL Server", "PostgreSQL",
+  "Entity Framework", "APIs REST", "TypeScript", "JavaScript", "Node.js", "Python",
+  "Java", "Swift", "Kotlin", "iOS", "Android", "Databricks", "Spark", "Docker", "Git",
+  "Azure", "AWS", "HTML", "CSS", "Excel",
+]);
+
+/** Repairs only demonstrable old parsing mistakes; preserves other publisher-supplied facts. */
+export function correctJobEvidence(job: Job): Job {
+  const evidence = experienceRequirements(job.description);
+  const corrected = {
+    ...job,
+    // A fuller publisher description must update the evidence used by matching.
+    // Old snippets often kept only Git/APIs, hiding the actual mobile/data stack.
+    skills: [...new Set([...job.skills, ...extractSkills(job.description),
+      ...extractSkills(job.title).filter(skill=>namedTechnologies.has(skill))])],
+  };
+  if (
+    job.requiredYears !== null &&
+    evidence.companyYears.includes(job.requiredYears)
+  )
+    corrected.requiredYears = evidence.requiredYears;
+  if (
+    job.level === "Aprendiz" &&
+    !/\b(?:aprendiz|apprentice)\b/.test(
+      normalize(job.title + " " + job.description),
+    )
+  )
+    corrected.level = classify(job.title).level;
+  return corrected;
+}
+
 export function classify(text: string) {
   const n = normalize(text);
   return {
@@ -275,7 +395,7 @@ export function classify(text: string) {
             : /\bpj\b|pessoa juridica|contractor/.test(n)
               ? "PJ"
               : "Não especificado",
-    level: /jovem aprendiz|aprendiz|apprentice/.test(n)
+    level: /\b(?:jovem aprendiz|aprendiz|apprentice)\b/.test(n)
       ? "Aprendiz"
       : /sem experiencia|primeiro emprego|no experience/.test(n)
         ? "Primeiro emprego"
@@ -297,12 +417,7 @@ export function classify(text: string) {
         : /on.site|presencial/.test(n)
           ? "Presencial"
           : "Não especificado",
-    requiredYears: (() => {
-      const m = n.match(
-        /(?:at least|minimo(?: de)?|minimum(?: of)?)?\s*(\d{1,2})\+?\s*(?:anos|years)\s+(?:de experiencia|of (?:relevant )?experience)|(?:at least|minimum of|minimo de)\s*(\d{1,2})\+?\s*(?:anos|years)|experiencia\s+(?:minima\s+)?(?:de\s+)?(\d{1,2})\+?\s*anos/,
-      );
-      return m ? Number(m[1] || m[2] || m[3]) : null;
-    })(),
+    requiredYears: experienceRequirements(text).requiredYears,
   };
 }
 const stateNames: Record<string, string> = {
@@ -383,6 +498,11 @@ export function matchesObjectiveFilters(
   filters: Filters,
 ): boolean {
   if (job.availability === "closed") return false;
+  if (
+    profile.acceptsPj === false &&
+    /\bpj\b|pessoa juridica/.test(normalize(job.contract))
+  )
+    return false;
   const content = [job.title, job.description, ...job.skills].join(" ");
   const cited = extractSkills(content, filters.skills);
   if (
@@ -426,7 +546,7 @@ export function matchesObjectiveFilters(
   if (
     filters.titles.length &&
     !beginnerRole &&
-    !filters.titles.some((t) =>
+    !expandSearchTitles(filters.titles).some((t) =>
       normalize(t)
         .split(" ")
         .filter((token) => !["de", "do", "da", "e"].includes(token))
@@ -475,6 +595,7 @@ export function matchSignature(
   job: Job,
   filters: Filters,
 ): string {
+  job = correctJobEvidence(job);
   return createHash("sha256")
     .update(
       JSON.stringify({
@@ -516,6 +637,7 @@ export function matchesJobLocation(job: Job, filters: Filters): boolean {
   return locationMatches(job.location, filters.locations);
 }
 export function analyze(job: Job, profile: Profile, filters: Filters): Match {
+  job = correctJobEvidence(job);
   const known = new Set(
     [
       ...profile.skills,
@@ -529,6 +651,14 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     blockers: string[] = [];
   const text = normalize(job.title + " " + job.description);
   const jobTitle = normalize(job.title);
+  const affirmativePcd=/(?:afirmativa|exclusiv[ao]|vagas? para)\s*(?:[(:—-]\s*)?(?:pessoas?\s+)?(?:com\s+deficiencia|pcd)/.test(jobTitle)||
+    /(?:vaga afirmativa|exclusiv[ao])\s*(?:para\s+)?(?:pessoas?\s+)?(?:com\s+deficiencia|pcd)/.test(text);
+  if(affirmativePcd){
+    const urls=[job.url,...(job.destinations||[]).map(d=>d.url)];
+    const approved=profile.approvedAnswers?.some(a=>a.confirmedAt&&a.destinationUrl&&urls.includes(a.destinationUrl)&&
+      /^(?:voce e (?:uma )?pessoa com deficiencia\??|voce e pcd\??|elegibilidade para vaga afirmativa pcd)$/.test(normalize(a.question))&&/^(sim|yes|true)$/i.test(a.value));
+    if(!approved)blockers.push('Elegibilidade obrigatória da vaga afirmativa PcD exige confirmação específica; não foi presumida.');
+  }
   const directTitle = [...filters.titles, profile.headline]
     .filter(Boolean)
     .some((t) => {
@@ -623,6 +753,8 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     );
   if (!profile.confirmed)
     blockers.push("Confirme seu perfil antes de preparar uma candidatura.");
+  if (/s[eê]nior|tech lead|lideran[cç]a/i.test(job.level) && /^(?:n[aã]o|unknown|unspecified)/i.test(profile.level))
+    blockers.push('Senioridade exigida ainda não confirmada no perfil.');
   if (!profile.skills.length)
     gaps.push("Adicione suas competências para calcular uma aderência útil.");
   if (!job.skills.length)
@@ -703,7 +835,10 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     !filters.modalities.includes(job.modality)
   )
     blockers.push("Modalidade fora das suas preferências.");
-  if (filters.contracts.length && !filters.contracts.includes(job.contract))
+  const contractMissing = !normalize(job.contract) || /^(?:nao (?:especificad[oa]|informad[oa]|divulgad[oa]|definid[oa])|unknown|unspecified|not (?:specified|provided|informed)|a combinar)$/.test(normalize(job.contract));
+  if (contractMissing)
+    gaps.push("Regime de contratação não informado no anúncio.");
+  if (!contractMissing && filters.contracts.length && !filters.contracts.includes(job.contract))
     blockers.push("Contratação fora das suas preferências.");
   if (filters.locations.length && !matchesJobLocation(job, filters))
     blockers.push(
@@ -742,6 +877,15 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
       "Cargo e área desejados",
       directTitle ? 20 : radar ? 17 : roleFamily ? 8 : 0,
       20,
+    );
+  // A shared Git/API background cannot outweigh the specialty named in the role.
+  // Keep this as a scored criterion rather than inventing a mandatory requirement.
+  const titleTechnologies = extractSkills(job.title).filter(skill=>namedTechnologies.has(skill));
+  if (titleTechnologies.length)
+    criterion(
+      "Competências citadas no cargo",
+      30 * titleTechnologies.filter(skill => known.has(normalize(skill))).length / titleTechnologies.length,
+      30,
     );
   if (job.level !== "Não especificado" && profile.level !== "Não especificado")
     criterion("Nível de experiência", job.level === profile.level ? 5 : 0, 5);

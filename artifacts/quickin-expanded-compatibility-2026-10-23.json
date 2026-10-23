@@ -1,0 +1,409 @@
+{
+  "at": "2026-10-23T12:20:09.644Z",
+  "readOnly": true,
+  "results": [
+    {
+      "job": {
+        "id": "c3051d8b-d427-447d-b3c1-bc70ea982e46",
+        "title": ".NET Backend Developer Pleno - REMOTO",
+        "company": "Verity",
+        "url": "https://jobs.quickin.io/verity/jobs/6a8c7f5a9766d500137c0b1e",
+        "source": "Quickin",
+        "description": "A Verity est&aacute; buscando novos talentos!\n\n Somos uma consultoria de transforma&ccedil;&atilde;o e engenharia digital .NET Backend Developer Pleno para fazer parte dessa jornada.\n\n Olha s&oacute; quais s&atilde;o as experi&ecirc;ncias e conhecimentos que voc&ecirc; precisa ter para acelerar e transformar com a gente:\n\n Responsabilidades e atribui&ccedil;&otilde;es \n\n Desenvolver, implementar e manter APIs e servi&ccedil;os backend utilizando a plataforma .NET (Core/.NET). Colaborar na arquitetura de novas funcionalidades e na melhoria cont&iacute;nua dos sistemas existentes. Garantir a qualidade do c&oacute;digo atrav&eacute;s de testes unit&aacute;rios, de integra&ccedil;&atilde;o e boas pr&aacute;ticas de desenvolvimento (SOLID, Clean Architecture). Implementar e gerenciar solu&ccedil;&otilde;es de Observabilidade (m&eacute;tricas, logs, traces) utilizando ferramentas como Dynatrace para monitorar a sa&uacute;de e performance das aplica&ccedil;&otilde;es em produ&ccedil;&atilde;o. Trabalhar com infraestrutura em nuvem, implantando e gerenciando servi&ccedil;os no Google Cloud Platform (GCP), com foco em Google Kubernetes Engine (GKE). Participar ativamente das cerim&ocirc;nias &aacute;geis (Scrum/Kanban) e da revis&atilde;o de c&oacute;digo (Code Review). Identificar gargalos de performance e propor solu&ccedil;&otilde;es de otimiza&ccedil;&atilde;o\n Experiencia em .NET Core ou .NET 6/7/8+ e na linguagem C#. Experi&ecirc;ncia com Dynatrace para monitoramento, tracing e an&aacute;lise de performance de aplica&ccedil;&otilde;es (Observabilidade). Conhecimento pr&aacute;tico e experi&ecirc;ncia com servi&ccedil;os do Google Cloud Platform (GCP). Experi&ecirc;ncia no uso e gerenciamento de cont&ecirc;ineres utilizando Docker e orquestra&ccedil;&atilde;o via Kubernetes, preferencialmente com GKE. Dom&iacute;nio em SQL e experi&ecirc;ncia com bancos de dados relacionais (Oracle, PostgreSQL) Familiaridade com arquitetura de microsservi&ccedil;os e comunica&ccedil;&atilde;o ass&iacute;ncrona (filas/mensageria, ex: Kafka, Pub/Sub). Conhecimento em CI/CD e pr&aacute;ticas de DevOps.",
+        "location": "São Paulo, SP, BR",
+        "modality": "Remoto",
+        "level": "Pleno",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "PostgreSQL",
+          "APIs REST",
+          "Docker"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-08-24T17:28:58.914Z",
+        "discoveredAt": "2026-10-23T12:20:09.043Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/verity/jobs/6a8c7f5a9766d500137c0b1e",
+            "id": "https://jobs.quickin.io/verity/jobs/6a8c7f5a9766d500137c0b1e"
+          }
+        ],
+        "match": {},
+        "requisitionId": "CPT9475",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: C#, .NET, APIs REST, Docker.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: PostgreSQL.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "APIs REST",
+          "Docker"
+        ],
+        "missingSkills": [
+          "PostgreSQL"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 48,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 30,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 48/60; Cargo e área desejados: 17/20; Competências citadas no cargo: 30/30; Modalidade preferida: 10/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "url": "https://jobs.quickin.io/globalti/jobs/6941b6764a59310013824f2f",
+      "blocked": "no_structured_posting"
+    },
+    {
+      "job": {
+        "id": "8455f347-0cc4-452d-8bcc-7c79ffc0471c",
+        "title": "Desenvolvedor (a) .Net Sênior",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6ac8f1b63156750013366368",
+        "source": "Quickin",
+        "description": "Muito prazer, Somos a Evertec!\n\n A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe. Com mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente, somos refer&ecirc;ncia em solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do mercado.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, atendendo institui&ccedil;&otilde;es financeiras, empresas e fintechs que buscam inova&ccedil;&atilde;o, seguran&ccedil;a e efici&ecirc;ncia.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros, promovendo um ecossistema mais conectado e acess&iacute;vel.\n Sobre a oportunidade Buscamos um(a) Desenvolvedor(a) de Software .NET com iniciativa, perfil anal&iacute;tico e foco em solu&ccedil;&otilde;es para atuar no desenvolvimento, na manuten&ccedil;&atilde;o e na evolu&ccedil;&atilde;o de aplica&ccedil;&otilde;es internas voltadas a ETL, BPM, BI e Web.\n\n O profissional ser&aacute; respons&aacute;vel tanto pela implementa&ccedil;&atilde;o de novas funcionalidades quanto pelo suporte de n&iacute;vel 3, garantindo a estabilidade, a qualidade e a continuidade dos sistemas em produ&ccedil;&atilde;o.\n\n Tamb&eacute;m atuar&aacute; em parceria com outros desenvolvedores e &aacute;reas de neg&oacute;cio, participando do levantamento de requisitos, da proposi&ccedil;&atilde;o de solu&ccedil;&otilde;es t&eacute;cnicas e da coordena&ccedil;&atilde;o de mudan&ccedil;as nos sistemas.\n\n 🎯 Principais responsabilidades \n\n Consolidar e gerenciar pipelines de diferentes equipes, em &acirc;mbito local e global. Analisar impactos t&eacute;cnicos e garantir a qualidade das entregas. Executar testes de regress&atilde;o para prevenir falhas em produ&ccedil;&atilde;o. Monitorar depend&ecirc;ncias entre projetos, gerenciando releases e cronogramas. Garantir a continuidade dos processos cr&iacute;ticos, identificando e corrigindo falhas. Atender &agrave;s solicita&ccedil;&otilde;es de auditoria e aos requisitos regulat&oacute;rios. Realizar migra&ccedil;&otilde;es de tecnologias descontinuadas (NPT) e implementar mudan&ccedil;as obrigat&oacute;rias. Manter a documenta&ccedil;&atilde;o t&eacute;cnica atualizada. Participar das revis&otilde;es anuais de arquitetura e coordenar mudan&ccedil;as de c&oacute;digo. Desenvolver e implementar novas funcionalidades em aplica&ccedil;&otilde;es internas. Prestar suporte de n&iacute;vel 3 aos sistemas, atuando na an&aacute;lise e resolu&ccedil;&atilde;o de incidentes em produ&ccedil;&atilde;o.\n\n 🔥 Requisitos e conhecimentos t&eacute;cnicos \n\n Ingl&ecirc;s Avan&ccedil;ado para intera&ccedil;&atilde;o com times globais. Experi&ecirc;ncia em Tecnologia da Informa&ccedil;&atilde;o com foco em solu&ccedil;&otilde;es para neg&oacute;cios. Experi&ecirc;ncia com desenvolvimento .NET e suporte a aplica&ccedil;&otilde;es em produ&ccedil;&atilde;o. Conhecimento em ASP.NET Web Forms, ASP.NET MVC e DevExpress Framework. Experi&ecirc;ncia com bancos de dados relacionais, especialmente SQL, Sybase e Oracle. Conhecimento em processos e ferramentas de ETL, BPM e BI.\n\n Diferenciais: \n\n Conhecimentos em Java, Python e Scala. Experi&ecirc;ncia com gest&atilde;o de pipelines, controle de releases e depend&ecirc;ncias entre projetos. Viv&ecirc;ncia com ambientes corporativos, processos cr&iacute;ticos, auditorias e requisitos regulat&oacute;rios.\n\n 📍 Modelo de trabalho: 100% remoto",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Excel",
+          ".NET",
+          "Python",
+          "Java"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-09T13:52:54.288Z",
+        "discoveredAt": "2026-10-23T12:20:09.254Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6ac8f1b63156750013366368",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6ac8f1b63156750013366368"
+          }
+        ],
+        "match": {},
+        "requisitionId": "YPE2547",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 58,
+        "strengths": [
+          "Competências em comum: .NET.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Excel, Python, Java.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          ".NET"
+        ],
+        "missingSkills": [
+          "Excel",
+          "Python",
+          "Java"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 15,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 30,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 15/60; Cargo e área desejados: 20/20; Competências citadas no cargo: 30/30; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "35ad2902-439d-4468-8c4d-cf188c4e64e3",
+        "title": "Desenvolvedor .NET PL/SR/Espec. | Banco de Talentos",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6aa00e0056ac770013d74a21",
+        "source": "Quickin",
+        "description": "Somos a &uacute;nica solu&ccedil;&atilde;o completa para o mercado financeiro!\n\n A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o no mercado, e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe e mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, adquir&ecirc;ncia, processamento e tecnologias para meios de pagamento, contribuindo para a digitaliza&ccedil;&atilde;o de institui&ccedil;&otilde;es financeiras, empresas e fintechs.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros.\n Sem vaga aberta agora? Sem problema. Quando surgir uma posi&ccedil;&atilde;o no seu perfil, n&oacute;s chamamos voc&ecirc;!\n\n Na Evertec Brasil voc&ecirc; atua com alguns dos principais nomes do mercado financeiro: bancos, fintechs, gestoras, seguradoras e adquirentes. Projetos de alta criticidade, volume real e intera&ccedil;&atilde;o com times globais. 🌎\n\n 🧩 O que voc&ecirc; vai fazer Desenvolver e manter aplica&ccedil;&otilde;es com .NET Core, .NET Framework e C# Criar e consumir APIs RESTful, integrando sistemas internos e externos Aplicar clean code, design patterns e SOLID no dia a dia Trabalhar com bancos relacionais e NoSQL Garantir qualidade do c&oacute;digo com testes unit&aacute;rios e automatizados Colaborar com times multidisciplinares e participar de reuni&otilde;es t&eacute;cnicas em ingl&ecirc;s Atuar na an&aacute;lise, troubleshooting e otimiza&ccedil;&atilde;o de sistemas Apoiar na defini&ccedil;&atilde;o de arquitetura e boas pr&aacute;ticas de desenvolvimento 💻 Nossas principais stacks .NET Core e .NET Framework C# Entity Framework e Dapper APIs REST e Web Services SQL Server, PostgreSQL, MongoDB Microsservi&ccedil;os Mensageria (RabbitMQ, Kafka) Cloud (Azure, AWS ou GCP) CI/CD e Git Docker, Kubernetes e Terraform N&atilde;o precisa dominar todas. Conte o que voc&ecirc; usa no dia a dia.\n\n ⭐ Conta pontos Experi&ecirc;ncia no setor banc&aacute;rio, financeiro ou segurador Ingl&ecirc;s para reuni&otilde;es t&eacute;cnicas com times globais Viv&ecirc;ncia com sistemas de alto volume transacional Certifica&ccedil;&otilde;es Microsoft ou de cloud 📍 Modelos de trabalho H&iacute;brido: at&eacute; 3x por semana em Morumbi, Faria Lima, Centro de S&atilde;o Paulo, Vila Ol&iacute;mpia, Santo Amaro, Pinheiros ou Interlagos Remoto: para posi&ccedil;&otilde;es espec&iacute;ficas\n\n No cadastro voc&ecirc; marca quais regi&otilde;es funcionam pra voc&ecirc;. A gente s&oacute; te chama para vagas que fazem sentido no seu deslocamento. ✅\n\n 📄 Contrata&ccedil;&atilde;o CLT + benef&iacute;cios ou PJ, conforme o projeto. No cadastro voc&ecirc; indica sua prefer&ecirc;ncia.\n\n 🎯 Perfil que buscamos Boa comunica&ccedil;&atilde;o: voc&ecirc; conversa com cliente, produto e neg&oacute;cio, n&atilde;o s&oacute; com o time t&eacute;cnico Protagonismo: prop&otilde;e, questiona e leva o problema at&eacute; o fim Gosto por tecnologia bem feita ⚡ Como &eacute; o processo Voc&ecirc; se candidata 📝 Entrevista por voz com IA: 7 perguntas t&eacute;cnicas, de 6 a 12 minutos, no hor&aacute;rio que quiser 🎙️ An&aacute;lise do time de Talent Acquisition 🔎 Seu perfil entra no Banco de Talentos ativo 💾 Abriu a vaga certa? A gente te chama 📞\n\n 🔄 Uma coisa importante A cada 90 dias mandamos um e-mail curto perguntando se voc&ecirc; continua dispon&iacute;vel. Responder leva 30 segundos e mant&eacute;m seu perfil ativo com a gente.\n\n Vamos nos conhecer? Inscreva-se no nosso Banco de Talentos!",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "CLT",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Excel",
+          "C#",
+          ".NET",
+          "SQL Server",
+          "PostgreSQL",
+          "Entity Framework",
+          "APIs REST",
+          "Docker",
+          "Git",
+          "Azure",
+          "AWS"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-09-08T13:30:40.718Z",
+        "discoveredAt": "2026-10-23T12:20:09.374Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6aa00e0056ac770013d74a21",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6aa00e0056ac770013d74a21"
+          }
+        ],
+        "match": {},
+        "requisitionId": "IRN6670",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: C#, .NET, SQL Server, Entity Framework, APIs REST, Docker, Git, Azure.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Excel, PostgreSQL, AWS.",
+          "Salário não divulgado."
+        ],
+        "blockers": [
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "Entity Framework",
+          "APIs REST",
+          "Docker",
+          "Git",
+          "Azure"
+        ],
+        "missingSkills": [
+          "Excel",
+          "PostgreSQL",
+          "AWS"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 43.64,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 30,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 43.64/60; Cargo e área desejados: 20/20; Competências citadas no cargo: 30/30; Modalidade preferida: 10/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "1f648878-1f9d-4873-a326-a8be48de19d2",
+        "title": "Desenvolvedor Full Stack Sr.",
+        "company": "BELTIS TECNOLOGIA",
+        "url": "https://jobs.quickin.io/beltis/jobs/6ad65952dd63cb0013761316",
+        "source": "Quickin",
+        "description": "Buscamos um(a) Desenvolvedor(a) Full Stack S&ecirc;nior para atuar em um ambiente de tecnologia voltado ao segmento financeiro, participando da evolu&ccedil;&atilde;o, sustenta&ccedil;&atilde;o e desenvolvimento de aplica&ccedil;&otilde;es e solu&ccedil;&otilde;es digitais.\n\n A posi&ccedil;&atilde;o exige perfil t&eacute;cnico s&oacute;lido, autonomia para an&aacute;lise e resolu&ccedil;&atilde;o de problemas e capacidade de atuar tanto no desenvolvimento Front-End quanto Back-End, interagindo com diferentes sistemas, APIs e bases de dados.\n\n Responsabilidades: \n\n \n Desenvolver e evoluir aplica&ccedil;&otilde;es web, atuando nas camadas de Front-End e Back-End;\n\n Implementar novas funcionalidades e realizar melhorias em solu&ccedil;&otilde;es j&aacute; existentes;\n\n Participar da an&aacute;lise t&eacute;cnica de demandas, propondo alternativas de implementa&ccedil;&atilde;o e arquitetura;\n\n Desenvolver e manter integra&ccedil;&otilde;es entre aplica&ccedil;&otilde;es e servi&ccedil;os por meio de APIs REST;\n\n Atuar na manuten&ccedil;&atilde;o, sustenta&ccedil;&atilde;o e evolu&ccedil;&atilde;o de sistemas legados e aplica&ccedil;&otilde;es atuais;\n\n Desenvolver interfaces utilizando Vue.js, considerando desempenho, usabilidade e integra&ccedil;&atilde;o com servi&ccedil;os Back-End;\n\n Implementar solu&ccedil;&otilde;es utilizando Node.js e tecnologias do ecossistema .NET;\n\n Realizar consultas, cria&ccedil;&atilde;o e manuten&ccedil;&atilde;o de estruturas e procedimentos em banco de dados SQL Server;\n\n Executar testes e valida&ccedil;&otilde;es das funcionalidades desenvolvidas, contribuindo para a estabilidade e qualidade das entregas;\n\n Investigar falhas e problemas em aplica&ccedil;&otilde;es, identificando causas e implementando corre&ccedil;&otilde;es;\n\n Trabalhar de forma integrada com as demais &aacute;reas t&eacute;cnicas envolvidas nos projetos.\n\n \n Node.js;\n\n Vue.js;\n\n C# / .NET Core;\n\n VB.NET;\n\n Experi&ecirc;ncia no desenvolvimento e consumo de APIs RESTful;\n\n SQL Server;\n\n Experi&ecirc;ncia com desenvolvimento de aplica&ccedil;&otilde;es Front-End e Back-End;\n\n Conhecimento de arquitetura e integra&ccedil;&atilde;o entre sistemas;\n\n Conhecimentos em microsservi&ccedil;os ser&atilde;o considerados um diferencial.\n\n \n Informa&ccedil;&otilde;es Adicionais:\n\n \n Modelo de Contrata&ccedil;&atilde;o: Pessoa Jur&iacute;dica (PJ);\n\n Sal&aacute;rio: R$13.500,00 fixo mensal + conv&ecirc;nio m&eacute;dico Amil;\n\n Jornada de segunda a sexta em hor&aacute;rio comercial;\n\n Modelo de trabalho: predominantemente remoto;\n\n Poder&aacute; haver necessidade pontual de comparecimento presencial ao escrit&oacute;rio para alinhamento, de acordo com demandas espec&iacute;ficas do projeto.",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "PJ",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "APIs REST",
+          "Node.js"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-19T17:54:26.245Z",
+        "discoveredAt": "2026-10-23T12:20:09.512Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/beltis/jobs/6ad65952dd63cb0013761316",
+            "id": "https://jobs.quickin.io/beltis/jobs/6ad65952dd63cb0013761316"
+          }
+        ],
+        "match": {},
+        "requisitionId": "CHG6451",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 78,
+        "strengths": [
+          "Competências em comum: C#, .NET, SQL Server, APIs REST.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Node.js.",
+          "Salário não divulgado."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "APIs REST"
+        ],
+        "missingSkills": [
+          "Node.js"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 48,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 48/60; Cargo e área desejados: 20/20; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "url": "https://jobs.quickin.io/sinqia/jobs/6810e631ef17af00139660f1",
+      "blocked": "no_structured_posting"
+    }
+  ]
+}

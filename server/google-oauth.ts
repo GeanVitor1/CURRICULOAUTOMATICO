@@ -6,8 +6,9 @@ import { store } from "./db";
 import { createWorkspace } from "./workspace";
 import { RequestError } from "./errors";
 import { googleOAuthConfig } from "./auth-config";
+import { GMAIL_SEND_SCOPE, saveGmailConnection } from "./gmail-connection";
 
-export type GoogleIntent = "signin" | "link" | "reauthenticate";
+export type GoogleIntent = "signin" | "link" | "reauthenticate" | "gmail";
 export class GoogleOAuthError extends RequestError {
   constructor(
     public reason: string,
@@ -68,11 +69,14 @@ export async function beginGoogleOAuth(
     client_id: clientId,
     redirect_uri: redirectUri,
     response_type: "code",
-    scope: "openid email profile",
+    scope:
+      intent === "gmail"
+        ? `openid email ${GMAIL_SEND_SCOPE}`
+        : "openid email profile",
     state,
     nonce,
-    access_type: "online",
-    prompt: "select_account",
+    access_type: intent === "gmail" ? "offline" : "online",
+    prompt: intent === "gmail" ? "consent select_account" : "select_account",
     code_challenge_method: "S256",
     code_challenge: createHash("sha256")
       .update(codeVerifier)
@@ -133,7 +137,13 @@ export async function completeGoogleOAuth(input: {
     });
     if (!response.ok) throw new GoogleOAuthError("failed", intent);
     const token = z
-      .object({ id_token: z.string().min(1) })
+      .object({
+        id_token: z.string().min(1),
+        access_token: z.string().optional(),
+        refresh_token: z.string().optional(),
+        expires_in: z.number().positive().optional(),
+        scope: z.string().optional(),
+      })
       .parse(await response.json());
     const client = new OAuth2Client({
       clientId: challenge.clientId,
@@ -170,7 +180,16 @@ export async function completeGoogleOAuth(input: {
           lock: true,
         });
         if (!account) throw new GoogleOAuthError("session_expired", intent);
-        if (intent === "reauthenticate") {
+        if (intent === "gmail") {
+          if (account.email !== email)
+            throw new GoogleOAuthError("wrong_account", intent);
+          try {
+            await saveGmailConnection(tx, account.id, email, token);
+          } catch {
+            throw new GoogleOAuthError("gmail_permission", intent);
+          }
+          return account;
+        } else if (intent === "reauthenticate") {
           if (account.googleSub !== profile.sub)
             throw new GoogleOAuthError("wrong_account", intent);
         } else {

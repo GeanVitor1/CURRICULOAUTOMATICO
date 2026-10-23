@@ -615,7 +615,13 @@ export function JobDetail({
             </div>
           )}
           <div className="detail-actions">
-            <Button
+            {(!application || (application.resumeState?.kind === "ats" && application.status === "Requer ação manual" && !application.missingQuestions?.length)) && !demo && w.routine.enabled && w.routine.mode === "automatic" && (
+              <Button disabled={a.isPending || job.match.blockers.length > 0 || job.match.confidence === "insufficient" || job.match.score < w.routine.minScore}
+                onClick={() => a.mutate({path:"/routine/process",body:{jobId:job.id}}, {onSuccess: result => {toast(result.queued ? "Esta vaga entrou na fila automática." : "Esta vaga ainda não tem destino disponível ou a cota está ocupada."); if(result.queued){close();navigate("candidaturas");}}})}>
+                {application ? "Retomar esta vaga pela rotina" : "Processar esta vaga pela rotina"}
+              </Button>
+            )}
+            {demo && (            <Button
               className="primary"
               disabled={
                 a.isPending ||
@@ -643,7 +649,7 @@ export function JobDetail({
             >
               <BriefcaseBusiness size={15} />
               {application ? application.status : "Preparar candidatura"}
-            </Button>
+            </Button>)}
             {job.url && /^https?:\/\//.test(job.url) && (
               <a
                 className="button"

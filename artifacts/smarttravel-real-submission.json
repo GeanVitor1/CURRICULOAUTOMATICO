@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-19T14:06:03.893Z",
+  "realEmployerSubmissions": 1,
+  "job": "Pessoa Desenvolvedora Backend C#/.NET - Pleno",
+  "company": "SmartTravel / TALENTOS SMART",
+  "portalApplicationId": "767851604",
+  "portalUrl": "https://smart.gupy.io/candidates/applications/767851604",
+  "confirmation": "Candidatura finalizada!",
+  "progress": "1/5",
+  "execution": "Assistant through authorized Chrome session; not the deployed background worker",
+  "workspaceStatus": "Enviada",
+  "resumeReference": "Curriculo.pdf",
+  "deliveryFormat": "Existing Gupy structured CV, with PDF-based presentation and three skills; no PDF attachment field was offered",
+  "acceptsPj": true,
+  "compensationDisclosure": "prefer_not_to_say",
+  "salaryDesired": 3000,
+  "routineEnabled": false,
+  "screenshot": "artifacts/smarttravel-real-submitted.png",
+  "screenshotSha256": "a7dc1404e6cf1cc4ef273057d478be179e3b4e96aa6f1d4217f77ef2fd8de9f6"
+}

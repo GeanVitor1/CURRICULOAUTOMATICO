@@ -1,0 +1,1659 @@
+{
+  "at": "2026-10-23T18:39:02.559Z",
+  "readOnly": true,
+  "workspaceWrites": 0,
+  "employerWrites": 0,
+  "filtersUnchanged": true,
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "observedForms": 33,
+  "objectivelyPassing": 33,
+  "professionallyPassing": 0,
+  "freshPreflightEligible": 0,
+  "exclusiveExclusionReasons": {
+    "uncertain": 1,
+    "seniority": 24,
+    "affirmative": 3,
+    "belowScore": 5,
+    "other": 0
+  },
+  "indexedQuickApplyHints": 3,
+  "indexedHintsStillOpen": 0,
+  "currentPublicQuickApplyFormsObserved": 0,
+  "confirmedFactsPresent": {
+    "name": true,
+    "email": true,
+    "phone": true,
+    "location": true,
+    "years": true,
+    "desiredSalary": true,
+    "originalApprovedResume": true
+  },
+  "formsInspectedWithoutFilling": [
+    {
+      "jobId": "fccff2b3-0b7a-40ef-a5fc-ca8e64606c14",
+      "url": "https://jobs.lever.co/ciandt/0f43ee43-830b-43f0-9453-29c4568e6d9c/apply",
+      "httpStatus": 200,
+      "closed": false,
+      "fields": [
+        {
+          "name": "resume",
+          "type": "file",
+          "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+          "required": false,
+          "accept": "",
+          "normalizedObservedLabel": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "label": "Full name✱",
+          "required": true,
+          "normalizedObservedLabel": "Full name",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "He/him",
+          "required": false,
+          "normalizedObservedLabel": "He/him",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "She/her",
+          "required": false,
+          "normalizedObservedLabel": "She/her",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "They/them",
+          "required": false,
+          "normalizedObservedLabel": "They/them",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Xe/xem",
+          "required": false,
+          "normalizedObservedLabel": "Xe/xem",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Ze/hir",
+          "required": false,
+          "normalizedObservedLabel": "Ze/hir",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Ey/em",
+          "required": false,
+          "normalizedObservedLabel": "Ey/em",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Hir/hir",
+          "required": false,
+          "normalizedObservedLabel": "Hir/hir",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Fae/faer",
+          "required": false,
+          "normalizedObservedLabel": "Fae/faer",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Hu/hu",
+          "required": false,
+          "normalizedObservedLabel": "Hu/hu",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Use name only",
+          "required": false,
+          "normalizedObservedLabel": "Use name only",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "",
+          "type": "checkbox",
+          "label": "Custom",
+          "required": false,
+          "normalizedObservedLabel": "Custom",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email✱",
+          "required": true,
+          "normalizedObservedLabel": "Email",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "label": "Phone ✱",
+          "required": true,
+          "normalizedObservedLabel": "Phone",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "label": "Current location ✱No location found. Try entering a different locationLoading",
+          "required": true,
+          "normalizedObservedLabel": "Current location ✱No location found. Try entering a different locationLoading",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "org",
+          "type": "text",
+          "label": "Current company ✱",
+          "required": true,
+          "normalizedObservedLabel": "Current company",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "urls[LinkedIn]",
+          "type": "text",
+          "label": "LinkedIn URL✱",
+          "required": true,
+          "normalizedObservedLabel": "LinkedIn URL",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field1]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field2]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field3]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field4]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field5]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field6]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field7]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field8]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field9]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field10]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field11]",
+          "type": "file",
+          "label": "",
+          "required": false,
+          "accept": "",
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field1]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field2]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field1]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field2]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[37c6c83a-bf3c-4a76-99dc-b673ef2994a7][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[23f22db1-4785-43db-8a23-8191818c80e1][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "consent[store]",
+          "type": "checkbox",
+          "label": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+          "required": true,
+          "normalizedObservedLabel": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "consent[marketing]",
+          "type": "checkbox",
+          "label": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+          "required": false,
+          "normalizedObservedLabel": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        }
+      ],
+      "nativeFileInputCount": 2,
+      "preflightApproved": false,
+      "reason": "Professional eligibility failed before preparation; no input was filled or file loaded. Native required attributes alone do not represent the complete form contract."
+    },
+    {
+      "jobId": "951291ed-95ea-4c49-adcc-7550ae30d7d9",
+      "url": "https://jobs.lever.co/ciandt/9ac4a93e-bf58-481c-a7dc-040ce7f6b728/apply",
+      "httpStatus": 200,
+      "closed": false,
+      "fields": [
+        {
+          "name": "resume",
+          "type": "file",
+          "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+          "required": false,
+          "accept": "",
+          "normalizedObservedLabel": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "label": "Full name✱",
+          "required": true,
+          "normalizedObservedLabel": "Full name",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "He/him",
+          "required": false,
+          "normalizedObservedLabel": "He/him",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "She/her",
+          "required": false,
+          "normalizedObservedLabel": "She/her",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "They/them",
+          "required": false,
+          "normalizedObservedLabel": "They/them",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Xe/xem",
+          "required": false,
+          "normalizedObservedLabel": "Xe/xem",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Ze/hir",
+          "required": false,
+          "normalizedObservedLabel": "Ze/hir",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Ey/em",
+          "required": false,
+          "normalizedObservedLabel": "Ey/em",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Hir/hir",
+          "required": false,
+          "normalizedObservedLabel": "Hir/hir",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Fae/faer",
+          "required": false,
+          "normalizedObservedLabel": "Fae/faer",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Hu/hu",
+          "required": false,
+          "normalizedObservedLabel": "Hu/hu",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Use name only",
+          "required": false,
+          "normalizedObservedLabel": "Use name only",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "",
+          "type": "checkbox",
+          "label": "Custom",
+          "required": false,
+          "normalizedObservedLabel": "Custom",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email✱",
+          "required": true,
+          "normalizedObservedLabel": "Email",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "label": "Phone ✱",
+          "required": true,
+          "normalizedObservedLabel": "Phone",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "label": "Current location ✱No location found. Try entering a different locationLoading",
+          "required": true,
+          "normalizedObservedLabel": "Current location ✱No location found. Try entering a different locationLoading",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "org",
+          "type": "text",
+          "label": "Current company ✱",
+          "required": true,
+          "normalizedObservedLabel": "Current company",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "urls[LinkedIn]",
+          "type": "text",
+          "label": "LinkedIn URL✱",
+          "required": true,
+          "normalizedObservedLabel": "LinkedIn URL",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field1]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field2]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field3]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field4]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field5]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field6]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field7]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field8]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field9]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field10]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field11]",
+          "type": "file",
+          "label": "",
+          "required": false,
+          "accept": "",
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field1]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field2]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field1]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field2]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[37c6c83a-bf3c-4a76-99dc-b673ef2994a7][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[23f22db1-4785-43db-8a23-8191818c80e1][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field1]",
+          "type": "textarea",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field2]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "consent[store]",
+          "type": "checkbox",
+          "label": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+          "required": true,
+          "normalizedObservedLabel": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "consent[marketing]",
+          "type": "checkbox",
+          "label": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+          "required": false,
+          "normalizedObservedLabel": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        }
+      ],
+      "nativeFileInputCount": 2,
+      "preflightApproved": false,
+      "reason": "Professional eligibility failed before preparation; no input was filled or file loaded. Native required attributes alone do not represent the complete form contract."
+    },
+    {
+      "jobId": "77d512b1-3ecb-4be4-b54c-70df9e46fc9f",
+      "url": "https://jobs.lever.co/ciandt/8d33fe81-e0c7-4708-9d69-2f1ee89daad3/apply",
+      "httpStatus": 200,
+      "closed": false,
+      "fields": [
+        {
+          "name": "resume",
+          "type": "file",
+          "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+          "required": false,
+          "accept": "",
+          "normalizedObservedLabel": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "label": "Full name✱",
+          "required": true,
+          "normalizedObservedLabel": "Full name",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "He/him",
+          "required": false,
+          "normalizedObservedLabel": "He/him",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "She/her",
+          "required": false,
+          "normalizedObservedLabel": "She/her",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "They/them",
+          "required": false,
+          "normalizedObservedLabel": "They/them",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Xe/xem",
+          "required": false,
+          "normalizedObservedLabel": "Xe/xem",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Ze/hir",
+          "required": false,
+          "normalizedObservedLabel": "Ze/hir",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Ey/em",
+          "required": false,
+          "normalizedObservedLabel": "Ey/em",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Hir/hir",
+          "required": false,
+          "normalizedObservedLabel": "Hir/hir",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Fae/faer",
+          "required": false,
+          "normalizedObservedLabel": "Fae/faer",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Hu/hu",
+          "required": false,
+          "normalizedObservedLabel": "Hu/hu",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Use name only",
+          "required": false,
+          "normalizedObservedLabel": "Use name only",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "",
+          "type": "checkbox",
+          "label": "Custom",
+          "required": false,
+          "normalizedObservedLabel": "Custom",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email✱",
+          "required": true,
+          "normalizedObservedLabel": "Email",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "label": "Phone ✱",
+          "required": true,
+          "normalizedObservedLabel": "Phone",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "label": "Current location ✱No location found. Try entering a different locationLoading",
+          "required": true,
+          "normalizedObservedLabel": "Current location ✱No location found. Try entering a different locationLoading",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "org",
+          "type": "text",
+          "label": "Current company ✱",
+          "required": true,
+          "normalizedObservedLabel": "Current company",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "urls[LinkedIn]",
+          "type": "text",
+          "label": "LinkedIn URL✱",
+          "required": true,
+          "normalizedObservedLabel": "LinkedIn URL",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field1]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field2]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field3]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field4]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field5]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field6]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field7]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field8]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field9]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field10]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field11]",
+          "type": "file",
+          "label": "",
+          "required": false,
+          "accept": "",
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[f9771ace-e67f-42c8-a051-72ef6cd446a8][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field1]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field2]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[7907956c-0297-46a4-a022-a67f06bf286a][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[7907956c-0297-46a4-a022-a67f06bf286a][field1]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[7907956c-0297-46a4-a022-a67f06bf286a][field2]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[37c6c83a-bf3c-4a76-99dc-b673ef2994a7][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[858fecb3-6a02-4441-a720-e366235d6ae9][field0]",
+          "type": "textarea",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[858fecb3-6a02-4441-a720-e366235d6ae9][field1]",
+          "type": "textarea",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[858fecb3-6a02-4441-a720-e366235d6ae9][field2]",
+          "type": "textarea",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[858fecb3-6a02-4441-a720-e366235d6ae9][field3]",
+          "type": "textarea",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "consent[store]",
+          "type": "checkbox",
+          "label": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+          "required": true,
+          "normalizedObservedLabel": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "consent[marketing]",
+          "type": "checkbox",
+          "label": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+          "required": false,
+          "normalizedObservedLabel": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        }
+      ],
+      "nativeFileInputCount": 2,
+      "preflightApproved": false,
+      "reason": "Professional eligibility failed before preparation; no input was filled or file loaded. Native required attributes alone do not represent the complete form contract."
+    },
+    {
+      "jobId": "7e98745c-6905-4b61-98f5-4d64869b9088",
+      "url": "https://jobs.lever.co/ciandt/79485904-1730-4a7a-a670-99d795acfa31/apply",
+      "httpStatus": 200,
+      "closed": false,
+      "fields": [
+        {
+          "name": "resume",
+          "type": "file",
+          "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+          "required": false,
+          "accept": "",
+          "normalizedObservedLabel": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "label": "Full name✱",
+          "required": true,
+          "normalizedObservedLabel": "Full name",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "He/him",
+          "required": false,
+          "normalizedObservedLabel": "He/him",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "She/her",
+          "required": false,
+          "normalizedObservedLabel": "She/her",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "They/them",
+          "required": false,
+          "normalizedObservedLabel": "They/them",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Xe/xem",
+          "required": false,
+          "normalizedObservedLabel": "Xe/xem",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Ze/hir",
+          "required": false,
+          "normalizedObservedLabel": "Ze/hir",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Ey/em",
+          "required": false,
+          "normalizedObservedLabel": "Ey/em",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Hir/hir",
+          "required": false,
+          "normalizedObservedLabel": "Hir/hir",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Fae/faer",
+          "required": false,
+          "normalizedObservedLabel": "Fae/faer",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Hu/hu",
+          "required": false,
+          "normalizedObservedLabel": "Hu/hu",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "pronouns",
+          "type": "checkbox",
+          "label": "Use name only",
+          "required": false,
+          "normalizedObservedLabel": "Use name only",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "",
+          "type": "checkbox",
+          "label": "Custom",
+          "required": false,
+          "normalizedObservedLabel": "Custom",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email✱",
+          "required": true,
+          "normalizedObservedLabel": "Email",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "label": "Phone ✱",
+          "required": true,
+          "normalizedObservedLabel": "Phone",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "label": "Current location ✱No location found. Try entering a different locationLoading",
+          "required": true,
+          "normalizedObservedLabel": "Current location ✱No location found. Try entering a different locationLoading",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "org",
+          "type": "text",
+          "label": "Current company ✱",
+          "required": true,
+          "normalizedObservedLabel": "Current company",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "urls[LinkedIn]",
+          "type": "text",
+          "label": "LinkedIn URL✱",
+          "required": true,
+          "normalizedObservedLabel": "LinkedIn URL",
+          "approvedAnswerAvailableForObservedLabel": true,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field1]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field2]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[37c6c83a-bf3c-4a76-99dc-b673ef2994a7][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field1]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field2]",
+          "type": "text",
+          "label": "Type your response",
+          "required": false,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field3]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field4]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field5]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field6]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field7]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field8]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field9]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field10]",
+          "type": "select",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field11]",
+          "type": "file",
+          "label": "",
+          "required": false,
+          "accept": "",
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[a846f5cf-e9c5-4b99-892d-b80ac67f91bb][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[a846f5cf-e9c5-4b99-892d-b80ac67f91bb][field1]",
+          "type": "radio",
+          "label": "Sim",
+          "required": false,
+          "normalizedObservedLabel": "Sim",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[23f22db1-4785-43db-8a23-8191818c80e1][field0]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field0]",
+          "type": "text",
+          "label": "Type your response",
+          "required": true,
+          "normalizedObservedLabel": "Type your response",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field1]",
+          "type": "textarea",
+          "label": "",
+          "required": false,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field2]",
+          "type": "select",
+          "label": "",
+          "required": true,
+          "normalizedObservedLabel": null,
+          "approvedAnswerAvailableForObservedLabel": null,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "consent[store]",
+          "type": "checkbox",
+          "label": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+          "required": true,
+          "normalizedObservedLabel": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        },
+        {
+          "name": "consent[marketing]",
+          "type": "checkbox",
+          "label": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+          "required": false,
+          "normalizedObservedLabel": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+          "approvedAnswerAvailableForObservedLabel": false,
+          "mappingLimit": "Observed labels only; grouped questions, option compatibility and widgets require the production adapter preflight. False or null does not establish that the candidate lacks the underlying fact."
+        }
+      ],
+      "nativeFileInputCount": 2,
+      "preflightApproved": false,
+      "reason": "Professional eligibility failed before preparation; no input was filled or file loaded. Native required attributes alone do not represent the complete form contract."
+    }
+  ],
+  "globalTi": {
+    "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+    "status": "Resultado desconhecido",
+    "receipt": null,
+    "submittedAt": null,
+    "attempts": [
+      {
+        "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+        "startedAt": "2026-10-23T13:52:21.765Z",
+        "finishedAt": "2026-10-23T13:52:39.795Z",
+        "outcome": "unknown",
+        "executor": "ats_browser",
+        "origin": "user_triggered_automation",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "receipt": null
+      }
+    ]
+  },
+  "globalTiAttemptUnchanged": true,
+  "attemptsToday": [
+    {
+      "applicationId": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+      "origin": "user_triggered_automation",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "executor": "ats_browser",
+      "outcome": "unknown",
+      "receiptPresent": false
+    }
+  ],
+  "newAttemptsSinceReassessment": 0,
+  "dailyConfirmedAutomatic": 0,
+  "routine": {
+    "enabled": true,
+    "mode": "automatic",
+    "destinationPolicy": "official",
+    "nextRun": "2026-10-24T11:00:00.000Z",
+    "progress": {
+      "day": "2026-10-23",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 1,
+      "remaining": 4,
+      "state": "waiting",
+      "message": "1 tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente. 5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-23T16:26:17.467Z"
+    }
+  },
+  "newAdapters": 0,
+  "newRealSubmissions": 0,
+  "newReceipts": 0,
+  "productionChanged": false
+}

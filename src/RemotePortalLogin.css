@@ -9,6 +9,19 @@
   max-width: none;
   overscroll-behavior: none;
 }
+.gupy-chrome-connection {
+  height: 100dvh;
+  overflow: auto;
+  box-sizing: border-box;
+  max-width: 760px;
+  margin: auto;
+  padding: 32px 24px;
+  line-height: 1.65;
+}
+.gupy-chrome-connection h1 { font-size: 26px; }
+.gupy-chrome-connection li { margin: 16px 0; }
+.gupy-chrome-connection a { color: #286022; text-decoration: underline; }
+.gupy-chrome-connection button { display: block; margin: 24px 0; padding: 12px 18px; }
 .remote-screen {
   width: 100%;
   height: 100%;

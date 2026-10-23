@@ -53,6 +53,7 @@ export const filtersSchema = z
 export const routineSchema = z.object({
   enabled: z.boolean(),
   mode: z.enum(["discovery", "approval", "automatic"]),
+  destinationPolicy: z.enum(["official", "any"]).optional(),
   time: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
   dailyLimit: z.number().int().min(1).max(100),
   minScore: z.number().min(0).max(100),
@@ -65,6 +66,8 @@ export const sourceSchema = z
       "ashby",
       "jobicy",
       "adzuna",
+      "smartrecruiters",
+      "jooble",
       "authorized",
       "portal",
     ]),
@@ -78,7 +81,7 @@ export const sourceSchema = z
   })
   .refine(
     (source) =>
-      source.type === "adzuna"
+      ["adzuna", "jooble"].includes(source.type)
         ? source.board.length > 0
         : /^[a-zA-Z0-9_-]{1,100}$/.test(source.board),
     {

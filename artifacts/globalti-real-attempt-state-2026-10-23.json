@@ -1,0 +1,167 @@
+{
+  "at": "2026-10-23T14:29:51.726Z",
+  "readOnly": true,
+  "employerWrites": 0,
+  "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+  "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+  "url": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+  "publication": {
+    "status": 200,
+    "title": "Desenvolvedor Full Stack - PL/SR",
+    "company": "Global TI",
+    "availability": "active",
+    "publishedAt": "2026-10-19T16:59:17.397Z",
+    "score": 85,
+    "minimumScore": 70,
+    "blockers": [],
+    "objectiveFiltersPassed": true,
+    "selectedSourcesPassed": true,
+    "excluded": false
+  },
+  "approvals": {
+    "profileConfirmed": true,
+    "routineEnabled": true,
+    "mode": "automatic",
+    "interviewComplete": true,
+    "interviewResumeMatches": true,
+    "resumeApproved": true,
+    "originalAvailable": true,
+    "exactCpfApproved": true
+  },
+  "form": {
+    "schemaStatus": 200,
+    "missingRequired": [],
+    "requiredFields": [
+      {
+        "name": "resume_media_id",
+        "label": "Arquivo do Currículo",
+        "type": "media",
+        "answered": true
+      },
+      {
+        "name": "name",
+        "label": "Nome completo",
+        "type": "short_text",
+        "answered": true
+      },
+      {
+        "name": "email",
+        "label": "E-mail",
+        "type": "email",
+        "answered": true
+      },
+      {
+        "name": "phones",
+        "label": "Telefone",
+        "type": "array",
+        "answered": true
+      },
+      {
+        "name": "salary",
+        "label": "Pretensão salarial",
+        "type": "number",
+        "answered": true
+      },
+      {
+        "name": "job_question_692e07e480d7340012bd38fd",
+        "label": "Qual sua pretensão Salarial ?",
+        "type": "short_text",
+        "answered": true
+      },
+      {
+        "name": "job_question_69a9a48967f6d000131a9530",
+        "label": "Qual seu CPF? Ressaltamos que os dados serão utilizados exclusivamente para fins de seleção e eventual contratação, em conformidade com a LGPD, e tratados com total confidencialidade.",
+        "type": "long_text",
+        "answered": true
+      }
+    ],
+    "mandatoryDeclarations": [],
+    "informationalNotices": 1
+  },
+  "applications": [
+    {
+      "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "status": "Resultado desconhecido",
+      "receipt": null,
+      "submittedAt": null,
+      "execution": {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+          "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+          "origin": "user_triggered_automation",
+          "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T13:52:21.765Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T13:52:39.795Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-23T13:51:53.129Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T13:51:53.129Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-23T13:52:21.765Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T13:52:39.796Z",
+          "actor": "Sistema",
+          "message": "A Quickin não confirmou o recebimento. Confira o resultado antes de repetir."
+        }
+      ],
+      "missingQuestions": []
+    }
+  ],
+  "safeToTransmit": false,
+  "transmissionDecision": "BLOCKED_UNKNOWN_OUTCOME_DO_NOT_RETRY",
+  "routine": {
+    "enabled": true,
+    "mode": "automatic",
+    "time": "08:00",
+    "dailyLimit": 5,
+    "minScore": 70,
+    "lastRun": "2026-10-23T13:31:58.286Z",
+    "nextRun": "2026-10-24T11:00:00.000Z",
+    "destinationPolicy": "official",
+    "progress": {
+      "day": "2026-10-23",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 1,
+      "remaining": 4,
+      "state": "waiting",
+      "message": "5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-23T13:53:12.119Z"
+    },
+    "discoveryCheckpoints": {
+      "official-abler-email": {
+        "cursor": "276f88830db396c4:0",
+        "pending": false
+      },
+      "company-board:alleasy.com.br": {
+        "cursor": "{\"url\":\"https://alleasy.com.br/jobs/\",\"offset\":0}",
+        "pending": false
+      }
+    },
+    "researchBudget": {
+      "day": "2026-10-23",
+      "used": 27
+    }
+  },
+  "scheduledRuns": [],
+  "confirmedAutomaticToday": 0
+}

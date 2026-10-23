@@ -1,0 +1,28 @@
+{
+  "at": "2026-10-20T10:09:00.875Z",
+  "routineEnabled": false,
+  "profileConfirmed": true,
+  "candidateDetailsConfirmed": true,
+  "interviewCompleted": false,
+  "selectedSites": [
+    "linkedin",
+    "gupy"
+  ],
+  "resumes": [
+    {
+      "id": "3bfe4222-9c84-4008-b793-65e631eeffd8",
+      "name": "Curriculo.pdf",
+      "approved": true
+    }
+  ],
+  "gupyConnection": null,
+  "applications": [
+    {
+      "id": "bd701970-94b4-4fb9-87db-fd54907d5d6f",
+      "status": "Enviada",
+      "company": "SmartTravel",
+      "title": "Pessoa Desenvolvedora Backend C#/.NET - Pleno",
+      "receipt": "Gupy: Candidatura finalizada! | 767851604 | https://smart.gupy.io/candidates/applications/767851604"
+    }
+  ]
+}

@@ -7,8 +7,11 @@ import { candidatePortals, portals } from "../shared/portals";
 import type { InterviewAnswers } from "../shared/types";
 import PortalConnections from "./PortalConnections";
 import { useBilling } from "./Billing";
+import ApplicationPreferences from "./ApplicationPreferences";
+import { EmailConnection } from "./EmailApplications";
 
 export type SiteCapability = {
+  independentAutomatic?: boolean;
   remoteLogin?: boolean;
   externalLoginOnly?: boolean;
   cloud?: boolean;
@@ -81,6 +84,7 @@ export default function CareerInterview() {
   const [step, setStep] = useState(
     saved?.completed ? 0 : Math.min(5, Math.max(0, saved?.step || 0)),
   );
+  const [answerAutomatically,setAnswerAutomatically]=useState(w.profile.answerPolicy?.enabled ?? true);
   const [answers, setAnswers] = useState<InterviewAnswers>(
     saved?.answers || {
       resumeId: resume?.id || "",
@@ -133,10 +137,19 @@ export default function CareerInterview() {
   const automaticReady =
     answers.sites.length > 0 &&
     answers.sites.some((site) =>
-      capabilities.data?.some((item) => item.id === site && item.automatic),
+      capabilities.data?.some(
+        (item) =>
+          item.id === site && (item.automatic || item.independentAutomatic),
+      ),
     );
+  const officialAvailable =
+    capabilities.data?.some((item) => item.independentAutomatic) || false;
   const unavailableSites = answers.sites.filter(
-    (site) => !capabilities.data?.find((item) => item.id === site)?.automatic,
+    (site) =>
+      !capabilities.data?.some(
+        (item) =>
+          item.id === site && (item.automatic || item.independentAutomatic),
+      ),
   );
   const update = <K extends keyof InterviewAnswers>(
     key: K,
@@ -202,7 +215,14 @@ export default function CareerInterview() {
       {
         path: "/interview",
         method: "PUT",
-        body: { step: next, answers, complete, start },
+        body: {
+          step: next,
+          answers,
+          complete,
+          ...(complete ? {answerAutomatically} : {}),
+          start,
+          ...(officialAvailable ? { destinationPolicy: "official" } : {}),
+        },
       },
       {
         onSuccess: () => {
@@ -252,6 +272,8 @@ export default function CareerInterview() {
         title="Suas preferências"
         description="Uma pergunta de cada vez. Você pode mudar as respostas depois."
       />
+      <ApplicationPreferences />
+      <EmailConnection />
       <section
         className="interview-card"
         aria-label="Entrevista de preferências"
@@ -275,6 +297,37 @@ export default function CareerInterview() {
                 Estes cargos combinam com o seu currículo. Selecione os que
                 deseja.
               </p>
+              <details className="interview-extra">
+                <summary>Conferir meus dados para candidaturas</summary>
+                <p>
+                  {w.profile.location} ·{" "}
+                  {w.profile.phone || "Telefone pendente"}
+                </p>
+                <p>
+                  {w.profile.years === null
+                    ? "Experiência pendente"
+                    : `${w.profile.years} ano(s) de experiência`}{" "}
+                  ·{" "}
+                  {w.profile.salaryDesired > 0
+                    ? `Pretensão de R$ ${w.profile.salaryDesired.toLocaleString("pt-BR")} por mês`
+                    : "Pretensão salarial não definida"}
+                </p>
+                <p>
+                  {w.profile.acceptsPj === undefined
+                    ? "Contratação PJ pendente"
+                    : w.profile.acceptsPj
+                      ? "Aceita PJ"
+                      : "Não aceita PJ"}{" "}
+                  ·{" "}
+                  {w.profile.compensationDisclosure === "prefer_not_to_say"
+                    ? "Remuneração anterior: prefiro não informar"
+                    : w.profile.currentCompensation ||
+                      "Remuneração anterior pendente"}
+                </p>
+                <Button onClick={() => navigate("dados")}>
+                  Atualizar meus dados
+                </Button>
+              </details>
               <Choices
                 options={[
                   ...new Set([
@@ -438,10 +491,15 @@ export default function CareerInterview() {
                 ))}
               </div>
               <p className="interview-help">
-                O envio depende da conexão disponível em cada site. Vamos
-                mostrar a disponibilidade antes de começar.
+                Estes sites ajudam a descobrir vagas. Também buscamos
+                diretamente nas páginas de carreira das empresas. O envio
+                automático usa os formulários oficiais compatíveis e dispensa
+                conexão com os portais.
               </p>
-              <PortalConnections selected={answers.sites} />
+              <details className="interview-extra">
+                <summary>Conexões opcionais com portais</summary>
+                <PortalConnections selected={answers.sites} />
+              </details>
             </>
           )}
           {step === 5 && (
@@ -513,7 +571,7 @@ export default function CareerInterview() {
                   onChange={(e) => update("phone", e.target.value)}
                 />
               </Field>
-              {!!unavailableSites.length && (
+              {!officialAvailable && !!unavailableSites.length && (
                 <p className="interview-availability" role="status">
                   O envio automático ainda não está disponível para{" "}
                   {answers.sites
@@ -530,6 +588,12 @@ export default function CareerInterview() {
                     : "Você pode salvar suas preferências ou automatizar a busca e a preparação enquanto o envio não estiver conectado."}
                 </p>
               )}
+              <p className="interview-availability">
+                Buscamos oportunidades nos sites escolhidos e diretamente nas
+                empresas. O envio automático usa o currículo aprovado e os
+                formulários oficiais compatíveis. Vagas sem destino disponível
+                continuam para revisão; não é necessário instalar extensões.
+              </p>
               {capabilities.isError && (
                 <div className="recoverable-error" role="alert">
                   <p>
@@ -550,6 +614,7 @@ export default function CareerInterview() {
                 Ao confirmar, você aprova este currículo e as preferências para
                 suas candidaturas.
               </p>
+              <label className="checkbox-field"><input type="checkbox" checked={answerAutomatically} onChange={event=>setAnswerAutomatically(event.target.checked)}/>Deixar a IA responder às perguntas das vagas e responder “não” ou “prefiro não informar” quando faltar informação. Verei as respostas no histórico. Aceites jurídicos exigem minha autorização específica.</label>
               {w.infrastructure.scheduleWindow && (
                 <p className="interview-help">
                   A primeira busca começa agora.{" "}

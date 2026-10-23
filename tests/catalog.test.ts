@@ -11,6 +11,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { Source } from "../shared/types";
+import { confirmCandidateDetails } from "./fixtures/candidate-details";
 let dir: string,
   dbModule: typeof import("../server/db"),
   catalog: typeof import("../server/source-catalog");
@@ -117,14 +118,12 @@ describe("Catálogo compartilhado persistente", () => {
     const { enqueueDiscovery, processNextDiscoveryTask } =
       await import("../server/discovery-queue");
     const { eq } = await import("drizzle-orm");
-    await dbModule.db
-      .insert(users)
-      .values({
-        id: "queue-user",
-        email: "queue@example.test",
-        name: "Teste fila",
-        password: "disabled",
-      });
+    await dbModule.db.insert(users).values({
+      id: "queue-user",
+      email: "queue@example.test",
+      name: "Teste fila",
+      password: "disabled",
+    });
     const workspace = createWorkspace(
       "Teste fila",
       "queue@example.test",
@@ -164,38 +163,108 @@ describe("Catálogo compartilhado persistente", () => {
     });
     expect(await processNextDiscoveryTask()).toBe(false);
   });
+  it('conclui sem consulta externa quando todos os quadros aguardam a próxima janela normal',async()=>{
+    const {screenDiscovery}=await import('../server/discovery-quality');
+    const {discover}=await import('../server/operations');
+    await dbModule.mutateWorkspace('queue-user:live',w=>{
+      w.routine.enabled=true;
+      w.sources[0].id='catalog:greenhouse:queued-board';
+      w.routine.discoveryProductivity={[w.sources[0].id]:screenDiscovery(w,w.sources[0],[],new Date().toISOString()).productivity};
+    });
+    const mock=vi.spyOn(globalThis,'fetch').mockRejectedValue(new Error('No public request expected'));
+    const run=await discover('queue-user:live');
+    expect(run.status).toBe('completed');expect(run.errors).toEqual([]);expect(run.discovered).toBe(0);expect(mock).not.toHaveBeenCalled();
+    expect((await dbModule.readWorkspace('queue-user:live'))!.routine.nextRun).not.toBeNull();
+  });
   it("vaga fechada não permite preparo e comparação insuficiente não inicia envio", async () => {
     const { createWorkspace } = await import("../server/workspace");
     const { prepare, automaticSend } = await import("../server/operations");
     const { users, workspaces } = await import("../server/schema");
     const { defaultRoutine } = await import("../shared/types");
-    const mock = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify(providerBody)));
-    const { jobs } = await catalog.discoverCachedSource(source("application-safety"));
-    const workspace = createWorkspace("Teste de segurança", "safety@example.test", false);
+    const mock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(new Response(JSON.stringify(providerBody)));
+    const { jobs } = await catalog.discoverCachedSource(
+      source("application-safety"),
+    );
+    const workspace = createWorkspace(
+      "Teste de segurança",
+      "safety@example.test",
+      false,
+    );
     workspace.profile.confirmed = true;
+    confirmCandidateDetails(workspace);
     workspace.jobs = jobs;
     workspace.jobs[0].availability = "closed";
     expect(() => prepare(workspace, jobs[0].id)).toThrow("indisponível");
     workspace.jobs[0].availability = "active";
-    workspace.sources = [{ ...source("authorized", jobs[0].company, "authorized"), discovery: false, application: true }];
-    workspace.routine = { ...defaultRoutine, enabled: true, mode: "automatic", minScore: 0 };
-    workspace.resumes = [{ id: "approved", name: "Fixture", text: "Currículo de teste", uploadedAt: new Date().toISOString(), approved: true, skills: [], analysis: "" }];
+    workspace.sources = [
+      {
+        ...source("authorized", jobs[0].company, "authorized"),
+        discovery: false,
+        application: true,
+      },
+    ];
+    workspace.routine = {
+      ...defaultRoutine,
+      enabled: true,
+      mode: "automatic",
+      minScore: 0,
+    };
+    workspace.resumes = [
+      {
+        id: "approved",
+        name: "Fixture",
+        text: "Currículo de teste",
+        uploadedAt: new Date().toISOString(),
+        approved: true,
+        skills: [],
+        analysis: "",
+      },
+    ];
     const application = prepare(workspace, jobs[0].id);
     application.status = "Aguardando aprovação";
-    await dbModule.db.insert(users).values({ id: "safety-user", name: "Teste", email: "safety@example.test", password: "disabled" });
-    await dbModule.db.insert(workspaces).values({ id: "safety-user:live", userId: "safety-user", data: workspace });
+    await dbModule.db
+      .insert(users)
+      .values({
+        id: "safety-user",
+        name: "Teste",
+        email: "safety@example.test",
+        password: "disabled",
+      });
+    await dbModule.db
+      .insert(workspaces)
+      .values({
+        id: "safety-user:live",
+        userId: "safety-user",
+        data: workspace,
+      });
     vi.stubEnv("APPLICATION_WEBHOOK_AUTHORIZED", "true");
-    vi.stubEnv("APPLICATION_WEBHOOK_URL", "https://adapter.example.test/applications");
+    vi.stubEnv(
+      "APPLICATION_WEBHOOK_URL",
+      "https://adapter.example.test/applications",
+    );
     vi.stubEnv("APPLICATION_WEBHOOK_TOKEN", "test-only");
     const sender = vi.fn();
     try {
-      await expect(automaticSend("safety-user:live", application.id, sender as any)).rejects.toThrow("critérios");
+      await expect(
+        automaticSend("safety-user:live", application.id, sender as any),
+      ).rejects.toThrow("critérios");
       expect(sender).not.toHaveBeenCalled();
-      expect((await dbModule.readWorkspace("safety-user:live"))!.applications[0].status).toBe("Aguardando aprovação");
-      await dbModule.mutateWorkspace("safety-user:live", w => { w.jobs[0].availability = "closed"; });
-      await expect(automaticSend("safety-user:live", application.id, sender as any)).rejects.toThrow("indisponível");
+      expect(
+        (await dbModule.readWorkspace("safety-user:live"))!.applications[0]
+          .status,
+      ).toBe("Aguardando aprovação");
+      await dbModule.mutateWorkspace("safety-user:live", (w) => {
+        w.jobs[0].availability = "closed";
+      });
+      await expect(
+        automaticSend("safety-user:live", application.id, sender as any),
+      ).rejects.toThrow("indisponível");
       expect(sender).not.toHaveBeenCalled();
-    } finally { vi.unstubAllEnvs(); }
+    } finally {
+      vi.unstubAllEnvs();
+    }
     expect(mock).toHaveBeenCalledTimes(1);
   });
 });

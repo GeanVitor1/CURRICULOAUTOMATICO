@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-23T13:59:37.967Z",
+  "controlled": true,
+  "transport": "all writes intercepted and fulfilled locally; no employer submission",
+  "realCandidateDataUsed": false,
+  "result": {
+    "status": "action_required",
+    "retryable": true,
+    "message": "O upload do currículo recebeu HTTP 413. A candidatura não foi submetida."
+  },
+  "intercepted": [
+    {
+      "method": "POST",
+      "path": "https://api.quickin.io/public/692a0e88fa9dcb00134dc379/media/multipart",
+      "bytes": 825
+    }
+  ],
+  "failedRequests": [
+    "https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css",
+    "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap",
+    "https://modfile.quickin.io/image/520x520x0/https%3A%2F%2Fquickin-media-production.s3.sa-east-1.amazonaws.com%2FASrCZjwirwYGFTd7aWW0qwMoc74Lvt69D7ZrPZ28chIlUI7KOUZKMJ35jB7uySMq%2FPerfil_linkedin_-_Empresas_2.jpg"
+  ],
+  "visibleText": "omitted for rejection diagnostic privacy"
+}

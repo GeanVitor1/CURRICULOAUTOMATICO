@@ -11,6 +11,8 @@ export const interviewSchema = z.object({
   step: z.number().int().min(0).max(5),
   complete: z.boolean().default(false),
   start: z.enum(["save", "automatic", "prepare"]).default("save"),
+  destinationPolicy: z.enum(["official", "any"]).optional(),
+  answerAutomatically: z.boolean().optional(),
   answers: z.object({
     resumeId: z.string().min(1).max(100),
     phone: z
@@ -77,16 +79,26 @@ export function applyInterview(
   const selected = [...new Set(a.sites)];
   if (
     body.start === "automatic" &&
+    body.destinationPolicy === "official" &&
+    !availableSites.includes("independent")
+  )
+    throw new RequestError(
+      "O envio pelos formulários oficiais ainda não está disponível nesta instalação.",
+    );
+  if (
+    body.start === "automatic" &&
+    !availableSites.includes("independent") &&
     !selected.some((site) => availableSites.includes(site))
   )
     throw new RequestError(
       "O envio automático ainda não está conectado aos sites escolhidos. Você pode salvar suas preferências ou iniciar apenas a busca e preparação.",
     );
   applyResumeProfile(w, resume);
-  w.profile.location = a.city;
-  if (a.phone !== undefined) w.profile.phone = a.phone;
+  if (a.city.trim()) w.profile.location = a.city;
+  if (a.phone?.trim()) w.profile.phone = a.phone;
   w.profile.salaryMin = a.salaryMin;
   w.profile.confirmed = true;
+  if (body.answerAutomatically !== undefined) w.profile.answerPolicy={enabled:body.answerAutomatically,missing:"no",confirmedAt:new Date().toISOString()};
   resume.approved = true;
   w.resumes.forEach((r) => {
     r.targetsConfirmed = r.id === resume.id;
@@ -148,6 +160,9 @@ export function applyInterview(
     ...w.routine,
     enabled: body.start !== "save",
     mode: body.start === "automatic" ? "automatic" : "approval",
+    ...(body.destinationPolicy
+      ? { destinationPolicy: body.destinationPolicy }
+      : {}),
     dailyLimit: a.dailyLimit,
     minScore: 70,
     nextRun: body.start === "save" ? null : nextExecution(w.routine.time),

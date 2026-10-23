@@ -10,8 +10,8 @@ export async function dispatchNextApplication(workspaceId: string) {
   if (
     !w ||
     w.demo ||
-    !w.routine.enabled ||
-    w.routine.mode !== "automatic" ||
+    ((!w.routine.enabled || w.routine.mode !== "automatic") &&
+      !w.next?.single) ||
     w.sending
   )
     return false;
@@ -20,11 +20,12 @@ export async function dispatchNextApplication(workspaceId: string) {
   const userId = w.userId;
   const plan = userId ? await accountPlan(userId) : null;
   if (
+    !application.resuming &&
     (w.day ===
     new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" })
       ? w.attempts
       : 0) >=
-    Math.min(w.routine.dailyLimit, plan?.dailyLimit ?? w.routine.dailyLimit)
+      Math.min(w.routine.dailyLimit, plan?.dailyLimit ?? w.routine.dailyLimit)
   )
     return false;
   const day = new Date().toLocaleDateString("en-CA", {

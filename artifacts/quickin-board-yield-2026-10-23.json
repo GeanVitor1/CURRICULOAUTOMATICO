@@ -1,0 +1,2002 @@
+{
+  "at": "2026-10-23T12:20:58.726Z",
+  "readOnly": true,
+  "results": [
+    {
+      "job": {
+        "id": "41b36773-cbd6-42b2-98cf-d7305121c74d",
+        "title": "Desenvolvedor Java Backend Sênior- Open Finance/Regulatório",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6ada2084cb2e5300133cbef3",
+        "source": "Quickin",
+        "description": "🧡 A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe. Com mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente, somos refer&ecirc;ncia em solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do mercado.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, atendendo institui&ccedil;&otilde;es financeiras, empresas e fintechs que buscam inova&ccedil;&atilde;o, seguran&ccedil;a e efici&ecirc;ncia.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros, promovendo um ecossistema mais conectado e acess&iacute;vel.\n Principais Responsabilidades Projetar, desenvolver e implementar solu&ccedil;&otilde;es de software robustas, escal&aacute;veis e de alta performance utilizando Java. Desenvolver, evoluir e manter APIs RESTful seguras, perform&aacute;ticas e escal&aacute;veis. Projetar e implementar arquiteturas baseadas em microsservi&ccedil;os. Trabalhar em conjunto com equipes multidisciplinares para compreender requisitos de neg&oacute;cio e traduzi-los em solu&ccedil;&otilde;es t&eacute;cnicas eficientes. Atuar na identifica&ccedil;&atilde;o e resolu&ccedil;&atilde;o de problemas relacionados &agrave; performance, disponibilidade e seguran&ccedil;a das aplica&ccedil;&otilde;es. Realizar code reviews, garantindo qualidade, manutenibilidade e ader&ecirc;ncia &agrave;s melhores pr&aacute;ticas de desenvolvimento. Aplicar conceitos de Clean Code, SOLID e padr&otilde;es de desenvolvimento. Contribuir na defini&ccedil;&atilde;o de padr&otilde;es arquiteturais e boas pr&aacute;ticas junto aos arquitetos de software. Apoiar o desenvolvimento t&eacute;cnico do time, promovendo compartilhamento de conhecimento e evolu&ccedil;&atilde;o cont&iacute;nua. Desenvolver e implementar solu&ccedil;&otilde;es baseadas em Intelig&ecirc;ncia Artificial para automa&ccedil;&atilde;o e otimiza&ccedil;&atilde;o de processos, promovendo ganhos de efici&ecirc;ncia operacional e qualidade das entregas. Requisitos Experi&ecirc;ncia s&oacute;lida com Java (8+) e ecossistema Spring Framework (Spring Boot, Spring Data e Spring Security). Viv&ecirc;ncia com bancos de dados relacionais, como PostgreSQL e MySQL. Conhecimento em bancos NoSQL, como MongoDB e Redis. Experi&ecirc;ncia com arquitetura de microsservi&ccedil;os. Viv&ecirc;ncia com ferramentas de mensageria, como Kafka, RabbitMQ ou AWS SQS. Conhecimento em conteineriza&ccedil;&atilde;o e orquestra&ccedil;&atilde;o utilizando Docker e Kubernetes. Experi&ecirc;ncia com pr&aacute;ticas de CI/CD utilizando ferramentas como Jenkins, GitLab CI ou similares. Dom&iacute;nio de versionamento de c&oacute;digo com Git. Familiaridade com metodologias &aacute;geis (Scrum e/ou Kanban). Experi&ecirc;ncia em Open Finance e contextos regulat&oacute;rios. Viv&ecirc;ncia na utiliza&ccedil;&atilde;o de ferramentas e solu&ccedil;&otilde;es de Intelig&ecirc;ncia Artificial para automa&ccedil;&atilde;o, an&aacute;lise de dados, otimiza&ccedil;&atilde;o de processos e aumento de produtividade no desenvolvimento de software. Ensino superior completo ou em andamento na &aacute;rea de Tecnologia ou correlatas.",
+        "location": "Campinas, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Excel",
+          "PostgreSQL",
+          "APIs REST",
+          "Java",
+          "Docker",
+          "Git",
+          "AWS"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-22T14:41:08.098Z",
+        "discoveredAt": "2026-10-23T12:20:56.294Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6ada2084cb2e5300133cbef3",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6ada2084cb2e5300133cbef3"
+          }
+        ],
+        "match": {},
+        "requisitionId": "MTY7487",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 36,
+        "strengths": [
+          "Competências em comum: APIs REST, Docker, Git.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Escolaridade citada na vaga ainda não confirmada no seu perfil.",
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: Excel, PostgreSQL, Java, AWS.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "APIs REST",
+          "Docker",
+          "Git"
+        ],
+        "missingSkills": [
+          "Excel",
+          "PostgreSQL",
+          "Java",
+          "AWS"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 25.71,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Escolaridade",
+            "earned": 0,
+            "possible": 15
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 25.71/60; Cargo e área desejados: 17/20; Competências citadas no cargo: 0/30; Modalidade preferida: 10/10; Escolaridade: 0/15; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "90d99214-349d-47a3-8bdf-727097ace304",
+        "title": "Desenvolvedor FICO Sênior",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6ad660fb9308490013ff99dd",
+        "source": "Quickin",
+        "description": "A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe. Com mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente, somos refer&ecirc;ncia em solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do mercado.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, atendendo institui&ccedil;&otilde;es financeiras, empresas e fintechs que buscam inova&ccedil;&atilde;o, seguran&ccedil;a e efici&ecirc;ncia.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros, promovendo um ecossistema mais conectado e acess&iacute;vel.\n Responsabilidades: &bull; Desenvolver sistemas conforme os padr&otilde;es de projeto existentes e sugerir melhorias; &bull; Validar as novas funcionalidades das aplica&ccedil;&otilde;es; &bull; Realizar os testes de integra&ccedil;&atilde;o nas aplica&ccedil;&otilde;es; &bull; Executar as boas pr&aacute;ticas de desenvolvimento de sistemas; &bull; Colaborar no desenvolvimento de interfaces de machine learning para otimiza&ccedil;&atilde;o das aplica&ccedil;&otilde;es; &bull; Arquitetar, construir e manter solu&ccedil;&otilde;es e melhorias na plataforma/servi&ccedil;o para motores e oferta em FICO; &bull; Garantir e manter a sa&uacute;de, performance, disponibilidade e seguran&ccedil;a das aplica&ccedil;&otilde;es; &bull; Escrever testes unit&aacute;rios, revisar o c&oacute;digo-fonte e resolver desafios; &bull; Colaborar com o time, &aacute;rea de P&D e stakeholders na defini&ccedil;&atilde;o e especifica&ccedil;&atilde;o de arquiteturas e tecnologias; &bull; Busca constante por inova&ccedil;&atilde;o nos processos sist&ecirc;micos; Requisitos e qualifica&ccedil;&otilde;es (hardskills): &bull; Forte experi&ecirc;ncia com o RMA (Plataforma de Gerenciamento de Regras da FICO); &bull; Conhecimento avan&ccedil;ado em SRL (Structured Rules Language), linguagem usada para desenvolvimento no RMA; &bull; Experi&ecirc;ncia com DMPS (Plataforma de Gerenciamento de Decis&atilde;o da FICO); &bull; Experi&ecirc;ncia com desenvolvimento Java (Spring Boot e REST APIs); &bull; Conhecimento em arquitetura de software, APIs e microsservi&ccedil;os; &bull; Experi&ecirc;ncia com Git, CI/CD pipelines; &bull; Experi&ecirc;ncia com metodologia &aacute;gil.",
+        "location": "Campinas, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Excel",
+          "APIs REST",
+          "Java",
+          "Git"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-19T18:27:07.044Z",
+        "discoveredAt": "2026-10-23T12:20:56.417Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6ad660fb9308490013ff99dd",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6ad660fb9308490013ff99dd"
+          }
+        ],
+        "match": {},
+        "requisitionId": "LGX6712",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 57,
+        "strengths": [
+          "Competências em comum: APIs REST, Git.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: Excel, Java.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "APIs REST",
+          "Git"
+        ],
+        "missingSkills": [
+          "Excel",
+          "Java"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 30,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 30/60; Cargo e área desejados: 17/20; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "54de4001-83ce-4e93-9239-6983b6851197",
+        "title": "Desenvolvedor Salesforce Sênior",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6ad660f5c3f4730013f6ffce",
+        "source": "Quickin",
+        "description": "Somos a &uacute;nica solu&ccedil;&atilde;o completa para o mercado financeiro!\n\n A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o no mercado, e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe e mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, adquir&ecirc;ncia, processamento e tecnologias para meios de pagamento, contribuindo para a digitaliza&ccedil;&atilde;o de institui&ccedil;&otilde;es financeiras, empresas e fintechs.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros.\n VOC&Ecirc; TER&Aacute; QUE:\n\n Definir solu&ccedil;&otilde;es t&eacute;cnicas de baixa e m&eacute;dia complexidade para novos produtos; Mapear e definir as depend&ecirc;ncias entre equipes t&eacute;cnicas para a constru&ccedil;&atilde;o das solu&ccedil;&otilde;es do seu time; Apoiar a equipe com conhecimento t&eacute;cnico e de neg&oacute;cios para execu&ccedil;&atilde;o de suas atividades; Propor e analisar consequ&ecirc;ncias dos par&acirc;metros e m&oacute;dulos para serem configurados nos sistemas da empresa; Mapear a situa&ccedil;&atilde;o atual de processos e sistemas junto &agrave;s pessoas-chaves das &aacute;reas de neg&oacute;cio e buscar melhorias; Validar os requisitos de m&eacute;dia complexidade implementados antes da entrega; Analisar demandas e ajustes com fornecedores externos e repassar para a equipe de desenvolvimento; Apoiar na capta&ccedil;&atilde;o de requisitos de neg&oacute;cios e de software com usu&aacute;rios internos e externos transformando em solu&ccedil;&otilde;es sist&ecirc;micas; Apoiar na elabora&ccedil;&atilde;o da documenta&ccedil;&atilde;o de requisitos de neg&oacute;cios, requisitos funcionais e hist&oacute;rias de usu&aacute;rios. Requisitos e qualifica&ccedil;&otilde;es \n\n Requisitos e qualifica&ccedil;&otilde;es Ter conhecimento do ecossistema Salesforce; Ter experi&ecirc;ncia na implanta&ccedil;&atilde;o de Salesforce em Service e Sales; Credenciais nomeadas, servi&ccedil;os externos; P&aacute;ginas Lightning, Layouts de p&aacute;gina de registro; Objetos, Campos, Papeis, Perfis, Compartilhamento (Sharing); Automa&ccedil;&otilde;es e Processos (flow, processos de aprova&ccedil;&atilde;o); Integra&ccedil;&otilde;es REST (http), RestResource; Processamentos Ass&iacute;ncronos (futures methods, queuebles, batches, schedules); APEX; LWC, Aura Components, Javascript Scrach orgs; GIT, Gitlab; Resolu&ccedil;&atilde;o de conflitos em merges; Conhecimento e aplica&ccedil;&atilde;o C&oacute;digo limpo, padr&otilde;es de projetos, melhores pr&aacute;ticas.",
+        "location": "Porto Alegre, Rio Grande do Sul, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Vendas",
+          "Excel",
+          "APIs REST",
+          "JavaScript",
+          "Git"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-19T18:27:01.284Z",
+        "discoveredAt": "2026-10-23T12:20:56.555Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6ad660f5c3f4730013f6ffce",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6ad660f5c3f4730013f6ffce"
+          }
+        ],
+        "match": {},
+        "requisitionId": "ADU7886",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 63,
+        "strengths": [
+          "Competências em comum: APIs REST, JavaScript, Git.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Vendas, Excel.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "APIs REST",
+          "JavaScript",
+          "Git"
+        ],
+        "missingSkills": [
+          "Vendas",
+          "Excel"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 36,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 36/60; Cargo e área desejados: 17/20; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "a399e568-687c-4d62-a05b-0c36f3e776fe",
+        "title": "Desenvolvedor Python/Java Sr. (Foco em IA Generativa)",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6ad660eec3f4730013f6f7bc",
+        "source": "Quickin",
+        "description": "🧡 A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe. Com mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente, somos refer&ecirc;ncia em solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do mercado.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, atendendo institui&ccedil;&otilde;es financeiras, empresas e fintechs que buscam inova&ccedil;&atilde;o, seguran&ccedil;a e efici&ecirc;ncia.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros, promovendo um ecossistema mais conectado e acess&iacute;vel.\n Sobre a vaga\n\n Estamos em busca de uma pessoa Desenvolvedora de IA S&ecirc;nior para atuar na constru&ccedil;&atilde;o de solu&ccedil;&otilde;es baseadas em LLMs, apoiando a evolu&ccedil;&atilde;o de produtos e plataformas. A pessoa ir&aacute; atuar no desenvolvimento de aplica&ccedil;&otilde;es inteligentes utilizando Python, participando do desenho de arquiteturas modernas de IA, incluindo RAG, sistemas multiagentes e pipelines de LLMs, integradas ao ecossistema tecnol&oacute;gico da empresa. Buscamos algu&eacute;m com perfil t&eacute;cnico forte, que goste de explorar novas tecnologias de IA e transformar desafios de neg&oacute;cio em solu&ccedil;&otilde;es escal&aacute;veis. Responsabilidades * Desenvolver aplica&ccedil;&otilde;es e servi&ccedil;os baseados em LLMs utilizando Python * Projetar e implementar solu&ccedil;&otilde;es com RAG (Retrieval-Augmented Generation) * Trabalhar com bancos de dados vetoriais para indexa&ccedil;&atilde;o e recupera&ccedil;&atilde;o de conhecimento * Desenvolver arquiteturas baseadas em agentes e sistemas multiagentes * Construir pipelines e aplica&ccedil;&otilde;es utilizando LangChain e/ou LangGraph * Implementar pr&aacute;ticas de observabilidade para aplica&ccedil;&otilde;es de IA, utilizando ferramentas como LangFuse * Integrar solu&ccedil;&otilde;es de IA com APIs, microsservi&ccedil;os e sistemas existentes * Colaborar com times multidisciplinares para transformar necessidades de neg&oacute;cio em solu&ccedil;&otilde;es baseadas em IA * Garantir qualidade, escalabilidade e boas pr&aacute;ticas no desenvolvimento de solu&ccedil;&otilde;es de IA\n\n Requisitos * Experi&ecirc;ncia s&oacute;lida com Python, Java e ReactJS * Experi&ecirc;ncia no desenvolvimento de aplica&ccedil;&otilde;es com LLMs * Conhecimento em LangChain e/ou LangGraph * Experi&ecirc;ncia com RAG (Retrieval-Augmented Generation) * Experi&ecirc;ncia com bancos de dados vetoriais (ex: Pinecone, Weaviate, Qdrant, Chroma ou similares) * Experi&ecirc;ncia na constru&ccedil;&atilde;o de arquiteturas com m&uacute;ltiplos agentes * Familiaridade com desenvolvimento de APIs e integra&ccedil;&otilde;es de servi&ccedil;os * Experi&ecirc;ncia com Git e metodologias &aacute;geis (Scrum/Kanban) * Ensino superior completo\n\n Diferenciais * Experi&ecirc;ncia com LangFuse ou ferramentas de observabilidade para LLMs * Conhecimento em arquitetura de sistemas distribu&iacute;dos e microsservi&ccedil;os * Experi&ecirc;ncia com deploy e opera&ccedil;&atilde;o de aplica&ccedil;&otilde;es de IA em cloud * Experi&ecirc;ncia com React para constru&ccedil;&atilde;o de interfaces * Ingl&ecirc;s intermedi&aacute;rio",
+        "location": "Campinas, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Excel",
+          "React",
+          "APIs REST",
+          "Python",
+          "Java",
+          "Git"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-19T18:26:54.060Z",
+        "discoveredAt": "2026-10-23T12:20:56.677Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6ad660eec3f4730013f6f7bc",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6ad660eec3f4730013f6f7bc"
+          }
+        ],
+        "match": {},
+        "requisitionId": "UWB1928",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 32,
+        "strengths": [
+          "Competências em comum: APIs REST, Git.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Escolaridade citada na vaga ainda não confirmada no seu perfil.",
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: Excel, React, Python, Java.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "APIs REST",
+          "Git"
+        ],
+        "missingSkills": [
+          "Excel",
+          "React",
+          "Python",
+          "Java"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 20,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Escolaridade",
+            "earned": 0,
+            "possible": 15
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 20/60; Cargo e área desejados: 17/20; Competências citadas no cargo: 0/30; Modalidade preferida: 10/10; Escolaridade: 0/15; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "d7585415-1657-4ab8-9b36-394976ae49c4",
+        "title": "Desenvolvedor Java Backend Especialista",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6ad26685e86976001391c460",
+        "source": "Quickin",
+        "description": "🧡 A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe. Com mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente, somos refer&ecirc;ncia em solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do mercado.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, atendendo institui&ccedil;&otilde;es financeiras, empresas e fintechs que buscam inova&ccedil;&atilde;o, seguran&ccedil;a e efici&ecirc;ncia.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros, promovendo um ecossistema mais conectado e acess&iacute;vel.\n Requisitos: S&oacute;lida experi&ecirc;ncia em desenvolvimento de software; Profici&ecirc;ncia em linguagens de programa&ccedil;&atilde;o como Java 17+; Experi&ecirc;ncia com IDP (Internal Development Platform); Conhecimento avan&ccedil;ado em framework Spring Boot; Conhecimento de Docker/Kubernetes, Gitlab CI, Cloud AWS; Experi&ecirc;ncia com banco de dados relacionais e n&atilde;o relacionais (MongoDB); Experi&ecirc;ncia com mensageria (Kafka e/ou RabbitMQ); Conhecimento em padr&otilde;es de micro servi&ccedil;os.",
+        "location": "Campinas, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Estágio",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Excel",
+          "Java",
+          "Docker",
+          "AWS"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-16T18:01:41.936Z",
+        "discoveredAt": "2026-10-23T12:20:56.786Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6ad26685e86976001391c460",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6ad26685e86976001391c460"
+          }
+        ],
+        "match": {},
+        "requisitionId": "ZGV8632",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 25,
+        "strengths": [
+          "Competências em comum: Docker.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Excel, Java, AWS.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "Docker"
+        ],
+        "missingSkills": [
+          "Excel",
+          "Java",
+          "AWS"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 15,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 8,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 15/60; Cargo e área desejados: 8/20; Competências citadas no cargo: 0/30; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "17e99855-45d5-4410-bae0-0cfe870acb74",
+        "title": "Desenvolvedor Java Backend Sênior",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6ad2667f5b88c500130def15",
+        "source": "Quickin",
+        "description": "🧡 A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe. Com mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente, somos refer&ecirc;ncia em solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do mercado.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, atendendo institui&ccedil;&otilde;es financeiras, empresas e fintechs que buscam inova&ccedil;&atilde;o, seguran&ccedil;a e efici&ecirc;ncia.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros, promovendo um ecossistema mais conectado e acess&iacute;vel.\n S&oacute;lida experi&ecirc;ncia em desenvolvimento de software; Profici&ecirc;ncia em linguagens de programa&ccedil;&atilde;o como Java 17+; Experi&ecirc;ncia com IDP (Internal Development Platform); Conhecimento avan&ccedil;ado em framework Spring Boot; Conhecimento de Docker/Kubernetes, Gitlab CI, Cloud AWS; Experi&ecirc;ncia com banco de dados relacionais e n&atilde;o relacionais (MongoDB); Experi&ecirc;ncia com mensageria (Kafka e/ou RabbitMQ); Conhecimento em padr&otilde;es de micro servi&ccedil;os",
+        "location": "Campinas, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Excel",
+          "Java",
+          "Docker",
+          "AWS"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-16T18:01:35.796Z",
+        "discoveredAt": "2026-10-23T12:20:56.891Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6ad2667f5b88c500130def15",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6ad2667f5b88c500130def15"
+          }
+        ],
+        "match": {},
+        "requisitionId": "DAP6515",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 25,
+        "strengths": [
+          "Competências em comum: Docker.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Excel, Java, AWS.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "Docker"
+        ],
+        "missingSkills": [
+          "Excel",
+          "Java",
+          "AWS"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 15,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 8,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 15/60; Cargo e área desejados: 8/20; Competências citadas no cargo: 0/30; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "440d6929-03d4-4238-93f4-d86900d1a822",
+        "title": "Desenvolvedor COBOL Sênior - Arrecadação",
+        "company": "Evertec Brasil",
+        "url": "https://jobs.quickin.io/sinqia/jobs/6ace311dabb66c0013db063e",
+        "source": "Quickin",
+        "description": "Muito prazer, Somos a Evertec!\n\n A Evertec &eacute; uma empresa especializada em tecnologia para o setor financeiro, com mais de 27 anos de atua&ccedil;&atilde;o e presen&ccedil;a em 26 pa&iacute;ses da Am&eacute;rica Latina e Caribe. Com mais de 11 bilh&otilde;es de transa&ccedil;&otilde;es processadas anualmente, somos refer&ecirc;ncia em solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do mercado.\n\n Oferecemos um portf&oacute;lio completo de solu&ccedil;&otilde;es em software, atendendo institui&ccedil;&otilde;es financeiras, empresas e fintechs que buscam inova&ccedil;&atilde;o, seguran&ccedil;a e efici&ecirc;ncia.\n\n Nosso compromisso &eacute; com a excel&ecirc;ncia tecnol&oacute;gica, a inclus&atilde;o financeira e a gera&ccedil;&atilde;o de valor sustent&aacute;vel para clientes, colaboradores e parceiros, promovendo um ecossistema mais conectado e acess&iacute;vel.\n Buscamos uma pessoa Desenvolvedora COBOL S&ecirc;nior para atuar na an&aacute;lise e desenvolvimento de sistemas em ambiente Mainframe, participando da constru&ccedil;&atilde;o de funcionalidades estrat&eacute;gicas, desde o levantamento de requisitos at&eacute; a implementa&ccedil;&atilde;o das solu&ccedil;&otilde;es. Ser&aacute; respons&aacute;vel por compreender e analisar fluxos de neg&oacute;cio, identificar impactos e oportunidades de melhoria, realizar an&aacute;lises t&eacute;cnicas e funcionais, desenvolver e manter aplica&ccedil;&otilde;es de m&eacute;dio e grande porte, al&eacute;m de garantir qualidade, performance e confiabilidade das entregas. A atua&ccedil;&atilde;o ser&aacute; voltada para solu&ccedil;&otilde;es do segmento de arrecada&ccedil;&atilde;o e mercado financeiro.\n\n Requisitos obrigat&oacute;rios \n\n Experi&ecirc;ncia em desenvolvimento e manuten&ccedil;&atilde;o de sistemas COBOL; Conhecimento e atua&ccedil;&atilde;o com CICS; Experi&ecirc;ncia com banco de dados DB2; Conhecimento em JCL; Viv&ecirc;ncia em projetos de m&eacute;dio e grande porte; Experi&ecirc;ncia no mercado financeiro; Conhecimento em produto de arrecada&ccedil;&atilde;o; Experi&ecirc;ncia com Jira e Confluence; Viv&ecirc;ncia com metodologias &aacute;geis, especialmente Scrum; Experi&ecirc;ncia na elabora&ccedil;&atilde;o, execu&ccedil;&atilde;o e acompanhamento de testes unit&aacute;rios e integrados.\n\n Requisitos desej&aacute;veis \n\n Experi&ecirc;ncia em institui&ccedil;&otilde;es financeiras, bancos ou fintechs; Viv&ecirc;ncia em projetos de moderniza&ccedil;&atilde;o de sistemas legados; Experi&ecirc;ncia em ambientes de alta disponibilidade e miss&atilde;o cr&iacute;tica; Conhecimento em processos de integra&ccedil;&atilde;o entre sistemas corporativos.\n\n Informa&ccedil;&otilde;es relevantes sobre a vaga \n\n Atua&ccedil;&atilde;o em ambiente Mainframe com foco em solu&ccedil;&otilde;es estrat&eacute;gicas para o segmento financeiro. Local de trabalho: Interlagos - S&atilde;o Paulo/SP. Modelo de trabalho: H&iacute;brido (2 vezes por semana presencial).",
+        "location": "São Paulo, SP, BR",
+        "modality": "Não informado",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Excel"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-13T13:24:45.358Z",
+        "discoveredAt": "2026-10-23T12:20:56.992Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/sinqia/jobs/6ace311dabb66c0013db063e",
+            "id": "https://jobs.quickin.io/sinqia/jobs/6ace311dabb66c0013db063e"
+          }
+        ],
+        "match": {},
+        "requisitionId": "OWT6015",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 8,
+        "strengths": [],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: Excel.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas."
+        ],
+        "matchedSkills": [],
+        "missingSkills": [
+          "Excel"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 0,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 8,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 0/60; Cargo e área desejados: 8/20; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "dbfdbb15-6b8f-4917-a993-d8f82bdc2174",
+        "title": "Native Android Developer - REMOTO",
+        "company": "Verity",
+        "url": "https://jobs.quickin.io/verity/jobs/6ac8fc04e29362001335f736",
+        "source": "Quickin",
+        "description": "A Verity est&aacute; buscando novos talentos!\n\n Somos uma consultoria de transforma&ccedil;&atilde;o e engenharia digital e buscamos um(a) Desenvolvedor (a) Android Nativo S&ecirc;nior para fazer parte dessa jornada.\n\n Olha s&oacute; quais s&atilde;o as experi&ecirc;ncias e conhecimentos que voc&ecirc; precisa ter para acelerar e transformar com a gente: Responsabilidades e atribui&ccedil;&otilde;es \n\n \n Desenvolver e manter interfaces nativas Android utilizando Kotlin e Jetpack Compose.\n\n Implementar interfaces responsivas e componentes reutiliz&aacute;veis, seguindo as diretrizes do Design System.\n\n Aplicar princ&iacute;pios de Clean Architecture e boas pr&aacute;ticas de desenvolvimento de software.\n\n Integrar aplica&ccedil;&otilde;es com APIs REST e GraphQL, utilizando Apollo quando aplic&aacute;vel.\n\n Implementar e manter mecanismos de inje&ccedil;&atilde;o de depend&ecirc;ncias com Hilt, Dagger ou Koin.\n\n Desenvolver e executar testes unit&aacute;rios e instrumentados, garantindo a qualidade e a confiabilidade das aplica&ccedil;&otilde;es.\n\n Participar dos processos de integra&ccedil;&atilde;o e entrega cont&iacute;nua (CI/CD), seguindo as pr&aacute;ticas de versionamento de software.\n\n Colaborar com equipes multidisciplinares para entregar solu&ccedil;&otilde;es alinhadas aos requisitos t&eacute;cnicos e de neg&oacute;cio.\n\n Aplicar boas pr&aacute;ticas de acessibilidade, incluindo suporte ao TalkBack, quando necess&aacute;rio. \n\n \n Experi&ecirc;ncia com constru&ccedil;&atilde;o de interfaces utilizando Jetpack Compose.\n\n Conhecimentos em Kotlin e Clean Architecture.\n\n No&ccedil;&otilde;es de inje&ccedil;&atilde;o de depend&ecirc;ncias utilizando Hilt, Dagger ou Koin.\n\n Conhecimentos de APIs REST, GraphQL e Apollo.\n\n No&ccedil;&otilde;es gerais de CI/CD.\n\n Familiaridade com a utiliza&ccedil;&atilde;o de componentes reutiliz&aacute;veis de um Design System.\n\n Experi&ecirc;ncia com testes unit&aacute;rios e instrumentados.\n\n No&ccedil;&otilde;es gerais de versionamento sem&acirc;ntico (SemVer).\n\n \n Diferencial:\n\n \n Experi&ecirc;ncia com TalkBack e acessibilidade.",
+        "location": "São Paulo, SP, BR",
+        "modality": "Remoto",
+        "level": "Não especificado",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "APIs REST",
+          "Kotlin",
+          "Android"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-09T14:36:52.721Z",
+        "discoveredAt": "2026-10-23T12:20:57.124Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/verity/jobs/6ac8fc04e29362001335f736",
+            "id": "https://jobs.quickin.io/verity/jobs/6ac8fc04e29362001335f736"
+          }
+        ],
+        "match": {},
+        "requisitionId": "NTH7475",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 29,
+        "strengths": [
+          "Competências em comum: APIs REST.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Kotlin, Android.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "APIs REST"
+        ],
+        "missingSkills": [
+          "Kotlin",
+          "Android"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 20,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 8,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 20/60; Cargo e área desejados: 8/20; Competências citadas no cargo: 0/30; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "93b1eac5-c166-4f38-a047-55c66037133b",
+        "title": "Java Backend Developer Sênior - HIBRIDO",
+        "company": "Verity",
+        "url": "https://jobs.quickin.io/verity/jobs/6ab6e18057190400139e7b95",
+        "source": "Quickin",
+        "description": "A Verity est&aacute; buscando novos talentos!\n\n Somos uma consultoria de transforma&ccedil;&atilde;o e Engenharia digital e buscamos Java Backend Developer S&ecirc;nior para fazer parte dessa jornada.\n\n Olha s&oacute; quais s&atilde;o as experi&ecirc;ncias e conhecimentos que voc&ecirc; precisa ter para acelerar e transformar com a gente:\n\n Responsabilidades e atribui&ccedil;&otilde;es \n\n Buscamos algu&eacute;m que tenha uma base s&oacute;lida em desenvolvimento Java, goste de desafios t&eacute;cnicos e consiga olhar al&eacute;m do c&oacute;digo, conectando arquitetura, integra&ccedil;&otilde;es, performance e confiabilidade das aplica&ccedil;&otilde;es.\n\n Atuar como refer&ecirc;ncia t&eacute;cnica da squad, apoiando desenvolvedores, direcionando solu&ccedil;&otilde;es e contribuindo para decis&otilde;es t&eacute;cnicas e arquiteturais. Acompanhar as entregas do time, facilitando o alinhamento entre desenvolvimento, produto e demais &aacute;reas envolvidas. Contribuir para a evolu&ccedil;&atilde;o de aplica&ccedil;&otilde;es Java, garantindo boas pr&aacute;ticas de desenvolvimento, qualidade, performance e escalabilidade. Apoiar a sustenta&ccedil;&atilde;o e a estabilidade das aplica&ccedil;&otilde;es, participando da investiga&ccedil;&atilde;o e resolu&ccedil;&atilde;o de problemas em produ&ccedil;&atilde;o. Atuar com observabilidade e troubleshooting, analisando o comportamento das aplica&ccedil;&otilde;es e identificando oportunidades de melhoria. Trabalhar em parceria com os times de Arquitetura, SRE, Qualidade e Seguran&ccedil;a, garantindo solu&ccedil;&otilde;es sustent&aacute;veis e alinhadas aos padr&otilde;es t&eacute;cnicos. Contribuir para a evolu&ccedil;&atilde;o de APIs, microsservi&ccedil;os, integra&ccedil;&otilde;es e processos de CI/CD, promovendo automa&ccedil;&atilde;o e efici&ecirc;ncia nas entregas. Apoiar as pr&aacute;ticas &aacute;geis da squad, contribuindo para a organiza&ccedil;&atilde;o do trabalho, remo&ccedil;&atilde;o de impedimentos e melhoria cont&iacute;nua.\n Experi&ecirc;ncia s&oacute;lida em desenvolvimento Java 8+ e Spring Framework, especialmente Spring Boot. Viv&ecirc;ncia com arquitetura de microsservi&ccedil;os, APIs REST e integra&ccedil;&otilde;es entre sistemas. Conhecimento de arquitetura de software, boas pr&aacute;ticas de desenvolvimento e qualidade de c&oacute;digo. Experi&ecirc;ncia com aplica&ccedil;&otilde;es em produ&ccedil;&atilde;o, incluindo an&aacute;lise de problemas, troubleshooting e acompanhamento de performance. Conhecimento em Docker, Kubernetes ou plataformas de containers. Viv&ecirc;ncia com pipelines CI/CD e ferramentas como Jenkins, GitLab CI ou GitHub Actions. Experi&ecirc;ncia com testes automatizados, code review e boas pr&aacute;ticas de engenharia de software. Viv&ecirc;ncia em squads &aacute;geis, com Scrum ou Kanban. Experi&ecirc;ncia orientando tecnicamente outros desenvolvedores, participando de decis&otilde;es t&eacute;cnicas ou atuando como refer&ecirc;ncia para o time.\n\n Ser&aacute; um diferencial se voc&ecirc; tiver: \n\n Conhecimento em Spring Cloud e Spring Batch. Experi&ecirc;ncia com observabilidade, pr&aacute;ticas de SRE, m&eacute;tricas, logs, tracing distribu&iacute;do e an&aacute;lise de causa raiz (RCA). Conhecimento em Kafka, RabbitMQ, Redis ou outras tecnologias de mensageria. Experi&ecirc;ncia com Angular e TypeScript. Conhecimento em OpenShift ou Rancher. Viv&ecirc;ncia com ferramentas como Dynatrace, Datadog, Grafana, Prometheus, Elastic/Kibana ou OpenTelemetry. Conhecimento em bancos de dados relacionais e n&atilde;o relacionais, como Oracle e MongoDB. Experi&ecirc;ncia com DevSecOps, SonarQube, seguran&ccedil;a de aplica&ccedil;&otilde;es e documenta&ccedil;&atilde;o de APIs com Swagger/OpenAPI.",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Não informado",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Angular",
+          "APIs REST",
+          "TypeScript",
+          "Java",
+          "Docker"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-09-25T21:02:56.239Z",
+        "discoveredAt": "2026-10-23T12:20:57.231Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/verity/jobs/6ab6e18057190400139e7b95",
+            "id": "https://jobs.quickin.io/verity/jobs/6ab6e18057190400139e7b95"
+          }
+        ],
+        "match": {},
+        "requisitionId": "DLQ2328",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: Angular, APIs REST, TypeScript, Docker."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: Java.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas.",
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "Angular",
+          "APIs REST",
+          "TypeScript",
+          "Docker"
+        ],
+        "missingSkills": [
+          "Java"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 48,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 48/60; Cargo e área desejados: 17/20; Competências citadas no cargo: 0/30; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "2dc0d91f-a443-4a17-9a28-887e3f11001b",
+        "title": ".NET Backend Developer Sênior - REMOTO",
+        "company": "Verity",
+        "url": "https://jobs.quickin.io/verity/jobs/6a7cf9e70487c400133b9e04",
+        "source": "Quickin",
+        "description": "A Verity est&aacute; buscando novos talentos!\n\n Somos uma consultoria de transforma&ccedil;&atilde;o e engenharia digital .NET Backend Developer S&ecirc;nior para fazer parte dessa jornada.\n\n Responsabilidades e atribui&ccedil;&otilde;es \n\n \n Desenvolver, implementar e manter APIs e servi&ccedil;os backend utilizando a plataforma .NET (Core/.NET).\n\n Colaborar na arquitetura de novas funcionalidades e na melhoria cont&iacute;nua dos sistemas existentes.\n\n Garantir a qualidade do c&oacute;digo atrav&eacute;s de testes unit&aacute;rios, de integra&ccedil;&atilde;o e boas pr&aacute;ticas de desenvolvimento (SOLID, Clean Architecture).\n\n Implementar e gerenciar solu&ccedil;&otilde;es de Observabilidade (m&eacute;tricas, logs, traces) utilizando ferramentas como Dynatrace para monitorar a sa&uacute;de e performance das aplica&ccedil;&otilde;es em produ&ccedil;&atilde;o.\n\n Trabalhar com infraestrutura em nuvem, implantando e gerenciando servi&ccedil;os no Google Cloud Platform (GCP), com foco em Google Kubernetes Engine (GKE).\n\n Participar ativamente das cerim&ocirc;nias &aacute;geis (Scrum/Kanban) e da revis&atilde;o de c&oacute;digo (Code Review). Identificar gargalos de performance e propor solu&ccedil;&otilde;es de otimiza&ccedil;&atilde;o.\n\n \n Experiencia em .NET Core ou .NET 6/7/8+ e na linguagem C#.\n\n Experi&ecirc;ncia com Dynatrace para monitoramento, tracing e an&aacute;lise de performance de aplica&ccedil;&otilde;es (Observabilidade).\n\n Conhecimento pr&aacute;tico e experi&ecirc;ncia com servi&ccedil;os do Google Cloud Platform (GCP).\n\n Experi&ecirc;ncia no uso e gerenciamento de cont&ecirc;ineres utilizando Docker e orquestra&ccedil;&atilde;o via Kubernetes, preferencialmente com GKE.\n\n Dom&iacute;nio em SQL e experi&ecirc;ncia com bancos de dados relacionais (Oracle, PostgreSQL) \n\n Familiaridade com arquitetura de microsservi&ccedil;os e comunica&ccedil;&atilde;o ass&iacute;ncrona (filas/mensageria, ex: Kafka, Pub/Sub).\n\n Conhecimento em CI/CD e pr&aacute;ticas de DevOps.",
+        "location": "São Paulo, SP, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "PostgreSQL",
+          "APIs REST",
+          "Docker"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-08-12T22:55:35.369Z",
+        "discoveredAt": "2026-10-23T12:20:57.447Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/verity/jobs/6a7cf9e70487c400133b9e04",
+            "id": "https://jobs.quickin.io/verity/jobs/6a7cf9e70487c400133b9e04"
+          }
+        ],
+        "match": {},
+        "requisitionId": "AKY2361",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: C#, .NET, APIs REST, Docker.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: PostgreSQL.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "APIs REST",
+          "Docker"
+        ],
+        "missingSkills": [
+          "PostgreSQL"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 48,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 30,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 48/60; Cargo e área desejados: 17/20; Competências citadas no cargo: 30/30; Modalidade preferida: 10/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "2077b492-bc68-44be-aeea-a288d9e0136b",
+        "title": "Desenvolvedor Full Stack - PL/SR",
+        "company": "Global TI",
+        "url": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+        "source": "Quickin",
+        "description": "Buscamos um(a) Desenvolvedor(a) Full Stack .NET com experi&ecirc;ncia em desenvolvimento de aplica&ccedil;&otilde;es web, atuando tanto no backend quanto no frontend. O profissional ser&aacute; respons&aacute;vel por desenvolver, evoluir e manter solu&ccedil;&otilde;es escal&aacute;veis, seguras e de alta qualidade, utilizando tecnologias do ecossistema .NET e React.\n\n Principais responsabilidades:\n\n Desenvolver e manter aplica&ccedil;&otilde;es web full stack, utilizando C#/.NET no backend e React no frontend. Construir e consumir APIs RESTful para integra&ccedil;&atilde;o entre sistemas e servi&ccedil;os. Desenvolver interfaces responsivas, reutiliz&aacute;veis e com foco na experi&ecirc;ncia do usu&aacute;rio. Implementar regras de neg&oacute;cio, integra&ccedil;&otilde;es e funcionalidades seguindo os padr&otilde;es de arquitetura definidos. Trabalhar com bancos de dados relacionais, elaborando consultas SQL e otimizando o desempenho das aplica&ccedil;&otilde;es. Participar de decis&otilde;es t&eacute;cnicas relacionadas &agrave; arquitetura, qualidade de c&oacute;digo e boas pr&aacute;ticas de desenvolvimento. Realizar testes unit&aacute;rios e de integra&ccedil;&atilde;o, al&eacute;m de identificar e corrigir falhas. Participar de code reviews, contribuindo para a qualidade e evolu&ccedil;&atilde;o t&eacute;cnica das solu&ccedil;&otilde;es. Atuar em conjunto com profissionais de produto, QA, arquitetura e demais integrantes do time. Participar de cerim&ocirc;nias &aacute;geis e contribuir para o planejamento e a entrega das demandas.\n Experi&ecirc;ncia s&oacute;lida com C# e plataforma .NET, preferencialmente .NET 6 ou superior. Experi&ecirc;ncia no desenvolvimento de aplica&ccedil;&otilde;es frontend com React. Conhecimento em JavaScript e/ou TypeScript, HTML5 e CSS3. Experi&ecirc;ncia no desenvolvimento e consumo de APIs REST. Conhecimento em Entity Framework Core e integra&ccedil;&atilde;o com bancos de dados relacionais, como SQL Server. Conhecimento em Git e estrat&eacute;gias de versionamento de c&oacute;digo. Experi&ecirc;ncia com testes automatizados e boas pr&aacute;ticas de desenvolvimento. Conhecimento de princ&iacute;pios SOLID, padr&otilde;es de projeto e arquitetura de software. Familiaridade com metodologias &aacute;geis, como Scrum ou Kanban.",
+        "location": "São Paulo, SP, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "React",
+          "SQL Server",
+          "Entity Framework",
+          "APIs REST",
+          "TypeScript",
+          "JavaScript",
+          "Git",
+          "HTML",
+          "CSS"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-19T16:59:17.397Z",
+        "discoveredAt": "2026-10-23T12:20:57.570Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+            "id": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0"
+          }
+        ],
+        "match": {},
+        "requisitionId": "IMW7499",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 85,
+        "strengths": [
+          "Competências em comum: C#, .NET, SQL Server, Entity Framework, APIs REST, TypeScript, JavaScript, Git, HTML, CSS.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: React.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "Entity Framework",
+          "APIs REST",
+          "TypeScript",
+          "JavaScript",
+          "Git",
+          "HTML",
+          "CSS"
+        ],
+        "missingSkills": [
+          "React"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 54.55,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 54.55/60; Cargo e área desejados: 20/20; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "cdb09993-1735-4728-b846-090d0502cf19",
+        "title": "Desenvolvedor (a) Java PL/SR",
+        "company": "Global TI",
+        "url": "https://jobs.quickin.io/globalti/jobs/6ace75bc35ae930013c1e7b5",
+        "source": "Quickin",
+        "description": "Estamos em busca de profissionais Desenvolvedores(as) Pleno e S&ecirc;nior para atuar com Java e PL/SQL, em um ambiente colaborativo e com desafios relevantes de neg&oacute;cio.\n\n Voc&ecirc; far&aacute; parte de um time focado em desenvolvimento e evolu&ccedil;&atilde;o de sistemas, contribuindo diretamente para solu&ccedil;&otilde;es robustas e escal&aacute;veis.\n\n \n\n \n Desenvolvedor Java; Necess&aacute;rio experi&ecirc;ncia com linguagem Java (vers&atilde;o 8 ou superior), arquitetura REST, JAX-RS, JPA, Spring, Maven, Git e SQL;\n\n Desej&aacute;vel: experi&ecirc;ncia com Docker, mensageria (Kafka, Rabbit, etc), JBoss, servi&ccedil;os SOAP e Oracle Database. Diferencial: experi&ecirc;ncia com React ou desenvolvimento de front-end.",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Não informado",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "React",
+          "APIs REST",
+          "Java",
+          "Docker",
+          "Git"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-13T18:17:32.325Z",
+        "discoveredAt": "2026-10-23T12:20:57.684Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/globalti/jobs/6ace75bc35ae930013c1e7b5",
+            "id": "https://jobs.quickin.io/globalti/jobs/6ace75bc35ae930013c1e7b5"
+          }
+        ],
+        "match": {},
+        "requisitionId": "GQK1927",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 41,
+        "strengths": [
+          "Competências em comum: APIs REST, Docker, Git."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: React, Java.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas."
+        ],
+        "matchedSkills": [
+          "APIs REST",
+          "Docker",
+          "Git"
+        ],
+        "missingSkills": [
+          "React",
+          "Java"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 36,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 36/60; Cargo e área desejados: 17/20; Competências citadas no cargo: 0/30; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "b35f8eab-6018-4881-b322-bf3611fd33a8",
+        "title": "Desenvolvedor WordPress Full Stack SR",
+        "company": "Global TI",
+        "url": "https://jobs.quickin.io/globalti/jobs/6ace40e1d484c70013a56be9",
+        "source": "Quickin",
+        "description": "Desenvolvedor WordPress Full-Stack Senior para atuar na concep&ccedil;&atilde;o, arquitetura, desenvolvimento e evolu&ccedil;&atilde;o de solu&ccedil;&otilde;es web de alta complexidade.\n\n O profissional ser&aacute; respons&aacute;vel por desenvolver temas e plugins nativos em WordPress, integrar e criar APIs de alto desempenho, gerenciar reposit&oacute;rios e fluxos de automa&ccedil;&atilde;o no GitHub, operar servi&ccedil;os na nuvem Microsoft Azure, al&eacute;m de incorporar solu&ccedil;&otilde;es e automa&ccedil;&otilde;es baseadas em Intelig&ecirc;ncia Artificial (LLMs, Azure OpenAI, automa&ccedil;&atilde;o de dados e ferramentas de produtividade) aos nossos ecossistemas digitais.\n\n \n ● Backend WordPress: Desenvolver plugins sob medida, Custom Post Types (CPTs), Custom Taxonomies, rotas personalizadas da REST API do WP e integra&ccedil;&otilde;es com bancos de dados relacionais e n&atilde;o-relacionais. ● Frontend WordPress : Criar temas do zero ou adaptar estruturas modernas (FSE, Gutenberg Blocks nativos, React no WordPress), garantindo alta fidelidade ao design, acessibilidade (WCAG/eMAG) e tempos m&iacute;nimos de carregamento. ● APIs & Integra&ccedil;&otilde;es: Projetar, documentar e consumir APIs RESTful e GraphQL, viabilizando a captura, sincroniza&ccedil;&atilde;o e disponibiliza&ccedil;&atilde;o automatizada de dados em tempo real entre o WordPress e sistemas terceiros.\n\n Cloud Microsoft Azure & Infraestrutura: ○ Configurar, otimizar e manter ambientes WordPress e microsservi&ccedil;os rodando no Azure (Azure App Service, Azure Database for MySQL, Azure Blob Storage, Azure CDN). ○ Integrar o ecossistema da aplica&ccedil;&atilde;o aos servi&ccedil;os de IA e seguran&ccedil;a da Microsoft (Azure OpenAI Service, Azure Cognitive Search, Key Vault).\n\n GitHub & CI/CD: ○ Liderar a governan&ccedil;a do reposit&oacute;rio no GitHub (Gitflow, Pull Requests, Code Reviews, Branch Protection). ○ Criar e manter pipelines automatizados com GitHub Actions para testes cont&iacute;nuos, an&aacute;lise est&aacute;tica de c&oacute;digo e deploy autom&aacute;tico nos ambientes do Azure (Dev, Staging e Produ&ccedil;&atilde;o).\n\n Intelig&ecirc;ncia Artificial (AI-Driven Development): ○ Desenvolver integra&ccedil;&otilde;es no WordPress utilizando APIs de IA (Azure OpenAI, OpenAI nativa, Anthropic, Gemini) para recursos avan&ccedil;ados como busca sem&acirc;ntica, gera&ccedil;&atilde;o de conte&uacute;do ou chatbots. ○ Utilizar assistentes de c&oacute;digo e IA (GitHub Copilot, Cursor, Claude Code, ChatGPT) no seu fluxo de trabalho di&aacute;rio para acelerar entregas, otimizar refatora&ccedil;&otilde;es e manter cobertura de testes.",
+        "location": "São Paulo, SP, BR",
+        "modality": "Não informado",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "React",
+          "APIs REST",
+          "Azure"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-13T14:32:01.027Z",
+        "discoveredAt": "2026-10-23T12:20:57.797Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/globalti/jobs/6ace40e1d484c70013a56be9",
+            "id": "https://jobs.quickin.io/globalti/jobs/6ace40e1d484c70013a56be9"
+          }
+        ],
+        "match": {},
+        "requisitionId": "SVZ8535",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: APIs REST, Azure."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: React.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas."
+        ],
+        "matchedSkills": [
+          "APIs REST",
+          "Azure"
+        ],
+        "missingSkills": [
+          "React"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 40,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 40/60; Cargo e área desejados: 20/20; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "f383c479-f5c8-48f6-a70a-b8983301d0d6",
+        "title": "Desenvolvedor(a) IBM DataStage PL/SR",
+        "company": "Global TI",
+        "url": "https://jobs.quickin.io/globalti/jobs/6ac79eb915b0450014cbe15a",
+        "source": "Quickin",
+        "description": "Buscamos um(a) profissional para atuar em iniciativas de moderniza&ccedil;&atilde;o de processos ETL, integra&ccedil;&atilde;o de dados, evolu&ccedil;&atilde;o de pipelines e prepara&ccedil;&atilde;o de dados para Analytics e Intelig&ecirc;ncia Artificial (IA), contribuindo para a evolu&ccedil;&atilde;o do ecossistema de dados da companhia.\n Stack Tecnol&oacute;gica:\n\n IBM DataStage SSIS SQL Python AWS Microsoft Fabric\n\n \n\n Principais Compet&ecirc;ncias: ETL/ELT Integra&ccedil;&atilde;o de Dados (Data Integration) Processamento em Lote (Batch Processing) Pipelines de Dados (Data Pipelines) SQL Transforma&ccedil;&atilde;o e Qualidade de Dados Automa&ccedil;&atilde;o Cloud Computing",
+        "location": "São Paulo, SP, BR",
+        "modality": "Não informado",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "Python",
+          "AWS"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-08T13:46:33.657Z",
+        "discoveredAt": "2026-10-23T12:20:57.895Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/globalti/jobs/6ac79eb915b0450014cbe15a",
+            "id": "https://jobs.quickin.io/globalti/jobs/6ac79eb915b0450014cbe15a"
+          }
+        ],
+        "match": {},
+        "requisitionId": "PPS7749",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 8,
+        "strengths": [],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Python, AWS.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas.",
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [],
+        "missingSkills": [
+          "Python",
+          "AWS"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 0,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 8,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 0/60; Cargo e área desejados: 8/20; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "31457165-4910-4de0-a1fd-9b00a9bd5714",
+        "title": "Analista de Sistemas e Sustentação Projetos Vida em Grupo",
+        "company": "Global TI",
+        "url": "https://jobs.quickin.io/globalti/jobs/6a7cb4c50487c400130ebf0e",
+        "source": "Quickin",
+        "description": "Modelo de trabalho - Hibrido (2 dias - Paraiso) \n\n Acompanhar e apoiar os clientes em todo o ciclo de implanta&ccedil;&atilde;o de software, desde a fase de defini&ccedil;&atilde;o de requisitos at&eacute; a entrega final e suporte inicial. Atuar como facilitador na comunica&ccedil;&atilde;o entre a equipe t&eacute;cnica e de neg&oacute;cios. Avaliar evolu&ccedil;&otilde;es e sustentar integra&ccedil;&otilde;es entre sistemas utilizando APIs REST, mensageria e arquivos texto. Fazer orientar sobre utiliza&ccedil;&atilde;o e configura&ccedil;&atilde;o do sistema; Avaliar logs e evid&ecirc;ncia para diagnosticar problemas reportados Escrever especifica&ccedil;&otilde;es t&eacute;cnicas de integra&ccedil;&otilde;es entre sistemas.\n\n Lideran&ccedil;a t&eacute;cnica; Excelente comunica&ccedil;&atilde;o; Facilidade para traduzir temas t&eacute;cnicos para p&uacute;blicos n&atilde;o t&eacute;cnicos; Proatividade; Adaptabilidade;\n Diferencial &eacute; j&aacute; ter trabalhado com o sistema de Provid&ecirc;ncia e Vida Experi&ecirc;ncia em linguagem de programa&ccedil;&atilde;o SQL e PL/SQL Experi&ecirc;ncia em projetos de integra&ccedil;&atilde;o entre sistemas por meio API REST Experi&ecirc;ncia em escrita de especifica&ccedil;&atilde;o t&eacute;cnicas",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Não informado",
+        "level": "Não especificado",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "APIs REST"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-08-12T18:00:37.560Z",
+        "discoveredAt": "2026-10-23T12:20:57.993Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/globalti/jobs/6a7cb4c50487c400130ebf0e",
+            "id": "https://jobs.quickin.io/globalti/jobs/6a7cb4c50487c400130ebf0e"
+          }
+        ],
+        "match": {},
+        "requisitionId": "BLF3328",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: APIs REST."
+        ],
+        "gaps": [
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas.",
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "APIs REST"
+        ],
+        "missingSkills": [],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 60,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 60/60; Cargo e área desejados: 20/20; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "72b55418-0b27-4f71-8d7e-6969ce2e8da8",
+        "title": "Analista de Sistemas Sênior (Suporte e Sustentação)",
+        "company": "Global TI",
+        "url": "https://jobs.quickin.io/globalti/jobs/6a7cb3bb0487c400130dd09e",
+        "source": "Quickin",
+        "description": "Curte resolver problemas complexos, garantir estabilidade e ser referência técnica? Esta vaga de Analista de Sistemas Sênior é para você.\n Você vai atuar na sustentação do Projeto Vida Individual em uma empresa do setor de seguros/serviços financeiros, com grande volume de usuários e alta criticidade. Seu papel é manter o ambiente saudável, apoiar evoluções e garantir que o negócio não pare.\n Atuar na sustentação de sistemas do Projeto Vida Individual (incidentes, problemas e requisições).\n Realizar análise de causa raiz e propor soluções definitivas.\n Fazer interface com times de desenvolvimento, infraestrutura e negócio.\n Especificar e validar correções, melhorias e ajustes em sistemas legados e novos.\n Monitorar performance, disponibilidade e integridade das aplicações.\n Documentar processos, fluxos e soluções técnicas.\n Apoiar testes, homologação e implantação de releases em produção.\n Requisitos obrigat&oacute;rios: \n\n \n Experi&ecirc;ncia s&ecirc;nior como Analista de Sistemas / Sustenta&ccedil;&atilde;o de aplica&ccedil;&otilde;es cr&iacute;ticas.\n\n Viv&ecirc;ncia com sistemas de seguros, produtos de vida ou servi&ccedil;os financeiros.\n\n S&oacute;lida experi&ecirc;ncia em an&aacute;lise de incidentes, problemas e mudan&ccedil;as (ITIL ou similar).\n\n Conhecimento em bancos de dados relacionais (SQL para an&aacute;lise e troubleshooting).\n\n Experi&ecirc;ncia com integra&ccedil;&otilde;es (APIs, webservices, mensageria ou similares).\n\n Capacidade de leitura e interpreta&ccedil;&atilde;o de logs e monitorias de aplica&ccedil;&atilde;o.\n\n \n Diferenciais: \n\n \n Atua&ccedil;&atilde;o pr&eacute;via em projetos de Vida Individual.\n\n Conhecimento em ferramentas de monitoramento (ex.: Dynatrace, New Relic, Zabbix).\n\n Experi&ecirc;ncia com ambientes distribu&iacute;dos/microservi&ccedil;os.\n\n Certifica&ccedil;&otilde;es ITIL, seguros ou tecnologia.",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Não informado",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "APIs REST"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-08-12T17:56:11.083Z",
+        "discoveredAt": "2026-10-23T12:20:58.128Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/globalti/jobs/6a7cb3bb0487c400130dd09e",
+            "id": "https://jobs.quickin.io/globalti/jobs/6a7cb3bb0487c400130dd09e"
+          }
+        ],
+        "match": {},
+        "requisitionId": "CZY9489",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: APIs REST."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas.",
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "APIs REST"
+        ],
+        "missingSkills": [],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 60,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 60/60; Cargo e área desejados: 20/20; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "67921763-60e8-4f38-9afc-0c81b7a6a899",
+        "title": "Analista de Sistemas Sênior Sustentação Previdência",
+        "company": "Global TI",
+        "url": "https://jobs.quickin.io/globalti/jobs/6a7cb0f536b4780013f62e13",
+        "source": "Quickin",
+        "description": "Curte resolver problemas complexos, falar com o negócio e garantir que tudo fique de pé? Essa vaga é para você.\n Buscamos um(a) Analista de Sistemas Sênior para atuar na sustentação de sistemas de Previdência, garantindo estabilidade, evolução e suporte qualificado às áreas de negócio. Você fará parte de um time que valoriza autonomia, colaboração e melhoria contínua, em uma empresa sólida do setor financeiro, em crescimento e com forte investimento em tecnologia.\n Atuar na sustentação de sistemas de Previdência (corretivas, evolutivas e preventivas).\n Realizar análise de incidentes, problemas e causas raiz.\n Especificar e validar soluções técnicas junto a times de desenvolvimento.\n Interagir com áreas de negócio, traduzindo demandas em requisitos funcionais/técnicos.\n Acompanhar deploys, testes integrados e homologação.\n Documentar processos, fluxos e soluções implementadas.\n Apoiar na melhoria contínua de performance, estabilidade e segurança das aplicações.\n Requisitos obrigat&oacute;rios: \n\n \n Experi&ecirc;ncia s&oacute;lida como Analista de Sistemas em Sustenta&ccedil;&atilde;o/Projetos (n&iacute;vel s&ecirc;nior).\n\n Viv&ecirc;ncia com sistemas de Previd&ecirc;ncia (aberta, fechada ou produtos correlatos financeiros/seguros).\n\n Conhecimento em an&aacute;lise de requisitos, modelagem de processos e especifica&ccedil;&atilde;o funcional/t&eacute;cnica.\n\n Experi&ecirc;ncia com investiga&ccedil;&atilde;o de incidentes, leitura de logs e an&aacute;lise de integra&ccedil;&otilde;es (APIs, webservices, batch etc.).\n\n No&ccedil;&otilde;es de banco de dados (SQL) para consultas e apoio &agrave; an&aacute;lise.\n\n Boa comunica&ccedil;&atilde;o para intera&ccedil;&atilde;o com &aacute;reas de neg&oacute;cio, fornecedores e times de TI.\n\n \n Diferenciais: \n\n \n Atua&ccedil;&atilde;o pr&eacute;via em institui&ccedil;&otilde;es financeiras, seguradoras ou entidades de Previd&ecirc;ncia.\n\n Conhecimento em m&eacute;todos &aacute;geis (Scrum, Kanban) e ferramentas de gest&atilde;o (Jira, Azure DevOps etc.).\n\n Experi&ecirc;ncia com integra&ccedil;&otilde;es entre legados e novas plataformas (APIs, microsservi&ccedil;os).\n\n Viv&ecirc;ncia com ambientes em nuvem (AWS, Azure ou GCP).",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Não informado",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "APIs REST",
+          "Azure",
+          "AWS"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-08-12T17:44:21.154Z",
+        "discoveredAt": "2026-10-23T12:20:58.243Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/globalti/jobs/6a7cb0f536b4780013f62e13",
+            "id": "https://jobs.quickin.io/globalti/jobs/6a7cb0f536b4780013f62e13"
+          }
+        ],
+        "match": {},
+        "requisitionId": "WLB8894",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: APIs REST, Azure."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: AWS.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas.",
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "APIs REST",
+          "Azure"
+        ],
+        "missingSkills": [
+          "AWS"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 40,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 40/60; Cargo e área desejados: 20/20; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "0187e392-170f-4f10-b31f-943e176a50c4",
+        "title": "Desenvolvedor Delphi - PL/SR",
+        "company": "Global TI",
+        "url": "https://jobs.quickin.io/globalti/jobs/6a75d8994441630013e3dfd5",
+        "source": "Quickin",
+        "description": "Requisitos obrigat&oacute;rios\n\n Experi&ecirc;ncia s&oacute;lida em desenvolvimento Delphi; Experi&ecirc;ncia com manuten&ccedil;&atilde;o, evolu&ccedil;&atilde;o e refatora&ccedil;&atilde;o de sistemas legados; Conhecimento em banco de dados relacional, preferencialmente SQL Server; Capacidade de an&aacute;lise de procedures, queries, modelagem de dados e regras de neg&oacute;cio implementadas no banco; Experi&ecirc;ncia com Git; Experi&ecirc;ncia com Jira ou ferramenta equivalente de gest&atilde;o de demandas; Capacidade de atuar em c&oacute;digo legado de alta complexidade; Boa capacidade anal&iacute;tica para entendimento de regras fiscais, cont&aacute;beis, trabalhistas ou de neg&oacute;cio; Experi&ecirc;ncia em corre&ccedil;&atilde;o de bugs, melhoria de performance e evolu&ccedil;&atilde;o funcional; Boa comunica&ccedil;&atilde;o com times de produto, QA, sustenta&ccedil;&atilde;o e arquitetura; Capacidade de documentar decis&otilde;es t&eacute;cnicas e regras levantadas.\n Desej&aacute;vel\n\n Conhecimento ou experi&ecirc;ncia em .NET Core / C#; Experi&ecirc;ncia em projetos de moderniza&ccedil;&atilde;o, migra&ccedil;&atilde;o ou desacoplamento de mon&oacute;litos; Experi&ecirc;ncia com APIs REST; Conhecimento em arquitetura de software, separa&ccedil;&atilde;o de responsabilidades e camadas; Experi&ecirc;ncia com ferramentas de IA aplicadas ao desenvolvimento; Conhecimento em sistemas ERP, folha de pagamento, fiscal, cont&aacute;bil ou obriga&ccedil;&otilde;es acess&oacute;rias; Conhecimento em CI/CD; Experi&ecirc;ncia com an&aacute;lise est&aacute;tica de c&oacute;digo, mapeamento de depend&ecirc;ncias ou refatora&ccedil;&atilde;o assistida. Responsabilidades esperadas\n\n Atuar na sustenta&ccedil;&atilde;o, evolu&ccedil;&atilde;o e moderniza&ccedil;&atilde;o de funcionalidades existentes; Analisar c&oacute;digo legado Delphi e regras implementadas em banco de dados; Apoiar o desacoplamento de rotinas do mon&oacute;lito; Propor melhorias t&eacute;cnicas sem comprometer a estabilidade do produto; Implementar corre&ccedil;&otilde;es, melhorias e novas funcionalidades; Apoiar a documenta&ccedil;&atilde;o t&eacute;cnica das regras de neg&oacute;cio; Participar de refinamentos t&eacute;cnicos e funcionais; Apoiar investiga&ccedil;&otilde;es de incidentes, problemas de performance e inconsist&ecirc;ncias de neg&oacute;cio; Trabalhar de forma colaborativa com QA, Produto, Arquitetura e demais desenvolvedores; Utilizar ferramentas de IA de forma respons&aacute;vel para ganho de produtividade, an&aacute;lise e documenta&ccedil;&atilde;o.",
+        "location": "São Paulo, SP, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "APIs REST",
+          "Git"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-08-07T13:07:37.966Z",
+        "discoveredAt": "2026-10-23T12:20:58.364Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/globalti/jobs/6a75d8994441630013e3dfd5",
+            "id": "https://jobs.quickin.io/globalti/jobs/6a75d8994441630013e3dfd5"
+          }
+        ],
+        "match": {},
+        "requisitionId": "SAE1776",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 49,
+        "strengths": [
+          "Competências em comum: C#, .NET, SQL Server, APIs REST, Git.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "APIs REST",
+          "Git"
+        ],
+        "missingSkills": [],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 60,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 60/60; Cargo e área desejados: 17/20; Modalidade preferida: 10/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "f370c287-3945-4088-b740-bdc193ba3b39",
+        "title": "Desenvolvedor Full Stack Sr.",
+        "company": "BELTIS TECNOLOGIA",
+        "url": "https://jobs.quickin.io/beltis/jobs/6ad65952dd63cb0013761316",
+        "source": "Quickin",
+        "description": "Buscamos um(a) Desenvolvedor(a) Full Stack S&ecirc;nior para atuar em um ambiente de tecnologia voltado ao segmento financeiro, participando da evolu&ccedil;&atilde;o, sustenta&ccedil;&atilde;o e desenvolvimento de aplica&ccedil;&otilde;es e solu&ccedil;&otilde;es digitais.\n\n A posi&ccedil;&atilde;o exige perfil t&eacute;cnico s&oacute;lido, autonomia para an&aacute;lise e resolu&ccedil;&atilde;o de problemas e capacidade de atuar tanto no desenvolvimento Front-End quanto Back-End, interagindo com diferentes sistemas, APIs e bases de dados.\n\n Responsabilidades: \n\n \n Desenvolver e evoluir aplica&ccedil;&otilde;es web, atuando nas camadas de Front-End e Back-End;\n\n Implementar novas funcionalidades e realizar melhorias em solu&ccedil;&otilde;es j&aacute; existentes;\n\n Participar da an&aacute;lise t&eacute;cnica de demandas, propondo alternativas de implementa&ccedil;&atilde;o e arquitetura;\n\n Desenvolver e manter integra&ccedil;&otilde;es entre aplica&ccedil;&otilde;es e servi&ccedil;os por meio de APIs REST;\n\n Atuar na manuten&ccedil;&atilde;o, sustenta&ccedil;&atilde;o e evolu&ccedil;&atilde;o de sistemas legados e aplica&ccedil;&otilde;es atuais;\n\n Desenvolver interfaces utilizando Vue.js, considerando desempenho, usabilidade e integra&ccedil;&atilde;o com servi&ccedil;os Back-End;\n\n Implementar solu&ccedil;&otilde;es utilizando Node.js e tecnologias do ecossistema .NET;\n\n Realizar consultas, cria&ccedil;&atilde;o e manuten&ccedil;&atilde;o de estruturas e procedimentos em banco de dados SQL Server;\n\n Executar testes e valida&ccedil;&otilde;es das funcionalidades desenvolvidas, contribuindo para a estabilidade e qualidade das entregas;\n\n Investigar falhas e problemas em aplica&ccedil;&otilde;es, identificando causas e implementando corre&ccedil;&otilde;es;\n\n Trabalhar de forma integrada com as demais &aacute;reas t&eacute;cnicas envolvidas nos projetos.\n\n \n Node.js;\n\n Vue.js;\n\n C# / .NET Core;\n\n VB.NET;\n\n Experi&ecirc;ncia no desenvolvimento e consumo de APIs RESTful;\n\n SQL Server;\n\n Experi&ecirc;ncia com desenvolvimento de aplica&ccedil;&otilde;es Front-End e Back-End;\n\n Conhecimento de arquitetura e integra&ccedil;&atilde;o entre sistemas;\n\n Conhecimentos em microsservi&ccedil;os ser&atilde;o considerados um diferencial.\n\n \n Informa&ccedil;&otilde;es Adicionais:\n\n \n Modelo de Contrata&ccedil;&atilde;o: Pessoa Jur&iacute;dica (PJ);\n\n Sal&aacute;rio: R$13.500,00 fixo mensal + conv&ecirc;nio m&eacute;dico Amil;\n\n Jornada de segunda a sexta em hor&aacute;rio comercial;\n\n Modelo de trabalho: predominantemente remoto;\n\n Poder&aacute; haver necessidade pontual de comparecimento presencial ao escrit&oacute;rio para alinhamento, de acordo com demandas espec&iacute;ficas do projeto.",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Remoto",
+        "level": "Sênior",
+        "contract": "PJ",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "APIs REST",
+          "Node.js"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-10-19T17:54:26.245Z",
+        "discoveredAt": "2026-10-23T12:20:58.488Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/beltis/jobs/6ad65952dd63cb0013761316",
+            "id": "https://jobs.quickin.io/beltis/jobs/6ad65952dd63cb0013761316"
+          }
+        ],
+        "match": {},
+        "requisitionId": "CHG6451",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 78,
+        "strengths": [
+          "Competências em comum: C#, .NET, SQL Server, APIs REST.",
+          "Modalidade remoto alinhada às preferências."
+        ],
+        "gaps": [
+          "Conhecimentos citados a confirmar: Node.js.",
+          "Salário não divulgado."
+        ],
+        "blockers": [],
+        "matchedSkills": [
+          "C#",
+          ".NET",
+          "SQL Server",
+          "APIs REST"
+        ],
+        "missingSkills": [
+          "Node.js"
+        ],
+        "radar": false,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 48,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 20,
+            "possible": 20
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 10,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 48/60; Cargo e área desejados: 20/20; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+      },
+      "objective": true,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "965f1845-f26e-41c5-a1e3-fa0792fc1537",
+        "title": "Desenvolvedor/a Java Sênior",
+        "company": "Infox Tecnologia",
+        "url": "https://jobs.quickin.io/infox/jobs/6ab142428b97c700127445ab",
+        "source": "Quickin",
+        "description": "Desenvolva solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital da Justi&ccedil;a brasileira. \n\n H&aacute; quase 40 anos, a Infox desenvolve solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do setor p&uacute;blico. Somos refer&ecirc;ncia nacional em tecnologia para o Poder Judici&aacute;rio e participamos da concep&ccedil;&atilde;o da primeira vers&atilde;o do Processo Judicial Eletr&ocirc;nico (PJe), contribuindo para tornar a Justi&ccedil;a mais eficiente, acess&iacute;vel e inovadora.\n\n Agora queremos ir ainda mais longe.\n\n Estamos ampliando nosso time de Engenharia de Software e buscamos pessoas apaixonadas por tecnologia, arquitetura de software e boas pr&aacute;ticas de desenvolvimento para construir solu&ccedil;&otilde;es que impactam milh&otilde;es de brasileiros.\n\n O desafio Como Pessoa Desenvolvedora Java S&ecirc;nior, voc&ecirc; ter&aacute; um papel estrat&eacute;gico na evolu&ccedil;&atilde;o dos nossos produtos.\n\n Al&eacute;m de desenvolver solu&ccedil;&otilde;es robustas e escal&aacute;veis, ser&aacute; uma refer&ecirc;ncia t&eacute;cnica para o time, contribuindo para decis&otilde;es de arquitetura, qualidade de c&oacute;digo, evolu&ccedil;&atilde;o tecnol&oacute;gica e dissemina&ccedil;&atilde;o de boas pr&aacute;ticas de engenharia.\n\n Se voc&ecirc; gosta de resolver problemas complexos, atuar em projetos de alta criticidade e influenciar tecnicamente outras pessoas, essa oportunidade &eacute; para voc&ecirc;.\n\n Seu dia a dia \n\n \n Desenvolver e evoluir aplica&ccedil;&otilde;es Java de alta disponibilidade e escalabilidade;\n\n Liderar tecnicamente iniciativas de desenvolvimento, apoiando o time na tomada de decis&otilde;es t&eacute;cnicas;\n\n Participar da defini&ccedil;&atilde;o da arquitetura de solu&ccedil;&otilde;es e evolu&ccedil;&atilde;o dos sistemas;\n\n Garantir qualidade de c&oacute;digo por meio de boas pr&aacute;ticas, code review, testes automatizados e Clean Code;\n\n Desenvolver APIs e microsservi&ccedil;os seguindo padr&otilde;es modernos de arquitetura;\n\n Atuar junto aos times de Produto, Arquitetura e Engenharia para entregar solu&ccedil;&otilde;es de alto valor;\n\n Promover pr&aacute;ticas de DevOps, Integra&ccedil;&atilde;o Cont&iacute;nua e Entrega Cont&iacute;nua (CI/CD);\n\n Mentorar devs, compartilhando conhecimento e apoiando o desenvolvimento t&eacute;cnico da equipe;\n\n Elaborar e manter documenta&ccedil;&atilde;o t&eacute;cnica e arquitetural;\n\n Garantir conformidade com as pol&iacute;ticas de seguran&ccedil;a, integridade e confidencialidade da empresa.\n\n O que buscamos \n\n \n Gradua&ccedil;&atilde;o em Ci&ecirc;ncia da Computa&ccedil;&atilde;o, Sistemas de Informa&ccedil;&atilde;o, Engenharia de Software ou &aacute;reas correlatas;\n\n Experi&ecirc;ncia s&oacute;lida como Dev Java S&ecirc;nior;\n\n Dom&iacute;nio de Java, Spring Boot e arquitetura de microsservi&ccedil;os;\n\n Experi&ecirc;ncia com aplica&ccedil;&otilde;es de alta disponibilidade e alta escalabilidade;\n\n Conhecimento avan&ccedil;ado em Programa&ccedil;&atilde;o Orientada a Objetos, Design Patterns e princ&iacute;pios SOLID;\n\n Viv&ecirc;ncia com Clean Code, Code Review e testes automatizados;\n\n Experi&ecirc;ncia com Git, Maven ou Gradle e pipelines de CI/CD;\n\n Conhecimento em bancos de dados PostgreSQL;\n\n Experi&ecirc;ncia com APIs REST;\n\n Viv&ecirc;ncia em ambientes Linux e metodologias &aacute;geis (Scrum/Kanban);\n\n Ingl&ecirc;s t&eacute;cnico.\n\n Experi&ecirc;ncia com Docker e Kubernetes;\n\n Conhecimento em ferramentas de observabilidade (Grafana, Prometheus e ELK);\n\n Conhecimento em WildFly/JBoss;\n\n Viv&ecirc;ncia com DDD, Arquitetura Hexagonal e MVC;\n\n Experi&ecirc;ncia com HTML5, JavaScript e jQuery;\n\n Conhecimento em JBPM;\n\n Experi&ecirc;ncia com Infraestrutura como C&oacute;digo (IaC);\n\n Viv&ecirc;ncia com sistemas do ecossistema jur&iacute;dico, como PJe, SAJ ou e-Proc ser&aacute; um diferencial.",
+        "location": "Aracaju, Sergipe, BR",
+        "modality": "Não informado",
+        "level": "Sênior",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "PostgreSQL",
+          "APIs REST",
+          "JavaScript",
+          "Java",
+          "Docker",
+          "Git",
+          "HTML"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-09-21T14:42:10.496Z",
+        "discoveredAt": "2026-10-23T12:20:58.598Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/infox/jobs/6ab142428b97c700127445ab",
+            "id": "https://jobs.quickin.io/infox/jobs/6ab142428b97c700127445ab"
+          }
+        ],
+        "match": {},
+        "requisitionId": "HKH5121",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 46,
+        "strengths": [
+          "Competências em comum: APIs REST, JavaScript, Docker, Git, HTML."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: PostgreSQL, Java.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas.",
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "APIs REST",
+          "JavaScript",
+          "Docker",
+          "Git",
+          "HTML"
+        ],
+        "missingSkills": [
+          "PostgreSQL",
+          "Java"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 42.86,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 42.86/60; Cargo e área desejados: 17/20; Competências citadas no cargo: 0/30; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    },
+    {
+      "job": {
+        "id": "b5b6ff51-1944-4ba2-8080-8206cf02b732",
+        "title": "Desenvolvedor/a Java Pl",
+        "company": "Infox Tecnologia",
+        "url": "https://jobs.quickin.io/infox/jobs/6a7a0235ad86c50013731e2d",
+        "source": "Quickin",
+        "description": "Fa&ccedil;a parte da transforma&ccedil;&atilde;o digital da Justi&ccedil;a brasileira. \n\n H&aacute; quase 40 anos, a Infox desenvolve solu&ccedil;&otilde;es que impulsionam a transforma&ccedil;&atilde;o digital do setor p&uacute;blico. Somos refer&ecirc;ncia nacional em tecnologia para o Poder Judici&aacute;rio e participamos da concep&ccedil;&atilde;o da primeira vers&atilde;o do Processo Judicial Eletr&ocirc;nico (PJe), contribuindo para modernizar a presta&ccedil;&atilde;o jurisdicional em todo o pa&iacute;s.\n\n Mais do que desenvolver software, criamos solu&ccedil;&otilde;es que impactam milh&otilde;es de cidad&atilde;os, tornando os servi&ccedil;os p&uacute;blicos mais &aacute;geis, eficientes e acess&iacute;veis.\n\n Agora estamos ampliando nosso time e buscamos pessoas apaixonadas por tecnologia para construir esse futuro conosco.\n\n O desafio Como pessoa desenvolvedora Java Pleno, voc&ecirc; far&aacute; parte de um time respons&aacute;vel por desenvolver e evoluir aplica&ccedil;&otilde;es de alta disponibilidade voltadas ao ecossistema jur&iacute;dico brasileiro.\n\n Buscamos algu&eacute;m que goste de resolver problemas complexos, tenha autonomia para propor solu&ccedil;&otilde;es e queira atuar em projetos estrat&eacute;gicos que geram impacto real para a sociedade.\n\n Seu dia a dia: \n\n \n Desenvolver e evoluir aplica&ccedil;&otilde;es utilizando Java e Spring Boot;\n\n Participar da an&aacute;lise t&eacute;cnica e da defini&ccedil;&atilde;o de solu&ccedil;&otilde;es para novas funcionalidades e melhorias;\n\n Atuar em todo o ciclo de desenvolvimento de software, da concep&ccedil;&atilde;o &agrave; entrega de valor;\n\n Desenvolver c&oacute;digo seguindo boas pr&aacute;ticas de engenharia de software, qualidade e seguran&ccedil;a;\n\n Colaborar com times multidisciplinares na constru&ccedil;&atilde;o de solu&ccedil;&otilde;es escal&aacute;veis e sustent&aacute;veis;\n\n Elaborar e manter documenta&ccedil;&atilde;o t&eacute;cnica das aplica&ccedil;&otilde;es;\n\n Garantir conformidade com as pol&iacute;ticas de seguran&ccedil;a, integridade e confidencialidade da empresa e de seus clientes.\n\n O que buscamos: \n\n \n Gradua&ccedil;&atilde;o em Ci&ecirc;ncia da Computa&ccedil;&atilde;o, Sistemas de Informa&ccedil;&atilde;o, Engenharia de Software ou &aacute;reas correlatas;\n\n Experi&ecirc;ncia como Desenvolvedor(a) Java Pleno;\n\n Conhecimento s&oacute;lido em Java Enterprise e/ou Spring Boot;\n\n Dom&iacute;nio de Programa&ccedil;&atilde;o Orientada a Objetos;\n\n Conhecimento em protocolos HTTP e desenvolvimento de APIs;\n\n Experi&ecirc;ncia com Git e workflows de versionamento;\n\n Conhecimento em Integra&ccedil;&atilde;o Cont&iacute;nua e Entrega Cont&iacute;nua (CI/CD);\n\n Conhecimento em SQL e bancos de dados PostgreSQL;\n\n Experi&ecirc;ncia com Maven ou outras ferramentas de gerenciamento de depend&ecirc;ncias;\n\n Ingl&ecirc;s t&eacute;cnico para leitura de documenta&ccedil;&atilde;o.\n\n \n \n\n Ser&aacute; um diferencial: \n\n \n Certifica&ccedil;&atilde;o Java;\n\n Conhecimento em HTML5, JavaScript, JSF e jQuery;\n\n Experi&ecirc;ncia com Flyway ou Liquibase;\n\n Conhecimento em Linux;\n\n Viv&ecirc;ncia com sistemas do ecossistema jur&iacute;dico, como PJe, SAJ ou e-Proc;\n\n Conhecimento sobre o funcionamento do Poder Judici&aacute;rio.",
+        "location": "São Paulo, São Paulo, BR",
+        "modality": "Não informado",
+        "level": "Pleno",
+        "contract": "Não especificado",
+        "salaryMin": null,
+        "salaryMax": null,
+        "currency": "",
+        "skills": [
+          "PostgreSQL",
+          "APIs REST",
+          "JavaScript",
+          "Java",
+          "Git",
+          "HTML"
+        ],
+        "requiredSkills": [],
+        "requiredYears": null,
+        "publishedAt": "2026-08-10T16:54:13.761Z",
+        "discoveredAt": "2026-10-23T12:20:58.718Z",
+        "saved": false,
+        "discarded": false,
+        "demo": false,
+        "origins": [
+          {
+            "source": "company",
+            "url": "https://jobs.quickin.io/infox/jobs/6a7a0235ad86c50013731e2d",
+            "id": "https://jobs.quickin.io/infox/jobs/6a7a0235ad86c50013731e2d"
+          }
+        ],
+        "match": {},
+        "requisitionId": "VUO2392",
+        "applicationUrls": [],
+        "availability": "active",
+        "destinations": []
+      },
+      "match": {
+        "score": 44,
+        "strengths": [
+          "Competências em comum: APIs REST, JavaScript, Git, HTML."
+        ],
+        "gaps": [
+          "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+          "Conhecimentos citados a confirmar: PostgreSQL, Java.",
+          "Salário não divulgado.",
+          "Regime de contratação não informado no anúncio."
+        ],
+        "blockers": [
+          "Modalidade fora das suas preferências.",
+          "Localização fora das suas preferências; revise restrições geográficas.",
+          "Publicação fora do período configurado."
+        ],
+        "matchedSkills": [
+          "APIs REST",
+          "JavaScript",
+          "Git",
+          "HTML"
+        ],
+        "missingSkills": [
+          "PostgreSQL",
+          "Java"
+        ],
+        "radar": true,
+        "confidence": "sufficient",
+        "criteria": [
+          {
+            "label": "Competências citadas na vaga",
+            "earned": 40,
+            "possible": 60
+          },
+          {
+            "label": "Cargo e área desejados",
+            "earned": 17,
+            "possible": 20
+          },
+          {
+            "label": "Competências citadas no cargo",
+            "earned": 0,
+            "possible": 30
+          },
+          {
+            "label": "Modalidade preferida",
+            "earned": 0,
+            "possible": 10
+          },
+          {
+            "label": "Localização",
+            "earned": 0,
+            "possible": 10
+          }
+        ],
+        "explanation": "O título é diferente, mas a família profissional e competências se conectam ao perfil. Pontuação dos critérios disponíveis: Competências citadas na vaga: 40/60; Cargo e área desejados: 17/20; Competências citadas no cargo: 0/30; Modalidade preferida: 0/10; Localização: 0/10. Limitada a 49 por pendências obrigatórias. Não representa a probabilidade de contratação."
+      },
+      "objective": false,
+      "minimum": 70
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "at": "2026-10-23T10:55:29.419Z",
+  "environment": "Vercel Sandbox Linux real; banco PGlite temporário; filas persistidas processadas pelos consumidores do projeto",
+  "candidate": "Perfil e PDF fictícios QA",
+  "discovery": "completed",
+  "resolution": "verified",
+  "destinations": 2,
+  "databaseStatus": "Enviada",
+  "receipt": "Confirmação observada no destino: Your application has been received",
+  "receiverCount": 5,
+  "expectedCount": 5,
+  "distinctReceivers": 5,
+  "noDuplicateReceivers": true,
+  "confirmedApplications": [
+    {
+      "id": "86ae6222-7d6d-411a-a877-812778eb573c",
+      "execution": {
+        "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+        "origin": "user_triggered_automation",
+        "correlationId": "076d1fa2-44c5-4716-abcc-0f067fd8c459"
+      },
+      "attempts": [
+        {
+          "id": "68988ce7-09db-4dfc-828d-cb6982106cbd",
+          "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Confirmação observada no destino: Your application has been received",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T10:55:25.851Z",
+          "finishedAt": "2026-10-23T10:55:27.306Z",
+          "correlationId": "076d1fa2-44c5-4716-abcc-0f067fd8c459"
+        }
+      ],
+      "receipt": "Confirmação observada no destino: Your application has been received"
+    },
+    {
+      "id": "66826191-0631-44a7-a445-9a84dd6ddce3",
+      "execution": {
+        "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+        "origin": "user_triggered_automation",
+        "correlationId": "98d73dde-bab5-4b50-9dce-0ec0e84aa531"
+      },
+      "attempts": [
+        {
+          "id": "c506441b-0982-4b2e-a2bd-ac7ff77f7bff",
+          "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Confirmação observada no destino: Your application has been received",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T10:55:28.141Z",
+          "finishedAt": "2026-10-23T10:55:29.283Z",
+          "correlationId": "98d73dde-bab5-4b50-9dce-0ec0e84aa531"
+        }
+      ],
+      "receipt": "Confirmação observada no destino: Your application has been received"
+    },
+    {
+      "id": "161ea377-c159-4353-a2df-f7298203b11d",
+      "execution": {
+        "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+        "origin": "user_triggered_automation",
+        "correlationId": "09ab4189-e1ea-4bef-a700-1df023f658e7"
+      },
+      "attempts": [
+        {
+          "id": "2eeb6f74-a4b3-45b1-86e8-1e3f91d997c6",
+          "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Confirmação observada no destino: Your application has been received",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T10:55:19.109Z",
+          "finishedAt": "2026-10-23T10:55:20.531Z",
+          "correlationId": "09ab4189-e1ea-4bef-a700-1df023f658e7"
+        }
+      ],
+      "receipt": "Confirmação observada no destino: Your application has been received"
+    },
+    {
+      "id": "35d452e8-894e-4f0c-9c26-4fed80cc5589",
+      "execution": {
+        "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+        "origin": "user_triggered_automation",
+        "correlationId": "a3250e30-e17c-478e-ba20-61167a4fc6cc"
+      },
+      "attempts": [
+        {
+          "id": "5fdbd812-e71b-4084-857e-a461096b75b9",
+          "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Confirmação observada no destino: Your application has been received",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T10:55:21.362Z",
+          "finishedAt": "2026-10-23T10:55:22.598Z",
+          "correlationId": "a3250e30-e17c-478e-ba20-61167a4fc6cc"
+        }
+      ],
+      "receipt": "Confirmação observada no destino: Your application has been received"
+    },
+    {
+      "id": "9f9652b2-57c1-42f4-9fc7-d9d4a46e8d3d",
+      "execution": {
+        "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+        "origin": "user_triggered_automation",
+        "correlationId": "068723da-b492-4c62-8920-6b3a1963ac21"
+      },
+      "attempts": [
+        {
+          "id": "2e04ffbf-2cc5-449d-9f41-2d812bf937dd",
+          "runId": "dac9bc9d-cb25-49d0-91c5-5d86bb70c492",
+          "origin": "user_triggered_automation",
+          "outcome": "confirmed",
+          "receipt": "Confirmação observada no destino: Your application has been received",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T10:55:23.474Z",
+          "finishedAt": "2026-10-23T10:55:24.658Z",
+          "correlationId": "068723da-b492-4c62-8920-6b3a1963ac21"
+        }
+      ],
+      "receipt": "Confirmação observada no destino: Your application has been received"
+    }
+  ],
+  "blockedDestinations": 1,
+  "receivedCorrectFile": true,
+  "receivedCorrectCandidate": true,
+  "duplicateRejected": true,
+  "isolated": true,
+  "actualVercelQueueTransport": false,
+  "realEmployerSubmissions": 0
+}

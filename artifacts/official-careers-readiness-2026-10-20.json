@@ -1,0 +1,76 @@
+{
+  "at": "2026-10-20T11:00:51.084Z",
+  "verification": "read-only publisher pages; search URL supplied from Chrome observation",
+  "job": {
+    "title": "[Job-32237] Mid-Level .Net Developer (GCP), Brazil",
+    "company": "CI&T",
+    "url": "https://jobs.lever.co/ciandt/96ec1808-6b61-4fda-832b-58d7c104edd9",
+    "location": "Brazil",
+    "publishedAt": "2026-10-15T00:00:00.000Z"
+  },
+  "destinations": [
+    {
+      "id": "bb130e6898dd98b6d36311eb",
+      "url": "https://jobs.lever.co/ciandt/96ec1808-6b61-4fda-832b-58d7c104edd9",
+      "platform": "lever",
+      "publicationUrl": "https://jobs.lever.co/ciandt/96ec1808-6b61-4fda-832b-58d7c104edd9",
+      "verifiedAt": "2026-10-20T11:00:49.500Z",
+      "expiresAt": "2026-10-21T11:00:49.500Z",
+      "confidence": 100,
+      "evidence": [
+        "Identificador da publicação confirmado.",
+        "Empresa coincide.",
+        "Similaridade de título: 100%; descrição: 100%.",
+        "Publicação lida no destino público."
+      ],
+      "company": "CI&T",
+      "state": "verified",
+      "formFound": false,
+      "method": "assisted"
+    },
+    {
+      "id": "8fb4f36dd244190d984611b7",
+      "url": "https://jobs.lever.co/ciandt/96ec1808-6b61-4fda-832b-58d7c104edd9/apply",
+      "platform": "lever",
+      "publicationUrl": "https://jobs.lever.co/ciandt/96ec1808-6b61-4fda-832b-58d7c104edd9/apply",
+      "verifiedAt": "2026-10-20T11:00:49.943Z",
+      "expiresAt": "2026-10-21T11:00:49.943Z",
+      "confidence": 100,
+      "evidence": [
+        "Identificador da publicação confirmado.",
+        "Empresa coincide.",
+        "Similaridade de título: 100%; descrição: 100%.",
+        "Publicação lida no destino público.",
+        "Link de candidatura encontrado na publicação."
+      ],
+      "company": "CI&T",
+      "state": "verified",
+      "formFound": true,
+      "method": "assisted"
+    }
+  ],
+  "requiredQuestions": [
+    "Full name",
+    "Email",
+    "Phone",
+    "Current location",
+    "Current company",
+    "LinkedIn URL",
+    "Como ficou sabendo da nossa vaga?",
+    "Você possui algum familiar (como pais, irmãos, sogros, cunhados, cônjuges, ou filhos, enteados, padrasto/madrasta, genro/ nora, amigo íntimo ou pessoa próxima (com quem você tem um relacionamento significativo e contínuo) que atualmente trabalha na CI&T?",
+    "Você precisa de algum tipo de acessibilidade para participar do processo seletivo e/ou no seu dia-a-dia?",
+    "[EN] Qual é o seu nível de confiança ao se comunicar e colaborar em um ambiente de trabalho onde se fala inglês?",
+    "Você se sente confortável trabalhando em um ambiente onde se fala inglês?",
+    "[ES] Qual é o seu nível de confiança ao se comunicar e colaborar em um ambiente de trabalho onde se fala espanhol?",
+    "What is your salary expectation? Only the numeric value (no currency, text, or benefits)/ Qual é a sua pretensão salarial? Apenas o valor numérico (sem moeda, texto ou benefícios).",
+    "Confirm the name of the company where you work/ Confirme o nome da empresa em que você trabalha atualmente",
+    "Ao selecionar a opção abaixo, declaro que li, compreendi e concordo com os termos deste documento, e consinto com o tratamento dos meus dados pessoais pela CI&T e pela Lever para as finalidades aqui descritas. Leia o documento aqui:  https://drive.google.com/file/d/1ETWJe2j0438xkMLNXRwo4pHSsGv4mzMR/view",
+    "For how long have you worked with .Net?",
+    "Do you have experience with AWS, Azure or Google Cloud?",
+    "How long have you worked in Development?",
+    "Como você avalia seu conhecimento com .Net?",
+    ""
+  ],
+  "realEmployerSubmissions": 0,
+  "candidateFilesRead": 0
+}

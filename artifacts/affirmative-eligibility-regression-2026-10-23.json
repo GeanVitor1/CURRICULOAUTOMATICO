@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-23T16:21:10.864Z",
+  "readOnly": true,
+  "employerWrites": 0,
+  "personalStatusInferred": false,
+  "jobs": [
+    {
+      "id": "abadeed5-dc46-45da-b48b-b91511bc8a57",
+      "title": "Banco de Talentos | Analista de Sistemas Júnior (Afirmativa PCD)",
+      "url": "https://domo.gupy.io/job/eyJqb2JJZCI6MTI3NDc5ODQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "previousStoredScore": 90,
+      "recomputedScore": 49,
+      "blockers": [
+        "Elegibilidade obrigatória da vaga afirmativa PcD exige confirmação específica; não foi presumida."
+      ],
+      "researchEligible": false,
+      "existingApplications": []
+    },
+    {
+      "id": "7e98745c-6905-4b61-98f5-4d64869b9088",
+      "title": "[Job-32372] Mid level Angular Developer, vaga para pessoas PCD, Brazil",
+      "url": "https://jobs.lever.co/ciandt/79485904-1730-4a7a-a670-99d795acfa31",
+      "previousStoredScore": 83,
+      "recomputedScore": 49,
+      "blockers": [
+        "Elegibilidade obrigatória da vaga afirmativa PcD exige confirmação específica; não foi presumida."
+      ],
+      "researchEligible": false,
+      "existingApplications": [
+        {
+          "id": "be38f1c8-6659-44db-9457-5215aea3340f",
+          "status": "Requer ação manual",
+          "attemptIds": [],
+          "receiptPresent": false
+        }
+      ]
+    }
+  ]
+}

@@ -96,6 +96,10 @@ describe("Antigravity remoto", () => {
       expect.arrayContaining(["command(*)", "read_file(*)", "execute_url(*)"]),
     );
     expect(antigravitySettings).not.toHaveProperty("modelProvider");
+    expect(antigravitySettings.permissions.allow).toEqual(expect.arrayContaining([
+      'read_url(greenhouse.io)','read_url(lever.co)','read_url(ashbyhq.com)','read_url(smartrecruiters.com)',
+    ]));
+    expect(antigravitySettings.permissions.allow).not.toContain('read_url(*)');
   });
   it("reconhece as referências opacas do Google mesmo quando o CLI omite a saída de search_web", () => {
     const citation =

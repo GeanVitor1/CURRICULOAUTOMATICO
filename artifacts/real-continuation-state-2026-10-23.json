@@ -1,0 +1,2423 @@
+{
+  "at": "2026-10-23T15:29:32.261Z",
+  "readOnly": true,
+  "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "runs": [
+    {
+      "origin": "user_triggered_automation",
+      "continuation": false,
+      "id": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+      "at": "2026-10-23T15:23:25.628Z",
+      "status": "completed",
+      "discovered": 39,
+      "processed": 0,
+      "errors": [],
+      "message": "39 novas oportunidades, sem duplicações. 469 registros publicados consultados.",
+      "searchSuggestions": []
+    }
+  ],
+  "tasks": [
+    {
+      "table": "discoveryTasks",
+      "items": [
+        {
+          "id": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-23T15:23:17.734Z",
+          "updatedAt": "2026-10-23T15:27:37.380Z",
+          "error": null
+        }
+      ]
+    },
+    {
+      "table": "resolutionTasks",
+      "items": [
+        {
+          "id": "ddaaa6eb-6add-43bd-8433-37ed59c599ca",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-23T15:27:38.112Z",
+          "updatedAt": "2026-10-23T15:28:45.423Z",
+          "error": null
+        }
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "ac49ae30-172a-4db1-855e-161ccd3a2fe0",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4458046009",
+      "title": "Software Engineer – Legacy Modernization & Full Stack",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-19T20:55:05.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "a884cff1-ebb4-45a3-a6c2-992b90ebea62",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.830Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "d17b43bc-9c3e-4b90-beb6-76bf9f7a6d48",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4455364009",
+      "title": "SEO Specialist",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-16T19:31:22.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "b3835882-e688-4962-a74b-2cc9917d56ac",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.849Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "d3f45bff-a8b0-4219-9065-3eaf060732a3",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4328775009",
+      "title": "Senior React Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-08-11T19:00:42.000Z",
+      "score": 41,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "9270f968-4c95-46e1-b2ae-120e8b910b94",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.865Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "604e5db0-f31b-4b50-89e4-1890a35ce44e",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4327516009",
+      "title": "Senior QA Manual Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-07-21T21:02:41.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "dac91a31-6532-4857-b515-087ff28f3810",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.881Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "ad6b562f-67bf-434a-9c56-23868d10834a",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4164242009",
+      "title": "Senior QA Automation Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-03-03T19:56:25.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "57021b04-7ce0-4d83-a288-ace79ff1e568",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.896Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "80e9ce18-06b7-4d35-9301-45c3f9c80526",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4377865009",
+      "title": "Senior .NET Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-08-20T22:56:53.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "5654a1b6-6c1f-40d0-ae77-55220b40a4d5",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.910Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "dec29de4-338a-4ff8-af04-f776e426b950",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4164236009",
+      "title": "Senior .NET Developer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-03-05T19:07:37.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "913e5138-8f73-43a2-9cfc-cd0d88fe061a",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.926Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "71299652-0655-40d2-bd99-c5adc9a678a2",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4430314009",
+      "title": "Senior .Net/Blazor Developer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-02T14:07:00.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "fe4e1071-e5de-493f-96f2-f8758b8b0f59",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.941Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "593ddd5a-ae2c-44b5-bb2a-60f3b9017490",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4164227009",
+      "title": "Senior Java Developer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-03-04T18:40:45.000Z",
+      "score": 48,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "253a50c5-ba64-4d0e-88d2-9e491c7fe4e6",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.956Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "f68558de-347f-450e-9506-801dee137962",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4164237009",
+      "title": "Senior DevOps Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-03-04T15:20:23.000Z",
+      "score": 40,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "1aa30bdb-54dc-46c1-ae08-eccaaeaa00c2",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.972Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "61964556-b89c-46bd-8687-c3fa2ad1ccab",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4414000009",
+      "title": "Senior Data Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-09-22T13:49:51.000Z",
+      "score": 40,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "312e9f9d-dbdc-4533-a2c7-7037f6aa0710",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:20.988Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "79d76ae3-3961-4aee-a767-989f87962634",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4164240009",
+      "title": "Senior Data Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-03-04T22:29:10.000Z",
+      "score": 22,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "76fbbe14-68ab-459d-a626-9613bf821fa3",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.009Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "a1fb02f2-1ee7-4bbd-9db3-57b34ba58f0e",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4433458009",
+      "title": "Senior Blazor / .NET Developer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-06T21:47:16.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "dec34999-8e43-458a-9817-8e55f6580a1d",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.026Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "b40bd698-7ce8-4563-9d28-f2c0b278706b",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4438474009",
+      "title": "Senior AI Product Owner",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-08T20:16:38.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "6fd9c8cf-b7a8-4b7b-bdf2-de8c9d8ade7f",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.042Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "bbb97192-325e-476b-81cb-e8b555c75eaa",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4110608009",
+      "title": "Senior Agentic AI Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-01-27T14:19:32.000Z",
+      "score": 25,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "bf929893-7c71-4187-b9de-e9b4581e86f2",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.059Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "30f8534b-6bb1-4b8b-b8f4-9254b0dd9263",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4375543009",
+      "title": "Senior Agentic AI Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-08-19T14:56:28.000Z",
+      "score": 34,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "8f1007e3-9074-4c05-a4a7-110395af3d23",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.072Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "4c872a2e-5b71-441c-bc22-7d9697ee7932",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4240497009",
+      "title": "Senior Account Executive",
+      "company": "CodeRoad",
+      "publishedAt": "2026-05-08T18:47:06.000Z",
+      "score": 0,
+      "blockers": [
+        "Modalidade fora das suas preferências.",
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "27dea253-750e-4ea6-82cf-4c47db9e0d0d",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.081Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "1aa4e8cd-a738-4523-9d79-8b44d04e97c1",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4458106009",
+      "title": "Operations Engineer – Data Operations Junior/Mid",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-19T20:57:59.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "10d90992-31e3-4f3c-bdc2-63df42e576e6",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.102Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "14d5556a-62a5-4cae-b044-72626d3ba0d4",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4436919009",
+      "title": "Mid Azure DevOps Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-07T18:51:34.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "5a7d1f0f-aa9b-46bc-9b64-c05d5c4ad868",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.118Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "c97d440e-ffe0-4e11-8ad2-377bee13b4c8",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4110962009",
+      "title": "Machine Learning Operations Engineer (MLOps)",
+      "company": "CodeRoad",
+      "publishedAt": "2026-01-26T00:58:51.000Z",
+      "score": 40,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "d3122bf8-319e-44d6-acb4-baf83afcfc23",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.133Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "44a0f554-e633-41d0-bd5f-3f6e1340a3a3",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4459152009",
+      "title": "Lead Salesforce Admin",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-20T15:56:31.000Z",
+      "score": 10,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "518c2809-a749-40b9-8147-0098adb436ef",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.148Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "c5a69549-74f6-4018-ad91-c81f9183a7b3",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4328679009",
+      "title": "Lead Java Consultant",
+      "company": "CodeRoad",
+      "publishedAt": "2026-07-22T20:14:25.000Z",
+      "score": 26,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "bd3f2f62-9602-442e-b7e9-d1e809d0aef9",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.165Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "4bf2a9fb-41be-4cb2-a93d-54071e24d363",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4436757009",
+      "title": "Lead Agentic AI Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-07T15:57:24.000Z",
+      "score": 19,
+      "blockers": [
+        "Modalidade fora das suas preferências.",
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "f8b29062-b384-4b1a-b973-f971088ec9a7",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.183Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "5e9ba431-b084-41cf-9692-6e838a2b35a1",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4458025009",
+      "title": "Fullstack Developer (Python/ Javascript)",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-19T20:47:57.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "f89cbddc-64ae-412d-8dd0-e0e43d50a661",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.199Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "2a9fc9db-4800-454e-9d58-41bf752fef71",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4209374009",
+      "title": "Delivery Director",
+      "company": "CodeRoad",
+      "publishedAt": "2026-04-06T16:07:21.000Z",
+      "score": 10,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "3ce555ec-5df4-4899-9430-30be215490db",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.216Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "21338955-113e-45cb-9ff7-c0a1da25c335",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4458093009",
+      "title": "Data Scientist",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-19T22:26:37.000Z",
+      "score": 34,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "7c20a592-44e2-4426-b170-0668a76b43c9",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.237Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "d934540b-1799-4929-8b16-b6b326b68099",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4458055009",
+      "title": "Data Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-19T19:52:10.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "9783e246-44d8-4f8d-b0f9-a6dd128d1db2",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.409Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.256Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "ac27e68b-2dc1-49b8-be3b-5aa51a1d1087",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4456634009",
+      "title": "Data Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-10-19T14:33:26.000Z",
+      "score": 40,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "3ca0331e-8d68-4e7f-8a64-08f9ba779638",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.408Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.271Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "3f16ea25-b648-4fe7-98f4-34360ad8b9c0",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4406476009",
+      "title": "Agentic AI Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-09-15T21:16:41.000Z",
+      "score": 30,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "d3681899-5c61-4624-9465-117adbb413c8",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.408Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.286Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "5be3a08f-d7af-4a7c-8470-1d60483a045f",
+      "url": "https://job-boards.greenhouse.io/coderoad/jobs/4414020009",
+      "title": "Agentic AI Engineer",
+      "company": "CodeRoad",
+      "publishedAt": "2026-09-22T12:33:09.000Z",
+      "score": 49,
+      "blockers": [
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "2a5fa0ae-6d34-4c9f-9fa4-78c932ba9ce7",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.408Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.301Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "1f534eea-41cd-48f2-a014-1f6ada59c1b1",
+      "url": "https://job-boards.greenhouse.io/zupinnovation/jobs/8040817003",
+      "title": "Pessoa Desenvolvedora Mobile iOS Pleno",
+      "company": "Zup Innovation",
+      "publishedAt": "2026-10-21T22:48:45.000Z",
+      "score": 22,
+      "blockers": [
+        "Modalidade fora das suas preferências.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "30bff4eb-9968-481d-8918-86b06b5c0114",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.408Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.315Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "e32b1d0e-9b73-48f4-8c55-5989e9e486bf",
+      "url": "https://job-boards.greenhouse.io/zupinnovation/jobs/6499520003",
+      "title": "Pessoa Desenvolvedora Back-End (.Net Core) Pleno",
+      "company": "Zup Innovation",
+      "publishedAt": "2025-03-05T16:56:57.000Z",
+      "score": 49,
+      "blockers": [
+        "Modalidade fora das suas preferências.",
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "3bdd7c69-8949-4282-9d8a-a2a818f431b6",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.408Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.329Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "098631be-bcf4-40c8-b933-525a025109af",
+      "url": "https://job-boards.greenhouse.io/zupinnovation/jobs/7985318003",
+      "title": "Pessoa Arquiteta de Soluções Cloud AWS Sênior",
+      "company": "Zup Innovation",
+      "publishedAt": "2026-10-07T12:54:29.000Z",
+      "score": 31,
+      "blockers": [
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "d343feb5-e989-40a4-92fa-c533da28bcc6",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.408Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.346Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "8c384b06-9175-4b94-90f7-2410388ea335",
+      "url": "https://job-boards.greenhouse.io/zupinnovation/jobs/7985305003",
+      "title": "Pessoa Arquiteta de Soluções Cloud AWS Especialista",
+      "company": "Zup Innovation",
+      "publishedAt": "2026-09-16T14:18:55.000Z",
+      "score": 0,
+      "blockers": [
+        "Modalidade fora das suas preferências.",
+        "Localização fora das suas preferências; revise restrições geográficas.",
+        "Publicação fora do período configurado."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "db69cdab-9dd8-4eb6-87f0-c9735a3efc7e",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.408Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.361Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "a4e71d37-13ae-4d91-b4a1-fc5f89be9a37",
+      "url": "https://jobs.lever.co/ciandt/5613b599-71b0-4486-89a3-dd4606280c5a",
+      "title": "[Job-32417] Senior Data Developer (Databricks/ Espanhol), Brazil",
+      "company": "CI&T",
+      "publishedAt": "2026-10-23T13:30:44.782Z",
+      "score": 34,
+      "blockers": [],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "6ec53dbf-16de-4b6a-a199-c5225f5e39fe",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.405Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.405Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T15:28:24.574Z",
+            "stage": "destination",
+            "code": "public_form_verified"
+          },
+          {
+            "at": "2026-10-23T15:28:29.376Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      },
+      "resolution": {
+        "state": "verified",
+        "checkedAt": "2026-10-23T15:28:23.299Z",
+        "retryAt": "2026-10-24T15:28:23.299Z",
+        "complete": true,
+        "consulted": [
+          {
+            "source": "catalog",
+            "outcome": "Publicações comparadas por empresa, identificadores e conteúdo.",
+            "count": 100
+          },
+          {
+            "source": "https://jobs.lever.co/ciandt/5613b599-71b0-4486-89a3-dd4606280c5a",
+            "outcome": "Correspondência verificada.",
+            "count": 2
+          },
+          {
+            "source": "https://jobs.lever.co/ciandt/5613b599-71b0-4486-89a3-dd4606280c5a/apply",
+            "outcome": "Correspondência verificada.",
+            "count": 1
+          },
+          {
+            "source": "public_search",
+            "outcome": "Destino oficial autorizado já identificado nos links publicados.",
+            "count": 0
+          }
+        ],
+        "matches": [
+          {
+            "url": "https://jobs.lever.co/ciandt/2db73d76-f356-4666-8eb3-b87274680128",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 8%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/339d5fd8-ba9b-4005-b0af-9283a855b652",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/9e19d41f-ea03-4834-80b9-57dccbf88615",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/afc1a68e-26f4-4ec5-a509-e51df0eabb9c",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/0b799eaf-8041-4f1f-9af6-3843faf11890",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/ac2bc150-b577-4741-ad14-33ee979d857f",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 55%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/ce1a3e27-aa5f-4e70-945e-6575d0c05d55",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/be8d321b-d604-4efd-b23b-c795c81d2db1",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 9%.",
+              "Modalidades diferentes.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/3af194c8-a043-4908-93c0-9a540ac2e82e",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 33%; descrição: 48%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/6c75a52e-dc71-47b2-966e-98c7d956e131",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 11%; descrição: 51%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/0ce8a901-a076-48c7-aead-f09282445f23",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 33%; descrição: 50%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/a63eeddd-0308-485a-969e-92fa5637cf8a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 75%; descrição: 57%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/37cbe2a2-91ce-4e88-a0f4-c2032dd3cb8b",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 30%; descrição: 54%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/08a7bc00-ec0e-42e4-bd00-78dae1325409",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 54%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/17a0d702-5922-4780-b4cb-96d21e1e951a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 47%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/07bc048d-921a-44e3-b4a4-f9334c126a22",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 33%; descrição: 51%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/4cf63107-5536-426b-bdef-28ec6f1e4a2a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/8223deba-52d4-43e9-8477-901790a59c03",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/0948bfd7-db1e-43e4-a545-015eddd412f9",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 54%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/201a7aec-f1e0-4e46-af6a-18a9eaf3769c",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/58d64570-b8e9-44aa-8c33-f7a0772320cf",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 8%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/5f2c0739-048a-4c6a-85d0-3a1796089b55",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/4ecc7732-1ef1-45d7-a860-b32d34b90b3a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/5ba37208-a3e2-47ec-8cb9-3116c0c980a0",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 30%; descrição: 7%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/9edb5a26-f30d-4acf-8319-fd473d579a89",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 40%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/78851bfe-d0e8-446a-8ee4-5ce7a8c81b87",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 57%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/c3a69d2e-a011-41b9-a944-098296928ff8",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 59%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/21eeefd4-e286-4069-b25a-326f897eab30",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/2ee87019-3e65-41eb-a470-45cb2ec0d55c",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 45%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/43cf5762-37c9-4d22-aecb-2b420253c85b",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 40%; descrição: 52%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/802e7fbf-751d-43bd-a2cf-29d3fce39ab3",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 52%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/213a7d0b-4d9a-4cb8-a30e-ede26d3f761e",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 57%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/405a64ba-d53e-4d42-80dc-b0e0a2cbe195",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 22%; descrição: 48%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/516c9a3e-1648-462d-bd3d-76fcf946c01d",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/96ec1808-6b61-4fda-832b-58d7c104edd9",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 55%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/d1edfa20-6bbb-452f-b114-0a777951d252",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 54%.",
+              "Senioridades diferentes.",
+              "Modalidades diferentes.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/330d771b-fac7-4ab7-8270-8eadcc43d30b",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 51%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/c4b2aa23-ed19-4008-8cdc-23c568af6b6e",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 57%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/b5152ba5-1b86-485d-a2f8-9f22d9543fd8",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 52%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/93a8463d-88f3-4955-a56d-f37717b89609",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 57%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/45fdc8d9-716c-4815-b7c3-9c93bcc2ed80",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 55%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/abb548b7-b413-4a92-8ab6-8ed421f040c5",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 55%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/d9cabcf6-9317-413b-bb34-35c78348872f",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/ef4fcaaf-8b15-4ff1-9329-993ac6780261",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 54%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/fdc1c095-22a4-4c58-a350-2d38f8e31931",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 53%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/62ef4afa-d206-4d61-9780-dd6732e897a0",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 5%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/dddf5207-09d3-4bbf-a8ff-54548a4e3cfa",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/8afc856c-736e-49bd-bb65-6424faba8992",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 33%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/d8b6d150-edcf-4eca-a7ee-27a1676632b6",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/0df7fe63-ea69-4d88-8d64-4f2eeaa78f8b",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 33%; descrição: 56%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/4dbc86d5-98d3-4995-a0bc-f3b6e75b9fa2",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 51%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/b5a7671b-6612-4ed7-ae0a-132c920bc66d",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/4a84bde1-ae39-4d3b-9faf-1e917891aecf",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 5%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/b38a79ab-3fa6-4982-bfc3-45a057b86225",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/64ff48a2-d683-4b16-8694-a61c06e133af",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 51%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/53b9b683-aec3-4f07-9006-d638e0035eb5",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 5%.",
+              "Modalidades diferentes.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/a599e6a0-fffa-454c-88c2-d51983aafea8",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 2%.",
+              "Modalidades diferentes.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/3ffe2c8b-3dbb-41ed-9523-bc424b932da0",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 5%.",
+              "Modalidades diferentes.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/cc7b82b3-33e7-44a7-bf43-9bdfaf9d1669",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 5%.",
+              "Modalidades diferentes.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/51618054-a487-4ffe-a60f-78392ad250d0",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/5c2cdf87-41b0-4fb4-a67d-af0480565d1c",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 56%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/b51b1a14-b9cd-4f45-b732-595936ed8a61",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 7%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/71dca057-c844-4030-b7e4-bc8c7344daba",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 44%; descrição: 45%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/33fec9ed-cca7-42f5-8601-09b5bd472a59",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 7%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/14e797b6-08d6-4ca8-ad4f-f9599e9ec7bd",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 6%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/353a0dc5-d526-41f4-8363-d0d77630e5f3",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/b2b18753-f43d-4852-b249-267fb4d5151a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/406541f8-2bbd-4b17-9893-939bf2e5eb4c",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 63%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/6b322292-03a4-45ab-91f6-9d6375e9fe77",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/fe8694b1-82dc-419c-9305-a2dd8dc75dd1",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 11%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/eabc58c4-1067-4c68-8741-689e00f41074",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 5%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/1b334619-f3c5-4b1f-a1a8-2a0aee627a91",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 9%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/8ee01f82-ee9d-4249-8a80-ea598ce39689",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/bc8da112-2924-430f-ac6e-514cc9775e12",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 50%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/2a8e4e97-439f-4a60-a4c2-dfe6a10df77d",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 57%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/bf1dc580-3321-470c-bec5-87bfeb6f450b",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 51%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/e37ecafd-65b1-46d5-abee-e8e75a1a59ad",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/2fee42ea-7501-4f7f-bb44-779b0e92f072",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 6%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/39be8f9e-c2c0-44df-a20d-946550918c37",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/8f284e9e-8433-4791-bc93-fe01c243aa35",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/eb5ddeb6-7c22-4b35-b233-65d119a20c71",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 10%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/57b0f135-f0a6-4149-a086-75e10183d81a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 7%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/cf563ea0-aa99-4d59-9ea4-6aba9cd1cbdb",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/368346c7-69c0-41a3-baef-8533636a49a4",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/1965d2b9-efd1-4585-907d-4b2e89b8ed6a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 30%; descrição: 53%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/b5dd4a1a-98a2-4b9c-b5af-45558db62f09",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 7%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/fa56a134-5e64-4ec3-93cd-98052849118a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 9%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/230aa5d6-c194-49e8-a40d-255a5fd0ea61",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 6%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/5fed24a4-c7f6-4d14-9b3c-f7b102e43e81",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 45%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/9e899fb9-28f5-4ca1-a816-9abb83887acd",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 54%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/0f43ee43-830b-43f0-9453-29c4568e6d9c",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 54%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/8d33fe81-e0c7-4708-9d69-2f1ee89daad3",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/b2669b4a-e8f2-40c3-adae-24b6a648b8f3",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 13%; descrição: 50%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/93f7d727-92d3-4e76-832f-4fc2e828d193",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 45%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/8e314ddb-f12a-4f13-ab4a-0543fff3793e",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 38%; descrição: 5%.",
+              "Localidades sem correspondência suficiente.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/6e390196-0d65-4df1-8b16-15178d512d49",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 16%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/ff33f4ce-5822-4b09-a334-5ea5401a91e6",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 45%.",
+              "Senioridades diferentes.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/a2ab7cb3-9304-4ddc-8d0d-847028bcc375",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 50%; descrição: 10%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/1d2dcf3f-68e0-4716-bc21-5d2cbf1f5d4a",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 33%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          },
+          {
+            "url": "https://jobs.lever.co/ciandt/5a8cf88f-8c40-441e-8a22-b76a93fa5c4e",
+            "confidence": 0,
+            "verified": false,
+            "reasons": [
+              "Empresa coincide.",
+              "Similaridade de título: 25%; descrição: 8%.",
+              "Publicações distintas no mesmo quadro de vagas."
+            ]
+          }
+        ],
+        "message": "Destino independente identificado; envio depende do formulário e das permissões."
+      },
+      "destinations": [
+        {
+          "url": "https://jobs.lever.co/ciandt/5613b599-71b0-4486-89a3-dd4606280c5a/apply",
+          "platform": "lever",
+          "state": "verified",
+          "formFound": true
+        },
+        {
+          "url": "https://jobs.lever.co/ciandt/5613b599-71b0-4486-89a3-dd4606280c5a",
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false
+        }
+      ]
+    },
+    {
+      "id": "ff3db107-33e9-4faa-b510-79ad3c0285d3",
+      "url": "https://jobs.lever.co/ciandt/82aa721d-c098-4d3f-a8bb-9b3121017fb2",
+      "title": "[Job-32361] Mid-Level Support Analyst, Brazil",
+      "company": "CI&T",
+      "publishedAt": "2026-10-23T13:51:56.407Z",
+      "score": 0,
+      "blockers": [],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "31afaff9-8c3f-4211-a9d7-2fd77949f37a",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.405Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.411Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "6f3e9cc0-3de1-4dae-9e9b-f463098f3f80",
+      "url": "https://jobs.lever.co/ciandt/22c6a7e1-9986-4b64-8d36-58320e8e9263",
+      "title": "[Job-32264] Solutions Architect , Brazil",
+      "company": "CI&T",
+      "publishedAt": "2026-10-23T14:09:17.150Z",
+      "score": 36,
+      "blockers": [],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "c720dc6b-6099-4780-8604-aa4158258d1b",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.404Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.434Z",
+            "stage": "compatibility",
+            "code": "preferences_not_met"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "66e5952c-0c4c-4ded-abc4-451221b62395",
+      "url": "https://jobs.lever.co/ciandt/955bf09d-efdb-4660-81e4-64b8e7666444",
+      "title": "[Job-32264]  Principal Platform Engineer , Brazil",
+      "company": "CI&T",
+      "publishedAt": "2026-10-23T14:06:11.240Z",
+      "score": 36,
+      "blockers": [],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "120e5c28-9728-440a-b5cd-2ccd1d0a1a58",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.404Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.456Z",
+            "stage": "compatibility",
+            "code": "preferences_not_met"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    },
+    {
+      "id": "e7cc6518-5ffb-4e56-add3-0b71dd9de00e",
+      "url": "https://jobs.lever.co/ciandt/80ada69e-ef1e-488a-9c37-7bd73454f5d5",
+      "title": "[job- 32388] Chief Technology Officer (CTO), Brasil.",
+      "company": "CI&T",
+      "publishedAt": "2026-10-23T13:50:50.533Z",
+      "score": 38,
+      "blockers": [
+        "Modalidade fora das suas preferências.",
+        "Localização fora das suas preferências; revise restrições geográficas."
+      ],
+      "objectiveEligible": false,
+      "availability": "active",
+      "automation": {
+        "correlationId": "b7bc6037-0cb1-4a04-aad5-19d0bb58d799",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T15:26:22.402Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.473Z",
+            "stage": "compatibility",
+            "code": "mandatory_requirement_blocked"
+          }
+        ],
+        "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f"
+      }
+    }
+  ],
+  "applications": [
+    {
+      "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "company": "Global TI",
+      "status": "Resultado desconhecido",
+      "execution": {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+          "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+          "origin": "user_triggered_automation",
+          "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T13:52:21.765Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T13:52:39.795Z"
+        }
+      ],
+      "receipt": null,
+      "submittedAt": null,
+      "missingQuestions": [],
+      "history": [
+        {
+          "at": "2026-10-23T13:51:53.129Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T13:51:53.129Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-23T13:52:21.765Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T13:52:39.796Z",
+          "actor": "Sistema",
+          "message": "A Quickin não confirmou o recebimento. Confira o resultado antes de repetir."
+        }
+      ]
+    }
+  ],
+  "routine": {
+    "enabled": true,
+    "mode": "automatic",
+    "time": "08:00",
+    "dailyLimit": 5,
+    "minScore": 70,
+    "lastRun": "2026-10-23T15:27:28.943Z",
+    "nextRun": "2026-10-24T11:00:00.000Z",
+    "destinationPolicy": "official",
+    "progress": {
+      "day": "2026-10-23",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 1,
+      "remaining": 4,
+      "state": "waiting",
+      "message": "1 tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente. 5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-23T15:29:14.959Z"
+    },
+    "discoveryCheckpoints": {
+      "official-abler-email": {
+        "cursor": "276f88830db396c4:0",
+        "pending": false
+      },
+      "company-board:alleasy.com.br": {
+        "cursor": "{\"url\":\"https://alleasy.com.br/jobs/\",\"offset\":0}",
+        "pending": false
+      }
+    },
+    "researchBudget": {
+      "day": "2026-10-23",
+      "used": 30
+    }
+  },
+  "usageToday": 1,
+  "confirmedAutomaticToday": 0
+}

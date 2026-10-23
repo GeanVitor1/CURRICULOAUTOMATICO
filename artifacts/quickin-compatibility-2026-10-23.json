@@ -1,0 +1,105 @@
+{
+  "at": "2026-10-23T12:17:36.600Z",
+  "readOnly": true,
+  "job": {
+    "title": "Desenvolvedor(a) Full Stack Node.js e React Pleno/Sênior",
+    "company": "Insight IT",
+    "url": "https://jobs.quickin.io/insightit/jobs/6ada4a95845ace001364ca99",
+    "description": "Estamos em busca de um(a) Desenvolvedor(a) Full Stack Pleno/S&ecirc;nior para atuar no desenvolvimento de solu&ccedil;&otilde;es front-end e back-end utilizando JavaScript, com foco em React e Node.js.\n\n Procuramos um profissional com conhecimentos em desenvolvimento seguro de aplica&ccedil;&otilde;es, arquitetura de software, microsservi&ccedil;os, bancos de dados SQL e NoSQL, pr&aacute;ticas de qualidade de c&oacute;digo e tecnologias relacionadas a DevOps.\n\n &Eacute; importante que o profissional tenha flexibilidade e interesse em ampliar sua atua&ccedil;&atilde;o t&eacute;cnica, demonstrando disponibilidade para aprender e trabalhar com outras linguagens e tecnologias, principalmente Flutter e Java.\n Principais responsabilidades Desenvolver e manter aplica&ccedil;&otilde;es front-end e back-end utilizando JavaScript; Atuar no desenvolvimento de interfaces com React e seu ecossistema de plugins e ferramentas; Desenvolver aplica&ccedil;&otilde;es back-end com Node.js e frameworks como Express e NestJS; Aplicar fundamentos de desenvolvimento web, incluindo HTML, CSS e orienta&ccedil;&atilde;o a objetos; Trabalhar com modelagem e integra&ccedil;&atilde;o de bancos de dados SQL e NoSQL; Participar do desenvolvimento e da manuten&ccedil;&atilde;o de arquiteturas baseadas em microsservi&ccedil;os; Aplicar boas pr&aacute;ticas de desenvolvimento seguro de aplica&ccedil;&otilde;es; Utilizar princ&iacute;pios de Clean Code, SOLID e Design Patterns; Desenvolver e executar testes unit&aacute;rios; Trabalhar com Redis, sistemas de filas e comunica&ccedil;&atilde;o entre servi&ccedil;os; Aplicar pr&aacute;ticas de TDD e/ou BDD; Atuar com Docker na constru&ccedil;&atilde;o e execu&ccedil;&atilde;o de aplica&ccedil;&otilde;es; Trabalhar em times &aacute;geis utilizando Scrum e/ou Kanban; Colaborar com atividades relacionadas a processos e tecnologias de DevOps; Aprender e atuar com outras linguagens e tecnologias, principalmente Flutter e Java, conforme as necessidades dos projetos.\n\n Requisitos Experi&ecirc;ncia em desenvolvimento de software front-end e back-end com JavaScript; Experi&ecirc;ncia em front-end com React e seu ecossistema, incluindo plugins e gerenciamento de estado; Experi&ecirc;ncia em back-end com Node.js; Conhecimento dos principais frameworks de Node.js, especialmente Express e NestJS; Conhecimento em HTML, CSS e orienta&ccedil;&atilde;o a objetos; Conhecimento sobre modelagem de dados SQL e NoSQL; Experi&ecirc;ncia com arquitetura de microsservi&ccedil;os; Experi&ecirc;ncia com Docker; Experi&ecirc;ncia com testes unit&aacute;rios; Experi&ecirc;ncia com Redis; Experi&ecirc;ncia com sistemas de filas; Experi&ecirc;ncia com TDD e/ou BDD; Conhecimento de Clean Code, SOLID e Design Patterns; Conhecimento do protocolo HTTP, incluindo verbos e c&oacute;digos de status; Conhecimento de boas pr&aacute;ticas de desenvolvimento seguro de aplica&ccedil;&otilde;es; No&ccedil;&otilde;es sobre arquiteturas de software complexas; Conhecimento geral de arquitetura de software e infraestrutura; No&ccedil;&otilde;es de servi&ccedil;os de computa&ccedil;&atilde;o em nuvem; Experi&ecirc;ncia com Scrum e/ou Kanban; Conhecimento sobre processos e tecnologias de DevOps;\n\n Diferenciais Conhecimento ou experi&ecirc;ncia pr&eacute;via com Flutter; Conhecimento ou experi&ecirc;ncia pr&eacute;via com Java; Viv&ecirc;ncia com servi&ccedil;os de computa&ccedil;&atilde;o em nuvem; Experi&ecirc;ncia em ambientes com arquiteturas de software complexas; Conhecimento aprofundado em processos e tecnologias de DevOps.\n\n Perfil comportamental buscado Forte senso de dono; Facilidade para trabalhar em equipe; Proatividade; Entusiasmo por tecnologia e inova&ccedil;&atilde;o; Criatividade; Organiza&ccedil;&atilde;o; Empatia; Flexibilidade e disposi&ccedil;&atilde;o para aprender novas linguagens e tecnologias.",
+    "location": "SP, SP, BR",
+    "modality": "Remoto",
+    "contract": "Não especificado",
+    "publishedAt": "2026-10-22T17:40:37.431Z",
+    "id": "c1604711-db6b-4f5b-84dd-ce9007fb4a85",
+    "source": "Gupy",
+    "level": "Sênior",
+    "requiredYears": null,
+    "salaryMin": null,
+    "salaryMax": null,
+    "currency": "",
+    "requiredSkills": [],
+    "skills": [
+      "React",
+      "JavaScript",
+      "Node.js",
+      "Java",
+      "Docker",
+      "HTML",
+      "CSS"
+    ],
+    "discoveredAt": "2026-10-23T12:17:36.572Z",
+    "saved": false,
+    "discarded": false,
+    "demo": false,
+    "availability": "active",
+    "geographicEligibility": "Localização não informada",
+    "origins": [
+      {
+        "source": "company",
+        "url": "https://jobs.quickin.io/insightit/jobs/6ada4a95845ace001364ca99",
+        "id": "https://jobs.quickin.io/insightit/jobs/6ada4a95845ace001364ca99"
+      }
+    ],
+    "match": {},
+    "destinations": [],
+    "requisitionId": "NKM2496",
+    "applicationUrls": []
+  },
+  "match": {
+    "score": 49,
+    "strengths": [
+      "Competências em comum: JavaScript, Docker, HTML, CSS.",
+      "Modalidade remoto alinhada às preferências."
+    ],
+    "gaps": [
+      "Confirme sua disponibilidade de horário e compare com a escala da vaga.",
+      "Conhecimentos citados a confirmar: React, Node.js, Java.",
+      "Salário não divulgado.",
+      "Regime de contratação não informado no anúncio."
+    ],
+    "blockers": [],
+    "matchedSkills": [
+      "JavaScript",
+      "Docker",
+      "HTML",
+      "CSS"
+    ],
+    "missingSkills": [
+      "React",
+      "Node.js",
+      "Java"
+    ],
+    "radar": false,
+    "confidence": "sufficient",
+    "criteria": [
+      {
+        "label": "Competências citadas na vaga",
+        "earned": 34.29,
+        "possible": 60
+      },
+      {
+        "label": "Cargo e área desejados",
+        "earned": 20,
+        "possible": 20
+      },
+      {
+        "label": "Competências citadas no cargo",
+        "earned": 0,
+        "possible": 30
+      },
+      {
+        "label": "Modalidade preferida",
+        "earned": 10,
+        "possible": 10
+      },
+      {
+        "label": "Localização",
+        "earned": 0,
+        "possible": 10
+      }
+    ],
+    "explanation": "Pontuação dos critérios disponíveis: Competências citadas na vaga: 34.29/60; Cargo e área desejados: 20/20; Competências citadas no cargo: 0/30; Modalidade preferida: 10/10; Localização: 0/10. Não representa a probabilidade de contratação."
+  },
+  "objective": true,
+  "minimum": 70
+}

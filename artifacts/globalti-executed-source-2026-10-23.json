@@ -1,0 +1,28 @@
+{
+  "at": "2026-10-23T14:12:41.307Z",
+  "executedDeployment": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+  "sourceUid": "322af30a225ee4e21f54168c56ddd33831057c3e",
+  "relevantExecutedSource": [
+    "  const [,applicationResponse]=await Promise.all([submit.click(),accepted]);",
+    "  if(!applicationResponse.ok())return {status:'unknown',message:'A Quickin não confirmou o recebimento. Confira o resultado antes de repetir.'};"
+  ],
+  "sandboxSessions": [
+    {
+      "id": "sbx_EJZoDnCtUje6fAnr07t6nZjFB20I",
+      "createdAt": "2026-10-23T13:52:24.879Z",
+      "stoppedAt": "2026-10-23T13:52:37.913Z",
+      "status": "stopped",
+      "sourceSnapshotId": "snap_JN2qK4A0FeU5h9NoO7rV0opIJ1I8"
+    }
+  ],
+  "recoveredResult": {
+    "available": false,
+    "httpStatus": 410,
+    "reason": "Stopped session filesystem unavailable; no session resumed"
+  },
+  "currentAlias": {
+    "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+    "deploymentUrl": "curriculoautomatico-ipdjkeiyb-geans-projects-da7db03c.vercel.app"
+  },
+  "retainedSessionCount": 50
+}

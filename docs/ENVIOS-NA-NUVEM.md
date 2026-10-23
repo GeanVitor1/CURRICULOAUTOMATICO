@@ -1,4 +1,20 @@
+## Perguntas em Preferências antes do envio
+
+O worker inspeciona formulários ATS em modo somente leitura antes de reservar cota, registrar “Envio iniciado”, preencher dados ou anexar o currículo. Perguntas obrigatórias sem resposta aprovada (inclusive opções incompatíveis e consentimentos não confirmados) pausam a preparação e aparecem em **Preferências → Perguntas das vagas antes do envio**, agrupadas por vaga. A inspeção guarda as opções reais de seleção.
+
+`POST /api/applications/:appId/questions/inspect` atualiza perguntas/opções sem preencher nem submeter o formulário. `PUT /api/applications/:appId/answers` salva respostas confirmadas para o destino e, com a rotina automática ativa, recoloca a candidatura compatível na fila; o worker confere novamente o formulário. Envios individuais mantêm a autorização individual. Nenhum resultado desconhecido ou candidatura enviada pode passar pela preparação para repetir envio.
+
+A execução também confere todas as perguntas antes do primeiro preenchimento/upload, protegendo contra alterações entre a preparação e a execução. Perguntas específicas de cada empresa são conhecidas ao consultar o formulário; novas exigências voltam a Preferências. Parentesco e declarações sensíveis permanecem restritos ao destino exato. A preparação não fabrica recibos nem confirma candidaturas.
+
 # Candidaturas pelo navegador na Vercel
+
+## Escolha do destino antes do login
+
+A origem do anúncio e o destino de candidatura são independentes. O motor consulta o catálogo público, segue links publicados e compara oportunidades antes de escolher o envio. Um formulário oficial independente autorizado pode receber o currículo sem conectar a conta do agregador. As sessões descritas abaixo continuam disponíveis quando o destino escolhido exige login.
+
+A resolução usa a fila `empregatos-destinations`; a submissão continua em `empregatos-submissions`. `DISCOVERY_ATS_BOARDS` configura quadros públicos e `ATS_BROWSER_AUTHORIZED` limita a automação aos quadros/domínios com autorização existente. Os navegadores independentes são efêmeros e carregam o original aprovado da conta autenticada. Identificar uma publicação não significa comprovar seu formulário nem seu recebimento.
+
+Arquitetura, configuração, testes, evidências e limitações: [relatório do motor de candidaturas](MOTOR-CANDIDATURAS-2026-10-16.md).
 
 ## Fluxo publicado de login
 
@@ -56,3 +72,26 @@ Cloudflare visível, `challenge: true`, `blocked: false`, sem modal por cima do
 controle. Redimensionamento e confirmação de Tab em 159 ms funcionaram, sem
 erros JavaScript. A verificação não foi respondida e nenhum login foi concluído;
 o teste não comprova que o portal aceitará uma conta após essa etapa.
+# Processamento das vagas já encontradas
+
+## Formulários nativos de empresas
+
+`DISCOVERY_COMPANY_BOARDS` configura páginas oficiais de vagas com formulários WP Jobs Board reconhecidos. A descoberta consulta os anúncios e suas datas publicadas, e os filtros e a fila automática continuam decidindo a elegibilidade. `COMPANY_FORM_AUTHORIZED` contém os hosts exatos habilitados para o adaptador nativo. Ele revalida vaga, empresa e campos antes de enviar o currículo original por multipart, sem conta de candidato ou navegador. CAPTCHA, campos desconhecidos e alteração de destino interrompem a preparação. Somente uma confirmação nova na resposta ao POST produz recibo; resposta perdida ou ambígua impede repetição automática.
+
+## E-mail individual publicado pela Abler
+
+`ABLER_EMAIL_DISCOVERY_ENABLED=true` habilita o catálogo público em `candidatos.abler.com.br/sitemap.xml`. O catálogo seleciona anúncios a consultar; sua data de atualização nunca substitui a data de publicação. Cada anúncio é lido na página pública da plataforma, e seus dados Nuxt são decodificados como literais, sem executar JavaScript do publicador. O adaptador exige empresa identificada, vaga liberada/em andamento, data real, slug e identificadores consistentes, e endereço de candidatura explicitamente publicado no formato `vaga-ID@vagas.abler.in` para o mesmo ID. Nenhum endereço é inferido quando o canal está ausente.
+
+A fila mantém preferências, currículo aprovado, cota e prevenção de duplicação. Antes de enviar, o verificador reabre o anúncio e exige os mesmos cargo, empresa e canal individual. O envio usa a conexão Gmail existente; seu ID de mensagem comprova transmissão por e-mail, sem afirmar leitura do recrutador. A fonte não exige login no portal nem usa o limite da pesquisa de destinos ou uma assinatura de IA.
+
+Ativar a rotina automática agora também prepara e enfileira vagas compatíveis já salvas com destino verificado, sem depender de outra busca. A pesquisa de destinos usa a mesma operação ao concluir. Ela recalcula os critérios, respeita currículo aprovado, preferências, cota disponível e candidaturas já aguardando envio, e não repete tentativas anteriores.
+
+O painel oferece **Processar vagas encontradas** (`POST /api/routine/process`). A página de cada vaga também permite **Processar esta vaga pela rotina**, usando `jobId` para limitar a operação. Ambos exigem rotina automática ativa; preparar uma fila não equivale a confirmar envio. O recibo e eventuais perguntas pendentes continuam sendo registrados pelo worker.
+
+## Falhas antes de iniciar o navegador
+
+A política de rede do Sandbox usa os CIDRs IPv4 aceitos pela API. Os CIDRs IPv6 `::1/128`, `fc00::/7` e `fe80::/10` causavam recusa HTTP 400 na criação. O isolamento por domínio e a validação de endereços públicos (incluindo IPv6) continuam no adaptador de navegação.
+
+Uma recusa na criação do Sandbox ocorre antes de gravar o currículo no navegador e permite retomar a mesma candidatura com sua reserva existente. Pausas definitivas do formulário antes de clicar em enviar também podem ser retomadas depois das respostas aprovadas. Uma execução interrompida após clicar permanece desconhecida e não é repetida automaticamente.
+
+Tentativas antigas classificadas como desconhecidas exigem revisão explícita em **Revisar tentativa sem confirmação**, com justificativa e confirmação de ausência de envio. Essa revisão conserva o histórico, não reinicia o envio e não cria recibo; uma nova autorização ainda é necessária.

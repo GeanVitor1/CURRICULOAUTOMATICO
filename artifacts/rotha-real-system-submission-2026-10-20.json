@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-10-20T15:17:30.741Z",
+  "jobId": "afb34b85-e44a-477a-923c-62b2c50401a9",
+  "company": "Rotha IA",
+  "title": "Full Stack Developer Júnior",
+  "recipient": "contato@rothaia.com.br",
+  "resumeId": "3bfe4222-9c84-4008-b793-65e631eeffd8",
+  "resumeName": "Curriculo.pdf",
+  "executor": "production_system_worker",
+  "status": "Enviada",
+  "verificationMethod": "email_provider_acceptance",
+  "receipt": "Gmail message ID: 1a159e3133937f2e",
+  "deliveryOrReadingConfirmed": false,
+  "authorization": "Somente esta candidatura; rotina geral mantida em aprovação",
+  "deploymentId": "dpl_79cY8jzfMM9bX7DvhbBpfZEJJi6a",
+  "screenshot": "rotha-real-system-submission-2026-10-20.jpg"
+}

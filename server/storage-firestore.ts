@@ -29,11 +29,14 @@ import type {
 import { collectionNames, keys, eq, and } from "./storage-types";
 import { firestoreAuth } from "./firestore-auth";
 import { submissionState } from "./submission-state";
+import { pausedBeforeSubmission } from "./submission-attempts";
+import { cleanupPayloadGarbage } from "./firestore-payload-gc";
 
 const BULK: Partial<Record<Table, string>> = {
   workspaces: "data",
   resumeFiles: "ciphertext",
   sourceCatalog: "jobs",
+  opportunityCatalog: "job",
 };
 // Each chunk stays well below Firestore's 1 MiB document limit, including metadata.
 const hash = (value: string) =>
@@ -110,6 +113,17 @@ function defaults(
       leaseToken: null,
       lastError: null,
     },
+    opportunityCatalog: { fetchedAt: now, leaseToken: null, leaseUntil: null },
+    resolutionTasks: {
+      requestedJobIds: [],
+      status: "queued",
+      attempts: 0,
+      leaseToken: null,
+      leaseUntil: null,
+      lastError: null,
+      createdAt: now,
+      updatedAt: now,
+    },
   };
   return {
     ...base[table],
@@ -181,6 +195,7 @@ function projections(w: Workspace) {
     timeZone: "America/Sao_Paulo",
   });
   for (const a of w.applications) {
+    if (pausedBeforeSubmission(a)) continue;
     const days = new Set<string>();
     for (const e of a.history)
       if (e.message.startsWith("Envio iniciado."))
@@ -210,6 +225,9 @@ function projections(w: Workspace) {
     _sending: w.applications.some((a) => a.status === "Enviando"),
     _attempts: attempts,
     _submission: submissionState(w, ""),
+    _singlePending: w.applications.some(
+      (a) => a.status === "Aguardando aprovação" && !!a.singleSubmission,
+    ),
   };
 }
 type Pending = {
@@ -383,7 +401,9 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
   }
   async function references(table: Table, row: DocumentData) {
     const parent =
-      table === "resumeFiles" || table === "discoveryTasks"
+      table === "resumeFiles" ||
+      table === "discoveryTasks" ||
+      table === "resolutionTasks"
         ? ["workspaces", "workspaceId"]
         : [
               "sessions",
@@ -543,28 +563,6 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
       else native.delete(w.ref);
     return { garbage, cacheWrites };
   }
-  async function cleanupGarbage(refs?: DocumentReference[]) {
-    const snapshots = refs
-      ? await db.getAll(...refs)
-      : (await db.collection("_payload_gc").limit(10).get()).docs;
-    for (const snapshot of snapshots) {
-      if (!snapshot.exists) continue;
-      const value = snapshot.data()!;
-      // Payload versions are immutable; only an obsolete manifest creates this task.
-      for (let start = 0; start < value.count; start += 200) {
-        const batch = db.batch();
-        for (let i = start; i < Math.min(start + 200, value.count); i++)
-          batch.delete(
-            db
-              .doc(value.parent)
-              .collection("chunks")
-              .doc(`${value.version}-${i}`),
-          );
-        await batch.commit();
-      }
-      await snapshot.ref.delete();
-    }
-  }
   const store: Store = {
     async select(table, query = {}) {
       const out = [];
@@ -668,7 +666,11 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
         if (table === "sessions")
           await store.delete("googleOAuthStates", eq("sessionHash", raw.token));
         if (table === "workspaces")
-          for (const child of ["resumeFiles", "discoveryTasks"] as Table[])
+          for (const child of [
+            "resumeFiles",
+            "discoveryTasks",
+            "resolutionTasks",
+          ] as Table[])
             await store.delete(child, eq("workspaceId", raw.id));
         await unique(table, ref, null, raw);
         if (table === "applicationUsage") await usageCounter(raw, -1);
@@ -714,7 +716,7 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
       for (const entry of committed.cacheWrites)
         payloadCache.set(entry.key, entry.bytes);
       if (committed.garbage.length)
-        await cleanupGarbage(committed.garbage).catch(() =>
+        await cleanupPayloadGarbage(db).catch(() =>
           console.error(
             JSON.stringify({ event: "firestore_payload_cleanup_pending" }),
           ),
@@ -772,6 +774,14 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
         .get();
       return snap.docs.map((d) => ({ id: d.data().id }));
     },
+    async pendingSingleSubmissionWorkspaceIds() {
+      const snap = await db
+        .collection("workspaces")
+        .where("_singlePending", "==", true)
+        .select("id")
+        .get();
+      return snap.docs.map((d) => ({ id: d.data().id }));
+    },
     async historicalAttempts(userId, day) {
       const snap = await db
         .collection("workspaces")
@@ -808,7 +818,7 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
     },
     async health() {
       await db.collection("_health").doc("probe").get();
-      await cleanupGarbage();
+      await cleanupPayloadGarbage(db);
     },
     async close() {
       await db.terminate();

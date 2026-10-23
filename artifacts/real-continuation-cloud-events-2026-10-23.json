@@ -1,0 +1,151 @@
+{
+  "at": "2026-10-23T15:35:11.673Z",
+  "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+  "origin": "user_triggered_automation",
+  "records": [
+    {
+      "timestamp": "2026-10-23T15:23:22.223Z",
+      "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+      "requestId": "rxspj-1792768998695-93273354a7ec",
+      "requestPath": "/api/search-worker",
+      "event": "discovery_queue_received",
+      "taskId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+      "messageId": "46-1M1eB3izlp0pE80aYIEfrdoN83zsSlV4",
+      "deliveryCount": 1,
+      "topic": "empregatos-discovery",
+      "consumer": "api_Ssearch-worker_Dmjs"
+    },
+    {
+      "timestamp": "2026-10-23T15:28:31.697Z",
+      "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+      "requestId": "c55j8-1792769258525-3b08563d4fb8",
+      "requestPath": "/api/destination-worker",
+      "event": "automation_transition",
+      "jobId": "6e9e7c06-c32e-4232-9f34-e7ede6dd62b0",
+      "correlationId": "03dba1f8-1b0f-4e33-95eb-4e042d99ca2f",
+      "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+      "origin": "user_triggered_automation",
+      "at": "2026-10-23T15:28:31.696Z",
+      "stage": "compatibility",
+      "code": "below_minimum_score"
+    },
+    {
+      "timestamp": "2026-10-23T15:28:30.446Z",
+      "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+      "requestId": "c55j8-1792769258525-3b08563d4fb8",
+      "requestPath": "/api/destination-worker",
+      "event": "automation_transition",
+      "jobId": "d9dd120c-60d5-43c1-bb48-a714a9090379",
+      "correlationId": "076bc27e-1d9a-4a96-8286-5bb450af9bcc",
+      "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+      "origin": "user_triggered_automation",
+      "at": "2026-10-23T15:28:30.445Z",
+      "stage": "compatibility",
+      "code": "below_minimum_score"
+    },
+    {
+      "timestamp": "2026-10-23T15:28:29.377Z",
+      "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+      "requestId": "c55j8-1792769258525-3b08563d4fb8",
+      "requestPath": "/api/destination-worker",
+      "event": "automation_transition",
+      "jobId": "a4e71d37-13ae-4d91-b4a1-fc5f89be9a37",
+      "correlationId": "6ec53dbf-16de-4b6a-a199-c5225f5e39fe",
+      "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+      "origin": "user_triggered_automation",
+      "at": "2026-10-23T15:28:29.376Z",
+      "stage": "compatibility",
+      "code": "below_minimum_score"
+    },
+    {
+      "timestamp": "2026-10-23T15:28:24.574Z",
+      "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+      "requestId": "c55j8-1792769258525-3b08563d4fb8",
+      "requestPath": "/api/destination-worker",
+      "event": "automation_transition",
+      "jobId": "a4e71d37-13ae-4d91-b4a1-fc5f89be9a37",
+      "correlationId": "6ec53dbf-16de-4b6a-a199-c5225f5e39fe",
+      "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+      "origin": "user_triggered_automation",
+      "at": "2026-10-23T15:28:24.574Z",
+      "stage": "destination",
+      "code": "public_form_verified"
+    },
+    {
+      "timestamp": "2026-10-23T15:28:18.271Z",
+      "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+      "requestId": "c55j8-1792769258525-3b08563d4fb8",
+      "requestPath": "/api/destination-worker",
+      "event": "automation_transition",
+      "jobId": "6e9e7c06-c32e-4232-9f34-e7ede6dd62b0",
+      "correlationId": "03dba1f8-1b0f-4e33-95eb-4e042d99ca2f",
+      "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+      "origin": "user_triggered_automation",
+      "at": "2026-10-23T15:28:18.270Z",
+      "stage": "destination",
+      "code": "supported_form_not_found"
+    },
+    {
+      "timestamp": "2026-10-23T15:28:13.438Z",
+      "deploymentId": "dpl_EH6wMAqLKk5NjnnYgWgMvonGkdZu",
+      "requestId": "c55j8-1792769258525-3b08563d4fb8",
+      "requestPath": "/api/destination-worker",
+      "event": "automation_transition",
+      "jobId": "6e9e7c06-c32e-4232-9f34-e7ede6dd62b0",
+      "correlationId": "03dba1f8-1b0f-4e33-95eb-4e042d99ca2f",
+      "runId": "a9f96cbb-157e-4ab1-bc05-751a3377d22f",
+      "origin": "user_triggered_automation",
+      "at": "2026-10-23T15:28:13.437Z",
+      "stage": "destination",
+      "code": "supported_form_not_found"
+    }
+  ],
+  "queries": [
+    {
+      "source": "real-continuation-queues",
+      "type": "summary",
+      "recordsReturned": 1,
+      "timeRange": {
+        "start": "2026-10-23T15:22:00.000Z",
+        "end": "2026-10-23T15:32:57.677Z"
+      },
+      "pagination": {
+        "hasMore": false,
+        "next": null
+      },
+      "excludedIntervals": []
+    },
+    {
+      "source": "real-continuation-resolution-request",
+      "type": "summary",
+      "recordsReturned": 6,
+      "timeRange": {
+        "start": "2026-10-23T15:27:30.000Z",
+        "end": "2026-10-23T15:29:30.000Z"
+      },
+      "pagination": {
+        "hasMore": false,
+        "next": null
+      },
+      "excludedIntervals": []
+    }
+  ],
+  "resolutionQueueMessageId": null,
+  "resolutionEvidence": "Persisted completed task and /api/destination-worker transitions. Queue-received message metadata was not recovered; task attempts=1 is not a delivery count.",
+  "newJobs": 39,
+  "objectiveEligible": 0,
+  "byCompany": {
+    "CodeRoad": 30,
+    "Zup Innovation": 4,
+    "CI&T": 5
+  },
+  "overlappingBlockers": {
+    "Localização fora das suas preferências; revise restrições geográficas.": 34,
+    "Publicação fora do período configurado.": 25,
+    "Modalidade fora das suas preferências.": 6
+  },
+  "newApplicationAttempts": 0,
+  "newConfirmedApplications": 0,
+  "confirmedAutomaticToday": 0,
+  "globalTiAttemptPreserved": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808"
+}

@@ -52,6 +52,12 @@ Após enviar um currículo, **Meu currículo** mostra cargos sugeridos. **Entend
 
 ## Onde procurar
 
+O caminho de **formulários oficiais das empresas** permite buscar anúncios diretamente em ATS e enviar sem conectar Gupy/LinkedIn nem instalar extensão. Disponibilidade depende dos formulários suportados e da configuração do operador; perguntas pendentes e verificações humanas continuam para revisão. Configuração, funcionamento e evidências: [formulários oficiais](docs/FORMULARIOS-OFICIAIS-2026-10-20.md).
+
+Em **Candidaturas**, agora é possível revisar e autorizar **somente uma candidatura**, mesmo com a rotina geral pausada. O servidor mostra os bloqueios, vincula a autorização ao currículo e ao destino por 30 minutos e permite cancelar antes do início. O envio usa as integrações disponíveis e só registra recebimento com confirmação. Fluxo e verificação controlada: [envio individual](docs/ENVIO-INDIVIDUAL-2026-10-19.md).
+
+O motor agora separa a fonte de descoberta do destino de candidatura. Antes de depender de login em um portal, uma fila própria consulta o catálogo público compartilhado e busca publicações equivalentes, validando empresa, identificadores, conteúdo e localidade. Destinos e evidências ficam no histórico. O envio independente por Playwright exige autorização por quadro/empresa; Greenhouse, Lever, Ashby e SmartRecruiters têm adaptadores iniciais, com suporte efetivo limitado aos formulários reconhecidos. Pandapé e Workday podem ser identificados como destinos assistidos. Consulte o [relatório da refatoração de 16/10/2026](docs/MOTOR-CANDIDATURAS-2026-10-16.md) para resultados reais, configurações e pendências; testes controlados não comprovam envio a empregadores.
+
 Os sites da entrevista continuam LinkedIn, Gupy, Glassdoor e InfoJobs. A Gupy consulta as listagens públicas do portal. A busca automatizada LinkedIn exige `PORTAL_DISCOVERY_AUTHORIZED`; seu OAuth identifica a conta, sem permissões de emprego. InfoJobs e Glassdoor usam Gemini com Google Search quando configurado e aceitam somente links individuais citados. Resultados vazios e indisponibilidade são estados separados.
 
 A consulta Gupy percorre até três páginas de 50 por cargo/cidade, com até quatro cargos e três cidades. Há cache de cinco minutos, deduplicação e cooldown após HTTP 429. A cobertura é limitada; filtros não são relaxados automaticamente.
@@ -69,6 +75,10 @@ npm run verify:gemini -- --search
 Na revisão atual, a Gupy retornou 99 anúncios reais para Auxiliar administrativo, e a busca pela fila foi validada até a interface. Greenhouse (Stripe), Lever (Palantir) e Ashby (Notion) também responderam com vagas reais. Nenhuma candidatura foi enviada. O round trip OAuth com credenciais reais e o envio a empregadores permanecem sem validação. Resultados e limites: [docs/REDESIGN-E-INTEGRACOES-2026-10-09.md](docs/REDESIGN-E-INTEGRACOES-2026-10-09.md).
 
 ## Build, testes e produção
+
+O primeiro acesso solicita os dados básicos para candidaturas; contas incompletas precisam confirmá-los antes de enviar. Fluxo e validação: [dados iniciais](docs/DADOS-INICIAIS-2026-10-19.md).
+
+O fluxo de envio pelo navegador privado da Gupy é validado com `npm run verify:gupy-submission`. Etapas, retomada e limites: [candidatura Gupy pelo projeto](docs/GUPY-AUTOMATICA-2026-10-19.md).
 
 ```powershell
 npm test

@@ -1,0 +1,1144 @@
+{
+  "at": "2026-10-23T18:36:28.561Z",
+  "readOnly": true,
+  "transmittedNonReadRequests": 0,
+  "preventedNonReadRequests": 48,
+  "candidateDataLoaded": false,
+  "applicationOperationsInvoked": 0,
+  "results": [
+    {
+      "url": "https://jobs.lever.co/ciandt/0f43ee43-830b-43f0-9453-29c4568e6d9c/apply",
+      "kind": "existing_form_detail",
+      "jobId": "fccff2b3-0b7a-40ef-a5fc-ca8e64606c14",
+      "at": "2026-10-23T18:33:40.857Z",
+      "publication": {
+        "status": 200,
+        "url": "https://jobs.lever.co/ciandt/0f43ee43-830b-43f0-9453-29c4568e6d9c/apply",
+        "structured": [],
+        "closedText": false,
+        "applyLinks": []
+      },
+      "rendered": {
+        "finalUrl": "https://jobs.lever.co/ciandt/0f43ee43-830b-43f0-9453-29c4568e6d9c/apply",
+        "status": 200,
+        "title": "",
+        "closed": false,
+        "quickApplyVisible": false,
+        "loginVisible": false,
+        "fields": [
+          {
+            "name": "resume",
+            "type": "file",
+            "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+            "required": false,
+            "accept": ""
+          },
+          {
+            "name": "name",
+            "type": "text",
+            "label": "Full name✱",
+            "required": true
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "He/him",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "She/her",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "They/them",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Xe/xem",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Ze/hir",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Ey/em",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Hir/hir",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Fae/faer",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Hu/hu",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Use name only",
+            "required": false
+          },
+          {
+            "name": "",
+            "type": "checkbox",
+            "label": "Custom",
+            "required": false
+          },
+          {
+            "name": "email",
+            "type": "email",
+            "label": "Email✱",
+            "required": true
+          },
+          {
+            "name": "phone",
+            "type": "text",
+            "label": "Phone ✱",
+            "required": true
+          },
+          {
+            "name": "location",
+            "type": "text",
+            "label": "Current location ✱No location found. Try entering a different locationLoading",
+            "required": true
+          },
+          {
+            "name": "org",
+            "type": "text",
+            "label": "Current company ✱",
+            "required": true
+          },
+          {
+            "name": "urls[LinkedIn]",
+            "type": "text",
+            "label": "LinkedIn URL✱",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field1]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field2]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field3]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field4]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field5]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field6]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field7]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field8]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field9]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field10]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field11]",
+            "type": "file",
+            "label": "",
+            "required": false,
+            "accept": ""
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field1]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field2]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field1]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field2]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[37c6c83a-bf3c-4a76-99dc-b673ef2994a7][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[23f22db1-4785-43db-8a23-8191818c80e1][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "consent[store]",
+            "type": "checkbox",
+            "label": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+            "required": true
+          },
+          {
+            "name": "consent[marketing]",
+            "type": "checkbox",
+            "label": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+            "required": false
+          }
+        ],
+        "applicationLinks": [],
+        "challengeText": false,
+        "fileInputs": 2,
+        "personalFormFilled": false,
+        "text": "🍪\ndenyaccept\nPrivacy Notice\n\nThis website uses cookies to improve your web experience. By clicking Accept, you agree to the use of cookies. Cookie Policy\n\n[Job - 31856] Mid Data Developer ( Azure + Databricks ), Brasil\nBrazilGU2 – Prod_GU2 /Homeoffice /Remote\nSUBMIT YOUR APPLICATION\nLinkedIn profile\nLoading...\n\nAuthorize sharing of selected\nLinkedIn profile details to\nauto-complete this form. Learn more\n\nResume/CV\n✱\nATTACH RESUME/CV\nFull name\n✱\nPronouns\nHe/him\n\t\nShe/her\n\t\nThey/them\n\n\nXe/xem\n\t\nZe/hir\n\t\nEy/em\n\n\nHir/hir\n\t\nFae/faer\n\t\nHu/hu\nUse name only\nCustom\n\nLet the employer know what pronouns you use so that they can address you correctly.\n\nEmail\n✱\nPhone\n✱\nCurrent location\n✱\nCurrent company\n✱\nLINKS\nLinkedIn URL\n✱\n[BRAZIL] D&I\nComo ficou sabendo da nossa vaga?\n✱\nSelect...\nEvento AWS\nDeiMatch\nDevcamp\nDIO Bootcamp\nEventos\nGeneration\nGlassDoor\nIndicação de CI&Ter\nInstagram\nLaboratória\nLinkedin\nPotencIA\nSite de Carreiras\nTDC - The Developers Conference\nVagas.com\nWomen Cloud- AWS\nOutro\nVocê possui algum familiar (como pais, irmãos, sogros, cunhados, cônjuges, ou filhos, enteados, padrasto/madrasta, genro/ nora, amigo íntimo ou pessoa próxima (com quem você tem um relacionamento significativo e contínuo) que atualmente trabalha na CI&T?\n✱\nSelect...\nSim\nNão\nCaso a resposta anterior seja Sim, por favor, compartilhe o nome/nomes destas pessoas\nVocê tem disponibilidade para trabalho presencial na cidade de Campinas todos os dias? Apenas para fins de informação, caso sua candidatura seja considerada para outras vagas abertas\nSelect...\nSim, moro em Campinas ou próximo a região e posso ir para a base CI&T Campinas todos os dias\nSim, não moro em Campinas atualmente, mas tenho interesse em uma possível mudança\nNão tenho disponibilidade\nVocê precisa de algum tipo de acessibilidade para participar do processo seletivo e/ou no seu dia-a-dia?\n✱\nSelect...\nDescrição de imagens e audiodescrição de vídeos\nIntérprete de Libras ou Legenda\nDificuldade na fala (exemplo: gagueira, disartria.)\nDigital (exemplo: aumento de tela do computador, mudanças de contraste)\nElevador/Rampa\nLocal silencioso e com baixa luminosidade\nDeficiencia auditiva (fonética diferente)\nNão necessito de nenhuma acessibilidade\nAs respostas abaixo são opcionais. Estes dados serão usados para nossas ações afirmativas. Considerando esse cenário, você se sente confortável de responder as questões abaixo?\nSelect...\nSim\nNão\nGostaria de nos dizer sua identidade de gênero?\nSelecione\nHomem Cisgênero\nMulher Cisgênero\nHomem Transgênero\nMulher Transgênero\nNão binária\nGênero fluído\nOutra\nVocê faz parte da comunidade LGBTQIAP+?\nSelecione\nSim\nNão\nComo você autodeclara sua cor/raça?\nSelecione\nAmarela\nBranca\nIndígena\nParda\nPreta\nVocê é pessoa com deficiência?\nSelect...\nSim\nNão\nCaso seja, conte-nos qual o tipo de deficiência que você tem?\nSelect...\nVisual\nFísica\nAuditiva\nMental/Intelectual\nNeurodiversidade\nIMPORTANTE! Se você respondeu que é uma pessoa com deficiência, esta etapa é mandatória. Anexe aqui o laudo médico (consulte quais informações são necessarias: https://docs.google.com/presentation/d/153s7miYnJ43nHm40UUirZQ2IsvhfhWDpXe1U3PJqap4/edit?slide=id.g2f2c8f5d204_159_0#slide=id.g2f2c8f5d204_159_0)\nUPLOAD FILE\nIDIOMAS\n[EN] Qual é o seu nível de confiança ao se comunicar e colaborar em um ambiente de trabalho onde se fala inglês?\n✱\nSelect...\nBásico. Exemplo: Entendo frases básicas e consigo me apresentar.\nIntermediário I. Exemplo: Consigo participar de reuniões, mas entendo parcialmente o que foi dito.\nIntermediário II. Exemplo: Posso participar de reuniões e discutir assuntos com o apoio dos colegas.\nAvançado. Exemplo: Consigo participar ativamente de conversas sobre temas familiares.\nProficiente. Exemplo: Posso liderar discussões, fornecer explicações detalhadas e negociar efetivamente.\nVocê se sente confortável trabalhando em um ambiente onde se fala inglês?\n✱\n[ES] Qual é o seu nível de confiança ao se comunicar e colaborar em um ambiente de trabalho onde se fala espanhol?\n✱\nSelect...\nBásico. Exemplo: Entendo frases básicas e consigo me apresentar.\nIntermediário I. Exemplo: Consigo participar de reuniões, mas entendo parcialmente o que foi dito.\nIntermediário II. Exemplo: Posso participar de reuniões e discutir assuntos com o apoio dos colegas.\nAvançado. Exemplo: Consigo participar ativamente de conversas sobre temas familiares.\nProficiente. Exemplo: Posso liderar discussões, fornecer explicações detalhadas e negociar efetivamente.\nSALARY EXPECTATION/QUAL SUA PRETENSÃO SALARIAL?\nWhat is your salary expectation? Only the numeric value (no currency, text, or benefits)/ Qual é a sua pretensão salarial? Apenas o valor numérico (sem moeda, texto ou benefícios).\n✱\nIf you feel comfortable, please share your current or last salary and benefits / Caso se sinta confortável, compartilhe seu salário atual ou ultimo e benefícios\nWhich city/state do you currently reside in? Qual cidade/estado reside atualmente?\nCURRENT COMPANY/ EMPRESA ATUAL\nConfirm the name of the company where you work/ Confirme o nome da empresa em que você trabalha atualmente\n✱\nTERMO DE CONSENTIMENTO\nAo selecionar a opção abaixo, declaro que li, compreendi e concordo com os termos deste documento, e consinto com o tratamento dos meus dados pessoais pela CI&T e pela Lever para as finalidades aqui descritas. Leia o documento aqui: https://drive.google.com/file/d/1ETWJe2j0438xkMLNXRwo4pHSsGv4mzMR/view\n✱\nSelect...\nLi e aceito os termos deste consentimento para tratamento dos meus dados pessoais pela CI&T\nConcordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.\n\nAutorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego\nPrivacy Policy\nSUBMIT APPLICATION\n\nCI&T Home Page\n\nJobs powered by"
+      }
+    },
+    {
+      "url": "https://jobs.lever.co/ciandt/9ac4a93e-bf58-481c-a7dc-040ce7f6b728/apply",
+      "kind": "existing_form_detail",
+      "jobId": "951291ed-95ea-4c49-adcc-7550ae30d7d9",
+      "at": "2026-10-23T18:34:23.270Z",
+      "publication": {
+        "status": 200,
+        "url": "https://jobs.lever.co/ciandt/9ac4a93e-bf58-481c-a7dc-040ce7f6b728/apply",
+        "structured": [],
+        "closedText": false,
+        "applyLinks": []
+      },
+      "rendered": {
+        "finalUrl": "https://jobs.lever.co/ciandt/9ac4a93e-bf58-481c-a7dc-040ce7f6b728/apply",
+        "status": 200,
+        "title": "",
+        "closed": false,
+        "quickApplyVisible": false,
+        "loginVisible": false,
+        "fields": [
+          {
+            "name": "resume",
+            "type": "file",
+            "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+            "required": false,
+            "accept": ""
+          },
+          {
+            "name": "name",
+            "type": "text",
+            "label": "Full name✱",
+            "required": true
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "He/him",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "She/her",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "They/them",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Xe/xem",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Ze/hir",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Ey/em",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Hir/hir",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Fae/faer",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Hu/hu",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Use name only",
+            "required": false
+          },
+          {
+            "name": "",
+            "type": "checkbox",
+            "label": "Custom",
+            "required": false
+          },
+          {
+            "name": "email",
+            "type": "email",
+            "label": "Email✱",
+            "required": true
+          },
+          {
+            "name": "phone",
+            "type": "text",
+            "label": "Phone ✱",
+            "required": true
+          },
+          {
+            "name": "location",
+            "type": "text",
+            "label": "Current location ✱No location found. Try entering a different locationLoading",
+            "required": true
+          },
+          {
+            "name": "org",
+            "type": "text",
+            "label": "Current company ✱",
+            "required": true
+          },
+          {
+            "name": "urls[LinkedIn]",
+            "type": "text",
+            "label": "LinkedIn URL✱",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field1]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field2]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field3]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field4]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field5]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field6]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field7]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field8]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field9]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field10]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field11]",
+            "type": "file",
+            "label": "",
+            "required": false,
+            "accept": ""
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field1]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field2]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field1]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field2]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[37c6c83a-bf3c-4a76-99dc-b673ef2994a7][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[23f22db1-4785-43db-8a23-8191818c80e1][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field1]",
+            "type": "textarea",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field2]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "consent[store]",
+            "type": "checkbox",
+            "label": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+            "required": true
+          },
+          {
+            "name": "consent[marketing]",
+            "type": "checkbox",
+            "label": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+            "required": false
+          }
+        ],
+        "applicationLinks": [],
+        "challengeText": false,
+        "fileInputs": 2,
+        "personalFormFilled": false,
+        "text": "🍪\ndenyaccept\nPrivacy Notice\n\nThis website uses cookies to improve your web experience. By clicking Accept, you agree to the use of cookies. Cookie Policy\n\n[Job-32371] Senior Angular Developer, Brazil\nBrazilGU5 – Prod_GU5 /Homeoffice /Remote\nSUBMIT YOUR APPLICATION\nLinkedIn profile\nLoading...\n\nAuthorize sharing of selected\nLinkedIn profile details to\nauto-complete this form. Learn more\n\nResume/CV\n✱\nATTACH RESUME/CV\nFull name\n✱\nPronouns\nHe/him\n\t\nShe/her\n\t\nThey/them\n\n\nXe/xem\n\t\nZe/hir\n\t\nEy/em\n\n\nHir/hir\n\t\nFae/faer\n\t\nHu/hu\nUse name only\nCustom\n\nLet the employer know what pronouns you use so that they can address you correctly.\n\nEmail\n✱\nPhone\n✱\nCurrent location\n✱\nCurrent company\n✱\nLINKS\nLinkedIn URL\n✱\n[BRAZIL] D&I\nComo ficou sabendo da nossa vaga?\n✱\nSelect...\nEvento AWS\nDeiMatch\nDevcamp\nDIO Bootcamp\nEventos\nGeneration\nGlassDoor\nIndicação de CI&Ter\nInstagram\nLaboratória\nLinkedin\nPotencIA\nSite de Carreiras\nTDC - The Developers Conference\nVagas.com\nWomen Cloud- AWS\nOutro\nVocê possui algum familiar (como pais, irmãos, sogros, cunhados, cônjuges, ou filhos, enteados, padrasto/madrasta, genro/ nora, amigo íntimo ou pessoa próxima (com quem você tem um relacionamento significativo e contínuo) que atualmente trabalha na CI&T?\n✱\nSelect...\nSim\nNão\nCaso a resposta anterior seja Sim, por favor, compartilhe o nome/nomes destas pessoas\nVocê tem disponibilidade para trabalho presencial na cidade de Campinas todos os dias? Apenas para fins de informação, caso sua candidatura seja considerada para outras vagas abertas\nSelect...\nSim, moro em Campinas ou próximo a região e posso ir para a base CI&T Campinas todos os dias\nSim, não moro em Campinas atualmente, mas tenho interesse em uma possível mudança\nNão tenho disponibilidade\nVocê precisa de algum tipo de acessibilidade para participar do processo seletivo e/ou no seu dia-a-dia?\n✱\nSelect...\nDescrição de imagens e audiodescrição de vídeos\nIntérprete de Libras ou Legenda\nDificuldade na fala (exemplo: gagueira, disartria.)\nDigital (exemplo: aumento de tela do computador, mudanças de contraste)\nElevador/Rampa\nLocal silencioso e com baixa luminosidade\nDeficiencia auditiva (fonética diferente)\nNão necessito de nenhuma acessibilidade\nAs respostas abaixo são opcionais. Estes dados serão usados para nossas ações afirmativas. Considerando esse cenário, você se sente confortável de responder as questões abaixo?\nSelect...\nSim\nNão\nGostaria de nos dizer sua identidade de gênero?\nSelecione\nHomem Cisgênero\nMulher Cisgênero\nHomem Transgênero\nMulher Transgênero\nNão binária\nGênero fluído\nOutra\nVocê faz parte da comunidade LGBTQIAP+?\nSelecione\nSim\nNão\nComo você autodeclara sua cor/raça?\nSelecione\nAmarela\nBranca\nIndígena\nParda\nPreta\nVocê é pessoa com deficiência?\nSelect...\nSim\nNão\nCaso seja, conte-nos qual o tipo de deficiência que você tem?\nSelect...\nVisual\nFísica\nAuditiva\nMental/Intelectual\nNeurodiversidade\nIMPORTANTE! Se você respondeu que é uma pessoa com deficiência, esta etapa é mandatória. Anexe aqui o laudo médico (consulte quais informações são necessarias: https://docs.google.com/presentation/d/153s7miYnJ43nHm40UUirZQ2IsvhfhWDpXe1U3PJqap4/edit?slide=id.g2f2c8f5d204_159_0#slide=id.g2f2c8f5d204_159_0)\nUPLOAD FILE\nIDIOMAS\n[EN] Qual é o seu nível de confiança ao se comunicar e colaborar em um ambiente de trabalho onde se fala inglês?\n✱\nSelect...\nBásico. Exemplo: Entendo frases básicas e consigo me apresentar.\nIntermediário I. Exemplo: Consigo participar de reuniões, mas entendo parcialmente o que foi dito.\nIntermediário II. Exemplo: Posso participar de reuniões e discutir assuntos com o apoio dos colegas.\nAvançado. Exemplo: Consigo participar ativamente de conversas sobre temas familiares.\nProficiente. Exemplo: Posso liderar discussões, fornecer explicações detalhadas e negociar efetivamente.\nVocê se sente confortável trabalhando em um ambiente onde se fala inglês?\n✱\n[ES] Qual é o seu nível de confiança ao se comunicar e colaborar em um ambiente de trabalho onde se fala espanhol?\n✱\nSelect...\nBásico. Exemplo: Entendo frases básicas e consigo me apresentar.\nIntermediário I. Exemplo: Consigo participar de reuniões, mas entendo parcialmente o que foi dito.\nIntermediário II. Exemplo: Posso participar de reuniões e discutir assuntos com o apoio dos colegas.\nAvançado. Exemplo: Consigo participar ativamente de conversas sobre temas familiares.\nProficiente. Exemplo: Posso liderar discussões, fornecer explicações detalhadas e negociar efetivamente.\nSALARY EXPECTATION/QUAL SUA PRETENSÃO SALARIAL?\nWhat is your salary expectation? Only the numeric value (no currency, text, or benefits)/ Qual é a sua pretensão salarial? Apenas o valor numérico (sem moeda, texto ou benefícios).\n✱\nIf you feel comfortable, please share your current or last salary and benefits / Caso se sinta confortável, compartilhe seu salário atual ou ultimo e benefícios\nWhich city/state do you currently reside in? Qual cidade/estado reside atualmente?\nCURRENT COMPANY/ EMPRESA ATUAL\nConfirm the name of the company where you work/ Confirme o nome da empresa em que você trabalha atualmente\n✱\nTERMO DE CONSENTIMENTO\nAo selecionar a opção abaixo, declaro que li, compreendi e concordo com os termos deste documento, e consinto com o tratamento dos meus dados pessoais pela CI&T e pela Lever para as finalidades aqui descritas. Leia o documento aqui: https://drive.google.com/file/d/1ETWJe2j0438xkMLNXRwo4pHSsGv4mzMR/view\n✱\nSelect...\nLi e aceito os termos deste consentimento para tratamento dos meus dados pessoais pela CI&T\nFAIXA SALARIAL\nEm que cidade reside atualmente?\n✱\nCaso se sinta confortável, compartilhe seu salário atual ou ultimo e benefícios\nQual sua pretensão salarial para vagas CLT?\n✱\nSelect...\nR$ 2.000 - R$ 4.000\nR$ 4.001 - R$ 6.000\nR$ 6.001 - R$ 8.000\nR$ 8.001 - R$ 10.000\nR$ 10.001 - R$ 12.000\nR$ 12.001 - R$ 14.000\nR$ 14.001 - R$ 16.000\nR$ 16.001 - R$ 18.000\nR$ 18.001 - R$ 20.000\nMais de R$ 20.000\nConcordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.\n\nAutorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego\nPrivacy Policy\nSUBMIT APPLICATION\n\nCI&T Home Page\n\nJobs powered by"
+      }
+    },
+    {
+      "url": "https://jobs.lever.co/ciandt/8d33fe81-e0c7-4708-9d69-2f1ee89daad3/apply",
+      "kind": "existing_form_detail",
+      "jobId": "77d512b1-3ecb-4be4-b54c-70df9e46fc9f",
+      "at": "2026-10-23T18:35:03.794Z",
+      "publication": {
+        "status": 200,
+        "url": "https://jobs.lever.co/ciandt/8d33fe81-e0c7-4708-9d69-2f1ee89daad3/apply",
+        "structured": [],
+        "closedText": false,
+        "applyLinks": []
+      },
+      "rendered": {
+        "finalUrl": "https://jobs.lever.co/ciandt/8d33fe81-e0c7-4708-9d69-2f1ee89daad3/apply",
+        "status": 200,
+        "title": "",
+        "closed": false,
+        "quickApplyVisible": false,
+        "loginVisible": false,
+        "fields": [
+          {
+            "name": "resume",
+            "type": "file",
+            "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+            "required": false,
+            "accept": ""
+          },
+          {
+            "name": "name",
+            "type": "text",
+            "label": "Full name✱",
+            "required": true
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "He/him",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "She/her",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "They/them",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Xe/xem",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Ze/hir",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Ey/em",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Hir/hir",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Fae/faer",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Hu/hu",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Use name only",
+            "required": false
+          },
+          {
+            "name": "",
+            "type": "checkbox",
+            "label": "Custom",
+            "required": false
+          },
+          {
+            "name": "email",
+            "type": "email",
+            "label": "Email✱",
+            "required": true
+          },
+          {
+            "name": "phone",
+            "type": "text",
+            "label": "Phone ✱",
+            "required": true
+          },
+          {
+            "name": "location",
+            "type": "text",
+            "label": "Current location ✱No location found. Try entering a different locationLoading",
+            "required": true
+          },
+          {
+            "name": "org",
+            "type": "text",
+            "label": "Current company ✱",
+            "required": true
+          },
+          {
+            "name": "urls[LinkedIn]",
+            "type": "text",
+            "label": "LinkedIn URL✱",
+            "required": true
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field1]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field2]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field3]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field4]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field5]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field6]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field7]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field8]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field9]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field10]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[be1cd079-8bd9-4d86-a238-2dbd569d22e7][field11]",
+            "type": "file",
+            "label": "",
+            "required": false,
+            "accept": ""
+          },
+          {
+            "name": "cards[f9771ace-e67f-42c8-a051-72ef6cd446a8][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field1]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[471355d2-97d9-48d1-8494-def9850127d7][field2]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[7907956c-0297-46a4-a022-a67f06bf286a][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[7907956c-0297-46a4-a022-a67f06bf286a][field1]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[7907956c-0297-46a4-a022-a67f06bf286a][field2]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[37c6c83a-bf3c-4a76-99dc-b673ef2994a7][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[858fecb3-6a02-4441-a720-e366235d6ae9][field0]",
+            "type": "textarea",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[858fecb3-6a02-4441-a720-e366235d6ae9][field1]",
+            "type": "textarea",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[858fecb3-6a02-4441-a720-e366235d6ae9][field2]",
+            "type": "textarea",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[858fecb3-6a02-4441-a720-e366235d6ae9][field3]",
+            "type": "textarea",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "consent[store]",
+            "type": "checkbox",
+            "label": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+            "required": true
+          },
+          {
+            "name": "consent[marketing]",
+            "type": "checkbox",
+            "label": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+            "required": false
+          }
+        ],
+        "applicationLinks": [],
+        "challengeText": false,
+        "fileInputs": 2,
+        "personalFormFilled": false,
+        "text": "🍪\ndenyaccept\nPrivacy Notice\n\nThis website uses cookies to improve your web experience. By clicking Accept, you agree to the use of cookies. Cookie Policy\n\n[Job - 31975] .NET Developer Senior, Brazil\nBrazilCentelha – Prod_Aura /Homeoffice /Remote\nSUBMIT YOUR APPLICATION\nLinkedIn profile\nLoading...\n\nAuthorize sharing of selected\nLinkedIn profile details to\nauto-complete this form. Learn more\n\nResume/CV\n✱\nATTACH RESUME/CV\nFull name\n✱\nPronouns\nHe/him\n\t\nShe/her\n\t\nThey/them\n\n\nXe/xem\n\t\nZe/hir\n\t\nEy/em\n\n\nHir/hir\n\t\nFae/faer\n\t\nHu/hu\nUse name only\nCustom\n\nLet the employer know what pronouns you use so that they can address you correctly.\n\nEmail\n✱\nPhone\n✱\nCurrent location\n✱\nCurrent company\n✱\nLINKS\nLinkedIn URL\n✱\n[EN BRAZIL] D&I\nHow did you hear about our job opening?\n✱\nSelect...\nAWS Event\nDeiMatch\nDevcamp\nDio Bootcamp\nEvents\nGeneration\nGlassDoor\nCI&Ter Referral\nInstagram\nLaboratória\nLinkedin\nCareers Page\nTDC - The Developers Conference\nWomen Cloud- AWS\nPotencIA\nOther\nDo you have any relatives (such as parents, siblings, in-laws, spouses, or children, stepchildren, stepfather/stepmother, son-in-law/daughter-in-law), close friends, or acquaintances (with whom you have a significant and ongoing relationship) who currently work at CI&T?\n✱\nSelect...\nYes\nNo\nIf the previous answer is Yes, please share the name(s) of these individuals.\nDo you have availability for on-site work at the Campinas office (Brazil) every day? Just for informational purposes, in case your application is considered for other open positions.\n✱\nSelect...\nYes, I live in Campinas or near the region and can go to the CI&T Campinas office every day.\nYes, I do not currently live in Campinas, but I am interested in a possible move.\nNo, I am not available.\nDo you require any type of accessibility for the selection process and/or in your daily life??\n✱\nSelect...\nImage descriptions and video audio descriptions\nSign Language Interpreter or Captioning\nSpeech difficulties (e.g., stuttering, dysarthria)\nDigital (e.g., screen magnification, contrast adjustments)\nElevator/Ramp\nQuiet location with low lighting\nHearing impairment (different phonetics)\nI do not require any accessibility\nThe answers below are optional. This data will be used for our affirmative actions. Considering this scenario, do you feel comfortable answering the questions below?\nSelect...\nYes\nNo\nWould you like to tell us your gender identity?\nSelect...\nCisgender Man\nCisgender Woman\nTransgender Man\nTransgender Woman\nNon Binary\nGender fluid\nOther\nAre you part of the LGBTQIAP+ community?\nSelect...\nYes\nNo\nHow do you self-declare your color/race?\nSelect...\nYellow\nWhite\nIndigenous\nBrown\nBlack\nAre you a person with disabilities?\nSelect...\nYes\nNo\nIf so, tell us what type of disability you have\nSelect...\nVisual\nPhysical\nHearing\nMental/Intellectual\nNeurodiversity\nIMPORTANT! If you answered that you are a person with a disability, this step is mandatory. Attach the medical report here\nUPLOAD FILE\nCONSENT TERM\nBy selecting the option below, I declare that I have read, understood, and agree to the terms of this document, and I consent to the processing of my personal data by CI&T and Lever for the purposes described herein. Read the document here: https://drive.google.com/file/d/1dMaskYl2VD1AtN9MfiHrZiA-YFYwq8aI/view\n✱\nSelect...\nI have read and accept the terms of this consent for the processing of my personal data by CI&T.\nSALARY EXPECTATION/QUAL SUA PRETENSÃO SALARIAL?\nWhat is your salary expectation? Only the numeric value (no currency, text, or benefits)/ Qual é a sua pretensão salarial? Apenas o valor numérico (sem moeda, texto ou benefícios).\n✱\nIf you feel comfortable, please share your current or last salary and benefits / Caso se sinta confortável, compartilhe seu salário atual ou ultimo e benefícios\nWhich city/state do you currently reside in? Qual cidade/estado reside atualmente?\nLANGUAGE LEVEL\n[EN] What is your level of confidence when communicating and collaborating in an English-speaking work environment?\n✱\nSelect...\nBasic. Example: I understand basic sentences and can introduce myself.\nIntermediate I. Example: I can participate in meetings, but I partially understand what has been said.\nIntermediate II. Example: I can participate in meetings and discuss topics with the support of colleagues.\nAdvanced. Example: I can actively participate in conversations about familiar topics.\nProficient. Example: I can lead discussions, provide detailed explanations, and negotiate effectively.\nHow comfortable do you feel working in an English-speaking environment?\n✱\n[ES] What is your level of confidence when communicating and collaborating in an Spanish-speaking work environment?\nSelect...\nBasic. Example: I understand basic sentences and can introduce myself.\nIntermediate I. Example: I can participate in meetings, but I partially understand what has been said.\nIntermediate II. Example: I can participate in meetings and discuss topics with the support of colleagues.\nAdvanced. Example: I can actively participate in conversations about familiar topics.\nProficient. Example: I can lead discussions, provide detailed explanations, and negotiate effectively.\nCURRENT COMPANY/ EMPRESA ATUAL\nConfirm the name of the company where you work/ Confirme o nome da empresa em que você trabalha atualmente\n✱\n.NET + AZURE\nHow long have you worked in Development?\n✱\nFor how long have you worked with .Net?\n✱\nHow long have you worked with Azure?\n✱\nDo you have experience in CI/CD? And DevSecOps?\n✱\nConcordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.\n\nAutorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego\nPrivacy Policy\nSUBMIT APPLICATION\n\nCI&T Home Page\n\nJobs powered by"
+      }
+    },
+    {
+      "url": "https://jobs.lever.co/ciandt/79485904-1730-4a7a-a670-99d795acfa31/apply",
+      "kind": "existing_form_detail",
+      "jobId": "7e98745c-6905-4b61-98f5-4d64869b9088",
+      "at": "2026-10-23T18:35:45.438Z",
+      "publication": {
+        "status": 200,
+        "url": "https://jobs.lever.co/ciandt/79485904-1730-4a7a-a670-99d795acfa31/apply",
+        "structured": [],
+        "closedText": false,
+        "applyLinks": []
+      },
+      "rendered": {
+        "finalUrl": "https://jobs.lever.co/ciandt/79485904-1730-4a7a-a670-99d795acfa31/apply",
+        "status": 200,
+        "title": "",
+        "closed": false,
+        "quickApplyVisible": false,
+        "loginVisible": false,
+        "fields": [
+          {
+            "name": "resume",
+            "type": "file",
+            "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+            "required": false,
+            "accept": ""
+          },
+          {
+            "name": "name",
+            "type": "text",
+            "label": "Full name✱",
+            "required": true
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "He/him",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "She/her",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "They/them",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Xe/xem",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Ze/hir",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Ey/em",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Hir/hir",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Fae/faer",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Hu/hu",
+            "required": false
+          },
+          {
+            "name": "pronouns",
+            "type": "checkbox",
+            "label": "Use name only",
+            "required": false
+          },
+          {
+            "name": "",
+            "type": "checkbox",
+            "label": "Custom",
+            "required": false
+          },
+          {
+            "name": "email",
+            "type": "email",
+            "label": "Email✱",
+            "required": true
+          },
+          {
+            "name": "phone",
+            "type": "text",
+            "label": "Phone ✱",
+            "required": true
+          },
+          {
+            "name": "location",
+            "type": "text",
+            "label": "Current location ✱No location found. Try entering a different locationLoading",
+            "required": true
+          },
+          {
+            "name": "org",
+            "type": "text",
+            "label": "Current company ✱",
+            "required": true
+          },
+          {
+            "name": "urls[LinkedIn]",
+            "type": "text",
+            "label": "LinkedIn URL✱",
+            "required": true
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field1]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[46937f62-4442-47fd-ab0a-55951a146451][field2]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[37c6c83a-bf3c-4a76-99dc-b673ef2994a7][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field1]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field2]",
+            "type": "text",
+            "label": "Type your response",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field3]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field4]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field5]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field6]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field7]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field8]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field9]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field10]",
+            "type": "select",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[901d99b3-8bc5-45de-838b-d6bcf0300654][field11]",
+            "type": "file",
+            "label": "",
+            "required": false,
+            "accept": ""
+          },
+          {
+            "name": "cards[a846f5cf-e9c5-4b99-892d-b80ac67f91bb][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[a846f5cf-e9c5-4b99-892d-b80ac67f91bb][field1]",
+            "type": "radio",
+            "label": "Sim",
+            "required": false
+          },
+          {
+            "name": "cards[23f22db1-4785-43db-8a23-8191818c80e1][field0]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field0]",
+            "type": "text",
+            "label": "Type your response",
+            "required": true
+          },
+          {
+            "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field1]",
+            "type": "textarea",
+            "label": "",
+            "required": false
+          },
+          {
+            "name": "cards[8a0b25de-5d72-4180-8a0e-2e8d58b8fa52][field2]",
+            "type": "select",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "consent[store]",
+            "type": "checkbox",
+            "label": "Concordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.",
+            "required": true
+          },
+          {
+            "name": "consent[marketing]",
+            "type": "checkbox",
+            "label": "Autorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego",
+            "required": false
+          }
+        ],
+        "applicationLinks": [],
+        "challengeText": false,
+        "fileInputs": 2,
+        "personalFormFilled": false,
+        "text": "🍪\ndenyaccept\nPrivacy Notice\n\nThis website uses cookies to improve your web experience. By clicking Accept, you agree to the use of cookies. Cookie Policy\n\n[Job-32372] Mid level Angular Developer, vaga para pessoas PCD, Brazil\nBrazilGU5 – Prod_GU5 /Homeoffice /Remote\nSUBMIT YOUR APPLICATION\nLinkedIn profile\nLoading...\n\nAuthorize sharing of selected\nLinkedIn profile details to\nauto-complete this form. Learn more\n\nResume/CV\n✱\nATTACH RESUME/CV\nFull name\n✱\nPronouns\nHe/him\n\t\nShe/her\n\t\nThey/them\n\n\nXe/xem\n\t\nZe/hir\n\t\nEy/em\n\n\nHir/hir\n\t\nFae/faer\n\t\nHu/hu\nUse name only\nCustom\n\nLet the employer know what pronouns you use so that they can address you correctly.\n\nEmail\n✱\nPhone\n✱\nCurrent location\n✱\nCurrent company\n✱\nLINKS\nLinkedIn URL\n✱\nIDIOMAS\n[EN] Qual é o seu nível de confiança ao se comunicar e colaborar em um ambiente de trabalho onde se fala inglês?\n✱\nSelect...\nBásico. Exemplo: Entendo frases básicas e consigo me apresentar.\nIntermediário I. Exemplo: Consigo participar de reuniões, mas entendo parcialmente o que foi dito.\nIntermediário II. Exemplo: Posso participar de reuniões e discutir assuntos com o apoio dos colegas.\nAvançado. Exemplo: Consigo participar ativamente de conversas sobre temas familiares.\nProficiente. Exemplo: Posso liderar discussões, fornecer explicações detalhadas e negociar efetivamente.\nVocê se sente confortável trabalhando em um ambiente onde se fala inglês?\n✱\n[ES] Qual é o seu nível de confiança ao se comunicar e colaborar em um ambiente de trabalho onde se fala espanhol?\n✱\nSelect...\nBásico. Exemplo: Entendo frases básicas e consigo me apresentar.\nIntermediário I. Exemplo: Consigo participar de reuniões, mas entendo parcialmente o que foi dito.\nIntermediário II. Exemplo: Posso participar de reuniões e discutir assuntos com o apoio dos colegas.\nAvançado. Exemplo: Consigo participar ativamente de conversas sobre temas familiares.\nProficiente. Exemplo: Posso liderar discussões, fornecer explicações detalhadas e negociar efetivamente.\nCURRENT COMPANY/ EMPRESA ATUAL\nConfirm the name of the company where you work/ Confirme o nome da empresa em que você trabalha atualmente\n✱\n[BRAZIL] D&I\nComo ficou sabendo da nossa vaga?\n✱\nSelect...\nEvento AWS\nDeiMatch\nDevcamp\nDIO Bootcamp\nEventos\nGeneration\nGlassDoor\nIndicação de CI&Ter\nInstagram\nLaboratória\nLinkedin\nPotencIA\nSite de Carreiras\nTDC - The Developers Conference\nVagas.com\nWomen Cloud- AWS\nOutro\nVocê possui algum familiar (como pais, irmãos, sogros, cunhados, cônjuges, ou filhos, enteados, padrasto/madrasta, genro/ nora, amigo íntimo ou pessoa próxima (com quem você tem um relacionamento significativo e contínuo) que atualmente trabalha na CI&T?\n✱\nSelect...\nSim\nNão\nCaso a resposta anterior seja Sim, por favor, compartilhe o nome/nomes destas pessoas\nVocê tem disponibilidade para trabalho presencial na cidade de Campinas todos os dias? Apenas para fins de informação, caso sua candidatura seja considerada para outras vagas abertas\nSelect...\nSim, moro em Campinas ou próximo a região e posso ir para a base CI&T Campinas todos os dias\nSim, não moro em Campinas atualmente, mas tenho interesse em uma possível mudança\nNão tenho disponibilidade\nVocê precisa de algum tipo de acessibilidade para participar do processo seletivo e/ou no seu dia-a-dia?\n✱\nSelect...\nDescrição de imagens e audiodescrição de vídeos\nIntérprete de Libras ou Legenda\nDificuldade na fala (exemplo: gagueira, disartria.)\nDigital (exemplo: aumento de tela do computador, mudanças de contraste)\nElevador/Rampa\nLocal silencioso e com baixa luminosidade\nDeficiencia auditiva (fonética diferente)\nNão necessito de nenhuma acessibilidade\nAs respostas abaixo são opcionais. Estes dados serão usados para nossas ações afirmativas. Considerando esse cenário, você se sente confortável de responder as questões abaixo?\nSelect...\nSim\nNão\nGostaria de nos dizer sua identidade de gênero?\nSelecione\nHomem Cisgênero\nMulher Cisgênero\nHomem Transgênero\nMulher Transgênero\nNão binária\nGênero fluído\nOutra\nVocê faz parte da comunidade LGBTQIAP+?\nSelecione\nSim\nNão\nComo você autodeclara sua cor/raça?\nSelecione\nAmarela\nBranca\nIndígena\nParda\nPreta\nVocê é pessoa com deficiência?\nSelect...\nSim\nNão\nCaso seja, conte-nos qual o tipo de deficiência que você tem?\nSelect...\nVisual\nFísica\nAuditiva\nMental/Intelectual\nNeurodiversidade\nIMPORTANTE! Se você respondeu que é uma pessoa com deficiência, esta etapa é mandatória. Anexe aqui o laudo médico (consulte quais informações são necessarias: https://docs.google.com/presentation/d/153s7miYnJ43nHm40UUirZQ2IsvhfhWDpXe1U3PJqap4/edit?slide=id.g2f2c8f5d204_159_0#slide=id.g2f2c8f5d204_159_0)\nUPLOAD FILE\n[BRAZIL] VAGA EXCLUSIVA PESSOAS COM DEFICIÊNCIA\nDeclaro ser Pessoa com Deficiência (PcD), nos termos da legislação vigente, e estou ciente de que durante o processo seletivo esta empresa poderá solicitar o envio de Laudo Médico e que este precisa conter o CID e CRM do médico que fez a emissão do laudo, atestando a espécie e o grau ou nível da minha deficiência. Declaro, ainda, estar ciente de que em caso de declaração falsa ou não comprovação da deficiência, poderá ocasionar a minha exclusão do processo seletivo\n✱\nSelect...\nSim\nNão\nEstou ciente de quais informações são obrigatórias conter em meu laudo médico (https://docs.google.com/presentation/d/153s7miYnJ43nHm40UUirZQ2IsvhfhWDpXe1U3PJqap4/edit?slide=id.g2f2c8f5d204_159_0#slide=id.g2f2c8f5d204_159_0)\nSim\nTERMO DE CONSENTIMENTO\nAo selecionar a opção abaixo, declaro que li, compreendi e concordo com os termos deste documento, e consinto com o tratamento dos meus dados pessoais pela CI&T e pela Lever para as finalidades aqui descritas. Leia o documento aqui: https://drive.google.com/file/d/1ETWJe2j0438xkMLNXRwo4pHSsGv4mzMR/view\n✱\nSelect...\nLi e aceito os termos deste consentimento para tratamento dos meus dados pessoais pela CI&T\nFAIXA SALARIAL\nEm que cidade reside atualmente?\n✱\nCaso se sinta confortável, compartilhe seu salário atual ou ultimo e benefícios\nQual sua pretensão salarial para vagas CLT?\n✱\nSelect...\nR$ 2.000 - R$ 4.000\nR$ 4.001 - R$ 6.000\nR$ 6.001 - R$ 8.000\nR$ 8.001 - R$ 10.000\nR$ 10.001 - R$ 12.000\nR$ 12.001 - R$ 14.000\nR$ 14.001 - R$ 16.000\nR$ 16.001 - R$ 18.000\nR$ 18.001 - R$ 20.000\nMais de R$ 20.000\nConcordo que meus dados pessoais sejam armazenados e processados pela CI&T ou terceiros, exclusivamente para fins de recrutamento e seleção.\n\nAutorizo a CI&T a enviar informações através de mídias sociais, telefone e email sobre novas oportunidades de emprego\nPrivacy Policy\nSUBMIT APPLICATION\n\nCI&T Home Page\n\nJobs powered by"
+      }
+    }
+  ]
+}

@@ -2,10 +2,12 @@ import { describe, expect, it } from "vitest";
 import {
   analyze,
   classify,
+  correctJobEvidence,
   dedupKey,
   extractSkills,
   nextExecution,
   parseResume,
+  matchesObjectiveFilters,
 } from "../server/engine";
 import { extractDocx } from "../server/documents";
 import { zipSync, strToU8 } from "fflate";
@@ -42,6 +44,69 @@ const job: Job = {
   demo: false,
 };
 describe("Motor de aderência", () => {
+  it("não mantém uma nota alta de trecho incompleto ao ler os requisitos móveis da publicação", () => {
+    const mobile = {...job, title:"Senior iOS Developer", description:"Desenvolvimento iOS com Swift, UIKit e testes. Integração com APIs REST e Git.", skills:["APIs REST"]};
+    const before = structuredClone(mobile.skills);
+    const corrected = correctJobEvidence(mobile);
+    expect(corrected.skills).toEqual(expect.arrayContaining(["Swift", "iOS", "Git", "APIs REST"]));
+    expect(mobile.skills).toEqual(before);
+    expect(analyze(mobile, profile, {...defaultFilters, titles:["Desenvolvedor de software"]}).score).toBeLessThan(70);
+  });
+  it.each(["Não especificado", "Não informado", "", "Unknown", "Not specified", "A combinar"])("contratação ausente (%s) não bloqueia nem reduz a pontuação", (contract) => {
+    const filters = {...defaultFilters, contracts: ["CLT", "PJ"]};
+    const result = analyze({...job, contract}, profile, filters);
+    expect(result.blockers).not.toContain("Contratação fora das suas preferências.");
+    expect(result.gaps).toContain("Regime de contratação não informado no anúncio.");
+    expect(result.score).toBe(analyze(job, profile, filters).score);
+    expect(matchesObjectiveFilters({...job, contract}, profile, filters)).toBe(true);
+  });
+  it("mantém o bloqueio de contratação explicitamente incompatível", () => {
+    const filters = {...defaultFilters, contracts: ["CLT"]};
+    expect(analyze({...job, contract: "PJ"}, profile, filters).blockers).toContain("Contratação fora das suas preferências.");
+    expect(matchesObjectiveFilters({...job, contract: "PJ"}, profile, filters)).toBe(false);
+    expect(matchesObjectiveFilters({...job, contract: "Não especificado"}, {...profile, acceptsPj:false}, filters)).toBe(true);
+  });
+  it("não confunde a história da empresa nem aprendizagem contínua com requisitos do candidato", () => {
+    const description =
+      "Com 30 anos de experiência em transformação tecnológica, aceleramos inovação.\nRequisitos: C# e .NET.\nBenefícios: plataforma de aprendizagem contínua.";
+    expect(classify("Desenvolvedor Pleno\n" + description)).toMatchObject({
+      requiredYears: null,
+      level: "Pleno",
+    });
+    const old = {
+      ...job,
+      title: "Desenvolvedor Pleno",
+      description,
+      requiredYears: 30,
+      level: "Aprendiz",
+    };
+    expect(correctJobEvidence(old)).toMatchObject({
+      requiredYears: null,
+      level: "Pleno",
+    });
+    expect(old.requiredYears).toBe(30);
+  });
+  it("corrige a experiência da empresa em anúncios em inglês preservando o requisito do candidato", () => {
+    const company = "With 30 years of experience in technological transformation, we accelerate innovation with expertise in Agentic SDLC.";
+    expect(classify(company).requiredYears).toBeNull();
+    const description = company + "\nRequired Skills: 5+ years of experience as a developer.";
+    expect(classify(description).requiredYears).toBe(5);
+    expect(correctJobEvidence({ ...job, description, requiredYears: 30 }).requiredYears).toBe(5);
+    expect(correctJobEvidence({ ...job, description: company, requiredYears: 30 }).requiredYears).toBeNull();
+  });
+  it("preserva a experiência exigida do candidato após a história da empresa", () => {
+    expect(
+      classify(
+        "Somos uma empresa com 30 anos de experiência.\nRequisitos: mínimo de 3 anos de experiência em .NET.",
+      ).requiredYears,
+    ).toBe(3);
+    expect(
+      classify(
+        "Our company has 20 years of experience.\nYou must have at least 2 years of experience.",
+      ).requiredYears,
+    ).toBe(2);
+    expect(classify("Aprendiz de manutenção").level).toBe("Aprendiz");
+  });
   it("Radar também reconhece uma família profissional fora de software", () => {
     const p = {
       ...profile,
@@ -51,6 +116,7 @@ describe("Motor de aderência", () => {
     const j = {
       ...job,
       title: "Product Designer",
+      description: "Design de produtos digitais com Figma e Pesquisa com usuários.",
       skills: ["Figma", "Pesquisa com usuários"],
     };
     const m = analyze(j, p, {

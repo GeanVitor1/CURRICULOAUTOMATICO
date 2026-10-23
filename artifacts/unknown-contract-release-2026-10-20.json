@@ -1,0 +1,10 @@
+{
+  "testCasesPassed": 73,
+  "contractBlockersBefore": 15,
+  "passingScoreAndBlockersAfter": 8,
+  "deploymentId": "dpl_F4b3erv89N6TGAmWSEXJREVMkNgE",
+  "contractBlockersAfter": 0,
+  "newApplicationsSentInThisChange": 0,
+  "automaticStillEnabled": true,
+  "verifiedForms": 15
+}

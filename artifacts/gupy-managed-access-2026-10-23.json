@@ -1,0 +1,45 @@
+{
+  "startedAt": "2026-10-23T17:44:55.196Z",
+  "kind": "anonymous_managed_browser_read_only",
+  "implementation": "server/portal-browser-service.ts",
+  "environment": "local_isolated_chromium_not_vercel_sandbox",
+  "extensionUsed": false,
+  "personalSessionImported": false,
+  "credentialsProvided": false,
+  "accountCreated": false,
+  "authenticatedSessionPersistenceTested": false,
+  "authenticatedSessionExpiryTested": false,
+  "formFillingTested": false,
+  "applicationConfirmationTested": false,
+  "applicationOperationsInvoked": 0,
+  "page": {
+    "address": "login.gupy.io/candidates/signin",
+    "authenticated": false,
+    "blocked": false,
+    "challenge": false,
+    "notice": "",
+    "navigationError": null,
+    "fields": [
+      {
+        "label": "E-mail ou CPF*",
+        "type": "text"
+      },
+      {
+        "label": "Senha*",
+        "type": "password"
+      }
+    ]
+  },
+  "anonymousConfirmationRejected": true,
+  "savedConnection": null,
+  "completed": true,
+  "finishedAt": "2026-10-23T17:45:04.167Z",
+  "observedRequestMethods": {
+    "GET": 39,
+    "POST": 7
+  },
+  "preventedNonReadRequests": 7,
+  "transmittedNonReadRequests": 0,
+  "realApplications": 0,
+  "receipts": 0
+}

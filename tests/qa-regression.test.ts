@@ -15,6 +15,7 @@ import { randomUUID } from "node:crypto";
 import { zipSync, strToU8 } from "fflate";
 import type { FastifyInstance } from "fastify";
 import { createWorkspace } from "../server/workspace";
+import { confirmCandidateDetails } from "./fixtures/candidate-details";
 import { defaultFilters, type Job, type Workspace } from "../shared/types";
 import { extractSkills, locationMatches } from "../server/engine";
 
@@ -195,6 +196,7 @@ describe("Regressões da auditoria", () => {
       userId + ":live",
       (w) => {
         w.profile.confirmed = true;
+        confirmCandidateDetails(w);
         w.resumes[0].approved = true;
         const application = operations.prepare(w, jobId);
         application.status = "Aguardando aprovação";

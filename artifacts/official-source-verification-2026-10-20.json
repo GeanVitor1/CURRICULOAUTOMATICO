@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-20T11:09:26.397Z",
+  "sources": [
+    {
+      "company": "CI&T",
+      "platform": "lever",
+      "board": "ciandt",
+      "total": 180,
+      "brazil": 141
+    },
+    {
+      "company": "Wellhub",
+      "platform": "greenhouse",
+      "board": "gympass",
+      "total": 89,
+      "brazil": 43
+    }
+  ],
+  "realEmployerSubmissions": 0
+}

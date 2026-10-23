@@ -1,0 +1,120 @@
+{
+  "at": "2026-10-16T19:50:48.452Z",
+  "environment": "Consultas públicas reais; nenhum currículo enviado",
+  "search": "busca web supervisionada, com URL citada fornecida ao resolver",
+  "original": {
+    "url": "https://www.infojobs.com.br/vaga-de-desenvolvedora-junior-net,-react-ia-em-__12110291.aspx",
+    "title": "Desenvolvedor(A) Júnior (.NET, React E IA)",
+    "company": "King of Languages",
+    "descriptionHash": "712f377ac114d9d49d90d6060d4c21f7503e92fe0eb9503e7d34ac616573d362"
+  },
+  "destinations": [
+    {
+      "id": "e08ebafd08ea2a8f7f78ae3d",
+      "url": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+      "platform": "pandape",
+      "publicationUrl": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+      "verifiedAt": "2026-10-16T19:50:08.502Z",
+      "expiresAt": "2026-10-17T19:50:08.502Z",
+      "confidence": 100,
+      "evidence": [
+        "Empresa coincide.",
+        "Similaridade de título: 100%; descrição: 100%.",
+        "Publicação lida no destino público."
+      ],
+      "company": "KING OF LANGUAGES",
+      "state": "verified",
+      "formFound": false,
+      "method": "assisted"
+    }
+  ],
+  "resolution": {
+    "state": "verified",
+    "checkedAt": "2026-10-16T19:50:06.404Z",
+    "retryAt": "2026-10-17T19:50:06.404Z",
+    "complete": true,
+    "consulted": [
+      {
+        "source": "catalog",
+        "outcome": "Publicações comparadas por empresa, identificadores e conteúdo.",
+        "count": 0
+      },
+      {
+        "source": "https://www.infojobs.com.br/vaga-de-desenvolvedora-junior-net,-react-ia-em-__12110291.aspx",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      },
+      {
+        "source": "https://login.infojobs.com.br/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3DInfoJobs.Web%26redirect_uri%3Dhttps%253A%252F%252Fwww.infojobs.com.br%252Fsignin-oidc%26response_type%3Dcode%2520id_token%26scope%3Dopenid%2520profile%2520email%26state%3DOpenIdConnect.AuthenticationProperties%253DQG1izdx2ZxjOYmGbbRteXa8hrrE2mOKVG-zwot8XJp--WtvOjMl-5IafgDBijmp21evq1gZYLLcbvR0anN0i1msgZgmNsA-UByxdufHlEPbsoi-_EfQ1id2BPt2UWIhGJg83Gl4YvtAq-7_SyPImxromC59BLqXGJCNZ3A-hzwTNpseBiuiapYgIkvOkP6lD_MKeVO3oqlyvYZ_nnhfELrPmx4o%26response_mode%3Dform_post%26nonce%3D639277770056167938.NDg5ZDA2ZTktNjU1ZS00Mzc0LWE0YWQtMTgzMTdmNzY4Zjc2NmE4ZTczMDEtNTgxMS00ODFmLWIwMTMtZGI4MWM2ZGI4NzI2%26x-client-SKU%3DID_NET472%26x-client-ver%3D6.31.0.0",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      },
+      {
+        "source": "public_search",
+        "outcome": "Referências devolvidas pelo mecanismo de busca.",
+        "count": 1
+      },
+      {
+        "source": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+        "outcome": "Correspondência verificada.",
+        "count": 1
+      },
+      {
+        "source": "https://kingoflanguages.pandape.infojobs.com.br/CandidateHelp",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      }
+    ],
+    "matches": [
+      {
+        "url": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+        "confidence": 100,
+        "verified": true,
+        "reasons": [
+          "Empresa coincide.",
+          "Similaridade de título: 100%; descrição: 100%."
+        ]
+      }
+    ],
+    "message": "Destino independente identificado; envio depende do formulário e das permissões."
+  },
+  "feeds": [
+    {
+      "type": "greenhouse",
+      "board": "stripe",
+      "count": 732,
+      "sampleUrls": [
+        "https://stripe.com/jobs/search?gh_jid=8172487",
+        "https://stripe.com/jobs/search?gh_jid=8172508"
+      ]
+    },
+    {
+      "type": "lever",
+      "board": "palantir",
+      "count": 310,
+      "sampleUrls": [
+        "https://jobs.lever.co/palantir/6ed76ce8-4156-4b60-b120-403538bd66cd",
+        "https://jobs.lever.co/palantir/ac978161-6f46-4f6b-ad9e-a258e642751c"
+      ]
+    },
+    {
+      "type": "ashby",
+      "board": "notion",
+      "count": 129,
+      "sampleUrls": [
+        "https://jobs.ashbyhq.com/notion/1fc309c8-da20-4ff2-84c7-8b863ece2b0a",
+        "https://jobs.ashbyhq.com/notion/05e14247-17c4-4e98-9a13-53828a4e2f13"
+      ]
+    },
+    {
+      "type": "smartrecruiters",
+      "board": "BoschGroup",
+      "count": 30,
+      "sampleUrls": [
+        "https://jobs.smartrecruiters.com/BoschGroup/744000156070702-production-worker",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000156069016-copy-of-district-sales-manager-mep-channel-mt-id-wy-territory-diablo-tools"
+      ]
+    }
+  ],
+  "submissions": 0
+}

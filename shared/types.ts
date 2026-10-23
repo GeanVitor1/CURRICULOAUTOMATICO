@@ -39,6 +39,12 @@ export const transitions: Record<Status, Status[]> = {
   "Resultado desconhecido": ["Enviada", "Falha no envio"],
 };
 export type Profile = {
+  answerPolicy?: { enabled: boolean; missing: "no"; confirmedAt: string };
+  applicationPreferences?: import("./application-preferences").ApplicationPreferences;
+  candidateDetailsConfirmedAt?: string;
+  acceptsPj?: boolean;
+  compensationDisclosure?: "inform" | "prefer_not_to_say";
+  currentCompensation?: string;
   name: string;
   phone?: string;
   headline: string;
@@ -56,6 +62,61 @@ export type Profile = {
   education: string;
   experience: string;
   confirmed: boolean;
+  approvedAnswers?: ApprovedAnswer[];
+};
+export type ApprovedAnswer = {
+  id: string;
+  question: string;
+  aliases: string[];
+  value: string;
+  confirmedAt: string;
+  /** Answers involving a declaration or a choice apply only to this exact destination. */
+  destinationOrigin?: string;
+  destinationUrl?: string;
+};
+export type ApplicationDestination = {
+  id: string;
+  url: string;
+  platform:
+    | "greenhouse"
+    | "lever"
+    | "ashby"
+    | "gupy"
+    | "quickin"
+    | "smartrecruiters"
+    | "workday"
+    | "pandape"
+    | "company";
+  publicationUrl: string;
+  verifiedAt: string;
+  expiresAt: string;
+  confidence: number;
+  evidence: string[];
+  company: string;
+  requisitionId?: string;
+  state: "verified" | "login_required" | "blocked" | "expired" | "review";
+  formFound: boolean;
+  method: "browser" | "assisted";
+};
+export type DestinationResolution = {
+  state:
+    | "pending"
+    | "searching"
+    | "verified"
+    | "partial"
+    | "no_destination"
+    | "expired";
+  checkedAt: string;
+  retryAt: string;
+  complete: boolean;
+  consulted: { source: string; outcome: string; count: number }[];
+  matches: {
+    url: string;
+    confidence: number;
+    verified: boolean;
+    reasons: string[];
+  }[];
+  message: string;
 };
 export type Filters = {
   remoteAnywhere?: boolean;
@@ -78,8 +139,26 @@ export type Filters = {
   excludedTerms: string[];
 };
 export type Routine = {
+  /** Latest bounded source checks; counts never imply a successful submission. */
+  discoveryProductivity?: Record<string, DiscoveryProductivity>;
+  learnedBoards?: {type: Source['type']; board: string; company: string; verifiedAt: string}[];
+  researchBudget?: { day: string; used: number };
+  discoveryCheckpoints?: Record<string, { cursor: string; pending: boolean }>;
+  discoveryContinuation?: { day: string; batches: number };
+  progress?: {
+    day: string;
+    sent: number;
+    usedToday?: number;
+    target: number;
+    remaining: number;
+    state: "sending" | "searching" | "researching" | "complete" | "waiting";
+    message: string;
+    updatedAt: string;
+  };
   enabled: boolean;
   mode: "discovery" | "approval" | "automatic";
+  /** Missing on legacy accounts; those retain their existing routing. */
+  destinationPolicy?: "official" | "any";
   time: string;
   dailyLimit: number;
   minScore: number;
@@ -94,6 +173,8 @@ export type Source = {
     | "ashby"
     | "jobicy"
     | "adzuna"
+    | "smartrecruiters"
+    | "jooble"
     | "manual"
     | "authorized"
     | "portal";
@@ -127,6 +208,28 @@ export type Match = {
   };
 };
 export type Job = {
+  discoverySourceIds?: string[];
+  automation?: {
+    correlationId: string;
+    runId?: string;
+    origin: ExecutionOrigin;
+    events: AutomationEvent[];
+  };
+  emailDestination?: {
+    /** Publication date observed in the verified publisher's structured data. */
+    publishedAt?: string;
+    email: string;
+    publicationUrl: string;
+    employerUrl: string;
+    verifiedAt: string;
+    expiresAt: string;
+  };
+  applicationUrls?: { url: string; source: string }[];
+  requisitionId?: string;
+  companyDomain?: string;
+  department?: string;
+  destinations?: ApplicationDestination[];
+  resolution?: DestinationResolution;
   id: string;
   title: string;
   company: string;
@@ -157,6 +260,21 @@ export type Job = {
 };
 export type Event = { at: string; actor: string; message: string };
 export type Application = {
+  execution?: { correlationId: string; runId?: string; origin: ExecutionOrigin };
+  attempts?: SubmissionAttempt[];
+  automaticAnswers?: AutomaticAnswer[];
+  answerPolicyAttemptedAt?: string;
+  answersUsed?: { question: string; value: string; at: string; source: string }[];
+  missingDataConsent?: { fingerprint: string; resumeId: string; confirmedAt: string; expiresAt: string };
+  /** Set only after the portal definitively pauses before final submission. */
+  resumeState?: { resumeId: string; destinationUrl: string; recordedAt: string; kind?: "ats"; targetUrl?: string };
+  singleSubmission?: {
+    confirmedAt: string;
+    expiresAt: string;
+    resumeId: string;
+    destinationUrl: string;
+    method: "webhook" | "browser" | "ats_browser" | "email";
+  };
   id: string;
   jobId: string;
   status: Status;
@@ -169,6 +287,36 @@ export type Application = {
   history: Event[];
   mode: string;
   draft?: string;
+  destinationId?: string;
+  destinationUrl?: string;
+  missingQuestions?: string[];
+  automaticBlockedFingerprint?: string;
+  questionOptions?: Record<string, string[]>;
+  verification?: {
+    method:
+      "portal_confirmation" | "authorized_receipt" | "candidate_confirmation" | "email_provider_acceptance";
+    at: string;
+    destinationUrl: string;
+  };
+};
+export type AutomaticAnswer = {
+  confidence?: "confirmed" | "evidenced" | "policy";
+  fillable?: boolean;
+  question: string;
+  value: string;
+  source: "profile" | "ai" | "default_no" | "job_source";
+  reason: string;
+  at: string;
+  resumeId: string;
+  destinationUrl: string;
+};
+export type SubmissionReadiness = {
+  ready: boolean;
+  blockers: string[];
+  resumeId: string | null;
+  resumeName: string | null;
+  destinationUrl: string | null;
+  method: "webhook" | "browser" | "ats_browser" | "email" | null;
 };
 export type Resume = {
   /** Server-only encrypted original. Never included in workspace/API exports. */
@@ -231,6 +379,9 @@ export type Notice = {
   read: boolean;
 };
 export type Run = {
+  sourceProductivity?: DiscoveryProductivity[];
+  continuation?: boolean;
+  origin?: ExecutionOrigin;
   id: string;
   at: string;
   status: string;
@@ -240,7 +391,49 @@ export type Run = {
   message: string;
   searchSuggestions?: string[];
 };
+export type DiscoveryProductivity = {
+  sourceId: string; company: string; checkedAt: string;
+  querySignature?: string; nextCheckAt?: string;
+  examined: number; retained: number; compatible: number;
+  channelVerified: number; excluded: Record<string,number>;
+};
+export type ExecutionOrigin =
+  | "scheduled_automation"
+  | "user_triggered_automation"
+  | "individual_user_submission"
+  | "agent_assisted_diagnostic"
+  | "legacy_unclassified";
+export type AutomationEvent = {
+  at: string;
+  stage: "discovery" | "compatibility" | "destination" | "preparation" | "answers" | "submission" | "confirmation";
+  code: string;
+};
+/** Provider diagnostics contain no candidate values or unfiltered error prose. */
+export type SubmissionDiagnostic = {
+  provider: "quickin";
+  phase: "upload_response" | "application_response" | "confirmation";
+  httpStatus?: number;
+  providerCode?: "ValidationError" | "AlreadyApplied" | "CandidateExists" | "Forbidden" | "TooManyRequests";
+  fieldNames?: string[];
+  responseSha256?: string;
+  /** Response rejection is evidence about the response, never proof that no application exists. */
+  responseKind?: "validation_rejection" | "http_rejection" | "accepted_awaiting_confirmation" | "receipt_verified";
+};
+export type SubmissionAttempt = {
+  id: string;
+  correlationId: string;
+  runId?: string;
+  origin: ExecutionOrigin;
+  executor: "email" | "company_wp_jobs" | "ats_browser" | "browser" | "webhook";
+  startedAt: string;
+  finishedAt?: string;
+  outcome: "started" | "confirmed" | "pre_submit_blocked" | "not_submitted" | "unknown";
+  receipt?: string;
+  diagnostic?: SubmissionDiagnostic;
+};
 export type Workspace = {
+  /** One-way URL fingerprints prevent reapplying after clearing visible history. */
+  submissionExclusions?: string[];
   /** Response revision used for lightweight change polling; not persisted in data. */
   revision?: string;
   interviewDraft?: {
@@ -326,6 +519,7 @@ export type Workspace = {
   runs: Run[];
   demo: boolean;
   infrastructure: {
+    candidateDetailsRequired?: boolean;
     database: string;
     queue: string;
     automatic: boolean;

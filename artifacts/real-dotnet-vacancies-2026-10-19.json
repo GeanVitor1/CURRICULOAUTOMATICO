@@ -1,0 +1,931 @@
+{
+  "at": "2026-10-19T12:53:35.423Z",
+  "source": "Conector p?blico Gupy do projeto",
+  "query": [
+    "Desenvolvedor .NET"
+  ],
+  "count": 18,
+  "jobs": [
+    {
+      "title": "Pessoa Desenvolvedora .NET Sênior - Remoto - 6791",
+      "company": "Softplan",
+      "url": "https://softplan.gupy.io/job/eyJqb2JJZCI6MTI3MjY3OTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "A Softplan é uma das maiores empresas de software para o setor público da América Latina. Há 35 anos, desenvolvemos soluções que transformam a vida de milhões de pessoas, impactando aproximadamente 95% da população brasileira e expandindo nossa atuação também para Colômbia e Peru.Nossas tecnologias impulsionam a transformação digital nos segmentos de Infraestrutura e Obras, Processos Digitais e Administrativos e Justiça, tornando os serviços públicos mais ágeis, transparentes e eficientes. Trabalhar aqui é fazer parte de uma empresa que une propósito, inovação e impacto social.Atualmente, contamos com um portfólio de mais de 19 marcas e essa posição é para atuar no desenvolvimento e manutenção de sistemas, com foco em produtividade, qualidade de código e uso de ferramentas de IA como parte do fluxo de trabalho.Responsabilidades e atribuiçõesDesenvolver, evoluir e manter sistemas em .NET (C#), com foco em APIs de alta performance, qualidade de código e boas práticas de arquitetura (DDD, Clean Architecture, CQRS).\nAtuar como referência técnica .NET no squad, apoiando decisões de arquitetura e servindo de apoio técnico para o time.\nAtuar de forma transversal em diferentes projetos e iniciativas, adaptando-se a contextos e demandas variados conforme a prioridade do negócio.\nProjetar e implementar soluções distribuídas, resilientes e escaláveis, utilizando mensageria (RabbitMQ, Kafka ou Azure Service Bus) e estratégias de cache com Redis.\nModelar, otimizar e fazer tuning de bancos de dados relacionais (SQL Server, PostgreSQL e Oracle).\nTrabalhar com containers e orquestração (Docker, Kubernetes e Rancher), além de contribuir para a automação e melhoria contínua dos pipelines de CI/CD.\nGarantir a qualidade das entregas por meio de testes automatizados, observabilidade e boas práticas de segurança da informação.\nUsar ferramentas de IA no dia a dia de desenvolvimento, com senso crítico para revisar e validar o que é gerado, e trazer novas formas de usá-las no fluxo do time.\nComunicar-se de forma clara e proativa com o time, a liderança e outras áreas, explicando contextos técnicos, se posicionando e conduzindo as próprias demandas com autonomia.\nTrazer experimentação e curiosidade para o time, propondo soluções e abordagens diferentes para os problemas.\n\nRequisitos e qualificaçõesEcossistema .NET: Domínio de C# moderno, programação assíncrona, arquitetura orientada a domínios (DDD, Clean Architecture, CQRS) e desenvolvimento de APIs de alta performance.Mensageria: Experiência com sistemas assíncronos e brokers de mensagens (como RabbitMQ, Kafka ou Azure Service Bus) utilizando padrões de mercado.Infraestrutura e Orquestração: Vivência com Docker, Kubernetes e gerenciamento de clusters por meio do Rancher, além de automação via CI/CD.Bancos de Dados: Ampla bagagem em modelagem, otimização e tuning em ambientes relacionais (SQL Server, PostgreSQL e Oracle), além de estratégias de cache com Redis.Escalabilidade e Resiliência: Capacidade de projetar sistemas distribuídos tolerantes a falhas, com foco em observabilidade, segurança da informação e testes automatizados.\n\n Informações adicionaisModelo de trabalho: Anywhere Office - 100% remotoBenefícios:Vale-alimentação/Vale-refeição; Plano de saúde e odontológico; Auxílio Home Office;Participação nos Lucros e Resultados; Voucher para Kit Setup;Seguro de vida;Day Off aniversário;Programa de promoção à saúde e bem-estar;Parcerias e descontos.Um dos nossos pilares é a valorização das pessoas e temos orgulho de dizer que somos uma empresa que apoia a diversidade e inclusão. Sendo assim, consideramos todos os candidatos para as nossas vagas, sem distinção de raça, cor, religião, gênero e identidade de gênero, nacionalidade, deficiência, orientação sexual, ascendência, idade, etc.",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "CLT",
+      "publishedAt": "2026-10-15T11:35:33.199Z",
+      "id": "fb70b503-fde5-4255-8bc7-f3c2dd9fe6a7",
+      "source": "Gupy",
+      "level": "Sênior",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "SQL Server",
+        "PostgreSQL",
+        "APIs REST",
+        "Docker",
+        "Azure"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.401Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://softplan.gupy.io/job/eyJqb2JJZCI6MTI3MjY3OTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI3MjY3OTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor(a) .NET Sênior",
+      "company": "Vetta Tecnologia",
+      "url": "https://vetta.gupy.io/job/eyJqb2JJZCI6MTI3MDA2NTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Estamos buscando uma pessoa Desenvolvedor (a) .NET Sênior para o Time Vetta! \n\nVOCÊ JÁ CONHECE A VETTA? Na Vetta, acreditamos que a tecnologia e a inovação são essenciais para criar um futuro mais sustentável e eficiente para todos. Como uma empresa líder em digitalização industrial, nossas soluções estão ajudando clientes em todo o mundo a reduzir o consumo de energia, a melhorar a eficiência operacional e apoiar a transição energética através da descarbonização. Ao se juntar à nossa equipe, você terá a oportunidade de trabalhar em projetos emocionantes e desafiadores com alguns dos maiores especialistas da indústria. Além disso, você fará parte de uma equipe dedicada em gerar um impacto positivo no mundo e em ajudar nossos clientes a alcançar seus objetivos de negócios. O Time Vetta sabe a importância do trabalho em equipe e da colaboração para alcançar resultados que atingem todo o globo – ao mesmo tempo que a carreira de cada um é transformada.Se você quer compartilhar a sua perspectiva para um mundo mais sustentável, venha ser parte do Time Vetta! 💙 Responsabilidades e atribuiçõesNesse time, você terá a oportunidade de:O (A) profissional será responsável por participar ativamente em todas \nas fases do ciclo de vida do desenvolvimento de software, desde a concepção e design até \na implementação, testes, entrega e sustentação. Terá papel fundamental na modernização \ndos processos, utilizando ferramentas de IA para acelerar e otimizar as entregas dentro de \nmetodologias ágeis.\nResponsabilidades: Participar ativamente de reuniões técnicas e de negócio, contribuindo com insights e soluções. Aplicar metodologias ágeis integradas ao uso de Inteligência Artificial como SDD (Specification-Driven Development / Desenvolvimento Orientado a Especificações) para traduzir requisitos em arquitetura e código de forma eficiente. Desenvolvimento de soluções em .NET C#. Desenvolvimento de Integrações com soluções internas e externas. Utilizar assistentes de IA e ferramentas generativas para otimizar a criação de código, refatoração, cobertura de testes e code reviews. Acompanhar e tirar dúvidas dos usuários durante o processo de homologação. Suporte/sustentação das soluções elaboradas. Geração de documentação automatizada ou assistida por IA (Manuais e procedimentos de trabalho). Forte comprometimento com datas e entregas de valor contínuo.\n\n\n\nRequisitos e qualificações\nOportunidade exclusiva para profissionais da região metropolitana de São Paulo - SP. Oportunidade híbrida, 2x presencial na Avenida Brigadeiro Faria Lima.O que esperamos de você para essa vaga:Análise e Desenvolvimento de Sistemas, Ciência da Computação, Engenharia de Software ou áreas relacionadas. \nProficiência em desenvolvimento com: \n\nC#MVCAngularSQL Server (Procedure, Function, Triggers, Views)JavaScript, jQueryMVC - BootstrapWeb API, Web Service, WCFSólido conhecimento em Domain-Driven Design (DDD). Experiência com camada de persistência ORM (Dapper). Experiência com DevOps (Git/TFS - Azure DevOps). Competências: Desenvolvimento Ágil com IA: Habilidade prática na utilização de Inteligência \nArtificial como SDD (Specification-Driven Development) no ciclo ágil, criando \nprompts arquitetônicos e especificações claras para geração, análise e validação de \nsoftware. Excelentes habilidades analíticas e conceituais, com capacidade de resolver \nproblemas complexos. Fortes habilidades didáticas, com capacidade de explicar conceitos técnicos de \nforma clara e acessível, tanto para humanos quanto na construção de contexto para \nmodelos de IA. Objetividade, fluência verbal e escrita, e postura profissional. Excelentes habilidades de relacionamento interpessoal e capacidade de trabalhar \nem equipe multidisciplinar. Alta capacidade de concentração, iniciativa, organização, planejamento e \nproatividade. Forte senso de comprometimento e capacidade de tomar decisões eficazes \nbaseadas em dados. Diferenciais: Conhecimento avançado na integração de APIs de LLMs (OpenAI, Claude, etc.) em \nsoluções corporativas.Conhecimento em cloud Azure. Forte vivência anterior em frameworks ágeis (Scrum, Kanban). Certificações relevantes na área de desenvolvimento de software ou Cloud/IA. Conhecimento em aplicações conteinerizadas (Docker/Kubernetes).Experiência com tecnologias de mensageria (RabbitMQ ou similares). \n\nInformações adicionais\nNOSSOS BENEFÍCIOS:Sendo uma empresa voltada para pessoas, buscamos sempre valorizar a nossa equipe. Ao entrar para o Time Vetta, oferecemos:Cartão Flash com vale-alimentação/refeição de R$ 32,00 por dia, aceito em diversos estabelecimentos para você usar como preferir.Auxílio home office de R$ 100,00/mês e flexibilidade no horário de trabalho.Pensando na sua saúde e bem-estar, oferecemos Plano de Saúde SulAmérica e Plano Odontológico Bradesco,com a possibilidade de inclusão dos seus dependentes. WellHub, TotalPass e UniCamente, para você cuidar da sua saúde integralmente, com acesso a atividades físicas e a profissionais de diversas áreas da saúde.Onhappy, uma plataforma de viagens corporativas e lazer com descontos exclusivos em hospedagens, passagens e experiências para você aproveitar momentos de descanso e lazer com mais praticidade e economia. Plano de Saúde Pet da Guapeco, para você cuidar da saúde e bem-estar do seu melhor amigo com acesso a consultas, exames e outros serviços veterinários.Clube de Descontos e Recompensas, com descontos em diversas redes de produtos e de serviços. Licença maternidade e paternidade estendida, para os pais e mães viverem essa fase com tranquilidade. Seguro de Vida, para proporcionar mais tranquilidade e segurança.Convênio com o SESC, oferecendo acesso a atividades de lazer, cultura, turismo, educação e bem-estar para você e sua família.PLR - conforme tabela do sindicato.E TEM MAIS...Day-Off de Aniversário.No Dress Code. Vista-se com o que te deixa confortável!Programa de Incentivo à Formação Contínua e Capacitação, para que você possa continuar aprendendo e compartilhando experiências.Quer indicar alguém para a Vetta? Temos Programa de Indicação de Talentos.Se interessou em fazer parte do time? Cadastre-se agora! Ficaremos felizes em ter você conosco. 💙",
+      "location": "São Paulo, São Paulo",
+      "modality": "Híbrido",
+      "contract": "CLT",
+      "publishedAt": "2026-10-09T22:09:06.417Z",
+      "id": "6f116f53-19c5-41ab-b76c-e20c1d7f53f2",
+      "source": "Gupy",
+      "level": "Sênior",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "APIs REST",
+        "JavaScript",
+        "Docker",
+        "Git",
+        "Azure"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.405Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "São Paulo, São Paulo",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://vetta.gupy.io/job/eyJqb2JJZCI6MTI3MDA2NTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI3MDA2NTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor Fullstack Especialista ( Java,.Net, Python, Node/TS)",
+      "company": "Stefanini Group",
+      "url": "https://stefanini.gupy.io/job/eyJqb2JJZCI6MTI2NjQ0NDIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "No Grupo Stefanini, acreditamos que o futuro não acontece sozinho: ele é construído por pessoas que têm atitude para transformar ideias em realidade. Há quase 40 anos, conectamos tecnologia, inovação e talento para criar soluções que transformam negócios e impactam pessoas.Somos um dos maiores ecossistemas de tecnologia da América Latina, com mais de 35 mil pessoas em mais de 40 países. Ao longo dessa jornada, evoluímos constantemente — e seguimos acreditando que são as nossas pessoas que fazem essa transformação acontecer. 🌎✨Nosso jeito de ser é guiado por cinco Atitudes Empreendedoras, que fazem parte do nosso DNA e orientam a forma como trabalhamos e construímos o futuro juntos:🎯 Comprometimento com o cliente — entendemos o que realmente importa e buscamos soluções com excelência e propósito.🚀 Liderança pelo exemplo — agimos com ética, coerência e protagonismo, fazendo da nossa atitude um exemplo para quem está ao nosso lado.🤝 Respeito pelas pessoas — valorizamos diferentes perspectivas, cultivamos diálogos abertos e contribuímos para o crescimento uns dos outros.💡 Coragem para inovar — questionamos o convencional, propomos soluções e temos iniciativa para transformar desafios em novas possibilidades.🌱 Humildade para aprender — reconhecemos que nunca partimos do zero, aprendemos uns com os outros e sabemos que grandes conquistas não são construídas sozinhas.Mais do que competências técnicas, buscamos pessoas que se identifiquem com esse jeito de fazer acontecer. Pessoas que tenham vontade de aprender, coragem para inovar, respeito para construir junto e atitude para transformar.Quer conhecer mais sobre o Grupo Stefanini, nossa cultura e as pessoas que fazem parte dessa história?▶️ Assista ao nosso vídeo institucional e venha construir o futuro com a gente!Responsabilidades e atribuições\n\nBuscamos um(a) profissional para assumir a posição de COE Leader — Desenvolvimento, atuando como referência técnica e de pessoas dentro do Centro de Excelência (COE).O COE Leader terá papel estratégico no desenvolvimento dos profissionais, evolução das competências técnicas, definição de padrões de engenharia e apoio à composição dos times, trabalhando em parceria com o Client Face, responsável pela gestão da conta.🌎 Idioma obrigatório: Inglês ou espanhol avançado, devido à atuação com clientes e times nearshore/LATAM.🎯 Missão da posiçãoSer a principal referência técnica e de pessoas na disciplina de Desenvolvimento, garantindo a evolução dos profissionais, excelência das competências e formação de times adequados às necessidades de cada projeto e cliente.\n\n\n\n\n\n\n\nRequisitos e qualificações\n Principais responsabilidadesRealizar a gestão e o desenvolvimento dos profissionais da disciplina;Atuar com mentoria técnica, desenvolvimento de carreira, capacitação contínua e retenção de talentos;Definir e manter padrões, frameworks, boas práticas e diretrizes de engenharia de software;Liderar e estruturar o Centro de Excelência de Desenvolvimento, garantindo competências atualizadas e capacidade de entrega;Construir e acompanhar o roadmap técnico da disciplina;Avaliar e promover a adoção de novas tecnologias, ferramentas e certificações;Apoiar a adoção e evolução do SAI App 3.0;Apoiar a estratégia de alocação, capacidade e composição dos times;Trabalhar em parceria com Client Faces e diferentes stakeholders.🔎 Requisitos técnicosExperiência sólida em desenvolvimento Back-end e/ou Front-end;Domínio de pelo menos uma das principais stacks: Java, .NET, Python ou Node.js/TypeScript, com capacidade para atuar em ambientes multi-stack;Experiência com APIs REST, microsserviços e integrações;Conhecimentos em bancos de dados SQL e NoSQL;Experiência com ambientes Cloud: AWS, Azure e/ou GCP;Conhecimento de CI/CD e práticas modernas de engenharia de software;Domínio de boas práticas como Clean Code, testes automatizados e Code Review;Experiência na liderança e mentoria de times técnicos;Capacidade para definir padrões e conduzir processos de governança técnica;Boa comunicação e articulação com stakeholders, lideranças e Client Faces.✅ Requisitos obrigatóriosExperiência com precificação e construção de propostas técnicas;Vivência com dimensionamento de projetos, considerando esforço, senioridade, competências e composição dos times;Conhecimento e experiência com IA aplicada ao desenvolvimento de software, incluindo:Copilotos de código;Geração de código assistida por IA;Refatoração assistida;Engenharia de prompts;Inglês ou espanhol em nível avançado.⭐ DiferenciaisExperiência com desenvolvimento Mobile;Vivência em projetos de modernização de sistemas legados;Experiência em ambientes de grande escala e transformação tecnológica.💡 Perfil que buscamosBuscamos uma liderança que combine visão técnica, gestão de pessoas e visão de negócio, com capacidade para desenvolver talentos, elevar a maturidade da engenharia e apoiar a construção de soluções e times aderentes às necessidades dos clientes.\n\n\n\nInformações adicionais🍛 Vale-alimentação ou vale-refeição;👨🏼‍🎓 Desconto em cursos, universidades e instituições de idiomas;📚 Academia Stefanini — plataforma com cursos on-line, gratuitos, atualizados e com certificado;🗣 Mentoring;💉 Clube de vantagens para consultas e exames;🏥 Assistência médica;🦷 Assistência odontológica;💰 Clube de vantagens e descontos nos melhores estabelecimentos;🛫 Clube de viagens;🐶 Convênio para pets.",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "CLT",
+      "publishedAt": "2026-10-01T20:14:24.425Z",
+      "id": "ba53d7db-6916-4c23-8690-3d20e6a4e961",
+      "source": "Gupy",
+      "level": "Não especificado",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        ".NET",
+        "APIs REST",
+        "TypeScript",
+        "Node.js",
+        "Python",
+        "Java",
+        "Azure",
+        "AWS"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.407Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://stefanini.gupy.io/job/eyJqb2JJZCI6MTI2NjQ0NDIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI2NjQ0NDIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Analista Desenvolvedor .Net Sênior",
+      "company": "Montreal | Tecnologia e Inovação",
+      "url": "https://montreal.gupy.io/job/eyJqb2JJZCI6MTI2NTE4NjYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Como Analista Desenvolvedor Sênior na Montreal, você fará parte de uma das melhores empresas de tecnologia do Brasil. Nossa trajetória iniciou há mais de trinta anos com uma pequena equipe de engenharia apaixonada por inovação. Em 1986, pessoas visionárias fizeram um compromisso com a tecnologia e sua capacidade de transformar o mundo. Aquele, seria apenas o começo de uma trajetória que nos tornou referência sólida no mercado e uma das melhores empresas para se trabalhar.Responsabilidades e atribuiçõesResponsabilidades e Atribuições:Participação em projetos de Desenvolvimento de TI;Atuação em times ágeis;Conhecimento de metodologia de desenvolvimento ágil Scrum; Conhecimento e experiência em Banco de dados SQL Server 2016/2022, desenvolvimento e manutenção de stored procedures, modelagem de estrutura de dados;Conhecimento de arquitetura de Sistemas; Requisitos e qualificaçõesRequisitos Obrigatórios:Graduação completa;Experiência com ASP.NET MVC e Entity Framework;Experiência com desenvolvimento em Angular ou AngularJS, utilizando TypeScript;Experiência com desenvolvimento e consumo de APIs RESTful;Experiência em Programação Orientada a Objetos (POO);Experiência em Visual Studio;Experiência com bancos de dados relacionais SQL Server;Experiência em Azure DevOps;Experiência em Metodologia Ágil.Informações adicionaisBenefícios e VantagensPlano de Saúde;Plano Odontológico;Seguro de Vida;Auxílio Creche;Vale-refeição;Vale-transporte;Wellhub (Gympass);Clube de Vantagens.",
+      "location": "São Paulo, São Paulo",
+      "modality": "Híbrido",
+      "contract": "CLT",
+      "publishedAt": "2026-09-30T20:39:14.849Z",
+      "id": "9dfd1e69-1d16-4ca3-9083-9d7236a14950",
+      "source": "Gupy",
+      "level": "Sênior",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        ".NET",
+        "Angular",
+        "SQL Server",
+        "Entity Framework",
+        "APIs REST",
+        "TypeScript",
+        "Azure"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.408Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "São Paulo, São Paulo",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://montreal.gupy.io/job/eyJqb2JJZCI6MTI2NTE4NjYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI2NTE4NjYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Analista Desenvolvedor .Net Pleno",
+      "company": "Montreal | Tecnologia e Inovação",
+      "url": "https://montreal.gupy.io/job/eyJqb2JJZCI6MTI2MzYyMzIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Como Analista Desenvolvedor Pleno na Montreal, você fará parte de uma das melhores empresas de tecnologia do Brasil. Nossa trajetória iniciou há mais de trinta anos com uma pequena equipe de engenharia apaixonada por inovação. Em 1986, pessoas visionárias fizeram um compromisso com a tecnologia e sua capacidade de transformar o mundo. Aquele, seria apenas o começo de uma trajetória que nos tornou referência sólida no mercado e uma das melhores empresas para se trabalhar.Responsabilidades e atribuiçõesResponsabilidades e Atribuições:Participação em projetos de Desenvolvimento de TI;Atuação em times ágeis;Conhecimento de metodologia de desenvolvimento ágil Scrum; Conhecimento e experiência em Banco de dados SQL Server 2016/2022, desenvolvimento e manutenção de stored procedures, modelagem de estrutura de dados;Conhecimento de arquitetura de Sistemas; Requisitos e qualificaçõesRequisitos Obrigatórios:Graduação completa;Experiência com ASP.NET MVC e Entity Framework;Experiência com desenvolvimento em Angular ou AngularJS, utilizando TypeScript;Experiência com desenvolvimento e consumo de APIs RESTful;Experiência em Programação Orientada a Objetos (POO);Experiência em Visual Studio;Experiência com bancos de dados relacionais SQL Server;Experiência em Azure DevOps;Experiência em Metodologia Ágil.Informações adicionaisBenefícios e VantagensPlano de Saúde;Plano Odontológico;Seguro de Vida;Auxílio Creche;Vale-refeição;Vale-transporte;Wellhub (Gympass);Clube de Vantagens.",
+      "location": "São Paulo, São Paulo",
+      "modality": "Híbrido",
+      "contract": "CLT",
+      "publishedAt": "2026-09-29T20:43:30.396Z",
+      "id": "d28f857f-6976-41ac-a4e6-5230d5864c80",
+      "source": "Gupy",
+      "level": "Pleno",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        ".NET",
+        "Angular",
+        "SQL Server",
+        "Entity Framework",
+        "APIs REST",
+        "TypeScript",
+        "Azure"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.409Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "São Paulo, São Paulo",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://montreal.gupy.io/job/eyJqb2JJZCI6MTI2MzYyMzIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI2MzYyMzIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Pessoa Desenvolvedora Backend C#/.NET - Pleno",
+      "company": "SmartTravel",
+      "url": "https://smart.gupy.io/job/eyJqb2JJZCI6MTI1ODI2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Você é um(a) profissional dinâmico(a), focado(a) em resultados e com vontade de transformar a mobilidade no Brasil?A Smart Travel, especialista em ecossistemas digitais do Grupo Guanabara, está em busca de talentos para acelerar nossa evolução. Unimos a precisão do setor aéreo à força do transporte rodoviário para criar soluções de ponta que conectam pessoas e empresas.Aqui, sua atuação é motor de eficiência, inteligência e inovação. 🚀🛣️O desafio:Buscamos uma pessoa Desenvolvedora Backend (NET/C#) Pleno para integrar o time da SmartTravel, com foco em nosso produto SmartBus: plataforma que gerencia a venda de passagens de ônibus para múltiplas operadoras no Brasil, entre elas o Grupo Guanabara. O foco principal da vaga será o desenvolvimento e a manutenção do monólito core do sistema, com oportunidade de atuar também em novos micro serviços e em soluções de arquitetura baseada em eventos utilizadas para evoluir a plataforma.\n\nResponsabilidades e atribuiçõesDesenvolver e manter funcionalidades do monólito principal em C#/.NET;Participar da evolução para micro serviços e arquiteturas baseadas em eventos;Diagnosticar e resolver incidentes e bugs em produção;Escrever testes automatizados (unitários e de integração) para garantir a qualidade das entregas;Instrumentar funcionalidades com logs, métricas e alertas para observabilidade em produção;Participar de code reviews e aplicar boas práticas de desenvolvimento;Colaborar com QA, DBA e demais desenvolvedores na entrega de funcionalidades.Requisitos e qualificaçõesEnsino superior completo ou em andamento em Ciência da Computação, Engenharia de Software, Sistemas de Informação ou áreas correlatas (experiência prática equivalente também é considerada);Experiência de 1 a 3 anos atuando com desenvolvimento backend;Experiência sólida comprovada em C# e .NET;Conhecimento de bancos de dados relacionais;Experiência desenvolvendo e consumindo APIs REST;Experiência escrevendo testes automatizados (unitários e de integração);Conhecimento básico de observabilidade (logs, métricas, alertas) para diagnosticar problemas em produção;Uso de controle de versão com Git.Desejáveis:Experiência com Angular e Golang; Conhecimento de bancos de dados não relacionais;Conhecimento de arquiteturas de microsserviços;Conhecimento de arquiteturas baseada em eventos;Conhecimento de pipelines de CI/CD (ex: GitHub Actions) e capacidade de ajustar pipelines existentes.Informações adicionaisPensando no seu bem-estar, oferecemos:🧾 Modelo PJ;💰 13° nota;🌴 Recesso remunerado (30 dias)💻 Envio de equipamentos;💳 Vale Refeição e Mobilidade em cartão flexível;🩺 Assistência Médica com coparticipação (SulAmérica);🧘🏾‍♂️ Acesso ao ecossistema da TotaPass (totalmind, totalfitness e totalnutri);🎂 Day Off no mês de aniversário;🚍 Gratuidade nas passagens do Grupo Guanabara;🏆 Reconhecimento por resultado (PLR).Além disso, pensando na sua experiência, contamos com:🤝 Ambiente colaborativo e orientado por dados;📚 Aprendizado contínuo e desafios reais de negócio;👕 No dress code.",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "PJ",
+      "publishedAt": "2026-09-25T21:11:12.276Z",
+      "id": "c311caac-dac1-4fd7-89e6-ef93f8834b07",
+      "source": "Gupy",
+      "level": "Pleno",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "Angular",
+        "APIs REST",
+        "Git"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.410Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://smart.gupy.io/job/eyJqb2JJZCI6MTI1ODI2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI1ODI2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Pessoa Desenvolvedora Back-End .NET - Pleno",
+      "company": "VENHA SER #SANGUELARANJA 🧡🚀",
+      "url": "https://fcamara.gupy.io/job/eyJqb2JJZCI6MTI1NDMyNjIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "A FCamara está em busca de um(a) Desenvolvedor Back-End .NET Pleno, para atuar em parceria com o maior Banco de Investimentos da América Latina, especializado em capital de investimento, de risco, além de gerenciamento de patrimônio e ativos globais.\n\nResponsabilidades e atribuições\nResponsabilidades e atribuições: - Atuar em sustentação e suporte técnico de sistemas .NET em ambiente produtivo, garantindo a disponibilidade e confiabilidade das aplicações;- Monitorar sistemas e mensagerias, analisando logs, filas e métricas para identificar e resolver incidentes;- Realizar debugging e triagem técnica de problemas, garantindo a correção de falhas e minimizando impactos para o negócio;- Propor e implementar melhorias contínuas em código, arquitetura e monitoramento de aplicações;- Apoiar a equipe de negócio e demais áreas técnicas na análise de requisitos e esclarecimento de dúvidas funcionais;- Desenvolver e manter APIs, microsserviços e integrações em .NET;- Garantir a observabilidade das aplicações, com uso de ferramentas de APM, métricas e logs centralizados;- Participar de cerimônias ágeis (Scrum/Kanban) e contribuir para o ciclo de vida completo das aplicações (desenvolvimento, deploy, monitoramento e suporte).\n\nRequisitos e qualificações\nRequisitos e qualificações: Hard Skills:- Experiência sólida com .NET / C# (mínimo 3 anos);- Experiência com bancos de dados relacionais (SQL Server, MySQL, Postgres);- Vivência em ambientes de microserviços e mensageria (RabbitMQ, Kafka, Azure Service Bus, etc.);- Conhecimento em monitoramento de aplicações, leitura de logs e ferramentas de observabilidade (Dynatrace, AppDynamics, DataDog, Prometheus, Kibana etc.);- Experiência com Docker e Kubernetes;- Prática em testes unitários (TDD) e Design Patterns;- Experiência com integração e sustentação de aplicações em nuvem (AWS, Azure ou GCP);- Familiaridade com CI/CD, GIT e metodologias ágeis (Scrum/Kanban).Desejáveis:- Conhecimento de mercado financeiro e operações bancárias;- Experiência com ElasticSearch, GraphQL e ferramentas de qualidade de código (SonarQube);- Vivência prévia em suporte/sustentação de sistemas críticos de alta disponibilidade;- Inglês ou Espanhol intermediário.Soft Skills:- Perfil investigativo e analítico, com capacidade de diagnosticar e resolver problemas complexos;- Boa comunicação com stakeholders técnicos e de negócio;- Proatividade, senso de dono e foco em resultado;- Espírito de equipe e resiliência para lidar com demandas críticas;- Organização e atenção aos detalhes;- Capacidade de se autogerenciar e atuar em ambientes dinâmicos.",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "Temporário",
+      "publishedAt": "2026-09-22T12:26:29.990Z",
+      "id": "27d3d118-da80-46ea-bd37-41e3646e161a",
+      "source": "Gupy",
+      "level": "Pleno",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "SQL Server",
+        "PostgreSQL",
+        "APIs REST",
+        "Docker",
+        "Git",
+        "Azure",
+        "AWS"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.411Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://fcamara.gupy.io/job/eyJqb2JJZCI6MTI1NDMyNjIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI1NDMyNjIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Pessoa Desenvolvedora Backend Sênior (.NET Core | Microserviços) (Home Office) - [Projeto Internacional - Espanhol Avançado]",
+      "company": "Somos BHS 💚",
+      "url": "https://bhs.gupy.io/job/eyJqb2JJZCI6MTI1MDcyMzcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Nós somos a BHS!Com 30 anos de experiência no mercado, proporcionamos soluções modernas de TI. 🚀Somos reconhecidos como a MELHOR empresa para se trabalhar em MG e no BRASIL pelo GPTW - Great Place to Work, e estamos classificados entre as cinco melhores empresas para se trabalhar nas categorias LGBTQIA+ e Étnico-Racial, demonstrando nosso compromisso com a diversidade, equidade e inclusão.✨ O que a gente espera de você?· Habilidade de relacionamento com pessoas de diferentes áreas e de diversos níveis de hierarquia;· Autogerenciamento;· Colaboração;· Ser proativo e saber trabalhar fora da zona de conforto;· Alguém que queira fazer parte de projetos incríveis e tenha muita vontade de aprender, ensinar e crescer junto com a BHS.Responsabilidades e atribuições💪 Suas atividades serão:· Projetar e desenvolver soluções backend robustas, escaláveis e de alto desempenho, com elevado nível de concorrência;· Analisar e traduzir requisitos funcionais em especificações técnicas claras, garantindo entregas consistentes e de qualidade;· Implementar e manter microserviços distribuídos com escalabilidade horizontal;· Criar e manter documentação técnica (design, APIs, fluxos e manuais quando necessário);· Desenvolver e executar testes unitários, de integração e de performance;· Implementar rotinas de testes funcionais e de carga para microserviços;· Participar ativamente de revisões de código (code review), assegurando o cumprimento de boas práticas e padrões definidos;· Atuar na manutenção evolutiva e corretiva das soluções;· Realizar troubleshooting de incidentes complexos em ambientes distribuídos;· Colaborar com o time de engenharia, promovendo o compartilhamento de conhecimento e evolução técnica contínua.Requisitos e qualificações📋 Buscamos uma pessoa que possua experiências com:· Espanhol intermediário ou avançado.· Graduação em Engenharia da Computação, Engenharia de Software, Ciência da Computação ou áreas correlatas;· Experiência em desenvolvimento backend;· Experiência na construção de microserviços distribuídos;· Experiência com containers (Docker) e arquitetura escalável;· Sólidos conhecimentos em bancos de dados relacionais;· Experiência com controle de versão utilizando Git;· Experiência em ambientes Cloud (preferencialmente Microsoft Azure);· Experiência com ferramentas de testes de APIs (Postman ou similares);· Experiência com documentação de APIs (Swagger / OpenAPI ou similares).🎯Diferenciais:· Experiência com bancos de dados não relacionais (ex: MongoDB);· Experiência em ambientes de alta concorrência e alto volume de transações;· Conhecimentos básicos em frontend (React ou Angular);· Experiência com sistemas de mensageria (RabbitMQ, MQTT, AMQP);· Vivência com metodologias ágeis de desenvolvimento;· Experiência prévia projetos globais ou integrações internacionais.Informações adicionaisO que você pode esperar de nós?Na BHS, cuidamos do seu bem-estar como prioridade número um. Estamos aqui para garantir que sua experiência seja incrível, com todo o suporte que você precisar. Por aqui você vai encontrar: ✅ Plano de saúde e Assistência Odontológica;✅ Vale Refeição/Alimentação no cartão Flash;✅ Auxílio Home Office;✅ Gympass / Wellhub;✅ Seguro de vida;✅ Licença Maternidade/Paternidade estendida;✅ Parcerias e convênios diversos em educação, saúde e lazer (Universidades, escolas de Idioma, academias, clínicas de saúde...);✅ Cultura de Feedback contínuo, com: Feedbacks semestrais, 1:1, PDI (Plano de Desenvolvimento Individual) e BHS Experience.Buscamos a inclusão da diversidade no nosso dia a dia e acreditamos que equipes plurais têm melhor desempenho. Todas as pessoas são bem-vindas. Venha ser um B.Techer 🚀Veja nossa avaliação no Glassdoor (4.5 Estrelas e 90% recomendado para outras pessoas).#vempraBHS #somosBHS #LI-Remote 💙",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "CLT",
+      "publishedAt": "2026-09-16T19:42:00.024Z",
+      "id": "8eb7395f-f34b-4e54-9e96-9ab678f85b27",
+      "source": "Gupy",
+      "level": "Sênior",
+      "requiredYears": 30,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        ".NET",
+        "Angular",
+        "React",
+        "APIs REST",
+        "Docker",
+        "Git",
+        "Azure"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.413Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://bhs.gupy.io/job/eyJqb2JJZCI6MTI1MDcyMzcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI1MDcyMzcsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor(a) Backend .NET Pleno",
+      "company": "Genial Investimentos",
+      "url": "https://genial.gupy.io/job/eyJqb2JJZCI6MTI0NTMwMTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "A Genial Investimentos é uma das maiores plataformas de investimentos do Brasil. Com mais de 2 milhões de clientes, estamos presentes em todo o país por meio de nossos escritórios e assessores parceiros. Nascemos com um propósito claro: democratizar o acesso ao mercado financeiro, oferecendo produtos, serviços e tecnologia de ponta para todos os perfis de investidor — do iniciante ao profissional. Oferecemos um portfólio completo que vai de renda fixa, ações, fundos de investimento, previdência e fundos imobiliários, até soluções de serviços bancários digitais, como conta com Pix, cartão de crédito e pagamentos integrados. Também desenvolvemos soluções sob medida para empresas, como Genial As a Service, que oferece infraestrutura bancária via API. Mais do que uma plataforma, somos parceiros na construção de um futuro financeiro mais próspero, transparente e acessível.Quer conhecer mais sobre a Genial? Acesse: https://www.genialinvestimentos.com.br#VemSerGenialResponsabilidades e atribuições\nBuscamos uma pessoa Desenvolvedora Backend .NET Pleno para atuar na evolução e sustentação de sistemas de cadastro, onboarding e integrações no mercado financeiro. A pessoa irá trabalhar com C#, .NET, APIs, Workers, mensageria e sistemas distribuídos, contribuindo para soluções confiáveis, escaláveis e resilientes. Buscamos alguém com boa base técnica, autonomia, capacidade de investigação e vontade de aprender.\n\n\n\n\n\n\nDesenvolver, evoluir e manter APIs REST, Workers e serviços utilizando C# e .NET.Desenvolver e manter integrações com sistemas internos e externos via HTTP.Trabalhar com mensageria, processamento assíncrono e arquitetura orientada a eventos.Atuar com bancos de dados relacionais e orientados a documentos.Investigar e solucionar problemas de ponta a ponta, analisando APIs, filas, serviços, logs e bancos de dados.Desenvolver código limpo, legível, testável e resiliente.Criar e manter testes unitários e contribuir com testes de integração.Implementar boas práticas de observabilidade, incluindo logs estruturados, métricas e rastreamento.Tratar cenários de falha, como exceções, timeouts, cancelamentos, indisponibilidade de serviços e mensagens duplicadas.Participar de code reviews, discussões técnicas e evolução das soluções.Apoiar a análise e resolução de incidentes em produção.Contribuir para a modernização dos sistemas e redução de débito técnico.Avaliar impactos, riscos e dependências antes de realizar alterações em integrações existentes.Utilizar ferramentas de IA de forma responsável como apoio ao desenvolvimento, testes, investigação e documentação.\n\n\n\n\n\nRequisitos e qualificações\nExperiência sólida com C# e .NET, especialmente ASP.NET Core.Experiência no desenvolvimento de APIs REST e Worker Services.Conhecimento prático de programação assíncrona com async/await e CancellationToken.Experiência com injeção de dependência e configuração de aplicações .NET.Experiência com integrações via HTTP.Conhecimento de SQL e bancos de dados relacionais.Experiência com Oracle ou SQL Server.Experiência com testes unitários (xUnit, Moq ou equivalentes).Conhecimento de Git, pull requests e code review.Noções práticas de Docker.Conhecimento de mensageria, processamento assíncrono e arquitetura orientada a eventos.Conhecimento de princípios SOLID, separação de responsabilidades e Clean Code.Capacidade de diagnosticar problemas por meio de logs, payloads, status HTTP, métricas e dados persistidos.Capacidade de compreender contratos entre serviços e avaliar impactos de alterações em integrações.Será considerado diferencial:Experiência com Kafka, RabbitMQ, MongoDB ou Redis.Conhecimento de AWS (SQS, SNS e S3) e Kubernetes.Experiência com Dapper, Entity Framework Core, Refit, Polly ou MediatR.Experiência com testes de integração e Testcontainers.Conhecimento de observabilidade, CI/CD e pipelines.Experiência com sistemas distribuídos, de alta criticidade ou alto volume.Conhecimento de segurança de APIs, JWT e proteção de dados.Experiência no mercado financeiro.Conhecimento de Clean Architecture, DDD ou CQRS.Experiência com soluções de IA/LLMs aplicadas ao desenvolvimento.\n\nInformações adicionaisAssistência Médica (SulAmérica - coparticipação)Assistência Odontológica (Omint)Seguro de Vida (Zurich)Vale Refeição e Vale Alimentação (Alelo)Licença Maternidade e Paternidade Estendida (Empresa Cidadã)Auxílio Creche/BabáTotalPass e WellhubPrograma de Participação nos Resultados (PPR)",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "CLT",
+      "publishedAt": "2026-09-10T12:28:49.439Z",
+      "id": "a3104da9-d7a8-4206-a92c-f4005652e595",
+      "source": "Gupy",
+      "level": "Pleno",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "ASP.NET Core",
+        "SQL Server",
+        "Entity Framework",
+        "APIs REST",
+        "Docker",
+        "Git",
+        "AWS"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.414Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://genial.gupy.io/job/eyJqb2JJZCI6MTI0NTMwMTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI0NTMwMTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor Sênior .Net",
+      "company": "Ouribank",
+      "url": "https://ouribank.gupy.io/job/eyJqb2JJZCI6MTI0NDc3MjgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Somos um banco completo, com 47 anos de atuação, reconhecido pela eficiência e excelência de atendimento.Tornamos a jornada de nossos clientes mais fácil, absorvendo suas necessidades e oferecendo as melhores possibilidades de negócios.\n\n\nBuscamos\num(a) Desenvolvedor(a) .NET Sênior para atuar em uma squad de Risco e\nAntifraude, com foco no desenvolvimento e sustentação de soluções como\ncalculadora de risco e motores antifraude transacional.\n\nEsse\nprofissional deve ter experiência em sistemas críticos, capacidade analítica\npara lidar com regras de negócio complexas e sensibilidade para impactos em\nfluxos transacionais que exigem alta performance, garantindo segurança sem\ncomprometer a experiência.\n\n\n\n\n\nEsse é o lugar que você procura? Venha somar com a gente.#Juntos transformaremos fronteiras em possibilidades!Responsabilidades e atribuiçõesDesenvolver, evoluir e manter APIs e serviços\n relacionados à análise de risco e fraude;Atuar na sustentação de sistemas críticos,\n garantindo estabilidade e performance;Implementar e evoluir regras de risco,\n integrações com motores antifraude e serviços parceiros;Participar de decisões arquiteturais,\n considerando latência, resiliência e impacto no fluxo transacional;Garantir boas práticas de desenvolvimento,\n observabilidade, rastreabilidade e segurança;Atuar em ambiente AWS, contribuindo com\n deploy, monitoramento e troubleshooting.Requisitos e qualificações\n\n\n\n Experiência sólida com .NET 7/8, SQL Server e\n desenvolvimento de APIs REST;\n Experiência com AWS (ECS, SQS, SNS, DynamoDB,\n S3 e serviços relacionados);\n Vivência em arquitetura distribuída\n (microserviços, APIs e/ou eventos);\n Experiência com sistemas críticos e de alta\n disponibilidade;\n Experiência com sustentação (análise de\n incidentes, troubleshooting em produção);\n Experiência com implementação de regras de\n negócio complexas que exigem contigências e processamento transacional;\n Conhecimento em padrões de resiliência,\n idempotência e controle de consistência.Disponibilidade para atuar 3x/semana na Av. Paulista.\n\n\n\n\nRequisitos\nComportamentais\n\n\n\n\n Boa comunicação e relacionamento interpessoal;\n Proatividade e senso de dono;\n Capacidade de se adaptar em ambientes que\n mudam com muita frequência;\n Capacidade de se organizar e gerir o tempo e\n as tarefas;\n Trabalho em equipe e colaboração;\n\n\n\n\nDiferenciais\n\n\n\n\n Experiência prévia em sistemas de risco,\n crédito ou antifraude;\n Vivência no segmento bancário ou financeiro;\n Experiência com motores de decisão, regras ou\n scoring de risco;\n Conhecimento em integração com ferramentas\n antifraude (ex: motores externos);\n Conhecimento em observabilidade aplicada a\n fluxos críticos;\n Conhecimento em Open Search e/ou DataDog.\n\n\n\n\n\n\nInformações adicionaisSalário compatível com o mercado (CLT);Vale Refeição de R$ 1.173,26 /mês, sem desconto;Vale Alimentação de R$ 924,47/mês, sem desconto;13ª Cesta de Vale Alimentação de R$ 924,47 no final do ano;Plano de Saúde e Odontológico Bradesco, com abrangência Nacional e coparticipação, para você e seus dependentes;Auxílio Creche de R$ 697,14 para filhos de até 5 anos e 11 meses;Seguro de Vida em grupo, sem custo;Bolsa Auxílio Educação e Incentivo Profissional;Parceria com a Open English, para aprimoramento de inglês;Parceria com a Allya, plataforma online de descontos;Parceria com a Zenklub, plataforma online voltada para saúde mental;Parceria com a Wellhub (Antigo Gympass), cuidar da sua saúde e bem-estar fica mais fácil, com acesso a academias, estúdios e experiências que motivam você a se sentir melhor todos os dias;Participação nos Lucros e Resultados (PLR) - conforme convenção coletiva.",
+      "location": "São Paulo, São Paulo",
+      "modality": "Híbrido",
+      "contract": "CLT",
+      "publishedAt": "2026-09-09T18:56:15.647Z",
+      "id": "21ea63b7-35ed-40b4-81b3-42fc35af6777",
+      "source": "Gupy",
+      "level": "Sênior",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        ".NET",
+        "SQL Server",
+        "APIs REST",
+        "AWS"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.416Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "São Paulo, São Paulo",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://ouribank.gupy.io/job/eyJqb2JJZCI6MTI0NDc3MjgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI0NDc3MjgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Hitss | Desenvolvedor .NET",
+      "company": "Hitss Brasil",
+      "url": "https://globalhitss.gupy.io/job/eyJqb2JJZCI6MTI0MjAyNjMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Na Hitss, a inovação é o nosso combustível, a curiosidade é o nosso motor e o respeito pelo cliente é o nosso guia. Se você é movido pela paixão em criar soluções tecnológicas disruptivas, se busca constantemente desafios que ampliem os limites do possível e se acredita que colocar o cliente em primeiro lugar é a chave para o sucesso, então você está no lugar certo.Queremos pessoas que se destaquem, que pensem fora da caixa e estejam dispostas a desbravar novos horizontes. Aqui, cada ideia é valorizada, cada pergunta é incentivada e cada desafio é encarado como uma oportunidade de aprendizado e crescimento.Junte-se a nós e faça parte de uma cultura vibrante, onde a inovação é alimentada pela curiosidade incessante e onde o respeito pelo cliente permeia todas as nossas ações. Aqui, você terá a liberdade de explorar suas habilidades, colaborar com mentes brilhantes e transformar o futuro da tecnologia.Se você está pronto para fazer parte de uma empresa que acredita que o talento é a chave para o sucesso, envie seu currículo e junte-se à nossa equipe.Estamos ansiosos para conhecer você e impulsionar juntos a próxima geração de soluções tecnológicas.Venha ser um Hit!Responsabilidades e atribuiçõesDesenvolver e manter aplicações utilizando a plataforma .NET;Implementar e manter integrações com APIs e serviços externos;Escrever testes automatizados e participar de code reviews;Trabalhar em colaboração com equipes multidisciplinares (negócio, QA, design);Apoiar na definição de arquitetura e boas práticas de desenvolvimento.Requisitos e qualificaçõesRequisitos necessáriosEnsino superior completo (necessário estar em posse do diploma no processo);Experiência com .NET Framework e .NET Core (preferencialmente versão 6.0 ou superior);Experiência com tecnologias frontend, como JavaScript, React, Angular ou jQuery;Conhecimento sólido em bancos de dados relacionais, como Oracle, SQL Server ou PostgreSQL;Prática com testes unitários e atenção à qualidade do código;Familiaridade com controle de versionamento (ex: Git).Requisitos desejáveisConhecimento em NHibernate;Experiência prévia com ASP.NET WebForms;Atuação em projetos com ETL (Extração, Transformação e Carga de dados).Informações adicionaisQuer conhecer todas as nossas vagas? Acesse a nossa página:Hitss - Trabalhe Conoscohttps://globalhitss.gupy.io/Importante: Todas as nossas vagas são elegíveis para profissionais com deficiência, equidade de gênero e raça/ etnia.",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "Não especificado",
+      "publishedAt": "2026-09-03T20:01:59.045Z",
+      "id": "0a08c1ff-b861-4e1a-a1bb-49766a3fecf2",
+      "source": "Gupy",
+      "level": "Não especificado",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        ".NET",
+        "Angular",
+        "React",
+        "SQL Server",
+        "PostgreSQL",
+        "APIs REST",
+        "JavaScript",
+        "Git"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.417Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://globalhitss.gupy.io/job/eyJqb2JJZCI6MTI0MjAyNjMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTI0MjAyNjMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "DESENVOLVEDOR FULLSTACK .NET PL",
+      "company": "Stefanini Group",
+      "url": "https://stefanini.gupy.io/job/eyJqb2JJZCI6MTIzMTk4MDUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Experiência profissional consistente em desenvolvimento de software. Capacidade de atuar no desenvolvimento, manutenção e evolução de sistemas corporativos. Conhecimento de APIs REST, bancos de dados relacionais, SQL, Git e testes automatizados. Familiaridade com metodologias ágeis, como Scrum ou Kanban. Dependendo da equipe, experiência com tecnologias como Java, .NET, Node.js, React, Angular, cloud e microsserviços transformar requisitos de negócio em soluções técnicas. Investigar e corrigir problemas em produção. Participar de decisões de arquitetura e estimativas. Qualidade e segurança; Escrever código legível, reutilizável e documentado. Aplicar boas práticas de engenharia de software. Preocupar-se com desempenho, disponibilidade, segurança e proteção de dados. Ter atenção à LGPD, especialmente em sistemas que lidam com dados de clientes, contratos, veículos e pagamentos. Responsabilidades e atribuiçõesRequisitos e qualificaçõesInformações adicionais🍛 Vale-alimentação ou vale-refeição;👨🏼‍🎓 Desconto em cursos, universidades e instituições de idiomas;📚 Academia Stefanini — plataforma com cursos on-line, gratuitos, atualizados e com certificado;🗣 Mentoring;💉 Clube de vantagens para consultas e exames;🏥 Assistência médica;🦷 Assistência odontológica;💰 Clube de vantagens e descontos nos melhores estabelecimentos;🛫 Clube de viagens;🐶 Convênio para pets.",
+      "location": "Curitiba, Paraná",
+      "modality": "Híbrido",
+      "contract": "CLT",
+      "publishedAt": "2026-09-01T12:39:10.587Z",
+      "id": "5a92cb07-be51-45eb-beb8-a98dff3b1b88",
+      "source": "Gupy",
+      "level": "Não especificado",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        ".NET",
+        "Angular",
+        "React",
+        "APIs REST",
+        "Node.js",
+        "Java",
+        "Git"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.417Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Curitiba, Paraná",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://stefanini.gupy.io/job/eyJqb2JJZCI6MTIzMTk4MDUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTIzMTk4MDUsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor Back-end Pleno (.NET/ C#) - Vaga afirmativa PCD",
+      "company": "Aliare",
+      "url": "https://aliare.gupy.io/job/eyJqb2JJZCI6MTIwNzkyOTQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "A Aliare está entre as maiores empresas de software para o agronegócio do país. Nascemos no agro e somos especialistas em levar tecnologia para gestão de empresas e propriedades rurais.Estamos com nossos clientes, pra fazer o campo acontecer. Temos orgulho de ajudar a construir o presente e o futuro do agronegócio.Já pensou em trabalhar em um lugar incrível, com pessoas inovadoras e desafios para sua carreira, atuando com produtos digitais e inovadores em uma companhia que cresce a cada dia?! Procuramos um desenvolvedor com sólida experiência em .NET e Back-end, que tenha boa capacidade de aprendizado, iniciativa e vontade de construir soluções em conjunto com o time. Mais do que um especialista técnico, buscamos alguém que demonstre senso de dono, proatividade, colaboração e disposição para enfrentar desafios. A pessoa terá espaço para contribuir tecnicamente, propor melhorias e apoiar a evolução do time, atuando em um ambiente de constante crescimento e inovação.Responsabilidades e atribuiçõesDesenvolver, evoluir e manter APIs REST em C# (.NET), garantindo qualidade, segurança e bom desempenho das aplicações;Contribuir para a evolução da arquitetura de software, aplicando boas práticas como arquitetura em camadas, Clean Architecture e princípios de design orientado a domínio, conforme o contexto do produto;Implementar e manter a camada de persistência de dados, utilizando Entity Framework Core, incluindo modelagem, migrations e otimizações quando necessário;Trabalhar com bancos de dados relacionais (ex.: SQL Server), criando e ajustando queries, índices e garantindo a integridade dos dados;Desenvolver e manter testes automatizados (unitários e de integração), apoiando a qualidade e a confiabilidade do código;Aplicar boas práticas de engenharia de software, como SOLID, Clean Code, tratamento adequado de exceções e uso de logs;Utilizar Git no dia a dia, participando de code reviews e colaborando para a padronização e qualidade do código;Apoiar a containerização das aplicações utilizando Docker e docker-compose, contribuindo para ambientes de desenvolvimento e deploy;Colaborar com pipelines de CI/CD, participando da automação de builds, testes e deploys;Acompanhar e apoiar iniciativas de monitoramento e observabilidade, como logs e métricas de aplicação;Trabalhar de forma colaborativa com outros desenvolvedores, produto e áreas técnicas, contribuindo para a evolução contínua do sistema.Requisitos e qualificaçõesExperiência com C# e .NET Core / .NET 6+ no desenvolvimento de aplicações back-end.Experiência no desenvolvimento e manutenção de APIs REST utilizando ASP.NET Core.Conhecimento e experiência prática com Entity Framework Core, incluindo mapeamentos, migrations e atenção à performance.Experiência com bancos de dados relacionais (ex.: SQL Server ou similares), envolvendo: Modelagem de dados, Escrita de queries e Uso de índices e controle transacional;Conhecimento em arquitetura de software, aplicando padrões como arquitetura em camadas, Clean Architecture, DDD em nível prático ou conceitos de CQRS, conforme o contexto.Experiência com testes automatizados, como testes unitários e/ou de integração (xUnit, NUnit, MSTest ou similares).Experiência no uso de Git, com compreensão de boas práticas de versionamento e colaboração em equipe.Conhecimento prático em containerização com Docker, incluindo criação e uso de containers e docker-compose.Experiência ou vivência com pipelines de CI/CD, preferencialmente em ambientes como Azure DevOps.Aplicação de boas práticas de engenharia de software, incluindo SOLID, Clean Code, tratamento adequado de erros e uso de logs.Conhecimento em segurança de APIs, como autenticação e autorização com JWT ou OAuth2, além de noções das recomendações OWASP.Atribuições Complementares (Desejáveis):Integrar soluções de mensageria (ex.: RabbitMQ, Kafka) para comunicação assíncrona e processamento distribuído;Apoiar a adoção e uso de serviços em Cloud Azure, considerando boas práticas de custo, segurança e escalabilidade;Informações adicionaisO que a Aliare proporciona?!Um time integrado e preparado para novos desafios, que atua com credibilidade e transparência, com objetivo de evoluirmos de forma contínua para facilitar o trabalho de quem alimenta o mundo. Priorizando sempre em nossas ações a ética, o relacionamento, a realização, o comprometimento e inovação.🩺 Plano de Saúde Nacional;🦷 Plano Odontológico Nacional;💖 Seguro de Vida;🏋️‍♂️ Gympass;😋Vale Flexível, Alimentação/Refeição;🚌 Vale Transporte;🚗 Auxílio Deslocamento/ Home Office;📚 Universidade Corporativa;👩‍🎓 Auxílio Educação;🥇 Premiação por atingimento de resultado anuais;🤝Bônus por Indicação;🧧 Premiação por tempo de casa;👶 Presente aos filhos recém-nascidos dos #Aliados;🎁 Presente exclusivo no seu aniversário;🏡 Em nossas unidades, você vai encontrar um ambiente super legal, com sala de jogos, sala de descanso, cozinha equipada, lanche da tarde e, claro que não poderia faltar, aquele café quentinho ☕.",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "CLT",
+      "publishedAt": "2026-08-21T00:25:05.324Z",
+      "id": "6cff6e36-725a-4d7e-b51c-104e1870bf23",
+      "source": "Gupy",
+      "level": "Pleno",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "ASP.NET Core",
+        "SQL Server",
+        "Entity Framework",
+        "APIs REST",
+        "Docker",
+        "Git",
+        "Azure"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.418Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://aliare.gupy.io/job/eyJqb2JJZCI6MTIwNzkyOTQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTIwNzkyOTQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor Back-end .NET Pleno",
+      "company": "Hyperativa",
+      "url": "https://hyperativa.gupy.io/job/eyJqb2JJZCI6MTIwMjc3NjEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Aqui na Hyperativa acreditamos que inovar é possível! Por isso, promovemos sempre as melhores soluções para clientes e parceiros em projetos de CRM e promoções. Com nosso certificado PCI Compliance, reforçamos nossa responsabilidade com a segurança, agilidade e criatividade em todos os jobs!Procuramos pessoas que queiram aprender e que sejam criativas. Estimulamos e valorizamos a transparência, a troca de experiências e a entrega de projetos para garantir um ambiente leve e compreensivo.Venha fazer parte de um time diverso que valoriza o diálogo e que a todo momento busca formas de modernizar e garantir mais cases de sucesso!#VENHASERHYPEREstamos buscando um Desenvolvedor Back-end .NET para atuar no desenvolvimento de APIs e serviços de alta disponibilidade utilizados em operações de promoções digitais, sorteios, campanhas de incentivo e cashback.O profissional fará parte de times de desenvolvimento que atendem múltiplos clientes do setor financeiro.\n\nResponsabilidades e atribuiçõesDesenvolver, evoluir e manter APIs e serviços back-end utilizando .NET Core 8+.Realizar manutenções pontuais em componentes legados em .NET Framework 4.8 e ASP .NET.Implementar regras de negócio seguindo princípios de DDD e boas práticas de arquitetura.Desenvolver integrações entre sistemas internos e externos, garantindo performance, seurança e confiabilidade.Trabalhar com SQL Server, utilizando procedures e boas práticas de acesso a dados (Dapper).Apoiar o time na investigação e correção de incidentes, mantendo os níveis de qualidade esperados.Seguir padrões de segurança aplicados a indústria de cartões de credito (PCI).\n\nRequisitos e qualificaçõesExperiência com C# e .NET Core (versões modernas).Vivência com desenvolvimento de APIs REST e princípios de arquitetura orientada a domínio.Experiência com Dapper e SQL Server (procedures).Versionamento com Git (Azure DevOps).Conhecimentos de segurança: JWT e OAuth2, secure coding e fundamentos OWASP.Inglês AvançadoDiferenciaisExperiência com mensageria: RabbitMQ e Cloud Tasks (GCP).Experiência com cache: Redis.Conhecimentos em Docker e Kubernetes.Familiaridade com ambientes cloud (GCP/AWS).Conceitos de atuação com mTLS e MLE (Message Level Encryption).Otimização de performance em consultas SQL.Conhecimento intermediário em programação front-end (SPA)\n\n\n\nInformações adicionais• Clima agradável, aprendizado constante e desafios diários;• Participação ativa nas decisões;• Transparência nos direcionamentos da empresa;• Home Office por prazo indeterminado;\n\n\n• Seguro de Vida em grupo;• Meio período off de aniversário;",
+      "location": "Localização não informada",
+      "modality": "Remoto",
+      "contract": "CLT",
+      "publishedAt": "2026-08-10T18:26:49.377Z",
+      "id": "ebff1393-ee27-4028-84c7-899641dca103",
+      "source": "Gupy",
+      "level": "Pleno",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "SQL Server",
+        "APIs REST",
+        "Docker",
+        "Git",
+        "Azure",
+        "AWS"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.419Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Localização não informada",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://hyperativa.gupy.io/job/eyJqb2JJZCI6MTIwMjc3NjEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTIwMjc3NjEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor(a) C# / .NET",
+      "company": "Grupo Herval",
+      "url": "https://grupoherval.gupy.io/job/eyJqb2JJZCI6MTE4NDE0NjQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Se o que te move é construir com autonomia de verdade, trabalhar com tecnologia de ponta e ver o que você cria chegando ao negócio em dias (não em trimestres), a gente precisa conversar.Estamos reinventando a forma como desenvolvemos software dentro de um dos maiores grupos do Rio Grande do Sul e queremos gente que curta estar nesse tipo de jornada.PORQUE ESSA VAGA É DIFERENTE?Aqui o desenvolvedor não é uma engrenagem que recebe tarefa pronta: você fará parte de todo o processo. Prototipa, valida, implementa, testa e acompanha em produção. Do início ao fim. Mas autonomia, para nós, não é jogar a responsabilidade toda no seu colo. É o contrário: a empresa está apostando pesado no futuro e criando as condições para o time brilhar — direção clara, ferramentas de ponta e liberdade para decidir o \"como\". Você não está sozinho reinventando a roda; você faz parte de um movimento que a companhia inteira está comprando. Não trabalhamos empurrando cards num sprint fechado... Trabalhamos no que realmente faz diferença para o negócio agora e você tem autonomia para puxar a próxima prioridade que gera mais impacto. Menos cerimônia, mais entrega.IA DE VERDADE, COM A EMPRESA JUNTO:Aqui a IA não é buzzword de slide, é o centro do jogo. Usamos as principais ferramentas de IA da atualidade no dia a dia, construímos produtos com IA embarcada em modelo de agentes, e sabemos que é um cenário que muda toda semana. E é justamente por isso que a empresa investe de forma séria e estruturada nisso, com gente dedicada a estudar, testar e levar IA a todos os níveis da operação. Ou seja: não esperamos que você descubra tudo sozinho. Você entra num ambiente que já está se movendo nessa direção e que quer te dar espaço (e apoio) para crescer junto com a inovação.Grande oportunidade para atuação como Desenvolvedor(a) C#/.NET Pleno ou Sênior em nosso time de TI, na cidade de Dois Irmãos/RS. Venha fazer parte da equipe do Grupo Herval!Responsabilidades e atribuiçõesCOMO É O DIA A DIA?Você participa do todo, não de um pedaço isolado: acompanha a solução de ponta a ponta e enxerga o resultado do próprio trabalho. Autonomia real, com impacto visível e rápido.Fluxo contínuo por priorização de impacto, não por sprints engessados. A gente entrega, aprende e ajusta rápido.Voz direta com quem decide: estrutura enxuta, sem camadas que diluem sua influência sobre arquitetura, técnica e negócio.IA como aliada constante, para acelerar código, resolver problemas e construir coisas que antes não eram possíveis.VOCÊ VAI AMAR SE...Se sente em casa em cenários em construção, onde nem tudo está definido, e gosta de ajudar a definir.É movido a aprender e quer estar na ponta da tecnologia, principalmente com IA.É um(a) desenvolvedor(a) que apoia decisões de arquitetura, técnicas e de negócio, não só escreve código, pensa a solução.Tem iniciativa e prospera com liberdade e apoio, em vez de microgerenciamento.O QUE COLOCAMOS NA MESA:A solidez do Grupo Herval: a estabilidade de uma empresa grande e consolidada, com um ambiente de tech que se move como startup.Investimento real em IA e aprendizado: ferramentas de ponta e uma cultura que estuda, testa e aplica IA de verdade. Você cresce junto com a tecnologia, e com a empresa remando a favor.Voz e influência: sua opinião técnica pesa nas decisões, de arquitetura a negócio.Requisitos e qualificaçõesExperiência sólida com C#, .NET, APIs REST e banco de dados SQL;Código limpo, organizado e padronizado (SOLID, clean code, padrões de projeto);Capacidade de entender projetos \"fim a fim\", técnica e funcionalmente;Domínio de ferramentas de desenvolvimento (IDE, Git, SQL);Conhecimento em debug, troubleshooting e sustentação evolutiva;Graduação completa ou andamento em Análise e Desenvolvimento de Sistemas, Ciência da Computação Engenharia de Software ou áreas afins;Disponibilidade para atuar 100% presencial em Dois Irmãos/RS.SERÁ CONSIDERADO UM DIFERENCIAL:ASP.NET Core, Entity Framework Core, microserviços ou Docker;Testes automatizados;Noções de front-end (React ou Angular);Vivência com análise de requisitos e desenho de soluções.PLENO OU SÊNIOR? Estamos com vagas para os dois níveis:Pleno: você atua com autonomia no ciclo completo de C#/.NET + SQL, entregando soluções fim a fim com qualidade.Sênior: além disso, você é referência técnica, puxa decisões de arquitetura, orienta escolhas de negócio e ajuda a elevar o time.Não sabe em qual se encaixa? Candidate-se mesmo assim. A gente conversa.Informações adicionaisAQUI VAI UMA DICA: Procuramos por alguém que tenha o protagonismo na veia, que adore debater e buscar maneiras de ajudar a empresa e colaboradores a evoluir sempre. Que seja capaz de tomar decisões baseadas em análises e discussões, que esteja sempre de braços abertos a compartilhar o que sabe e a aprender com todo mundo.O QUE OFERECEMOS:Descontos incríveis através da Associação de Funcionários (parcerias na área comercial, saúde, bem-estar e educacional).Wellhub (antigo Gympass) para manter o corpo ativo e a disposição nas alturas!Ambulatório completo: atendimento clínico, dentista, psicólogo, quiropraxista e fisioterapeuta para cuidar de você de ponta a ponta! Plataforma de atendimento psicológico para fortalecer a mente e o coração!Refeição no local, porque sabor e praticidade são essenciais!Vale-alimentação, energia e bem-estar a cada refeição!Vale-transporte/fretado para facilitar a vida no trajeto! E/ou estacionamento no local, para uma chegada tranquila e sem stress!Plataforma de Educação Corporativa para estimular o aprendizado constante!Canal exclusivo para colaboradores com descontos especiais nas empresas do Grupo Herval.Plano de Telefonia com valores atrativos, para estar sempre conectado! Valorização do crescimento profissional com a plataforma de Oportunidades Internas. INFORMAÇÕES ADICIONAIS: Modalidade: 100% presencial em Dois Irmãos/RS - faz parte da nossa cultura hands-on de construir junto, no mesmo ambiente, decidindo rápido.Horário da Jornada: Segunda a quinta-feira das 07h55 às 17h55 e sexta-feira das 07h55 às 16h55.Curtiu? Então vem construir com a gente. Candidate-se e mostre o que você já tirou do papel a gente valoriza mais o que você faz do que a lista de palavras-chave no seu currículo.*O Grupo Herval busca valorizar a diversidade e está aberto a receber pessoas com quaisquer deficiências, etnia, gênero, orientação sexual, geração e diferentes mindsets.",
+      "location": "Dois Irmãos, Rio Grande do Sul",
+      "modality": "Presencial",
+      "contract": "CLT",
+      "publishedAt": "2026-07-28T12:07:18.929Z",
+      "id": "5bf6046e-c467-4870-8c74-b38ceab0d24d",
+      "source": "Gupy",
+      "level": "Não especificado",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "ASP.NET Core",
+        "Angular",
+        "React",
+        "Entity Framework",
+        "APIs REST",
+        "Docker",
+        "Git"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.421Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Dois Irmãos, Rio Grande do Sul",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://grupoherval.gupy.io/job/eyJqb2JJZCI6MTE4NDE0NjQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTE4NDE0NjQsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor II - .Net e Angular | B4B.tech",
+      "company": "Grupo Autoglass Tech",
+      "url": "https://autoglasstech.gupy.io/job/eyJqb2JJZCI6MTEzNzI5ODMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Buscamos um profissional que trabalhe no desenvolvimento dos programas internos, efetue correções, manutenções e testes, esclareça dúvidas, ajude usuários na utilização do sistema e busque o aprimoramento contínuo na tecnologia de desenvolvimento vigente na empresa. Se você pensa fora da caixa, tem veia de inovação e facilidade de construir relacionamentos, aqui é o seu lugar! Candidate-se hoje!Responsabilidades e atribuiçõesAnalisar demandas técnicas, propondo soluções de software estruturadas e viáveis;Implementar funcionalidades e manutenções de maior complexidade em sistemas .NET e Angular;Realizar refatoração e otimização de código para garantir qualidade, performance e escalabilidade;Automatizar tarefas e processos recorrentes utilizando scripts ou lambdas;Criar e executar testes unitários e integrados;Apoiar integrações utilizando Apache Kafka, SQS e S3;Elaborar documentação técnica e funcional para suporte às soluções desenvolvidas;Apoiar colegas de equipe em problemas técnicos e atuar em incidentes críticos de forma colaborativa;Contribuir para a melhoria contínua dos sistemas e processos de desenvolvimento;Executar outras atividades correlatas.Requisitos e qualificaçõesEnsino superior concluído ou em andamento em áreas de Tecnologia da Informação;Experiência com desenvolvimento de software;Conhecimento em .NET Core;Conhecimento em SQL;Conhecimento em Angular (HTML, CSS, TypeScript, JavaScript);Conhecimento em NHibernate e Dapper;Conhecimento em serviços de cloud AWS ou semelhantesInformações adicionais\nO que o Grupo Autoglass proporciona? Para cuidar da sua saúde física e mental: 🩺 Plano de saúde sem mensalidade para você e seus dependentes;🦷 Plano odontológico opcional extensivo a dependentes;💙 Atendimento psicológico; 🤰🏻 Programa da Gestante com licença maternidade estendida; 🏋️‍ Wellhub (Desconto em academias). Para apoiar seu dia a dia: 🚌 Vale-transporte; 🛒 Vale Refeição ou Alimentação.😎 Oportunidade de trabalhar e trocar conhecimentos diários com um time incrível e acolhedor; 🤑 Allya: Aplicativo com descontos em diversos estabelecimentos e serviços do dia a dia;💙 Ah! Por aqui, comemoramos o Dia do Colaborador do Grupo Autoglass enviando um mimo a todos os colaboradores. Para desenvolver sua carreira: 🚀 Oportunidade de crescimento profissional;🚀 Cultura de feedback e desenvolvimento; 🚀 Acesso ao Portal de Educação Corporativa do Grupo Autoglass com mais de 200 cursos gratuitos e com emissão de certificado;🚀Um ambiente de trabalho altamente colaborativo e desafiador. No Grupo Autoglass, você encontrará oportunidade de crescimento e uma cultura de inovação e melhoria contínua muito forte!Para melhorar o seu dia no trabalho presencial: ☕ Café da manhã e da tarde;💆‍️ Momento relax: Massagem relaxante no seu posto de trabalho;🎮 Área anexa na sede com sala gamer, cafeteria, barbearia, salão de beleza e muito mais!Para melhorar o seu dia no trabalho remoto: 💰 Auxílio Home Office;💻 Enviamos máquina e todos os equipamentos para sua casa;💺 Se necessário, equipamos a sua casa com móveis para o Home Office.Vem ser Grupo Autoglass!",
+      "location": "Vila Velha, Espírito Santo",
+      "modality": "Híbrido",
+      "contract": "CLT",
+      "publishedAt": "2026-05-28T19:07:02.887Z",
+      "id": "5c754195-879f-420d-aee9-ea461d1c4f4b",
+      "source": "Gupy",
+      "level": "Não especificado",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        ".NET",
+        "Angular",
+        "TypeScript",
+        "JavaScript",
+        "AWS",
+        "HTML",
+        "CSS"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.422Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Vila Velha, Espírito Santo",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://autoglasstech.gupy.io/job/eyJqb2JJZCI6MTEzNzI5ODMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTEzNzI5ODMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Banco de Talentos - Desenvolvedores (Full Stack – Java / .NET / React / Node.js)",
+      "company": "Grupo SysMap",
+      "url": "https://gruposysmap.gupy.io/job/eyJqb2JJZCI6MTA5NTY0MDEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "description": "Você é apaixonado(a) por tecnologia e inovação? 💡 No Grupo SysMap – que reúne SysMap Solutions, TriggoLabs e triggo.ai – acreditamos que grandes resultados nascem de pessoas incríveis. Somos uma empresa brasileira de tecnologia que, desde 1999, ajuda organizações a superar desafios complexos e acelerar sua transformação digitalNossa atuação abrange diversos segmentos, como Telecom, Varejo, Educação, Financeiro, Indústria/Cosméticos e Energia, sempre com foco em soluções inovadoras e de alto impacto. 👉 Candidate-se agora e construa o futuro da tecnologia conosco!Responsabilidades e atribuiçõesDesenvolver, manter e evoluir aplicações web e APIs, contribuindo para soluções escaláveis e de alta qualidade.Implementar funcionalidades no backend utilizando tecnologias como Java, .NET, Node.js ou outras stacks utilizadas pela empresa.Desenvolver e aprimorar interfaces web modernas utilizando frameworks e linguagens como React, JavaScript, TypeScript ou tecnologias similares.Colaborar na revisão de código, seguindo boas práticas de desenvolvimento, padrões de arquitetura e qualidade de software.Trabalhar em conjunto com times multidisciplinares, como produto, design e engenharia, contribuindo para a entrega de soluções digitais eficientes.Apoiar iniciativas de melhoria contínua relacionadas à arquitetura, performance, segurança e manutenção das aplicações.Participar de cerimônias e práticas de metodologias ágeis, colaborando com o planejamento e evolução das entregas.Requisitos e qualificaçõesRequisitos obrigatóriosExperiência com desenvolvimento backend utilizando Java, .NET (C#) ou Node.js.Experiência com React ou outro framework moderno de frontend.Conhecimento em JavaScript ou TypeScript.Experiência com APIs REST.Conhecimento em Git para controle de versão.Experiência com metodologias ágeis (Scrum ou Kanban).DiferenciaisExperiência com arquitetura de microsserviços.Experiência com Docker ou containers.Experiência com cloud computing (AWS, Azure ou GCP).Conhecimento em CI/CD.Experiência com testes automatizados (unitários ou integração).Informações adicionais",
+      "location": "São Paulo, São Paulo",
+      "modality": "Híbrido",
+      "contract": "Não especificado",
+      "publishedAt": "2026-03-09T12:59:38.942Z",
+      "id": "ac4bd755-d311-498e-9faa-f27992fc0cf9",
+      "source": "Gupy",
+      "level": "Não especificado",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "React",
+        "APIs REST",
+        "TypeScript",
+        "JavaScript",
+        "Node.js",
+        "Java",
+        "Docker",
+        "Git",
+        "Azure",
+        "AWS"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.422Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "São Paulo, São Paulo",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://gruposysmap.gupy.io/job/eyJqb2JJZCI6MTA5NTY0MDEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6MTA5NTY0MDEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    },
+    {
+      "title": "Desenvolvedor .NET PL/SR",
+      "company": "Ewave do Brasil",
+      "url": "https://vagasewave.gupy.io/job/eyJqb2JJZCI6Mzk4NjgzMiwic291cmNlIjoiZ3VweV9wb3J0YWwifQ==?jobBoardSource=gupy_portal",
+      "description": "Venha trabalhar em uma empresa que administra o Terminal de Contêineres de Paranaguá – o maior terminal de contêineres da América do Sul, empresa que atua como uma plataforma de logística integrada, fornecendo soluções completas para importadores e exportadores.Responsabilidades e atribuiçõesDesenvolvimento de aplicações internas e externas.Aplicações em microsserviços em .Net Core 2.0/3.1, utilizando MongoDB para armazenamento, RabbitMQ e Oracle Advanced Queue para orquestração de mensagens e hospedagem em Kubernetes.Será responsável pelo desenvolvimento de aplicações com foco em logistica, bem como integrações com sistemas internos e externos, desenvolvimento em Java e Apis de sistemas como WMS e Receita Federal, e também o desenvolvimento de Webservices SOAP para integração direta com o ERP dos clientes. Estruturação da arquitetura e do desenvolvimento das Automações com RPA e aplicações, automatizando processos como validações de documento e solicitações de clientes de acordo com os SLA's definidos.Requisitos e qualificaçõesGraduação completa em cursos relacionados a área de Tecnologia.Experiência em .NET e .NET Core, C#, Angular, Microsserviços, desenvolvimento e manutenção de APIs.Experiência com Kubernetes(serviços distribuídos), Rabbit MQ será um diferencial. Informações adicionaisBenefícios Ewave p/ PJ· Gympass· Inglês in-companyBenefícios Ewave p/ cooperado (SOMA)· Plano de Saúde - Sulamérica· Plano Odontológico· Seguro de Vida· Inglês in-company",
+      "location": "Curitiba, Paraná",
+      "modality": "Presencial",
+      "contract": "CLT",
+      "publishedAt": "2023-01-26T20:30:24.762Z",
+      "id": "d34c3af7-06b2-4963-aab5-664c999533a1",
+      "source": "Gupy",
+      "level": "Sênior",
+      "requiredYears": null,
+      "salaryMin": null,
+      "salaryMax": null,
+      "currency": "",
+      "requiredSkills": [],
+      "skills": [
+        "C#",
+        ".NET",
+        "Angular",
+        "APIs REST",
+        "Java"
+      ],
+      "discoveredAt": "2026-10-19T12:53:35.423Z",
+      "saved": false,
+      "discarded": false,
+      "demo": false,
+      "availability": "unknown",
+      "geographicEligibility": "Curitiba, Paraná",
+      "origins": [
+        {
+          "source": "portal",
+          "url": "https://vagasewave.gupy.io/job/eyJqb2JJZCI6Mzk4NjgzMiwic291cmNlIjoiZ3VweV9wb3J0YWwifQ==?jobBoardSource=gupy_portal",
+          "id": "gupy:/job/eyJqb2JJZCI6Mzk4NjgzMiwic291cmNlIjoiZ3VweV9wb3J0YWwifQ=="
+        }
+      ],
+      "match": {
+        "score": 0,
+        "strengths": [],
+        "gaps": [],
+        "blockers": [],
+        "matchedSkills": [],
+        "missingSkills": [],
+        "radar": false,
+        "explanation": ""
+      }
+    }
+  ],
+  "actualSubmissions": 0,
+  "detailChecks": [
+    {
+      "title": "Pessoa Desenvolvedora Backend C#/.NET - Pleno",
+      "company": "SmartTravel",
+      "httpStatus": 200,
+      "url": "https://smart.gupy.io/job/eyJqb2JJZCI6MTI1ODI2NDksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "modality": "Remoto",
+      "level": "Pleno",
+      "description": "Você é um(a) profissional dinâmico(a), focado(a) em resultados e com vontade de transformar a mobilidade no Brasil?A Smart Travel, especialista em ecossistemas digitais do Grupo Guanabara, está em busca de talentos para acelerar nossa evolução. Unimos a precisão do setor aéreo à força do transporte rodoviário para criar soluções de ponta que conectam pessoas e empresas.Aqui, sua atuação é motor de eficiência, inteligência e inovação. 🚀🛣️O desafio:Buscamos uma pessoa Desenvolvedora Backend (NET/C#) Pleno para integrar o time da SmartTravel, com foco em nosso produto SmartBus: plataforma que gerencia a venda de passagens de ônibus para múltiplas operadoras no Brasil, entre elas o Grupo Guanabara. O foco principal da vaga será o desenvolvimento e a manutenção do monólito core do sistema, com oportunidade de atuar também em novos micro serviços e em soluções de arquitetura baseada em eventos utilizadas para evoluir a plataforma.\n\nResponsabilidades e atribuiçõesDesenvolver e manter funcionalidades do monólito principal em C#/.NET;Participar da evolução para micro serviços e arquiteturas baseadas em eventos;Diagnosticar e resolver incidentes e bugs em produção;Escrever testes automatizados (unitários e de integração) para garantir a qualidade das entregas;Instrumentar funcionalidades com logs, métricas e alertas para observabilidade em produção;Participar de code reviews e aplicar boas práticas de desenvolvimento;Colaborar com QA, DBA e demais desenvolvedores na entrega de funcionalidades.Requisitos e qualificaçõesEnsino superior completo ou em andamento em Ciência da Computação, Engenharia de Software, Sistemas de Informação ou áreas correlatas (experiência prática equivalente também é considerada);Experiência de 1 a 3 anos atuando com desenvolvimento backend;Experiência sólida comprovada em C# e .NET;Conhecimento de bancos de dados relacionais;Experiência desenvolvendo e consumindo APIs REST;Experiência escrevendo testes automatizados (unitários e de integração);Conhecimento básico de observabilidade (logs, métricas, alertas) para diagnosticar problemas em produção;Uso de controle de versão com Git.Desejáveis:Experiência com Angular e Golang; Conhecimento de bancos de dados não relacionais;Conhecimento de arquiteturas de microsserviços;Conhecimento de arquiteturas baseada em eventos;Conhecimento de pipelines de CI/CD (ex: GitHub Actions) e capacidade de ajustar pipelines existentes.Informações adicionaisPensando no seu bem-estar, oferecemos:🧾 Modelo PJ;💰 13° nota;🌴 Recesso remunerado (30 dias)💻 Envio de equipamentos;💳 Vale Refeição e Mobilidade em cartão flexível;🩺 Assistência Médica com coparticipação (SulAmérica);🧘🏾‍♂️ Acesso ao ecossistema da TotaPass (totalmind, totalfitness e totalnutri);🎂 Day Off no mês de aniversário;🚍 Gratuidade nas passagens do Grupo Guanabara;🏆 Reconhecimento por resultado (PLR).Além disso, pensando na sua experiência, contamos com:🤝 Ambiente colaborativo e orientado por dados;📚 Aprendizado contínuo e desafios reais de negócio;👕 No dress code."
+    }
+  ]
+}

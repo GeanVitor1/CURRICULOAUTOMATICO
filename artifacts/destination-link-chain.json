@@ -1,0 +1,94 @@
+{
+  "at": "2026-10-16T20:06:03.805Z",
+  "environment": "Consultas públicas reais; nenhum currículo enviado",
+  "search": "Somente links publicados; sem indexador nem IA",
+  "original": {
+    "url": "https://www.infojobs.com.br/vaga-de-desenvolvedora-junior-net,-react-ia-em-__12110291.aspx",
+    "title": "Desenvolvedor(A) Júnior (.NET, React E IA)",
+    "company": "King of Languages",
+    "descriptionHash": "712f377ac114d9d49d90d6060d4c21f7503e92fe0eb9503e7d34ac616573d362"
+  },
+  "destinations": [
+    {
+      "id": "e08ebafd08ea2a8f7f78ae3d",
+      "url": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+      "platform": "pandape",
+      "publicationUrl": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+      "verifiedAt": "2026-10-16T20:06:03.798Z",
+      "expiresAt": "2026-10-17T20:06:03.798Z",
+      "confidence": 100,
+      "evidence": [
+        "Empresa coincide.",
+        "Similaridade de título: 100%; descrição: 100%.",
+        "Publicação lida no destino público.",
+        "Link de candidatura encontrado na publicação."
+      ],
+      "company": "KING OF LANGUAGES",
+      "state": "verified",
+      "formFound": false,
+      "method": "assisted"
+    }
+  ],
+  "resolution": {
+    "state": "verified",
+    "checkedAt": "2026-10-16T20:05:58.445Z",
+    "retryAt": "2026-10-16T21:05:58.445Z",
+    "complete": false,
+    "consulted": [
+      {
+        "source": "catalog",
+        "outcome": "Publicações comparadas por empresa, identificadores e conteúdo.",
+        "count": 0
+      },
+      {
+        "source": "https://www.infojobs.com.br/vaga-de-desenvolvedora-junior-net,-react-ia-em-__12110291.aspx",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      },
+      {
+        "source": "https://www.infojobs.com.br/empresa-king-of-languages__-10228058.aspx",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      },
+      {
+        "source": "https://kingoflanguages.com.br/",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      },
+      {
+        "source": "https://kingoflanguages.pandape.infojobs.com.br/",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      },
+      {
+        "source": "https://www.infojobs.com.br/vaga-de-desenvolvedor-junior-net-react-ia-em-__12110291.aspx",
+        "outcome": "Página lida; identidade/formulário ainda não comprovados.",
+        "count": 0
+      },
+      {
+        "source": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+        "outcome": "Correspondência verificada.",
+        "count": 1
+      },
+      {
+        "source": "public_search",
+        "outcome": "Mecanismo de busca não configurado.",
+        "count": 0
+      }
+    ],
+    "matches": [
+      {
+        "url": "https://kingoflanguages.pandape.infojobs.com.br/Detail/3817540",
+        "confidence": 100,
+        "verified": true,
+        "reasons": [
+          "Empresa coincide.",
+          "Similaridade de título: 100%; descrição: 100%."
+        ]
+      }
+    ],
+    "message": "Destino independente identificado; envio depende do formulário e das permissões."
+  },
+  "feeds": [],
+  "submissions": 0
+}

@@ -1,0 +1,143 @@
+{
+  "at": "2026-10-23T14:19:52.965Z",
+  "source": "Vercel runtime logs read via authenticated CLI",
+  "query": {
+    "since": "2026-10-23T13:50:00Z",
+    "until": "2026-10-23T13:55:00Z"
+  },
+  "events": [
+    {
+      "at": "2026-10-23T13:51:41.716Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bv445-1792763497737-f8d1fa7c43b8",
+      "path": "/api/routine/process",
+      "event": "routine_process_requested"
+    },
+    {
+      "at": "2026-10-23T13:51:51.706Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bv445-1792763497737-f8d1fa7c43b8",
+      "path": "/api/routine/process",
+      "event": "automation_transition",
+      "jobId": "9c38b813-355a-4fad-9582-8a87397e3cfb",
+      "correlationId": "445eda1b-8141-4157-b89b-fa3f395a923b",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation",
+      "stage": "compatibility",
+      "code": "mandatory_requirement_blocked"
+    },
+    {
+      "at": "2026-10-23T13:51:51.750Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bv445-1792763497737-f8d1fa7c43b8",
+      "path": "/api/routine/process",
+      "event": "automation_transition",
+      "jobId": "7a116df0-576a-4010-8f05-eaeaae47deb1",
+      "correlationId": "f9f7e288-03e7-4569-ad2b-4c2fb8f18c3e",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation",
+      "stage": "compatibility",
+      "code": "mandatory_requirement_blocked"
+    },
+    {
+      "at": "2026-10-23T13:51:53.129Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bv445-1792763497737-f8d1fa7c43b8",
+      "path": "/api/routine/process",
+      "event": "automation_transition",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation",
+      "stage": "preparation",
+      "code": "automatic_queued"
+    },
+    {
+      "at": "2026-10-23T13:52:02.907Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bv445-1792763497737-f8d1fa7c43b8",
+      "path": "/api/routine/process",
+      "event": "automation_transition",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation",
+      "stage": "compatibility",
+      "code": "compatible"
+    },
+    {
+      "at": "2026-10-23T13:52:05.065Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bx42d-1792763521405-3f8fe9e7b9ca",
+      "path": "/api/submission-worker",
+      "event": "submission_queue_received",
+      "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+      "applicationId": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "messageId": "5u-1M1eB47K5ELudoSePFftcTHmfJ2ADgzy",
+      "deliveryCount": 1,
+      "topic": "empregatos-submissions",
+      "consumer": "api_Ssubmission-worker_Dmjs",
+      "revision": "576f1d8035f6aa8fea30bd1636cc78789cecc16862630623e575035721cc0e7c"
+    },
+    {
+      "at": "2026-10-23T13:52:19.004Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bv445-1792763497737-f8d1fa7c43b8",
+      "path": "/api/routine/process",
+      "event": "routine_process_completed",
+      "httpStatus": 200
+    },
+    {
+      "at": "2026-10-23T13:52:21.765Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bx42d-1792763521405-3f8fe9e7b9ca",
+      "path": "/api/submission-worker",
+      "event": "automation_transition",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation",
+      "stage": "submission",
+      "code": "executor_started"
+    },
+    {
+      "at": "2026-10-23T13:52:39.795Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bx42d-1792763521405-3f8fe9e7b9ca",
+      "path": "/api/submission-worker",
+      "event": "automation_transition",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation",
+      "stage": "confirmation",
+      "code": "result_unknown"
+    },
+    {
+      "at": "2026-10-23T13:52:40.673Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "w88zg-1792763558911-7d2dbf28d0f0",
+      "path": "/api/workspace",
+      "event": "automation_transition",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation",
+      "stage": "compatibility",
+      "code": "compatible"
+    },
+    {
+      "at": "2026-10-23T13:52:44.502Z",
+      "deploymentId": "dpl_5Gj1Tx3RL6zHMy82abDf2DLEn84K",
+      "requestId": "bx42d-1792763521405-3f8fe9e7b9ca",
+      "path": "/api/submission-worker",
+      "event": "automation_transition",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+      "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+      "origin": "user_triggered_automation",
+      "stage": "compatibility",
+      "code": "compatible"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-16T19:38:15.522Z",
+  "url": "https://kingoflanguages.pandape.infojobs.com.br/ApplyCT/3817540",
+  "fields": [
+    {
+      "type": "email",
+      "name": "Email",
+      "label": "E-mail",
+      "required": false
+    }
+  ],
+  "forms": [
+    {
+      "id": "",
+      "action": "/Apply"
+    }
+  ],
+  "tail": "PT\nIr para a lista de ofertas\nQual é o seu e-mail?\n\nInforme o e-mail que será usado para identificar sua candidatura.\n\nE-mail\nCONTINUAR\nPolítica de privacidade\nAviso Legal\nConsentimento de Cookies\nAjuda para candidatos\n\nWebsite de KING OF LANGUAGES\n\nDesenvolvido por\n© Pandapé, Ltda. Todos os direitos reservados.",
+  "dataEntered": false,
+  "submissions": 0
+}

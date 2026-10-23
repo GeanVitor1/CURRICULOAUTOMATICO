@@ -1,0 +1,424 @@
+{
+  "deploymentId": "dpl_E9e1P2P5tQDNddoddmxwrb6vZTT8",
+  "actualVercelQueueTransport": true,
+  "fictitiousOnly": true,
+  "realEmployerSubmissions": 0,
+  "workspaceId": "4b736a47-e026-47f0-8af1-993c608ca93d:live",
+  "checkedAt": "2026-10-23T12:36:55.130Z",
+  "receiver": {
+    "counts": {
+      "0": 1,
+      "1": 1,
+      "2": 1
+    },
+    "files": {
+      "0": "24b8d19ecceb5f38ffd599f1fa655a3020323688f190ad2b145756b96426ac84",
+      "1": "24b8d19ecceb5f38ffd599f1fa655a3020323688f190ad2b145756b96426ac84",
+      "2": "24b8d19ecceb5f38ffd599f1fa655a3020323688f190ad2b145756b96426ac84"
+    },
+    "candidates": {
+      "0": true,
+      "1": true,
+      "2": true
+    }
+  },
+  "tasks": [
+    {
+      "table": "discoveryTasks",
+      "items": [
+        {
+          "id": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+          "status": "completed",
+          "attempts": 1
+        }
+      ]
+    },
+    {
+      "table": "resolutionTasks",
+      "items": [
+        {
+          "id": "065399fc-2930-4cb2-926f-0f8ac61f9923",
+          "status": "completed",
+          "attempts": 1
+        }
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "origin": "user_triggered_automation",
+      "continuation": false,
+      "id": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+      "at": "2026-10-23T12:35:34.192Z",
+      "status": "completed",
+      "discovered": 2,
+      "processed": 2,
+      "errors": [],
+      "message": "2 novas oportunidades, sem duplicações. 3 registros publicados consultados.",
+      "searchSuggestions": []
+    }
+  ],
+  "jobs": [
+    {
+      "id": "0b8963ef-e793-426f-b251-cf978ce4765c",
+      "url": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/2",
+      "destinations": [
+        {
+          "id": "36fd7859c582520face8dfa5",
+          "url": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/2",
+          "platform": "company",
+          "publicationUrl": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/2",
+          "verifiedAt": "2026-10-23T12:35:34.543Z",
+          "expiresAt": "2026-10-24T12:35:34.543Z",
+          "confidence": 100,
+          "evidence": [
+            "Anúncio publicado no domínio oficial da empresa.",
+            "Formulário WP Jobs Board verificado."
+          ],
+          "company": "Empregatos Queues QA",
+          "state": "verified",
+          "formFound": true,
+          "method": "browser"
+        }
+      ],
+      "trace": {
+        "correlationId": "6fc2b3f1-de15-4e19-867c-4e2c53ef8ac3",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T12:35:34.997Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T12:35:35.007Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T12:35:35.316Z",
+            "stage": "preparation",
+            "code": "automatic_queued"
+          },
+          {
+            "at": "2026-10-23T12:35:38.253Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T12:35:46.464Z",
+            "stage": "submission",
+            "code": "executor_started"
+          },
+          {
+            "at": "2026-10-23T12:35:47.028Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T12:35:48.247Z",
+            "stage": "confirmation",
+            "code": "result_unknown"
+          },
+          {
+            "at": "2026-10-23T12:35:49.373Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          }
+        ],
+        "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513"
+      }
+    },
+    {
+      "id": "d05a8804-8157-4a92-b9cd-e4afd26a4e1b",
+      "url": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/1",
+      "destinations": [
+        {
+          "id": "92f4d0d8eb4017f563a88d43",
+          "url": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/1",
+          "platform": "company",
+          "publicationUrl": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/1",
+          "verifiedAt": "2026-10-23T12:35:34.513Z",
+          "expiresAt": "2026-10-24T12:35:34.513Z",
+          "confidence": 100,
+          "evidence": [
+            "Anúncio publicado no domínio oficial da empresa.",
+            "Formulário WP Jobs Board verificado."
+          ],
+          "company": "Empregatos Queues QA",
+          "state": "verified",
+          "formFound": true,
+          "method": "browser"
+        }
+      ],
+      "trace": {
+        "correlationId": "05ac3cee-8fed-452b-bffa-033975865c95",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T12:35:34.996Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T12:35:35.011Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T12:35:35.319Z",
+            "stage": "preparation",
+            "code": "automatic_queued"
+          },
+          {
+            "at": "2026-10-23T12:35:38.256Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T12:35:41.284Z",
+            "stage": "submission",
+            "code": "executor_started"
+          },
+          {
+            "at": "2026-10-23T12:35:41.722Z",
+            "stage": "confirmation",
+            "code": "receipt_verified"
+          },
+          {
+            "at": "2026-10-23T12:35:43.556Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          }
+        ],
+        "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513"
+      }
+    },
+    {
+      "id": "4e3540f4-d796-408b-af4f-28de322b8e60",
+      "url": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/0",
+      "destinations": [
+        {
+          "id": "2004315a83802d59cdaba5c2",
+          "url": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/0",
+          "platform": "company",
+          "publicationUrl": "https://sb-2kxnmwm8v405.vercel.run/99f8cab99cfdc957f82b82bbb6a0fb2fabb4f720df0b5812/job/0",
+          "verifiedAt": "2026-10-23T12:35:40.747Z",
+          "expiresAt": "2026-10-24T12:35:40.747Z",
+          "confidence": 100,
+          "evidence": [
+            "Identificador da publicação confirmado.",
+            "Empresa coincide.",
+            "Similaridade de título: 100%; descrição: 90%.",
+            "Publicação lida no destino público.",
+            "Formulário WP Jobs Board verificado."
+          ],
+          "company": "Empregatos Queues QA",
+          "state": "verified",
+          "formFound": true,
+          "method": "browser"
+        }
+      ],
+      "trace": {
+        "correlationId": "962a25f4-ba61-4b5f-868b-7b014f9962ba",
+        "origin": "user_triggered_automation",
+        "events": [
+          {
+            "at": "2026-10-23T12:35:34.998Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T12:35:35.013Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T12:35:42.989Z",
+            "stage": "destination",
+            "code": "public_form_verified"
+          },
+          {
+            "at": "2026-10-23T12:35:43.559Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T12:35:43.567Z",
+            "stage": "preparation",
+            "code": "automatic_queued"
+          },
+          {
+            "at": "2026-10-23T12:35:47.033Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T12:35:52.952Z",
+            "stage": "submission",
+            "code": "executor_started"
+          },
+          {
+            "at": "2026-10-23T12:35:53.332Z",
+            "stage": "confirmation",
+            "code": "receipt_verified"
+          },
+          {
+            "at": "2026-10-23T12:35:54.853Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          }
+        ],
+        "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513"
+      }
+    }
+  ],
+  "applications": [
+    {
+      "id": "4e285a3b-85fd-447e-8c89-31d3905f6143",
+      "jobId": "4e3540f4-d796-408b-af4f-28de322b8e60",
+      "status": "Enviada",
+      "receipt": "Formulário da empresa: Candidatura recebida [resposta bf45d9b7a17072dc]",
+      "execution": {
+        "correlationId": "962a25f4-ba61-4b5f-868b-7b014f9962ba",
+        "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "962a25f4-ba61-4b5f-868b-7b014f9962ba",
+          "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+          "origin": "user_triggered_automation",
+          "id": "b356f111-d796-41ae-8426-8076b9c64df6",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T12:35:52.951Z",
+          "outcome": "confirmed",
+          "finishedAt": "2026-10-23T12:35:53.332Z",
+          "receipt": "Formulário da empresa: Candidatura recebida [resposta bf45d9b7a17072dc]"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-23T12:35:43.567Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T12:35:43.567Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-23T12:35:52.952Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T12:35:53.333Z",
+          "actor": "Sistema",
+          "message": "Envio confirmado pela integração. Recibo: Formulário da empresa: Candidatura recebida [resposta bf45d9b7a17072dc]"
+        }
+      ]
+    },
+    {
+      "id": "3a0c4608-4517-4e38-add8-cae77f0160bf",
+      "jobId": "d05a8804-8157-4a92-b9cd-e4afd26a4e1b",
+      "status": "Enviada",
+      "receipt": "Formulário da empresa: Candidatura recebida [resposta 717e4539022a0218]",
+      "execution": {
+        "correlationId": "05ac3cee-8fed-452b-bffa-033975865c95",
+        "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "05ac3cee-8fed-452b-bffa-033975865c95",
+          "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+          "origin": "user_triggered_automation",
+          "id": "30ed62be-d30d-4471-b9a1-c975fbf685e5",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T12:35:41.284Z",
+          "outcome": "confirmed",
+          "finishedAt": "2026-10-23T12:35:41.722Z",
+          "receipt": "Formulário da empresa: Candidatura recebida [resposta 717e4539022a0218]"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-23T12:35:35.319Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T12:35:41.284Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T12:35:41.722Z",
+          "actor": "Sistema",
+          "message": "Envio confirmado pela integração. Recibo: Formulário da empresa: Candidatura recebida [resposta 717e4539022a0218]"
+        }
+      ]
+    },
+    {
+      "id": "5f6f0d53-55d6-4771-8964-fcdc9c7157d9",
+      "jobId": "0b8963ef-e793-426f-b251-cf978ce4765c",
+      "status": "Resultado desconhecido",
+      "receipt": null,
+      "execution": {
+        "correlationId": "6fc2b3f1-de15-4e19-867c-4e2c53ef8ac3",
+        "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "6fc2b3f1-de15-4e19-867c-4e2c53ef8ac3",
+          "runId": "de9a0f3c-9624-4280-b7ef-f3ee324e2513",
+          "origin": "user_triggered_automation",
+          "id": "e590a6ff-b0fc-4463-99e0-58575073336f",
+          "executor": "company_wp_jobs",
+          "startedAt": "2026-10-23T12:35:46.464Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T12:35:48.247Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-23T12:35:35.316Z",
+          "actor": "Sistema",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T12:35:46.465Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T12:35:48.247Z",
+          "actor": "Sistema",
+          "message": "O formulário retornou HTTP 503 após o envio. Confira antes de repetir."
+        }
+      ]
+    }
+  ],
+  "progress": {
+    "day": "2026-10-23",
+    "target": 5,
+    "sent": 2,
+    "usedToday": 3,
+    "remaining": 2,
+    "state": "waiting",
+    "message": "Os destinos das vagas disponíveis foram verificados. Ainda há saldo diário, mas nenhum outro envio foi liberado pelos formulários consultados.",
+    "updatedAt": "2026-10-23T12:35:55.445Z"
+  },
+  "quota": 3,
+  "confirmed": 2,
+  "assertions": {
+    "continuedPreparation": true,
+    "twoConfirmed": true,
+    "uncertainNotConfirmed": true,
+    "noDuplicates": true,
+    "captchaUntouched": true
+  }
+}

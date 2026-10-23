@@ -1,0 +1,21 @@
+import {Sandbox} from '@vercel/sandbox';
+import {readFile,writeFile} from 'node:fs/promises';
+import {homedir} from 'node:os';
+import {join} from 'node:path';
+import {randomBytes,randomUUID} from 'node:crypto';
+import dotenv from 'dotenv';
+const auth=JSON.parse(await readFile(join(homedir(),'AppData/Roaming/com.vercel.cli/Data/auth.json'),'utf8'));
+const p=JSON.parse(await readFile('.vercel/project.json','utf8'));
+const cloud=dotenv.parse(await readFile('.env.portal-cloud.local'));
+const sandbox=await Sandbox.create({token:auth.token,teamId:p.orgId,projectId:p.projectId,source:{type:'snapshot',snapshotId:cloud.PORTAL_CLOUD_SNAPSHOT_ID},persistent:false,resources:{vcpus:1},ports:[3005],timeout:1800000});
+const secret=randomBytes(24).toString('hex'),origin=sandbox.domain(3005),userId=randomUUID();
+await sandbox.writeFiles([{path:'/vercel/sandbox/receiver.mjs',content:await readFile('scripts/queue-controlled-receiver.mjs')}]);
+await sandbox.runCommand({cmd:'node',args:['/vercel/sandbox/receiver.mjs'],env:{QA_RECEIVER_SECRET:secret},detached:true});
+await writeFile('.data/queue-integration-private.json',JSON.stringify({sandboxName:sandbox.name,origin,secret,userId,workspaceId:`${userId}:live`,encryptionKey:randomBytes(32).toString('base64')}));
+// Read only: no credentials, file uploads, form filling, or application clicks.
+const prior=JSON.parse(await readFile('artifacts/eight-official-destinations-2026-10-23.json','utf8'));
+const urls=prior.results.map((r:any)=>r.apply?.url).filter(Boolean);
+await sandbox.writeFiles([{path:'/vercel/sandbox/portal-runtime/inspect-gupy.mjs',content:Buffer.from(`import{chromium}from'playwright';import{writeFile}from'node:fs/promises';const browser=await chromium.launch({headless:true});const out=[];for(const url of ${JSON.stringify(urls)}){try{const page=await browser.newPage();const r=await page.goto(url,{waitUntil:'networkidle',timeout:30000});out.push({url,finalUrl:page.url(),status:r?.status(),text:(await page.locator('body').innerText()).slice(0,7000),passwordFields:await page.locator('input[type="password"]').count(),fileFields:await page.locator('input[type="file"]').count()});await page.close();}catch(e){out.push({url,error:e.name});}}await browser.close();await writeFile('/vercel/sandbox/gupy-access.json',JSON.stringify(out,null,2));`)}]);
+const inspect=await sandbox.runCommand({cmd:'node',args:['/vercel/sandbox/portal-runtime/inspect-gupy.mjs'],cwd:'/vercel/sandbox/portal-runtime'});
+if(inspect.exitCode===0)await writeFile('artifacts/eight-gupy-access-2026-10-23.json',(await sandbox.readFileToBuffer({path:'/vercel/sandbox/gupy-access.json'}))!);
+console.log(JSON.stringify({receiverStarted:true,sandboxName:sandbox.name,origin,readOnlyGupyInspection:inspect.exitCode===0}));

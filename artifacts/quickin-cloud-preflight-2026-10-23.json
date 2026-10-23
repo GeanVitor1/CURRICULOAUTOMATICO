@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-23T13:08:01.979Z",
+  "readOnly": true,
+  "fileLoaded": false,
+  "candidateFieldsFilled": false,
+  "score": 85,
+  "discoveredCompatible": 1,
+  "sourceMethod": "formulários públicos; 8 publicações examinadas; 1 compatíveis",
+  "result": {
+    "status": "action_required",
+    "retryable": true,
+    "message": "Formulário Quickin e dados obrigatórios conferidos antes de qualquer transmissão.",
+    "preflightReady": true
+  }
+}

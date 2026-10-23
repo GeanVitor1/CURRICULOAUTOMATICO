@@ -2,9 +2,13 @@ import type { Locator, Page } from "playwright";
 import type { Profile } from "../shared/types";
 import { isJobUrl } from "../shared/portals";
 import { portalHost, type CandidatePortal } from "./portal-browser-policy";
+import { candidateAnswer } from "./candidate-answers";
+import { applyGupyApplication } from "./gupy-application";
+export { candidateAnswer } from "./candidate-answers";
 
 export type PortalApplication = {
   applicationId: string;
+  presentation?: string;
   job: { title: string; url: string; company: string };
   profile: Profile;
   resume: {
@@ -16,6 +20,11 @@ export type PortalResult = {
   status: "sent" | "action_required" | "unknown";
   receipt?: string;
   message: string;
+  missingQuestions?: string[];
+  questionOptions?: Record<string, string[]>;
+  /** Definitive pause before final submission; may resume after the user supplies answers. */
+  retryable?: boolean;
+  continuationUrl?: string;
 };
 export const portalRules = {
   linkedin: {
@@ -66,34 +75,6 @@ const normalize = (s: string) =>
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim();
-export function candidateAnswer(
-  label: string,
-  profile: Profile,
-): string | undefined {
-  const key = normalize(label).replace(/[ *:]+$/g, "");
-  // Exact personal fields only. Job skills, years, legal declarations, salary questions and tests
-  // must never be answered by inferring a yes/no from the CV.
-  if (/^(email|e-mail|email address|endereco de e-mail)$/.test(key))
-    return profile.email || undefined;
-  if (/^(nome completo|full name|name|nome)$/.test(key))
-    return profile.name || undefined;
-  if (/^(primeiro nome|first name)$/.test(key))
-    return profile.name.split(/\s+/)[0] || undefined;
-  if (/^(sobrenome|last name)$/.test(key))
-    return profile.name.split(/\s+/).slice(1).join(" ") || undefined;
-  if (/^(github|github url)$/.test(key)) return profile.github || undefined;
-  if (
-    /^(telefone|celular|phone|phone number|mobile phone number|numero de telefone|numero de telefone celular)$/.test(
-      key,
-    )
-  )
-    return profile.phone || undefined;
-  if (/^(cidade|city)$/.test(key))
-    return profile.location.split(",")[0].trim() || undefined;
-  if (/^(portfolio|portfolio url|website|site pessoal)$/.test(key))
-    return profile.portfolio || undefined;
-  return undefined;
-}
 export async function authenticated(
   page: Page,
   portal: CandidatePortal,
@@ -108,6 +89,24 @@ export async function authenticated(
   const signals = page.locator(portalRules[portal].authenticated);
   for (let i = 0; i < (await signals.count()); i++)
     if (await signals.nth(i).isVisible()) return true;
+  if (
+    portal === "gupy" &&
+    /^\/candidates\/(?:applications|curriculum|profile)(?:\/|$)/.test(
+      new URL(page.url()).pathname,
+    )
+  ) {
+    if (
+      (await page
+        .locator("#header-message-icon")
+        .isVisible()
+        .catch(() => false)) &&
+      (await page
+        .getByRole("button", { name: "Menu", exact: true })
+        .isVisible()
+        .catch(() => false))
+    )
+      return true;
+  }
   const exits = page
     .getByRole("button", { name: /^(Sair|Sign out|Log out)$/i })
     .or(page.getByRole("link", { name: /^(Sair|Sign out|Log out)$/i }));
@@ -124,7 +123,7 @@ async function visibleButton(root: Page | Locator, pattern: RegExp) {
     if (await links.nth(i).isVisible()) return links.nth(i);
   return undefined;
 }
-async function fillKnown(
+export async function fillKnown(
   root: Page | Locator,
   input: PortalApplication,
 ): Promise<string | undefined> {
@@ -163,10 +162,43 @@ async function fillKnown(
       continue;
     }
     const answer = candidateAnswer(info.label, input.profile);
+    if (
+      answer &&
+      (info.type === "email" ||
+        /^(email|e-mail|email address|endereco de e-mail)$/.test(
+          normalize(info.label).replace(/[ *:]+$/g, ""),
+        )) &&
+      info.value.trim() &&
+      info.value.trim().toLowerCase() !== answer.trim().toLowerCase()
+    )
+      return "O e-mail já preenchido no portal é diferente do currículo. Ele foi preservado; confirme a conta antes de continuar.";
     if (answer) await field.fill(answer);
     else if (info.required)
       return info.label || "Há uma pergunta que precisa da sua resposta.";
   }
+}
+async function visibleConfirmationText(page: Page, pattern: RegExp) {
+  const signals = page.locator(
+    '[role="status"], [role="alert"], #application_confirmation, .application-confirmation, [data-application-confirmation], form:not(:has(input, button, textarea, select))',
+  );
+  for (let index = 0; index < (await signals.count()); index++) {
+    const node = signals.nth(index);
+    if (await node.isVisible()) {
+      const text = await node.innerText();
+      if (pattern.test(text)) return text.match(pattern)?.[0];
+    }
+  }
+  // A dedicated, minimal confirmation page is also acceptable. Job lists, navigation
+  // and hidden templates must never count as confirmation of the current vacancy.
+  const body = (await page.locator("body").innerText()).trim();
+  if (
+    body.length < 200 &&
+    !(await page
+      .locator('form, input, a[href*="jobs"], a[href*="vaga"]')
+      .count())
+  )
+    return body.match(pattern)?.[0];
+  return undefined;
 }
 async function submissionConfirmation(
   page: Page,
@@ -178,12 +210,11 @@ async function submissionConfirmation(
   for (let tick = 0; tick < 12; tick++) {
     await page.waitForTimeout(500);
     if (!portalHost(portal, page.url())) break;
-    const text = await page.locator("body").innerText();
-    const match = text.match(pattern);
+    const match = await visibleConfirmationText(page, pattern);
     if (match)
       return {
         status: "sent",
-        receipt: `${input.job.url} · ${match[0]} · ${new Date().toISOString()}`,
+        receipt: `${input.job.url} · ${match} · ${new Date().toISOString()}`,
         message: "Candidatura confirmada pelo portal.",
       };
   }
@@ -199,6 +230,8 @@ export async function applyOnPage(
   input: PortalApplication,
   profileApproved: boolean,
 ): Promise<PortalResult> {
+  if (portal === "gupy")
+    return applyGupyApplication(page, input, profileApproved);
   const rules = portalRules[portal];
   const pending = (message: string): PortalResult => ({
     status: "action_required",
@@ -248,7 +281,7 @@ export async function applyOnPage(
       return pending(
         "O portal pediu uma verificação ou bloqueou o acesso. Conclua a verificação no site.",
       );
-    if (rules.confirmation.test(initialText))
+    if (await visibleConfirmationText(page, rules.confirmation))
       return pending(
         "Este portal informa uma candidatura anterior. Confira a data antes de registrar um novo envio.",
       );
@@ -277,10 +310,12 @@ export async function applyOnPage(
             }
           : pending("O anúncio exige continuar em outro site.");
       const text = await page.locator("body").innerText();
-      if (submitted && rules.confirmation.test(text))
+      const confirmation =
+        submitted && (await visibleConfirmationText(page, rules.confirmation));
+      if (confirmation)
         return {
           status: "sent",
-          receipt: `${input.job.url} · ${text.match(rules.confirmation)![0]} · ${new Date().toISOString()}`,
+          receipt: `${input.job.url} · ${confirmation} · ${new Date().toISOString()}`,
           message: "Candidatura confirmada pelo portal.",
         };
       if (

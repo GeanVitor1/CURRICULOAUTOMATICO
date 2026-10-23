@@ -1,0 +1,11 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {discoverAblerJobs} from '../server/abler-discovery';
+import {createWorkspace} from '../server/workspace';
+import {analyze,correctJobEvidence} from '../server/engine';
+const replay=JSON.parse(await readFile('artifacts/automatic-diagnostic-replay-2026-10-22.json','utf8'));
+const w=createWorkspace('Diagnóstico','qa@example.test');
+w.profile={...w.profile,...replay.profile};w.filters={...w.filters,...replay.filters};
+const result=await discoverAblerJobs(w);
+const diagnostic={at:new Date().toISOString(),jobs:result.jobs.map(job=>{correctJobEvidence(job);return {id:job.id,title:job.title,company:job.company,url:job.url,date:job.publishedAt,modality:job.modality,contract:job.contract,email:job.emailDestination?.email,match:analyze(job,w.profile,w.filters)};})};
+await writeFile('artifacts/abler-discovery-probe-2026-10-22.json',JSON.stringify(diagnostic,null,2));
+console.log(JSON.stringify(diagnostic,null,2));

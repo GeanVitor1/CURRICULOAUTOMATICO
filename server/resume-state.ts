@@ -1,8 +1,10 @@
 import { defaultProfile, type Resume, type Workspace } from "../shared/types";
 import { parseResume } from "./engine";
+import { candidateDetailsReady } from "../shared/candidate-details";
 
 /** Professional data comes from the selected document; absence clears old evidence. */
 export function applyResumeProfile(w: Workspace, resume: Resume) {
+  const keepConfirmedYears = candidateDetailsReady(w.profile);
   const extracted = { ...parseResume(resume.text), ...resume.suggestion };
   for (const field of [
     "headline",
@@ -14,7 +16,7 @@ export function applyResumeProfile(w: Workspace, resume: Resume) {
     "availability",
   ] as const)
     w.profile[field] = extracted[field] ?? defaultProfile[field];
-  w.profile.years = extracted.years ?? null;
+  if (!keepConfirmedYears) w.profile.years = extracted.years ?? null;
   w.profile.level = extracted.level || defaultProfile.level;
   w.profile.skills = [...new Set(resume.skills)];
   // Preserve account identity, but use contact explicitly provided in a document.

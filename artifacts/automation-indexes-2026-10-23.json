@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T11:22:08.120Z",
+  "apply": false,
+  "indexes": [
+    {
+      "collection": "discovery_tasks",
+      "state": "READY",
+      "name": "projects/curriculoautomatico-a15fa/databases/(default)/collectionGroups/discovery_tasks/indexes/CICAgOi36pgK",
+      "created": false
+    },
+    {
+      "collection": "resolution_tasks",
+      "state": "READY",
+      "name": "projects/curriculoautomatico-a15fa/databases/(default)/collectionGroups/resolution_tasks/indexes/CICAgOi3voUK",
+      "created": false
+    }
+  ],
+  "edition": "STANDARD"
+}

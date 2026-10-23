@@ -1,0 +1,3 @@
+Browser tab: 1007625269, Title: "Candidaturas · EmpreGatos", URL: "https://curriculoautomatico.vercel.app/app#candidaturas".
+There has been no change in the accessibility tree.
+The focused UI element is 5 button Fechar

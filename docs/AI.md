@@ -1,5 +1,13 @@
 # Gemini no EmpreGatos
 
+## Respostas automáticas de candidatura
+
+A pessoa pode autorizar uma vez o uso do currículo e das preferências para responder perguntas das vagas. A autorização registra explicitamente a regra de responder negativamente quando faltar informação, inclusive para parentesco e acessibilidade. Dados confirmados têm prioridade: uma necessidade de acessibilidade informada nunca é substituída por “não”. A origem da vaga vem do anúncio, e escolhas de formulário precisam corresponder a opções reais.
+
+Nos formulários oficiais compatíveis, a preparação lê as perguntas, reaproveita respostas confirmadas, consulta o Gemini para respostas profissionais com evidências e aplica a regra negativa autorizada às demais. Falha da IA não impede esse último passo. Aceites jurídicos e formulários sem opção compatível ficam como exceção; outras candidaturas continuam. A regra não autoriza aceitar termos de terceiros.
+
+O histórico distingue respostas preparadas de respostas efetivamente preenchidas. Registra texto, origem (perfil, IA, origem do anúncio ou regra negativa), currículo e destino. “Não” por ausência de informação é identificado como regra do usuário, não como fato extraído do currículo. Apenas recibo verificável confirma envio. A autorização pode ser revogada e respostas preparadas não são reaproveitadas para outro currículo ou destino.
+
 A integração usa generateContent da API oficial, com a chave em header apenas no servidor. Configure GEMINI_API_KEY, GEMINI_MODEL e GEMINI_SEARCH_MODEL em .env. Ambos os modelos usam gemini-2.5-flash por padrão. Não há troca automática de modelo por erro de cota.
 
 Cada conta autoriza e ativa a análise externa em Configurações. Contato, documentos pessoais e links pessoais são removidos antes da extração, das sugestões de cargos e da apresentação para candidatura. A extração e as sugestões usam evidência literal conferida no currículo. Se Gemini falhar, a leitura local continua disponível e o método é indicado na tela.
