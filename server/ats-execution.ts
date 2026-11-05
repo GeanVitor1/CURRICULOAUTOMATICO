@@ -1,7 +1,10 @@
 import { Sandbox } from "@vercel/sandbox";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { chromium } from "playwright";
+import { launchProtectedBrowser } from "./browser-egress";
+import { browserNetworkPolicy } from "./browser-network-policy";
+import { ensureSandboxNode } from "./sandbox-node";
+import { sandboxPreparationFailure } from "./sandbox-failure";
 import { destinationBrowserAllowed } from "./ats-registry";
 import { executeAtsApplication, type AtsApplication } from "./ats-application";
 import type { ExecutionResult } from "./application-verification";
@@ -16,6 +19,7 @@ export async function sendAtsApplication(
   if (
     !destinationBrowserAllowed(input.destination) ||
     input.destination.state !== "verified" ||
+    !Number.isFinite(Date.parse(input.destination.expiresAt)) ||
     Date.parse(input.destination.expiresAt) <= Date.now()
   )
     return {
@@ -26,14 +30,14 @@ export async function sendAtsApplication(
   publicUrl(input.destination.url);
   if(input.destination.platform==='company'&&input.destination.evidence.includes(WP_JOBS_EVIDENCE))return sendCompanyForm(input);
   if (process.env.ATS_EXECUTION_LOCAL === "true" && !process.env.VERCEL) {
-    const browser = await chromium.launch({
+    const browser = await launchProtectedBrowser({
       headless: true,
       args: [
         `--host-resolver-rules=${await atsHostResolverRules(input.destination.url)}`,
       ],
     });
     try {
-      const context = await browser.newContext({ serviceWorkers: "block" });
+      const context = await browser.newContext({ serviceWorkers: "block", acceptDownloads: false });
       await guardAtsPage(context, input.destination.url);
       return await executeAtsApplication(await context.newPage(), input);
     } finally {
@@ -56,26 +60,19 @@ export async function sendAtsApplication(
     persistent: false,
     resources: { vcpus: 1 },
     timeout: 120000,
-    networkPolicy: {
-      allow: Object.fromEntries(atsExecutionHosts(input.destination.url).map(host=>[host,[]])),
-      subnets: {
-        deny: [
-          "10.0.0.0/8",
-          "127.0.0.0/8",
-          "169.254.0.0/16",
-          "172.16.0.0/12",
-          "192.168.0.0/16",
-        ],
-      },
-    },
+    networkPolicy: browserNetworkPolicy(atsExecutionHosts(input.destination.url)),
   });
   } catch (error) {
+    if ((error as {response?:{status?:number}})?.response?.status === 402) return sandboxPreparationFailure(error);
     const status = (error as {response?:{status?:number}})?.response?.status;
     return {status:"action_required",retryable:true,message:`O navegador não iniciou${status ? ` (infraestrutura HTTP ${status})` : ""}. Nenhum formulário recebeu esta candidatura. Revise a configuração antes de retomar.`};
   }
   // The snapshot installs Playwright under portal-runtime/node_modules.
   const root = "/vercel/sandbox/portal-runtime/ats-execution";
   try {
+    let node: string;
+    try { node = await ensureSandboxNode(sandbox); }
+    catch (error) { return sandboxPreparationFailure(error); }
     await sandbox.mkDir(root);
     await sandbox.writeFiles([
       {
@@ -90,7 +87,7 @@ export async function sendAtsApplication(
       },
     ]);
     const command = await sandbox.runCommand({
-      cmd: "node",
+      cmd: node,
       args: [`${root}/runner.mjs`],
       cwd: root,
     });

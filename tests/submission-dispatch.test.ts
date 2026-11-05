@@ -20,7 +20,7 @@ vi.mock("../server/billing", () => ({ accountPlan: mocks.plan }));
 vi.mock("../server/automation-runtime", () => ({
   vercelQueueEnabled: () => true,
 }));
-import { dispatchNextApplication } from "../server/submission-dispatch";
+import { dispatchNextApplication,dispatchGupyDraftVerification } from "../server/submission-dispatch";
 import { createWorkspace } from "../server/workspace";
 import type { Workspace } from "../shared/types";
 let w: Workspace;
@@ -52,6 +52,11 @@ it("publica só a primeira candidatura e apenas identificadores", async () => {
     "private@example.test",
   );
 });
+it('queues delayed read-only draft verification with an attempt-specific deduplication key',async()=>{
+ expect(await dispatchGupyDraftVerification('alice:live','application','attempt',125)).toBe(true);
+ expect(mocks.send).toHaveBeenCalledWith('empregatos-submissions',{workspaceId:'alice:live',applicationId:'application',mode:'verify_draft'},expect.objectContaining({delaySeconds:125,idempotencyKey:'verify-draft:application:attempt'}));
+ expect(JSON.stringify(mocks.send.mock.calls)).not.toContain('private@example.test');
+});
 it("não publica em paralelo nem enquanto pausado", async () => {
   w.applications[1].status = "Enviando";
   expect(await dispatchNextApplication("alice:live")).toBe(false);
@@ -59,6 +64,13 @@ it("não publica em paralelo nem enquanto pausado", async () => {
   w.routine.enabled = false;
   expect(await dispatchNextApplication("alice:live")).toBe(false);
   expect(mocks.send).not.toHaveBeenCalled();
+});
+it('serializes submission with read-only portal verification and lets an expired lease recover',async()=>{
+ w.portalVerification={id:'verification',until:Date.now()+60000};
+ expect(await dispatchNextApplication('alice:live')).toBe(false);
+ expect(mocks.send).not.toHaveBeenCalled();
+ w.portalVerification.until=Date.now()-1;
+ expect(await dispatchNextApplication('alice:live')).toBe(true);
 });
 it("respeita o limite do plano mesmo quando a rotina tem limite maior", async () => {
   const at = new Date().toISOString();

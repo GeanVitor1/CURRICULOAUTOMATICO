@@ -10,6 +10,7 @@ import {createHash} from 'node:crypto';
 import {structuredJobs} from './destination-page';
 export type QuickinField={name:string;type:string;label:string;required?:boolean;gdpr?:boolean;options?:{value:string;label:string}[];validation?:{minLength?:number;maxLength?:number;minimum?:number;maximum?:number}};
 const supported=['short_text','long_text','number','email','date','single_choice','boolean'];
+const quickinConfirmation=/^candidatura enviada!$|candidatura (?:enviada|recebida|realizada) com sucesso|inscri[cç][aã]o (?:realizada|enviada) com sucesso|application (?:submitted|received) successfully/i;
 const escape=(s:string)=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 function valueFor(field:QuickinField,profile:Profile,url:string){
  const explicit=approvedFieldAnswer(field.label,profile,url);
@@ -103,7 +104,7 @@ export async function executeQuickinForm(page:Page,input:AtsApplication):Promise
   if(publication?.platform!=='quickin'||publication.board!==ats.board||publication.postingId!==ats.postingId||page.url()!==input.destination.url||!normalized(text).includes(normalized(input.job.title))||postings.length!==1||postings[0].url!==input.destination.publicationUrl||normalized(postings[0].title||'')!==normalized(input.job.title)||normalized(postings[0].hiringOrganization?.name||'')!==normalized(input.destination.company))return pause('O formulário não confirmou a vaga e a empresa.');
   if(/captcha|verify you are human|access denied/i.test(text)||await page.locator('[data-sitekey],iframe[src*="captcha"],.h-captcha,.g-recaptcha').count())return pause('Este formulário exige verificação humana.');
   const form=page.locator('form');if(await form.count()!==1)return pause('Não foi possível identificar um único formulário Quickin.');
-  if(await page.getByText(/^candidatura enviada!$/i).count())return pause('Já há confirmação nesta página. Confira a candidatura existente antes de continuar.');
+  if(await page.getByText(quickinConfirmation).count())return pause('Já há confirmação nesta página. Confira a candidatura existente antes de continuar.');
   if(plan.missing.length)return {...pause('Há campos obrigatórios sem dados aprovados. Nenhum arquivo foi transmitido.',plan.missing),questionOptions:Object.fromEntries(fields.filter(f=>f.options?.length).map(f=>[f.label,f.options.map((o:any)=>o.label)]))};
   if(await form.locator('input[type="file"]').count()!==1)return pause('O formulário não oferece um único campo de currículo.');
   for(const {field:f} of plan.answers){
@@ -165,7 +166,7 @@ export async function executeQuickinForm(page:Page,input:AtsApplication):Promise
    return {...failure,diagnostic:{...diagnostic,...failure.diagnostic}};
   }
   diagnostic.phase='confirmation';
-  const success=page.getByText(/^candidatura enviada!$|candidatura (?:enviada|recebida|realizada) com sucesso|inscri[cç][aã]o (?:realizada|enviada) com sucesso|application (?:submitted|received) successfully/i).first();
+  const success=page.getByText(quickinConfirmation).first();
   await success.waitFor({state:'visible',timeout:20000});
   const phrase=await success.innerText();
   if(/n[aã]o|erro|failed|not/i.test(phrase))return {status:'unknown',diagnostic,message:'O destino não confirmou a conclusão. Confira antes de repetir.'};

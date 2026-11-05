@@ -23,7 +23,10 @@ export async function jobFromEmployerPost(page:PublicPage,read:(url:string)=>Pro
   const explicit=p.articleBody.match(/\b(?:oportunidade aberta para|estamos contratando|vaga (?:para|de))\s+([^\n!,]+)/iu)?.[1]?.replace(/\.(?:\s|$).*$/,'');
   const headline=explicit || (typeof p.headline==='string' ? p.headline : p.articleBody.split('\n')[0]);
   const title=headline.replace(/^[^\p{L}\d]+/u,'').replace(/^(?:estamos com (?:uma )?oportunidade aberta para|(?:vaga(?: aberta)?|oportunidade)\s*(?:para|de)?\s*[:–—-]?|estamos contratando\s*[:–—-]?)\s*/i,'').replace(/[!\s]+$/,'').trim();
-  if(!title || title.length>200 || (title===headline.trim() && !/^(?:pessoa\s+)?(?:desenvolved|developer|analista|programador|arquiteto|software|engenheir|engineer|full.?stack)/i.test(title)) || !Number.isFinite(Date.parse(p.datePublished)) || Date.parse(p.datePublished)>Date.now()) return null;
+  // Hiring evidence identifies a vacancy; an occupation whitelist would exclude
+  // healthcare, retail, logistics and administrative profiles before matching.
+  const hiringEvidence=!!explicit || /\b(?:vagas?|oportunidade|contratando|hiring|vacancy)\b/iu.test(p.articleBody);
+  if(!title || title.length>200 || !hiringEvidence || !Number.isFinite(Date.parse(p.datePublished)) || Date.parse(p.datePublished)>Date.now()) return null;
   const classified=classify(`${title}\n${p.articleBody}`);
   const job:Job={id:randomUUID(),title,company:p.author.name,url:page.url,source:'Publicação da empresa',description:p.articleBody,
     location:typeof p.contentLocation?.name==='string'?p.contentLocation.name:'Não informado',...classified,

@@ -5,12 +5,13 @@ import type {
   Profile,
   Resume,
 } from "../shared/types";
-import { approvedFieldAnswer,identityQuestion } from "./approved-answers";
+import { approvedFieldAnswer,identityQuestion,sensitiveQuestion } from "./approved-answers";
 import { prepareQuestionDrafts } from "./question-drafts";
 import { normalized } from "./job-identity";
 import { automaticFallback } from "./automatic-answer-fallback";
 import { evidencedTechnologyYears, experienceYearsQuestion } from "./answer-evidence";
 import { extractSkills } from "./engine";
+import {salaryOption} from './salary-options';
 
 export const automaticAnswersEnabled = (profile: Profile) =>
   !!(
@@ -29,8 +30,16 @@ export function applicationAnswerProfile(
   application: Application,
   destinationUrl: string,
 ): Profile {
-  if (!automaticAnswersEnabled(profile)) return profile;
-  const answers = (application.automaticAnswers || []).filter(
+  const origin = new URL(destinationUrl).origin;
+  // The executor (including a configured webhook) must never receive answers
+  // reviewed for another employer or vacancy, even with automation disabled.
+  const approved = (profile.approvedAnswers || []).filter(a =>
+    !!a.confirmedAt &&
+    (!a.destinationOrigin || a.destinationOrigin === origin) &&
+    (!a.destinationUrl || a.destinationUrl === destinationUrl) &&
+    (![a.question, ...a.aliases].some(sensitiveQuestion) || a.destinationUrl === destinationUrl),
+  );
+  const answers = (automaticAnswersEnabled(profile) ? application.automaticAnswers || [] : []).filter(
     (a) =>
       a.resumeId === application.resumeId &&
       a.destinationUrl === destinationUrl &&
@@ -39,7 +48,7 @@ export function applicationAnswerProfile(
   return {
     ...profile,
     approvedAnswers: [
-      ...(profile.approvedAnswers || []),
+      ...approved,
       ...answers.map((a, i) => ({
         id: `automatic-${i}`,
         question: a.question,
@@ -119,7 +128,7 @@ export async function prepareAutomaticAnswers(input: {
             (choice) =>
               normalized(choice) === normalized(saved) ||
               normalized(choice).startsWith(`${normalized(saved)} exemplo `),
-          ));
+          ) || salaryOption(question, Number(saved), choices));
     if (match) {
       put(question, match, "profile", "Informação confirmada no perfil.");
       continue;

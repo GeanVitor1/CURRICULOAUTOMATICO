@@ -4,6 +4,7 @@ import { AsyncLocalStorage } from "node:async_hooks";
 import { z } from "zod";
 import { RequestError } from "./errors";
 import { discoverySignal } from "./discovery-budget";
+import { JOB_SEARCH_POLICY } from "./job-search-policy";
 import {
   antigravitySettings,
   authorizationUrl,
@@ -331,7 +332,7 @@ export async function searchAntigravity(userId: string, prompt: string) {
       cmd: wrapper,
       args: [
         "-p",
-        `${prompt}\nHoje é ${new Date().toISOString().slice(0,10)}. Faça no máximo duas consultas de pesquisa e finalize o JSON imediatamente. Retorne URLs de anúncios individuais efetivamente encontrados pela pesquisa, mesmo quando não conseguir abrir o site. O servidor abrirá cada anúncio e validará empresa, data e requisitos antes de usar os dados. Nunca invente URLs nem datas. Se a pesquisa não encontrar referências, retorne {"jobs":[]}. Não gaste o tempo tentando completar uma quantidade mínima.`,
+        `${JOB_SEARCH_POLICY}\n\nCONSULTA ATUAL:\n${prompt}\nHoje é ${new Date().toISOString().slice(0,10)}. Faça no máximo duas consultas de pesquisa e finalize o JSON imediatamente. Retorne URLs de anúncios individuais efetivamente encontrados pela pesquisa, mesmo quando não conseguir abrir o site. O servidor abrirá cada anúncio e validará empresa, data e requisitos antes de usar os dados. Não gaste o tempo tentando completar uma quantidade mínima.`,
         "--output-format",
         "stream-json",
         "--disable-slash-commands",

@@ -317,6 +317,7 @@ describe("Confiabilidade do backend durante concorrência e deploy", () => {
     const id = `${me.id}:live`;
     const make = () => ({
       ...staleJob(),
+      url: "https://job-boards.greenhouse.io/qa/jobs/1",
       id: randomUUID(),
       title: "Desenvolvedor .NET",
       description: "Desenvolvimento C# SQL Server. Remote.",
@@ -370,12 +371,12 @@ describe("Confiabilidade do backend durante concorrência e deploy", () => {
       result([
         {
           ...make(),
-          url: "https://example.test/new",
+          url: "https://job-boards.greenhouse.io/qa/jobs/2",
           origins: [
             {
               source: "greenhouse",
               id: "assisted:new",
-              url: "https://example.test/new",
+              url: "https://job-boards.greenhouse.io/qa/jobs/2",
             },
           ],
         },

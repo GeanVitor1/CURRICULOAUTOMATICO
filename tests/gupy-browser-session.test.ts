@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { readFile } from "node:fs/promises";
 import { gupyBrowserSessionSchema } from "../server/gupy-browser-session";
 
@@ -24,8 +24,10 @@ describe("Conexão Gupy autorizada pelo Chrome", () => {
   });
   it("o conector não pede acesso ao Google ou a todas as páginas", async () => {
     const manifest = JSON.parse(await readFile('browser-extension/gupy-session/manifest.json','utf8'));
-    expect(manifest.permissions).toEqual(['cookies','scripting']);
-    expect(manifest.host_permissions).toEqual(['https://*.gupy.io/*','https://curriculoautomatico.vercel.app/*']);
+    expect(manifest.permissions).toEqual(['cookies','scripting','storage','alarms']);
+    expect(manifest.host_permissions).toEqual(['https://curriculoautomatico.vercel.app/*']);
+    expect(manifest.optional_host_permissions).toContain('https://*.gupy.io/*');
+    expect(manifest.optional_host_permissions).not.toContain('https://*/*');
     expect(manifest.content_scripts[0].matches).toEqual(['https://curriculoautomatico.vercel.app/app*']);
   });
 });

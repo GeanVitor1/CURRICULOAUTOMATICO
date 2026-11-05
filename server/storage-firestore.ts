@@ -279,13 +279,20 @@ export function firestoreStore(db: Firestore, native?: Transaction): Store {
           return Buffer.from(chunk.bytes);
         });
       };
-      row[field] = await load(raw._payload);
-      if (table === "workspaces" && raw._sections)
-        for (const section of WORKSPACE_SECTIONS) {
+      const sections = table === "workspaces" && raw._sections
+        ? WORKSPACE_SECTIONS : [];
+      // Independent immutable sections can be fetched together. Serial reads
+      // used to add one network round trip per section on a cold workspace.
+      const [base, ...values] = await Promise.all([
+        load(raw._payload),
+        ...sections.map(section => {
           const manifest = raw._sections[section];
           if (!manifest) throw Error("Workspace section is missing");
-          row[field][section] = await load(manifest);
-        }
+          return load(manifest);
+        }),
+      ]);
+      row[field] = base;
+      sections.forEach((section, index) => { row[field][section] = values[index]; });
     }
     for (const k of Object.keys(row)) if (k.startsWith("_")) delete row[k];
     return columns ? Object.fromEntries(columns.map((k) => [k, row[k]])) : row;

@@ -47,4 +47,7 @@ export async function guardAtsPage(
       await route.abort();
     }
   });
+  // HTTP routing does not intercept WebSockets. A compromised form must not
+  // open another channel to private services or export candidate information.
+  await context.routeWebSocket("**/*", socket => socket.close());
 }

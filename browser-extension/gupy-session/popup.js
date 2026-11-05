@@ -1,43 +1,185 @@
-const consent = document.querySelector('#consent');
-const connect = document.querySelector('#connect');
-const status = document.querySelector('#status');
-consent.addEventListener('change', () => { connect.disabled = !consent.checked; });
-connect.addEventListener('click', async () => {
-  if (!consent.checked) return;
-  connect.disabled = true;
-  status.textContent = 'Verificando sua sessão. Mantenha esta janela aberta…';
-  try {
-    const appTabs = await chrome.tabs.query({url:'https://curriculoautomatico.vercel.app/app*'});
-    const app = appTabs.find(tab => new URL(tab.url).searchParams.get('portal') === 'gupy');
-    if (!app) throw new Error('Abra a tela Conectar Gupy no EmpreGatos e tente novamente.');
-    const tabs = await chrome.tabs.query({url:'https://*.gupy.io/*'});
-    const origins = new Map();
-    let authenticated = false;
-    for (const tab of tabs) {
-      const url = new URL(tab.url);
-      if (!/^\/candidates\/(?:applications|profile|curriculum)(?:\/|$)/.test(url.pathname)) continue;
-      const results = await chrome.scripting.executeScript({target:{tabId:tab.id}, func:() => {
-        // Runs only on private Gupy candidate pages. No password/input fields are read.
-        const signed = !!document.querySelector('#header-message-icon, a[href*="logout"], a[href*="signout"]') ||
-          [...document.querySelectorAll('button')].some(b => /^(Sair|Logout)$/i.test(b.textContent.trim()));
-        if (!signed) return null;
-        const local = [];
-        for (let i=0; i<localStorage.length; i++) {
-          const name = localStorage.key(i);
-          if (/token|auth|session/i.test(name)) local.push({name,value:localStorage.getItem(name)});
-        }
-        return {origin:location.origin, localStorage:local};
-      }});
-      const state = results[0]?.result;
-      if (state) { authenticated = true; origins.set(state.origin,state); }
-    }
-    if (!authenticated) throw new Error('Abra Minhas candidaturas na Gupy e faça login antes de conectar.');
-    const cookies = (await chrome.cookies.getAll({domain:'gupy.io'}))
-      .filter(c => /^(?:[a-z0-9-]+\.)*gupy\.io$/.test(c.domain.replace(/^\./,'')) && c.secure && !c.partitionKey)
-      .map(c => ({name:c.name,value:c.value,domain:c.domain,path:c.path,expires:c.expirationDate ?? -1,
-        httpOnly:c.httpOnly,secure:true,sameSite:c.sameSite === 'strict' ? 'Strict' : c.sameSite === 'lax' ? 'Lax' : 'None'}));
-    const result = await chrome.tabs.sendMessage(app.id,{type:'empregatos:import-gupy',state:{cookies,origins:[...origins.values()]}});
-    if (!result?.ok) throw new Error(result?.error || 'Recarregue a aba do EmpreGatos após instalar a extensão.');
-    status.textContent = 'Sessão verificada. Volte ao EmpreGatos para conferir o currículo e confirmar a conexão.';
-  } catch (error) { status.textContent = error.message; connect.disabled = false; }
+/* global chrome, EmpreGatosPortals */
+const {browserConnectors,sessionDomain,isBrowserSessionPortal,browserConnectionMode}=EmpreGatosPortals;
+const base='https://curriculoautomatico.vercel.app';
+const select=document.querySelector('#portal'),consent=document.querySelector('#consent'),connect=document.querySelector('#connect');
+const status=document.querySelector('#status'),account=document.querySelector('#account'),refresh=document.querySelector('#refresh-account');
+document.querySelector('#version').textContent=`EmpreGatos ${chrome.runtime?.getManifest?.()?.version||''}`;
+let context=null,busy=false,loadSequence=0;
+const update=()=>{connect.disabled=busy||!consent.checked||!context?.available||context.portal!==select.value;document.querySelector('#login').disabled=busy;if(refresh)refresh.disabled=busy;status.setAttribute?.('aria-busy',String(busy));connect.textContent=busy?'Verificando…':browserConnectionMode(select.value)==='local-browser'?'2. Verificar LinkedIn no meu Chrome':'2. Conectar sessão ao EmpreGatos';};
+const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const missingTab=error=>/no tab with id|invalid tab id|tab was closed/i.test(String(error?.message||error));
+const projectUrl=(tab,portal)=>{
+ try{const url=new URL(tab.url||tab.pendingUrl);return url.origin===base&&url.pathname==='/app'&&url.searchParams.get('portal')===portal;}catch{return false;}
+};
+async function appTab(portal){
+ const source=new URL(location.href||'https://invalid.test'),hint=source.searchParams.get('tab');
+ if(source.searchParams.get('portal')===portal&&hint&&/^\d+$/.test(hint)&&Number.isSafeInteger(Number(hint))){
+  try{const tab=await chrome.tabs.get(Number(hint));if(projectUrl(tab,portal))return tab;}
+  catch(error){if(!missingTab(error))throw error;}
+ }
+ const tabs=await chrome.tabs.query({url:base+'/app*'});
+ const matching=tabs.filter(tab=>projectUrl(tab,portal));
+ const existing=matching.find(tab=>new URL(tab.url||tab.pendingUrl).searchParams.get('flow')==='connections')||matching[0];
+ return existing||await chrome.tabs.create({url:base+'/app?portal='+encodeURIComponent(portal),active:false});
+}
+async function message(tabId,data){
+ let repaired=false;
+ for(let attempt=0;attempt<20;attempt++){
+  try{const result=await chrome.tabs.sendMessage(tabId,data);if(!result)throw new Error('Bridge unavailable');return result;}catch(error){
+   // A missing tab is a definitive pre-delivery error, unlike a closed message
+   // port: let the caller find a new destination and revalidate its owner.
+   if(missingTab(error))throw error;
+   if(['empregatos:import-session','empregatos:verify-local-login'].includes(data.type)&&!/receiving end does not exist|could not establish connection|bridge unavailable/i.test(String(error.message||error)))throw new Error('A verificação foi interrompida. Confira a aba do EmpreGatos antes de repetir a conexão.');
+   if(!repaired){
+    const tab=await chrome.tabs.get(tabId),url=new URL(tab.url||tab.pendingUrl);
+    if(url.origin!==base||url.pathname!=='/app')throw new Error('A aba do EmpreGatos mudou de endereço. Abra a conexão novamente.');
+    await chrome.scripting.executeScript({target:{tabId},files:['config.js','content.js']});repaired=true;
+   }
+   if(attempt===19)throw new Error('Não foi possível falar com a aba do EmpreGatos. Reabra a conexão.');await pause(400);
+  }
+ }
+}
+async function destinationContext(portal){
+ for(let attempt=0;attempt<2;attempt++){
+  try{
+   const tab=await appTab(portal),result=await message(tab.id,{type:'empregatos:connection-context',portal});
+   if(!result?.ok)throw new Error(result?.error||'Entre na sua conta do EmpreGatos antes de conectar.');
+   const value=result.context;
+   if(value?.portal!==portal||typeof value.available!=='boolean'||!value.account||!['id','name','email'].every(key=>typeof value.account[key]==='string'&&value.account[key].trim()))throw new Error('Não foi possível confirmar a conta de destino. Entre no EmpreGatos e clique em “Atualizar conta”.');
+   return {...result.context,tabId:tab.id};
+  }catch(error){if(!missingTab(error))throw error;if(attempt===1)throw new Error('A aba do EmpreGatos foi fechada. Mantenha a conexão do projeto aberta e tente novamente.');}
+ }
+}
+async function validateDestination(portal,expected){
+ const fresh=await destinationContext(portal);
+ if(fresh.portal!==portal||!fresh.available)throw new Error('Não foi possível confirmar a conta de destino. Reabra o conector e tente novamente.');
+ if(fresh.account.id!==expected.account.id){
+  context=fresh;account.textContent=`Novo destino no EmpreGatos: ${fresh.account.name} (${fresh.account.email}).`;
+  throw new Error('A conta do EmpreGatos mudou. Confira o novo destino e autorize novamente.');
+ }
+ return fresh;
+}
+async function feedback(destination,portal,text,kind='connecting'){
+ status.textContent=text;
+ // Progress is best effort; never delay the actual operation repairing a notice.
+ try{await chrome.tabs.sendMessage(destination.tabId,{type:'empregatos:connector-progress',portal,text,kind,version:chrome.runtime?.getManifest?.()?.version||''});}catch{}
+}
+async function loadContext(){
+ if(busy)return;
+ const portal=select.value,sequence=++loadSequence;
+ if(!isBrowserSessionPortal(portal))return;
+ context=null;consent.checked=false;update();
+ const local=browserConnectionMode(portal)==='local-browser';
+ connect.textContent=local?'2. Verificar LinkedIn no meu Chrome':'2. Conectar sessão ao EmpreGatos';
+ document.querySelector('#consent-label').textContent=local?'Autorizo verificar meu login do LinkedIn neste Chrome e registrar o resultado na conta do EmpreGatos indicada acima, sem transferir cookies ou tokens.':`Autorizo transferir somente minha sessão do ${browserConnectors[portal].name} para a conta do EmpreGatos indicada acima.`;
+ document.querySelector('#limitation').textContent=portal==='linkedin'?'A conexão do LinkedIn não ativa envios automáticos. As permissões de envio são separadas.':'Após verificar o login, confirme a conexão e o currículo na aba do EmpreGatos.';
+ account.textContent='Verificando sua conta no EmpreGatos…';status.textContent='';
+ try{
+  const fresh=await destinationContext(portal);
+  if(sequence!==loadSequence)return;
+  context=fresh;
+  account.textContent=`Destino no EmpreGatos: ${context.account.name} (${context.account.email}).`;
+  if(!context.available)status.textContent=context.unavailableReason||'Este conector ainda não foi habilitado no servidor para sua conta.';
+  else{
+   const saved=await chrome.storage.local.get('pendingLoginPortal');
+   if(sequence!==loadSequence)return;
+   if(context.notice)status.textContent=context.notice;
+   else if(saved.pendingLoginPortal===portal)status.textContent=local?'Depois de entrar no LinkedIn, marque a autorização e clique em “2. Verificar LinkedIn no meu Chrome”. Abrir o portal sozinho não registra a verificação.':`Depois de entrar no ${browserConnectors[portal].name}, marque a autorização e clique em “2. Conectar sessão”. Abrir o login sozinho não salva a conexão.`;
+  }
+ }catch(error){if(sequence===loadSequence)account.textContent=error.message;}
+ update();
+}
+select.addEventListener('change',()=>{void chrome.storage.local.set({selectedPortal:select.value});void loadContext();});
+consent.addEventListener('change',update);
+refresh?.addEventListener('click',()=>{void loadContext();});
+window.addEventListener('focus',()=>{if(!busy)void loadContext();});
+document.querySelector('#login').addEventListener('click',async()=>{
+ if(!isBrowserSessionPortal(select.value))return;
+ try{
+  await chrome.storage.local.set({selectedPortal:select.value,pendingLoginPortal:select.value});
+  await chrome.tabs.create({url:browserConnectors[select.value].accountUrl});
+ }catch{status.textContent='Não foi possível abrir o portal. Tente novamente pelo botão “Abrir login do portal”.';}
+});
+document.querySelector('#project').addEventListener('click',async()=>{
+ if(!isBrowserSessionPortal(select.value))return;
+ try{const tab=await appTab(select.value);await chrome.tabs.update(tab.id,{active:true});}
+ catch{status.textContent='Não foi possível abrir a conexão. Acesse curriculoautomatico.vercel.app e entre na sua conta.';}
+});
+connect.addEventListener('click',async()=>{
+ if(connect.disabled||!consent.checked||!context||!isBrowserSessionPortal(select.value))return;
+ const portal=select.value,provider=browserConnectors[portal],expected=context;
+ const local=browserConnectionMode(portal)==='local-browser';
+ let destination=expected;
+ busy=true;select.disabled=true;update();
+ status.textContent=`Verificando sua sessão do ${provider.name}. Mantenha esta janela aberta…`;
+ try{
+  // Request from this explicit click, before awaiting any other operation.
+  const granted=await chrome.permissions.request({origins:provider.domains.map(domain=>`https://*.${domain}/*`)});
+  if(!granted)throw new Error(`O acesso ao ${provider.name} não foi autorizado no Chrome.`);
+  status.textContent='1/3 · Confirmando a conta de destino no EmpreGatos…';
+  destination=await validateDestination(portal,expected);context=destination;
+  if(local&&destination.mode!=='local-browser')throw new Error('O servidor precisa ser atualizado para verificar o LinkedIn no seu Chrome. Nenhuma sessão foi transferida.');
+  await feedback(destination,portal,`2/3 · Reconhecendo seu login no ${provider.name}…`);
+  const origins=new Map();let authenticated=false;
+  for(let scan=0;scan<2&&!authenticated;scan++){
+  const tabs=await chrome.tabs.query({url:provider.domains.map(domain=>`https://*.${domain}/*`)});
+  let disappeared=false;
+  for(const tab of tabs.slice(0,20)){
+   let url;try{url=new URL(tab.url||tab.pendingUrl);}catch{continue;}
+   if(url.protocol!=='https:'||!sessionDomain(portal,url.hostname)||/signin|sign-in|\/login|checkpoint|challenge|authwall|signup/i.test(url.pathname))continue;
+   let results;
+   try{results=await chrome.scripting.executeScript({target:{tabId:tab.id},args:[provider.signedSelector,local],func:(selector,localOnly)=>{
+    const signed=!!document.querySelector(selector)||[...document.querySelectorAll('button')].some(button=>/^(Sair|Logout|Sign out)$/i.test(button.textContent.trim()));
+    if(!signed)return null;
+    if(localOnly)return {origin:location.origin,authenticated:true};
+    // No form fields, password inputs, Google data or unrelated storage keys.
+    const local=[];
+    for(let i=0;i<localStorage.length;i++){const name=localStorage.key(i);if(/token|auth|session/i.test(name))local.push({name,value:localStorage.getItem(name)});}
+    return {origin:location.origin,localStorage:local};
+   }});}catch(error){if(missingTab(error)){disappeared=true;continue;}throw error;}
+   const state=results[0]?.result;
+   if(state&&sessionDomain(portal,new URL(state.origin).hostname)){authenticated=true;origins.set(state.origin,state);}
+  }
+  if(!disappeared)break;
+  }
+  if(!authenticated)throw new Error(`Abra o login do ${provider.name}, entre na sua conta e volte a este conector.`);
+  if(local){
+   destination=await validateDestination(portal,expected);context=destination;
+   await feedback(destination,portal,'3/3 · Registrando a verificação do login no seu Chrome. Nenhuma sessão será enviada…');
+   const result=await message(destination.tabId,{type:'empregatos:verify-local-login',portal,expectedUserId:expected.account.id,authenticated:true,authorizeLocalConnection:true,extensionVersion:chrome.runtime.getManifest().version});
+   if(!result?.ok)throw new Error(result?.error||'Não foi possível registrar a verificação do LinkedIn.');
+   await chrome.storage.local.set({pendingLoginPortal:null});
+   await feedback(destination,portal,'Login do LinkedIn reconhecido no seu Chrome. Verificação registrada; cookies e tokens permaneceram no navegador. O envio automático pelo LinkedIn continua indisponível.','verified');
+   try{await chrome.tabs.update(destination.tabId,{active:true});}catch(error){if(!missingTab(error))throw error;}
+   return;
+  }
+  const allCookies=(await Promise.all(provider.domains.map(domain=>chrome.cookies.getAll({domain})))).flat();
+  const unique=new Map();
+  for(const c of allCookies){
+   if(!sessionDomain(portal,c.domain)||!c.secure||c.partitionKey)continue;
+   unique.set(`${c.domain}|${c.path}|${c.name}`,{name:c.name,value:c.value,domain:c.domain,path:c.path,expires:c.expirationDate??-1,httpOnly:c.httpOnly,secure:true,sameSite:c.sameSite==='strict'?'Strict':c.sameSite==='lax'?'Lax':'None'});
+  }
+  destination=await validateDestination(portal,expected);context=destination;
+  await feedback(destination,portal,`3/3 · Verificando a sessão do ${provider.name} no servidor. Aguarde nesta aba…`);
+  const transfer={type:'empregatos:import-session',portal,expectedUserId:expected.account.id,state:{cookies:[...unique.values()],origins:[...origins.values()]}};
+  let result;
+  try{result=await message(destination.tabId,transfer);}catch(error){
+   // Only retry when Chrome guarantees that no receiver existed. Never replay
+   // a transfer after a port closes or an unknown server outcome.
+   if(!missingTab(error))throw error;
+   destination=await validateDestination(portal,expected);context=destination;
+   result=await message(destination.tabId,transfer);
+  }
+  if(!result?.ok)throw new Error(result?.error||`Não foi possível verificar a sessão do ${provider.name}.`);
+  await chrome.storage.local.set({pendingLoginPortal:null});
+  await feedback(destination,portal,`Sessão do ${provider.name} verificada. Confirme e salve a conexão na aba do EmpreGatos.`,'verified');
+  try{await chrome.tabs.update(destination.tabId,{active:true});}catch(error){if(!missingTab(error))throw error;status.textContent='A sessão foi verificada, mas a aba do projeto foi fechada. Abra a conexão no EmpreGatos para conferir antes de repetir.';}
+ }catch(error){await feedback(destination,portal,missingTab(error)?'Uma aba foi fechada durante a conexão. Deixe o portal e o EmpreGatos abertos e tente novamente.':error.message,'error');}
+ finally{busy=false;select.disabled=false;consent.checked=false;update();}
+});
+void chrome.storage.local.get('selectedPortal').then(saved=>{
+ const requested=new URL(location.href||'https://invalid.test').searchParams.get('portal');
+ if(isBrowserSessionPortal(requested))select.value=requested;
+ else if(isBrowserSessionPortal(saved.selectedPortal))select.value=saved.selectedPortal;
+ return loadContext();
 });

@@ -1,5 +1,9 @@
 # Destinos de candidatura — 23/10/2026
 
+> **Atualização de 26/10, corte às 12h21:** leitura de produção restabelecida; execução de hoje verificada; Global TI reconciliada no banco como **Falha no envio / não recebida**, preservando tentativa e reserva originais. Sem retransmissão por incompatibilidade atual. Diagnóstico restrito e telemetria dos workers publicados, com mensagens reais persistidas. **Meta de hoje 0/5**, sem novo recibo real. [Relatório final de 26/10](../RELATORIO-AUTOMACAO-FINAL.md).
+
+> **Observação de 26/10/2026:** a Global TI respondeu oficialmente que a candidatura IMW7499 **não foi recebida**. O banco foi preservado, sem reenvio. Há execuções `scheduled_automation` em 24 e 25/10, com descoberta/resolução e **zero tentativas e recibos**. Os logs HTTP/IDs de mensagens históricos não puderam ser recuperados pela retenção. Detalhes na [observação agendada](#observação-agendada-e-reconciliação-oficial--26102026).
+
 > **Atualização após 13h25 de Brasília — AUTOMAÇÃO AINDA NÃO VALIDADA:** filtros antecipados, busca por tecnologias/experiência confirmadas, produtividade por fonte e bloqueios de qualificação publicados. Duas execuções reais do backend concluíram descoberta e resolução; a última examinou 348 registros, preservou 15 e encontrou três vagas já conhecidas compatíveis, todas sem canal independente submetível. **Zero vagas novas, zero novas preparações, zero transmissões e zero recibos. Meta 0/5.** Global TI desconhecida e sem reenvio; Cadmus incompatível e com obrigatórios pendentes. A [expansão e o resultado final](#expansão-orientada-a-candidaturas-submetíveis--2310-após-13h) detalham as evidências.
 
 > **Encerramento da continuação, 23/10, após 12h30 de Brasília:** Global TI continua **desconhecida, sem reenvio**. Consulta ao suporte enviada com autorização; resposta pendente. Quickin corrigido e publicado, 86 testes focados aprovados. Uma nova busca real consultou 469 registros e adicionou 39 vagas; nenhuma passou por todos os filtros. **Zero novas tentativas, zero novos recibos e meta diária 0/5.** Detalhamento e estado de produção na [continuação segura](#reconciliação-segura-e-continuação-real--2310-após-12h30).
@@ -485,3 +489,75 @@ Os 33 formulários observados são 32 Lever e a Global TI. Recálculo com os mes
 Foi entregue [a especificação do piloto ATS](ESPECIFICACAO-PILOTO-ATS.md), com concessões reais, ingestão, envio, confirmação, revogação e deduplicação. Não há empresa participante, credencial concedida ou homologação; o piloto não foi iniciado. Nenhum adaptador novo foi implementado sem destino elegível autorizado.
 
 O banco confirma **zero novas tentativas, zero novos recibos e 0/5 no dia**; Global TI mantém exatamente a tentativa desconhecida anterior. A reconciliação por Gmail só encontrou os dois e-mails de acesso conhecidos. Produção permaneceu no mesmo deployment, health 200, cron ativo e futura execução de 24/10 às 08h Brasília; nenhum deploy ou acionamento antecipado ocorreu. [Estado final](../artifacts/final-public-validation-2026-10-23.json), [produção](../artifacts/final-public-validation-production-2026-10-23.json), [reconciliação](../artifacts/final-public-validation-reconciliation-2026-10-23.json).
+
+## Observação agendada e reconciliação oficial — 26/10/2026
+
+Consulta em **26/10, aproximadamente 07h09–07h11 Brasília**, limitada ao banco, consultas de logs reais e Gmail. Não foi chamado cron, busca, preparação, processamento, envio ou endpoint do empregador. Não houve alteração no banco, fontes, filtros ou executores. Os artefatos de 23/10 foram preservados; as evidências novas têm data de 26/10.
+
+### Global TI: confirmadamente não recebida
+
+A conversa de suporte autorizada **`1a16937d1e63856d`** contém resposta corporativa datada de **23/10/2026, 16h18m57s Brasília** (`19:18:57Z`), mensagem **`1a16a33ce23f137c`**, assunto “RES: Confirmação de recebimento de candidatura — IMW7499”. A remetente é a Head de Hunting da Global TI, no domínio `globalti.com.br`. O Gmail informa **DKIM, SPF e DMARC aprovados**. O texto responde ao candidato e mantém a consulta original, identificando código IMW7499, cargo e publicação oficial.
+
+Trecho decisivo: **“realmente sua candidatura não entrou.”** A empresa ofereceu nova candidatura ou recebimento do currículo para vínculo com a oportunidade. Isso confirma **não recebimento da tentativa de 23/10**; não é um recibo, não comprova a causa técnica da rejeição e não recupera status/corpo HTTP descartados.
+
+**Classificação da reconciliação: Confirmadamente não recebida.** A conclusão atualiza a pendência documental anterior. O banco permanece como estava: candidatura `69692d0e-e9ba-448b-bb78-0140f31dc5f5`, tentativa única `a8f0e151-72bb-43d2-b9b6-99bd7ce0a808`, `outcome: unknown`, sem recibo e sem `submittedAt`. O observador não mudou status, liberou reserva, criou tentativa ou enviou mensagem/currículo. Antes de eventual nova tentativa, a evidência precisa ser tratada pelo fluxo de reconciliação e devem ser revalidados abertura, compatibilidade, respostas e consentimentos. O convite do suporte não substitui esses critérios.
+
+[Evidência sanitizada da resposta](../artifacts/globalti-official-reconciliation-2026-10-26.json), sem contatos pessoais, assinatura ou cabeçalhos brutos; IDs e resultados de autenticação permitem conferir a conversa original.
+
+### Execuções agendadas persistidas
+
+| Etapa | 24/10/2026 | 25/10/2026 |
+|---|---|---|
+| Execução / tarefa de descoberta | `8642e770-0aa0-4df8-9210-81fbefcd18fe` | `c6598802-170c-4d6e-bcd1-96680af1055e` |
+| Origem persistida | `scheduled_automation` | `scheduled_automation` |
+| Criação da tarefa, Brasília | **08:09:06.926** | **08:09:06.274** |
+| Início da execução, Brasília | **08:09:31.194** | **08:09:14.020** |
+| Conclusão da tarefa de descoberta, Brasília | **08:13:02.857** | **08:13:04.070** |
+| Estado da execução / tarefa | `completed` / `completed` | `partial` / `completed` |
+| Registros examinados / preservados | **480 / 13** | **479 / 13** |
+| Novas vagas | **2** | **0** |
+| Compatíveis reobservadas | **3**, Gupy; zero canal liberado no indicador de fonte | **3**, Gupy; mesmo bloqueio |
+| Preparações / tentativas / recibos novos | **0 / 0 / 0** | **0 / 0 / 0** |
+| Resolução persistida | **4 tarefas concluídas**, última às 08:19:41.794 | **5 tarefas concluídas**, última às 08:21:09.325 |
+
+As execuções ocorreram dentro da janela esperada de 08h–09h. A origem agendada, as tarefas e a produtividade constituem evidência de processamento independente persistido. **Não comprovam candidatura autônoma completa:** não há executor de submissão registrado nessas janelas, tentativa, resposta de candidatura ou recibo novo.
+
+Em 25/10, a busca ficou parcial por **LinkedIn / Antigravity sem fontes verificáveis**. A tarefa de descoberta foi encerrada e a resolução continuou; esse erro não equivale ao cron inteiro parado. O acompanhamento não disparou outra pesquisa.
+
+Resoluções de 24/10: `ee7ae724-0461-406f-be4e-c4105f308a21`, `90992d0e-6454-41f9-b962-c5f451b84c26`, `f137b98e-1fd3-46ec-aef4-93be699825bd`, `4458d857-5576-4025-9033-6d9c953681c9`. Resoluções de 25/10: `b9c3d66e-6a39-43ff-80d3-be6d690855d9`, `ad7fd85a-2409-402f-b091-466439ba7ea4`, `4d35f43b-9526-453b-844f-6e0b322d1b5a`, `6422de05-0266-45f7-b679-819d2e92731d`, `2388d827-29e1-4024-9a40-506600da30d2`. Todas têm `attempts: 1` no banco, **não interpretado como contador de entregas da fila**.
+
+### Produtividade e elegibilidade
+
+| Fonte | Examinados 24/10 → 25/10 | Preservados 24/10 → 25/10 | Compatíveis / canal liberado |
+|---|---:|---:|---|
+| CI&T / Lever | 177 → 178 | 3 → 3 | 0 / 0 |
+| Gupy | 159 → 157 | 9 → 9 | 3 / 0 |
+| Wellhub | 87 → 87 | 0 → 0 | 0 / 0 |
+| CodeRoad | 30 → 30 | 0 → 0 | 0 / 0 |
+| AllEasy | 10 → 10 | 0 → 0 | 0 / 0 |
+| Quickin / Global TI | 8 → 8 | 0 → 0 | 0 / 0 |
+| Abler | 5 → 5 | 1 → 1 | 0 / 0; candidatura existente excluída |
+| Zup | 4 → 4 | 0 → 0 | 0 / 0 |
+| Demais pesquisas | 0 válidos | 0 | Nenhum canal novo comprovado |
+
+480 e 479 incluem releituras, **não são 959 novas vagas distintas**. `run.sourceProductivity` e `routine.discoveryProductivity` não indicam canal novo liberado. Um formulário posteriormente identificado pela resolução não é preflight aprovado.
+
+As duas novas vagas de 24/10 estão abaixo do mínimo 70 no estado consultado: FCamara, **Full Stack Java/React - Pleno**, `6be60812-8c1d-4397-88bb-e72433e5ced1`, **42 pontos**, resolução parcial; CI&T, **Node.js Full Stack Developer**, `13cfa92e-4600-4d9f-97c6-4d38e0bdc477`, **39 pontos**, formulário Lever identificado sem elegibilidade ou candidatura. Ambas foram publicadas em 23/10 e descobertas pelo produto em 24/10. Não foram enviadas para completar a meta. A Cadmus não foi transmitida nem teve impedimentos alterados. Filtros preservados, assinatura **`22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4`**.
+
+### Limite dos logs, meta e estado atual
+
+O código liga o agendamento a `/api/daily-routine`. A persistência demonstra execuções `scheduled_automation`, descoberta e resolução concluídas. **A invocação HTTP exata, os IDs de mensagens e os contadores de entrega dos workers não foram recuperados** nesta observação tardia:
+
+- Consulta CDN de 24–25/10: **HTTP 402**, recurso de observabilidade necessário para requisições com mais de 12 horas.
+- Logs runtime de 24 e 25/10: **HTTP 400**, período fora da retenção do plano Hobby.
+- São códigos das consultas históricas, não das execuções do cron. Não houve upgrade ou compra. Ausência desses logs não foi interpretada como ausência de execução.
+
+Conclusão: **agendamento/descoberta/resolução comprovados por persistência; rastreio HTTP e de mensagens incompleto; submissão completa com recibo ainda não validada.**
+
+Às 07h09 de 26/10, rotina habilitada em modo automático e política `official`, progresso `waiting`, `nextRun: 2026-10-26T11:00:00Z` (**08h Brasília**, ainda futuro nessa leitura). Nenhum horário foi antecipado. A renovação normal da credencial de leitura Firebase CLI foi concluída sem expor credenciais.
+
+**Metas de 24/10 e 25/10: 0/5 confirmadas em cada dia**, zero tentativas e uso de cota zero nessas datas. Em 26/10 até a leitura: zero tentativas/recibos, antes das 08h; não é resultado final do dia.
+
+Após registrar e comunicar esta observação, o acompanhamento local `verificar-cron-real-do-empregatos` é encerrado conforme sua instrução de término. Isso não desabilita a rotina do Empregatos. Não houve deploy, commit ou push desta atualização.
+
+Evidências novas: [estado de banco e tarefas](../artifacts/scheduled-automation-observation-2026-10-26.json), [resumo e limites dos logs](../artifacts/scheduled-automation-summary-2026-10-26.json), [resposta oficial Global TI](../artifacts/globalti-official-reconciliation-2026-10-26.json).

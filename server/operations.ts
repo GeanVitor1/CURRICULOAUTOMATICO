@@ -1,8 +1,12 @@
 import { missingDataAuthorized, missingDataEligible, missingDataFingerprint } from "./missing-data-consent";
+import {salaryOption} from './salary-options';
+import {PORTAL_RUNTIME_VERSION} from '../shared/portal-runtime-version';
 import { randomUUID } from "node:crypto";
 import { bindExecution, discoveredJob, traceJob } from "./automation-trace";
 import { discoveryBudgetExpired, discoverySignal } from "./discovery-budget";
 import { vercelQueueEnabled } from "./automation-runtime";
+import {discoveryQuota,withDiscoveryCandidates} from './discovery-limits';
+import {permittedDiscoverySource,permittedJobSource,SOURCE_POLICY_MESSAGE} from '../shared/job-source-policy';
 import { dispatchNextApplication } from "./submission-dispatch";
 import { resolve, extname } from "node:path";
 import { and, eq } from "./storage-types";
@@ -81,10 +85,12 @@ import {
 } from "./errors";
 const now = () => new Date().toISOString();
 export function refreshMatches(w: Workspace) {
+  w.routine.minScore=0;w.filters.minScore=0;
   w.jobs.forEach((j) => {
     Object.assign(j, correctJobEvidence(j));
     j.match = analyze(j, w.profile, w.filters);
-    traceJob(j,"compatibility",j.match.blockers.length ? "mandatory_requirement_blocked" : j.match.confidence === "insufficient" ? "insufficient_evidence" : !matchesObjectiveFilters(j,w.profile,w.filters) ? "preferences_not_met" : j.match.score < w.routine.minScore ? "below_minimum_score" : "compatible");
+    if(!permittedJobSource(j)){j.match.blockers.push(SOURCE_POLICY_MESSAGE);j.match.radar=false;}
+    traceJob(j,"compatibility",j.match.blockers.length ? "mandatory_requirement_blocked" : !matchesObjectiveFilters(j,w.profile,w.filters) ? "preferences_not_met" : "compatible");
   });
 }
 export function notify(w: Workspace, title: string, message: string) {
@@ -106,6 +112,7 @@ export function prepare(
   const job = w.jobs.find((j) => j.id === jobId);
   if (!job || job.discarded || job.availability === "closed")
     throw new RequestError("Vaga indisponível.");
+  if(!permittedJobSource(job))throw new RequestError(SOURCE_POLICY_MESSAGE);
   if (w.submissionExclusions?.includes(opportunityKey(job)))
     throw new RequestError("Esta vaga já teve envio registrado antes da limpeza do histórico.");
   const existing = w.applications.find((a) => a.jobId === jobId);
@@ -302,7 +309,7 @@ export async function discover(
     columns: ["userId"],
   });
   // The persisted run marker also prevents concurrent discovery across workers.
-  const { sources, runId, searchWorkspace } = await mutateWorkspace(
+  const { sources, runId, searchWorkspace, quota, automatic } = await mutateWorkspace(
     id,
     async (w, tx) => {
       await checkClaim(tx);
@@ -319,7 +326,16 @@ export async function discover(
           "Execução anterior interrompida; recuperação após 5 minutos.",
         );
       }
-      const sources = w.sources.filter((s) => s.enabled && s.discovery);
+      for(const source of w.sources){
+        if(source.discovery&&!permittedDiscoverySource(source))Object.assign(source,{enabled:false,status:SOURCE_POLICY_MESSAGE});
+      }
+      refreshMatches(w);
+      const dailyLimit=await workspaceDailyLimit(tx,id,w.routine.dailyLimit);
+      const recordedUsage=owner ? await tx.count('applicationUsage',and(eq('userId',owner.userId),eq('day',new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'})))) : 0;
+      const automatic=w.routine.enabled&&w.routine.mode==='automatic';
+      const quota=discoveryQuota(w,dailyLimit,recordedUsage);
+      if(automatic)w.routine.discoveryBudget={day:quota.day,target:quota.target,examined:quota.examined};
+      const sources = w.sources.filter((s) => s.enabled && s.discovery && permittedDiscoverySource(s));
       sources.push(...learnedDiscoverySources(w).filter(source=>!sources.some(s=>s.type===source.type&&s.board===source.board)));
       if(w.filters.titles.length&&process.env.ABLER_EMAIL_DISCOVERY_ENABLED==='true')sources.unshift({...ablerSource});
       sources.unshift(...configuredCompanyBoards());
@@ -353,7 +369,7 @@ export async function discover(
       // Learned and configured boards may refer to the same official catalog.
       const seenSources=new Set<string>();
       const configuredSourceCount=sources.length;
-      sources.splice(0,sources.length,...sources.filter(s=>{const key=`${s.type}:${s.board}`;if(seenSources.has(key)||!sourceDue(w,s))return false;seenSources.add(key);return true;}));
+      sources.splice(0,sources.length,...sources.filter(s=>{const key=`${s.type}:${s.board}`;if(!permittedDiscoverySource(s)||seenSources.has(key)||!sourceDue(w,s))return false;seenSources.add(key);return true;}));
       const continuation = queuedRunId && w.runs.find(run => run.id === queuedRunId)?.continuation;
       if (continuation)
         sources.splice(0, sources.length, ...sources.filter(source => w.routine.discoveryCheckpoints?.[source.id]?.pending));
@@ -378,7 +394,7 @@ export async function discover(
           message: "Consultando fontes oficiais.",
         });
       w.runs = w.runs.slice(0, 100);
-      return { sources, runId, searchWorkspace: structuredClone(w) };
+      return { sources, runId, searchWorkspace: structuredClone(w), quota, automatic };
     },
   );
   const all: Job[] = [],
@@ -396,13 +412,28 @@ export async function discover(
   const checkpoints: NonNullable<Workspace["routine"]["discoveryCheckpoints"]> = {};
   const successfulBoards: { type: string; board: string; ids: Set<string> }[] =
     [];
+  const nativeSites: string[] = owner ? await readyPortals(owner.userId,searchWorkspace.resumes[0]?.id || '') : [];
+  // A portal with a usable account session takes precedence over speculative searches.
+  sources.sort((a,b)=>Number(b.type==='portal'&&nativeSites.includes(b.board))-Number(a.type==='portal'&&nativeSites.includes(a.board)));
+  const candidateLimit=automatic?quota.candidateLimit:20;
+  const readyCount=()=>new Set([...searchWorkspace.jobs,...all].filter(job=>
+    !job.discarded&&job.availability!=='closed'&&!searchWorkspace.applications.some(a=>a.jobId===job.id)&&
+    !searchWorkspace.submissionExclusions?.includes(opportunityKey(job))&&
+    matchesSelectedSites(job,searchWorkspace)&&matchesObjectiveFilters(job,searchWorkspace.profile,searchWorkspace.filters)&&
+    !job.match.blockers.length&&
+    submissionRoute(searchWorkspace,job,nativeSites)).map(opportunityKey)).size;
+  let queriedSources=0;
   for (const source of sources) {
+    if(examinedTotal>=candidateLimit || queriedSources>=6 || (automatic&&readyCount()>=quota.remaining))break;
+    const sourceAllowance=candidateLimit-examinedTotal;
+    let inspected=0;
+    queriedSources++;
     try {
       if (discoveryBudgetExpired())
         throw new SourceError(
           "O tempo desta busca terminou. Os resultados já encontrados foram preservados; tente consultar esta fonte novamente.",
         );
-      const result =
+      const {value:result} = await withDiscoveryCandidates(sourceAllowance,async()=>
         source.id===ablerSource.id
           ? await discoverAblerJobs(searchWorkspace)
           : source.id.startsWith('quickin-board:')
@@ -415,7 +446,9 @@ export async function discover(
           ? await discoverCachedPublicQuery(
               source,
               {
-                discoveryVersion: 5,
+                discoveryVersion: 6,
+                candidateLimit:sourceAllowance,
+                sourcePolicyVersion:2,
                 skills: searchWorkspace.profile.skills,
                 years: searchWorkspace.profile.years,
                 knownBoards: [...configuredAtsSources(),...configuredQuickinBoards(),...learnedDiscoverySources(searchWorkspace)].map(s=>`${s.type}:${s.board}`),
@@ -426,6 +459,7 @@ export async function discover(
                 titles: searchWorkspace.filters.titles,
                 locations: searchWorkspace.filters.locations,
                 modalities: searchWorkspace.filters.modalities,
+                remoteAnywhere: searchWorkspace.filters.remoteAnywhere,
               },
               () => source.id === corporateEmailSource.id
                 ? discoverCorporateEmailCareers(searchWorkspace, owner?.userId)
@@ -436,6 +470,8 @@ export async function discover(
               ? await discoverCachedPublicQuery(
                   source,
                   {
+                    candidateLimit:sourceAllowance,
+                    sourcePolicyVersion:2,
                     titles: searchWorkspace.filters.titles,
                     locations: searchWorkspace.filters.locations,
                     remoteAnywhere: searchWorkspace.filters.remoteAnywhere,
@@ -471,14 +507,14 @@ export async function discover(
                   },
                   owner?.userId,
                 )
-            : await discoverCachedSource(source);
+            : await discoverCachedSource(source), count=>{inspected=count;});
       if (
         "searchSuggestionsHtml" in result &&
         typeof result.searchSuggestionsHtml === "string"
       )
         searchSuggestions.push(result.searchSuggestionsHtml);
-      const screened=screenDiscovery(searchWorkspace,source,result.jobs,result.checkedAt,
-        'examined' in result&&typeof result.examined==='number'?result.examined:result.jobs.length);
+      const examined=Math.max(inspected,Math.min(sourceAllowance,'examined' in result&&typeof result.examined==='number'?result.examined:result.jobs.length));
+      const screened=screenDiscovery(searchWorkspace,source,result.jobs.slice(0,sourceAllowance),result.checkedAt,examined);
       examinedTotal+=screened.productivity.examined;
       productivity.push(screened.productivity);
       all.push(...screened.jobs);
@@ -497,11 +533,12 @@ export async function discover(
         });
       health.push({
         id: source.id,
-        status: `${result.jobs.length} anúncios encontrados · ${"method" in result ? result.method : result.cached ? "cache verificado" : "consulta oficial"}`,
+        status: `${examined} anúncios examinados · ${screened.jobs.length} preservados · ${"method" in result ? result.method : result.cached ? "cache verificado" : "consulta oficial"}`,
         lastCheckedAt: result.checkedAt,
         lastError: null,
       });
     } catch (error) {
+      examinedTotal+=inspected;
       console.error(JSON.stringify({event:"discovery_source_failed",runId,sourceId:source.id,type:error instanceof Error ? error.name : "UnknownError"}));
       const message =
         error instanceof SourceError
@@ -516,9 +553,6 @@ export async function discover(
       });
     }
   }
-  const nativeSites = owner
-    ? await readyPortals(owner.userId, searchWorkspace.resumes[0]?.id || "")
-    : [];
   return mutateWorkspace(id, async (w, tx) => {
     await checkClaim(tx);
     // ATS returns published board snapshots; Jobicy's rolling feed never implies closure by absence.
@@ -565,6 +599,8 @@ export async function discover(
     run.errors = errors;
     run.searchSuggestions = searchSuggestions;
     run.sourceProductivity=productivity;
+    run.discoveryBudget={target:quota.target,remaining:quota.remaining,limit:candidateLimit,examined:examinedTotal};
+    if(automatic)w.routine.discoveryBudget={day:quota.day,target:quota.target,examined:quota.examined+examinedTotal};
     w.routine.discoveryProductivity={...w.routine.discoveryProductivity,...Object.fromEntries(productivity.map(p=>[p.sourceId,p]))};
     learnOfficialBoards(w,learned,now());
     w.routine.discoveryCheckpoints = {...w.routine.discoveryCheckpoints,...checkpoints};
@@ -572,6 +608,11 @@ export async function discover(
       run.status === "failed"
         ? "Nenhum site pôde ser consultado. Veja os erros e tente novamente."
         : `${count} novas oportunidades, sem duplicações. ${examinedTotal} registros publicados consultados; ${all.length} preservados após filtros antecipados.`;
+    if(automatic){
+      run.message+=` Busca proporcional ao saldo: ${quota.remaining} candidatura(s), até ${candidateLimit} anúncios nesta rodada.`;
+      if(!candidateLimit)run.message=quota.remaining?'Orçamento de busca do dia atingido. As vagas e o progresso foram preservados para o próximo agendamento.':'Saldo diário já utilizado ou reservado na fila. Nenhuma nova busca foi necessária.';
+      else if(!queriedSources)run.message='Já existem vagas compatíveis com canal disponível para o saldo diário. A rotina aproveitará essas vagas antes de pesquisar outras.';
+    }
     w.routine.lastRun = now();
     w.routine.nextRun = w.routine.enabled
       ? nextExecution(w.routine.time)
@@ -624,8 +665,6 @@ export async function discover(
           !j.discarded &&
           matchesSelectedSites(j, w) &&
           matchesObjectiveFilters(j, w.profile, w.filters) &&
-          j.match.confidence !== "insufficient" &&
-          j.match.score >= w.routine.minScore &&
           !j.match.blockers.length &&
           !w.applications.some((a) => a.jobId === j.id),
       );
@@ -692,6 +731,19 @@ export async function automaticSend(
   const routingOptions = {emailAvailable:!!emailConnection?.connected && emailConnection.email?.toLowerCase() === preparation?.profile.email.toLowerCase()};
   const preparingApplication = preparation?.applications.find(a => a.id === appId);
   const preparingJob = preparation?.jobs.find(j => j.id === preparingApplication?.jobId);
+  if(preparingJob&&!permittedJobSource(preparingJob))throw new RequestError(SOURCE_POLICY_MESSAGE);
+  if(preparation&&preparingApplication?.retryOf&&preparingJob){
+    const {assertReconciledRetry,freshRetryJob}=await import("./reconciled-retry");
+    assertReconciledRetry(preparation,preparingApplication);
+    const fresh=await freshRetryJob(preparation,preparingApplication.retryOf.applicationId);
+    await mutateWorkspace(id,w=>{
+      const child=w.applications.find(a=>a.id===appId);
+      if(!child)throw new RequestError("Candidatura não encontrada.");
+      w.jobs=w.jobs.map(j=>j.id===fresh.id?fresh:j);
+      assertReconciledRetry(w,child);
+    });
+    Object.assign(preparingJob,fresh);
+  }
   if (preparation && preparingApplication?.status === "Aguardando aprovação" && preparingJob &&
       (singleSubmissionAuthorized(preparingApplication) || (preparation.routine.enabled && preparation.routine.mode === "automatic"))) {
     let preparingRoute = submissionRoute(preparation, preparingJob, nativeSites, routingOptions);
@@ -769,6 +821,7 @@ export async function automaticSend(
     const a = w.applications.find((a) => a.id === appId);
     if (!a || a.status !== "Aguardando aprovação")
       throw new RequestError("Candidatura não elegível para envio.");
+    if(a.retryOf)(await import("./reconciled-retry")).assertReconciledRetry(w,a);
     const single = singleSubmissionAuthorized(a);
     const retryingEmail = single && emailExplicitlyRejected(a);
     if (a.singleSubmission && !single)
@@ -778,6 +831,7 @@ export async function automaticSend(
     if (!single && (!w.routine.enabled || w.routine.mode !== "automatic"))
       throw new RequestError("Modo automático não está ativo.");
     const attempts = dailySubmissionAttempts(w);
+    if((w.portalVerification?.until||0)>Date.now())throw new Error('PortalVerificationBusy');
     const priorJob = w.jobs.find((j) => j.id === a.jobId);
     const resuming = !!priorJob && resumableJobSubmission(a, priorJob);
     if (
@@ -860,9 +914,7 @@ export async function automaticSend(
     if (
       !(single && route.method === "email" && missingDataAuthorized(w, job, a)) && (
       !matchesObjectiveFilters(job, w.profile, w.filters) ||
-      job.match.blockers.length ||
-      job.match.score < w.routine.minScore ||
-      job.match.confidence === "insufficient")
+      job.match.blockers.length)
     )
       throw new RequestError("A candidatura não passou pelos critérios.");
     const resume = w.resumes.find((r) => r.id === a.resumeId && r.approved);
@@ -947,6 +999,7 @@ export async function automaticSend(
     const attemptId = randomUUID();
     (a.attempts ||= []).push({
       ...execution, id: attemptId,
+      ...(a.retryOf?{previousAttemptId:a.retryOf.attemptId,reconciliationId:a.retryOf.reconciliationId}:{}),
       executor: route.method === "ats_browser" && route.destination.evidence.includes("Formulário WP Jobs Board verificado.") ? "company_wp_jobs" : route.method,
       startedAt: now(), outcome: "started",
     });
@@ -966,6 +1019,7 @@ export async function automaticSend(
       workspaceId: id,
       resumeId: resume.id,
       portal: source.type === "portal" ? source.board : null,
+      continuationUrl:resuming&&source.type==='portal'&&source.board==='gupy'?a.verifiedGupyDrafts?.at(-1)?.continuationUrl:undefined,
       job: {
         title: job.title,
         url: route.method === "ats_browser" ? route.destination.url : job.url,
@@ -1133,6 +1187,7 @@ export async function automaticSend(
         resumeId: payload.resumeId,
         destinationUrl: payload.job.url,
         recordedAt: now(),
+        ...(delivery === "browser" && payload.portal === "gupy" ? {portalRuntimeVersion:PORTAL_RUNTIME_VERSION} : {}),
         ...(delivery === "ats_browser" ? {kind: "ats" as const, targetUrl: payload.destination!.url} : {}),
       };
     else delete a.resumeState;
@@ -1294,20 +1349,47 @@ export function queuePreparedApplications(w: Workspace, nativeSites: string[], d
   const pending = w.applications.filter(a => a.status === "Aguardando aprova\u00e7\u00e3o").length;
   let remaining = Math.max(0, Math.min(dailyLimit, w.routine.dailyLimit) - dailySubmissionAttempts(w) - pending);
   let count = 0;
-  const jobs = w.jobs.filter(job => !jobId || job.id === jobId).sort((a,b) => b.match.score - a.match.score);
+  const jobs = w.jobs.filter(job => !jobId || job.id === jobId).sort((a,b) => Date.parse(b.discoveredAt)-Date.parse(a.discoveredAt));
   for (const job of jobs) {
     const prior=w.applications.find(a=>a.jobId===job.id);
+    // Resolve deterministic published options from confirmed facts before
+    // reconsidering a definite pre-submit pause. Never repeat uncertain sends.
+    if(prior?.missingQuestions?.length && prior.attempts?.at(-1)?.outcome==='pre_submit_blocked' && automaticAnswersEnabled(w.profile) && resumableJobSubmission(prior,job)){
+      const resolved=prior.missingQuestions.flatMap(question=>{
+        const value=salaryOption(question,w.profile.salaryDesired,prior.questionOptions?.[question]||[]);
+        return value?[{question,value,source:'profile' as const,reason:'Faixa salarial publicada que contém a pretensão confirmada.',at:now(),resumeId:prior.resumeId!,destinationUrl:job.url}]:[];
+      });
+      if(resolved.length){
+        prior.automaticAnswers=[...(prior.automaticAnswers||[]).filter(a=>!resolved.some(r=>r.question===a.question)),...resolved];
+        prior.missingQuestions=prior.missingQuestions.filter(q=>!resolved.some(r=>r.question===q));
+        delete prior.automaticBlockedFingerprint;
+        prior.history.push({at:now(),actor:'Sistema',message:'Respondeu a faixa salarial com a pretensão já confirmada no perfil; retomada sujeita a nova verificação do formulário.'});
+      }
+    }
+    const route=submissionRoute(w,job,nativeSites);
+    const supportedResume=prior?.resumeState?.kind==='ats'||(route?.method==='browser'&&route.source.board==='gupy');
+    // A parser update can re-read a definite pre-submit Gupy draft once. The
+    // executor checks the live form again; no answer or consent is inferred
+    // from the old parser's incomplete question labels.
+    if(prior?.status==='Requer ação manual' && !prior.singleSubmission &&
+       route?.method==='browser' && route.source.board==='gupy' &&
+       prior.attempts?.at(-1)?.outcome==='pre_submit_blocked' &&
+       automaticAnswersEnabled(w.profile) && resumableJobSubmission(prior,job) &&
+       (prior.resumeState!.portalRuntimeVersion||0)<PORTAL_RUNTIME_VERSION){
+      prior.resumeState!.portalRuntimeVersion=PORTAL_RUNTIME_VERSION;
+      prior.missingQuestions=[];
+      delete prior.automaticBlockedFingerprint;
+      prior.history.push({at:now(),actor:'Sistema',message:'O leitor de formulários da Gupy foi atualizado. O projeto verificará novamente o rascunho interrompido antes do envio, preservando as respostas e autorizações existentes.'});
+    }
     if(prior && prior.automaticBlockedFingerprint===preparationFingerprint(w,prior)) continue;
-    const readyResume=!!prior && prior.status==="Requer ação manual" && prior.resumeState?.kind==="ats" && !prior.missingQuestions?.length && resumableJobSubmission(prior,job);
+    const readyResume=!!prior && prior.status==="Requer ação manual" && supportedResume && !prior.missingQuestions?.length && resumableJobSubmission(prior,job);
     if (!remaining && !readyResume) continue;
     if (job.discarded || job.availability === "closed" || !matchesSelectedSites(job,w) ||
-        !matchesObjectiveFilters(job,w.profile,w.filters) || job.match.blockers.length ||
-        job.match.confidence === "insufficient" || job.match.score < w.routine.minScore ||
-        !submissionRoute(w,job,nativeSites)) continue;
+        !matchesObjectiveFilters(job,w.profile,w.filters) || job.match.blockers.length || !submissionRoute(w,job,nativeSites)) continue;
     let application = w.applications.find(a => a.jobId === job.id);
     const automaticRetry = !!application && automaticAnswersEnabled(w.profile) && application.answerPolicyAttemptedAt!==w.profile.answerPolicy!.confirmedAt;
     if (application?.missingQuestions?.length && !automaticRetry) continue;
-    if (application && (application.status !== "Requer a\u00e7\u00e3o manual" || application.singleSubmission || application.receipt || application.submittedAt || (application.history.some(event => event.message.startsWith("Envio iniciado.")) && !((jobId || automaticRetry || readyResume) && application.resumeState?.kind === "ats" && (!application.missingQuestions?.length || automaticRetry) && resumableJobSubmission(application,job))))) continue;
+    if (application && (application.status !== "Requer a\u00e7\u00e3o manual" || application.singleSubmission || application.receipt || application.submittedAt || (application.history.some(event => event.message.startsWith("Envio iniciado.")) && !((jobId || automaticRetry || readyResume) && supportedResume && (!application.missingQuestions?.length || automaticRetry) && resumableJobSubmission(application,job))))) continue;
     const resumeId = application?.resumeId || w.interview?.answers.resumeId;
     const resume = resumeId ? w.resumes.find(r => r.id === resumeId && r.approved) : w.resumes.find(r => r.approved);
     if (!resume || (w.interview && (!w.interview.completed || w.interview.answers.resumeId !== resume.id))) continue;

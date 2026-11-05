@@ -1,3 +1,4 @@
+import {searchWorkspaces,searchPlace,searchScopeText} from './search-scopes';
 import { randomUUID } from "node:crypto";
 import { discoverySignal } from "./discovery-budget";
 import { z } from "zod";
@@ -19,6 +20,7 @@ import { geminiConfigured } from "./gemini";
 import { publicDiscoveryAvailable } from "./provider-capabilities";
 import { antigravityAvailable, searchAntigravity } from "./antigravity";
 import { isGoogleCitation } from "./antigravity-protocol";
+import {discoveryCandidateLimit,takeDiscoveryCandidate} from './discovery-limits';
 
 const resultsSchema = z.object({
   jobs: z
@@ -91,7 +93,7 @@ async function citedUrl(
   }
   return null;
 }
-export async function discoverPortal(
+async function discoverPortalScope(
   source: Source,
   workspace: Workspace,
   userId?: string,
@@ -128,18 +130,16 @@ export async function discoverPortal(
       if (!geminiConfigured() && !useAntigravity) throw error;
     }
   }
-  const location =
-    workspace.filters.locations.join(", ") ||
-    workspace.profile.location ||
-    "Brasil";
+  const location = searchPlace(workspace.filters);
   try {
     const query = `${source.board === "glassdoor" ? "(site:glassdoor.com.br OR site:glassdoor.com)" : `site:${portal.host}`} ${source.board === "linkedin" ? "inurl:jobs/view" : source.board === "infojobs" ? "inurl:__" : source.board === "gupy" ? "inurl:jobs" : source.board === "glassdoor" ? "inurl:job-listing" : "inurl:viewjob"} (${titles
       .slice(0, 3)
       .map((title) => JSON.stringify(title))
       .join(
         " OR ",
-      )}) ${workspace.filters.modalities.includes("Remoto") && workspace.filters.remoteAnywhere !== false ? "Brasil remoto" : location}`;
-    const prompt =
+      )}) ${workspace.filters.modalities.includes("Remoto") && workspace.filters.remoteAnywhere !== false ? "Brasil remoto" : `${location} ${workspace.filters.modalities.join(" ")}`}`;
+    const scopeInstruction=searchScopeText(workspace.filters);
+    const prompt = scopeInstruction + "\n" +
       `Use Google Search agora para a consulta: ${query}. Busque URLs de anúncios individuais. Dados da busca: ` +
       JSON.stringify({
         portal: portal.name,
@@ -252,6 +252,7 @@ export async function discoverPortal(
       const key = identity(item.url);
       if (!cited.has(key) || seen.has(key)) continue;
       seen.add(key);
+      if(!takeDiscoveryCandidate())break;
       jobs.push({
         ...item,
         id: randomUUID(),
@@ -307,4 +308,14 @@ export async function discoverPortal(
         : `${useAntigravity ? "Antigravity" : "Gemini"} retornou resultados incompletos. Tente novamente ou use a busca no portal.`,
     );
   }
+}
+
+export async function discoverPortal(source:Source,workspace:Workspace,userId?:string):Promise<PortalResult>{
+ const jobs=new Map<string,Job>();let latest:PortalResult|undefined;
+ for(const scoped of searchWorkspaces(workspace)){
+  if(discoveryCandidateLimit(1)<=0)break;
+  latest=await discoverPortalScope(source,scoped,userId);
+  for(const job of latest.jobs)jobs.set(identity(job.url),job);
+ }
+ return {...latest,jobs:[...jobs.values()],checkedAt:new Date().toISOString(),cached:latest?.cached||false};
 }

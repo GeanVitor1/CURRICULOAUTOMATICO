@@ -183,7 +183,20 @@ it("scopes answers to the exact CV, destination and active authorization", async
     ).approvedAnswers,
   ).toEqual([]);
   w.profile.answerPolicy!.enabled = false;
-  expect(applicationAnswerProfile(w.profile, application, destinationUrl)).toBe(
-    w.profile,
-  );
+  expect(applicationAnswerProfile(w.profile, application, destinationUrl).approvedAnswers).toEqual([]);
+});
+it.each([true, false])("does not transmit saved answers for other vacancies (automation=%s)", enabled => {
+  const w = workspace();
+  w.profile.answerPolicy!.enabled = enabled;
+  const common = { aliases: [], confirmedAt: new Date().toISOString(), value: "private-value" };
+  w.profile.approvedAnswers = [
+    { ...common, id: "other-employer", question: "Projeto", destinationUrl: "https://other.example/apply" },
+    { ...common, id: "other-vacancy", question: "Experiência", destinationUrl: "https://example.test/another-job" },
+    { ...common, id: "sensitive-unscoped", question: "CPF" },
+    { ...common, id: "this-vacancy", question: "CPF", destinationUrl },
+    { ...common, id: "reusable", question: "Portfólio" },
+  ];
+  const profile = applicationAnswerProfile(w.profile, { resumeId: "resume" } as Application, destinationUrl);
+  expect(profile.approvedAnswers?.map(a => a.id)).toEqual(["this-vacancy", "reusable"]);
+  expect(w.profile.approvedAnswers).toHaveLength(5);
 });

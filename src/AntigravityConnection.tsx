@@ -58,7 +58,8 @@ export default function AntigravityConnection() {
         <p>
           A Gupy continua usando anúncios públicos. O limite do seu plano Google
           e da hospedagem continua valendo. Créditos extras estão desativados.
-          As candidaturas continuam disponíveis para concluir no site oficial.
+          A busca alimenta sua rotina de candidaturas. O envio automático depende
+          dos canais disponíveis e das autorizações da sua conta.
         </p>
         {!status.data.connected && (
           <Button disabled={busy} onClick={connect}>

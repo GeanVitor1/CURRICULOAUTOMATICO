@@ -9,6 +9,13 @@ function workspace(){const w=createWorkspace('QA','qa@example.test');w.profile={
 function job(changes:Partial<Job>={}):Job{return {id:'j1',title:'Desenvolvedor .NET',company:'Public',url:'https://jobs.lever.co/public/12345678-1234-1234-1234-123456789012',source:'Lever',description:'Desenvolvimento de aplicações .NET com C#, Angular e Git, integração de sistemas e manutenção de APIs.',location:'Brasil',modality:'Remoto',contract:'CLT',level:'Não informado',salaryMin:null,salaryMax:null,currency:'BRL',skills:['C#','.NET','Angular','Git'],requiredSkills:[],requiredYears:null,publishedAt:new Date().toISOString(),discoveredAt:new Date().toISOString(),saved:false,discarded:false,demo:false,origins:[{source:'lever',id:'public:1',url:'https://jobs.lever.co/public/12345678-1234-1234-1234-123456789012'}],match:{} as Job['match'],...changes};}
 afterEach(()=>vi.useRealTimers());
 describe('Discovery aimed at submit-ready opportunities',()=>{
+ it('continues a pending board page even when the first page had zero compatible jobs',()=>{
+  const w=workspace(),s={...source,id:'quickin-board:employer'};
+  w.routine.discoveryProductivity={[s.id]:screenDiscovery(w,s,[],new Date().toISOString()).productivity};
+  expect(sourceDue(w,s)).toBe(false);
+  w.routine.discoveryCheckpoints={[s.id]:{cursor:JSON.stringify({page:2,offset:0}),pending:true}};
+  expect(sourceDue(w,s)).toBe(true);
+ });
  it('requires a positive exact-destination declaration for affirmative PcD vacancies without inferring it from accessibility or open-to-all notices',()=>{
   const w=workspace(),j=job({title:'Desenvolvedor .NET - vaga para pessoas PCD'});
   expect(analyze(j,w.profile,w.filters).blockers.join()).toContain('Elegibilidade obrigatória');
@@ -46,7 +53,7 @@ describe('Discovery aimed at submit-ready opportunities',()=>{
   expect(quickinMandatorySkills('<h2>Requisitos Obrigatórios</h2><p>Experiência sólida com .NET e Next.js.</p><p>Experiência com AWS e Dynamo db.</p><p>Não é necessário Python.</p><h3>Diferenciais</h3><p>Angular e Node.js</p>')).toEqual(expect.arrayContaining(['.NET','Next.js','AWS','DynamoDB']));
   expect(quickinMandatorySkills('<h2>Requisitos Obrigatórios</h2><p>.NET</p><h3>Diferenciais</h3><p>Angular</p>')).not.toContain('Angular');expect(quickinMandatorySkills('<p>Conhecimentos em .NET</p>')).toEqual([]);
  });
- it('does not retain jobs missing mandatory AWS/Next experience',()=>{const w=workspace(),r=screenDiscovery(w,source,[job({requiredSkills:['Next.js','AWS']})],new Date().toISOString());expect(r.jobs).toHaveLength(0);expect(r.productivity.compatible).toBe(0);expect(Object.values(r.productivity.excluded).reduce((a,b)=>a+b,0)).toBe(1);});
+ it('does not retain jobs missing explicit mandatory AWS/Next experience',()=>{const w=workspace(),r=screenDiscovery(w,source,[job({description:'Requisitos obrigatórios\nExperiência com .NET, Next.js e AWS.',requiredSkills:['Next.js','AWS']})],new Date().toISOString());expect(r.jobs).toHaveLength(0);expect(r.productivity.compatible).toBe(0);expect(Object.values(r.productivity.excluded).reduce((a,b)=>a+b,0)).toBe(1);});
  it('learns a verified public board without granting submission or fabricating a receipt',()=>{
   const w=workspace();learnOfficialBoards(w,[job()],new Date().toISOString());expect(learnedDiscoverySources(w)[0]).toMatchObject({board:'public',type:'lever',application:false});
   const r=screenDiscovery(w,source,[job()],new Date().toISOString());w.jobs=r.jobs;w.routine.discoveryProductivity={[source.id]:r.productivity};expect(sourceProductivity(w)[0]).toMatchObject({examined:1,retained:1,channelVerified:0,prepared:0,transmissionsStarted:0,confirmed:0});

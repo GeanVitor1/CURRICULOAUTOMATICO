@@ -47,3 +47,15 @@ it('preserves search-returned URL hints for independent publisher validation whe
   mocks.agy.mockResolvedValue({verifiedUrls:new Set(),googleCitationUrls:new Set(),searchPerformed:false,jobs:[{url}]});
   expect((await searchCitedUrls('Find verified publisher pages','owner')).urls).toEqual([]);
 });
+it('keeps individual search results ahead of unrelated native source links within the URL budget',async()=>{
+ const url='https://jobs.lever.co/company/00000000-0000-4000-8000-000000000001';
+ mocks.agy.mockResolvedValue({verifiedUrls:new Set(Array.from({length:8},(_,i)=>`https://example.com/source-${i}`)),googleCitationUrls:new Set(),searchPerformed:true,jobs:[{url}]});
+ expect((await searchCitedUrls('Find verified publisher pages','owner')).urls[0]).toBe(url);
+});
+it('preserves independently verifiable Gemini job hints only when Google Search actually ran',async()=>{
+ const job={title:'Auxiliar administrativo',company:'Empresa',url:'https://empresa.example/jobs/1',location:'Brasil',description:'Rotinas administrativas em uma empresa brasileira.'};
+ mocks.api.mockResolvedValue({text:JSON.stringify({jobs:[job]}),grounding:{webSearchQueries:['auxiliar administrativo'],groundingChunks:[]}});
+ expect((await searchCitedUrls('Find public jobs','another-user')).urls).toEqual([job.url]);
+ mocks.api.mockResolvedValue({text:JSON.stringify({jobs:[job]}),grounding:{groundingChunks:[]}});
+ expect((await searchCitedUrls('Find public jobs','another-user')).urls).toEqual([]);
+});

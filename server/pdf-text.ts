@@ -1,3 +1,5 @@
+import { RequestError } from "./errors";
+
 export class PdfReaderUnavailableError extends Error {
   readonly code = "PDF_READER_UNAVAILABLE";
   readonly statusCode = 503;
@@ -31,7 +33,10 @@ export async function extractPdfText(buffer: Buffer): Promise<string> {
     isEvalSupported: false,
   });
   try {
-    const result = await parser.getText();
+    const info = await parser.getInfo();
+    if (!Number.isInteger(info.total) || info.total < 1 || info.total > 50)
+      throw new RequestError("O currículo PDF deve ter entre 1 e 50 páginas.");
+    const result = await parser.getText({ first: 50 });
     return result.text;
   } finally {
     await parser.destroy();

@@ -3,6 +3,7 @@ import { chromium } from "playwright";
 import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { createWorkspace } from "../server/workspace";
 let dir = "";
 let sessions: typeof import("../server/portal-sessions");
 let db: typeof import("../server/db");
@@ -72,6 +73,10 @@ beforeAll(async () => {
   });
   sessions = await import("../server/portal-sessions");
   db = await import("../server/db");
+  for (const id of ["alice", "fixture-linkedin"]) {
+    await db.store.insert("users", {id,name:"Synthetic candidate",email:`${id}@example.test`});
+    await db.store.insert("workspaces", {id:`${id}:live`,userId:id,data:createWorkspace("Synthetic candidate",`${id}@example.test`)});
+  }
 }, 30000);
 afterAll(async () => {
   await sessions?.closePortalBrowsers();
@@ -145,7 +150,7 @@ describe("Sessão nativa autenticada e privada", () => {
     const frame = await sessions.startPortalLogin("alice", "gupy");
     expect(frame.fields).toHaveLength(0);
     expect(frame.authenticated).toBe(true);
-    expect(frame.address).toContain("/candidates/applications");
+    expect(frame.address).toBe("portal.gupy.io/my/applications");
     await sessions.finishPortalLogin("alice", "gupy", "resume-alice");
     await sessions.deletePortalConnections("alice");
     expect(await sessions.connectedPortals("alice")).toEqual([]);

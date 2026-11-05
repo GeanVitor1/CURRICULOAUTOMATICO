@@ -162,15 +162,7 @@ export function FiltersModal({
               onChange={(e) => update("maxYears", Number(e.target.value))}
             />
           </Field>
-          <Field label={`Compatibilidade mínima: ${f.minScore}/100`}>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={f.minScore}
-              onChange={(e) => update("minScore", Number(e.target.value))}
-            />
-          </Field>
+
           <Field label="Publicadas nos últimos">
             <select
               value={f.ageDays}

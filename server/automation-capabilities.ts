@@ -2,7 +2,7 @@ import { candidatePortals, officialPortalLoginOnly } from "../shared/portals";
 import { automaticPortals } from "./connectors";
 import { connectionStatuses } from "./portal-sessions";
 import { browserAuthorized } from "./provider-capabilities";
-import { cloudPortalEnabled } from "./portal-cloud-policy";
+import { cloudPortalEnabled,cloudPortalCanApply } from "./portal-cloud-policy";
 
 export async function applicationCapabilities(
   userId: string,
@@ -14,16 +14,19 @@ export async function applicationCapabilities(
     const connection = connections.find((item) => item.id === site)!;
     const gateway = gateways.includes(site);
     const remoteLogin = cloudPortalEnabled(userId, site);
-    const externalLoginOnly = officialPortalLoginOnly(site) && !remoteLogin;
+    const localBrowser=site==='linkedin';
+    const externalLoginOnly = officialPortalLoginOnly(site) && !remoteLogin && !localBrowser;
     const needsResumeApproval =
-      ["gupy", "infojobs"].includes(site) &&
+      (["gupy", "infojobs"].includes(site)||(remoteLogin&&cloudPortalCanApply(userId,site))) &&
       connection.connected &&
       (!resumeId || connection.profileResumeId !== resumeId);
     const blocker = gateway
       ? null
+      : localBrowser
+        ? 'integration_missing'
       : externalLoginOnly && !connection.connected
         ? "external_login_only"
-        : !browserAuthorized(site) && !cloudPortalEnabled(userId, site)
+        : !(remoteLogin?cloudPortalCanApply(userId,site):browserAuthorized(site))
           ? "integration_missing"
           : !connection.browserAvailable
             ? "browser_unavailable"

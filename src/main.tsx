@@ -9,6 +9,11 @@ import "./audit.css";
 import "./experience.css";
 import "./auth.css";
 import "./account.css";
+import "./application-questions.css";
+import "./resume-review.css";
+import "./pricing.css";
+import "./workspace-design.css";
+import "./onboarding.css";
 const client = new QueryClient({
   defaultOptions: {
     queries: { retry: false, staleTime: 30000, refetchOnWindowFocus: false },

@@ -269,7 +269,7 @@ describe("Produto universal, documentos e isolamento", () => {
     expect(
       (await request("POST", "/api/discover", undefined, other)).statusCode,
     ).toBe(400);
-    for (const type of ["ashby", "jobicy", "adzuna"])
+    for (const type of ["ashby", "greenhouse", "lever"])
       expect(
         (
           await request("POST", "/api/sources", {
@@ -281,6 +281,8 @@ describe("Produto universal, documentos e isolamento", () => {
           })
         ).statusCode,
       ).toBe(200);
+    for (const type of ["jobicy", "adzuna"])
+      expect((await request("POST", "/api/sources", {type,company:type,board:"public"})).statusCode).toBe(400);
   });
   it("Zen não aceita chave no frontend nem habilitação sem consentimento", async () => {
     expect(

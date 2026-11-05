@@ -24,7 +24,9 @@ it('descobre vagas pela página da empresa, usa a data publicada e preserva a de
   vi.stubEnv('COMPANY_FORM_AUTHORIZED','empresa.example');
   const w=createWorkspace('Pessoa','qa@example.test');w.routine.destinationPolicy='official';w.jobs=result.jobs;
   expect(matchesSelectedSites(result.jobs[0],w)).toBe(true);
-  expect(submissionRoute(w,result.jobs[0],[])?.method).toBe('ats_browser');
+  // The product source policy excludes standalone company websites. Parsing a
+  // legacy adapter must not override that restriction or re-enable submission.
+  expect(submissionRoute(w,result.jobs[0],[])).toBeNull();
   expect(destinationBrowserAllowed({url:'https://other.example/jobs/123',platform:'company'})).toBe(false);
 });
 it('valida sem transmitir dados na preparação e envia os bytes originais uma única vez',async()=>{

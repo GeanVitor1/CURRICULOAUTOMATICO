@@ -6,6 +6,7 @@ import {nuxtPublicData} from './nuxt-public-data';
 import {readPublicPage,type PublicPage} from './public-web';
 import {discoveryBudgetExpired} from './discovery-budget';
 import {canonicalJobUrl} from './job-identity';
+import {discoveryCandidateLimit,takeDiscoveryCandidate} from './discovery-limits';
 
 export const ablerSource:Source={id:'official-abler-email',type:'manual',board:'https://candidatos.abler.com.br/sitemap.xml',company:'Abler · candidaturas por e-mail da vaga',enabled:true,discovery:true,application:true,status:'Anúncios e endereços publicados pela plataforma'};
 export function ablerPublication(page:PublicPage) {
@@ -61,12 +62,13 @@ export async function discoverAblerJobs(w:Workspace,read:(url:string)=>Promise<P
   const fingerprint=createHash('sha256').update(JSON.stringify(candidates)).digest('hex').slice(0,16);
   const saved=w.routine.discoveryCheckpoints?.[ablerSource.id]?.cursor.split(':');
   const offset=saved?.[0]===fingerprint && /^\d+$/.test(saved[1]) ? Math.min(Number(saved[1]),candidates.length) : 0;
-  const size=Math.max(2,Math.min(240,Number(process.env.ABLER_DISCOVERY_BATCH_SIZE)||120));
+  const size=discoveryCandidateLimit(Math.max(2,Math.min(240,Number(process.env.ABLER_DISCOVERY_BATCH_SIZE)||120)));
   const urls=candidates.slice(offset,offset+size);
   let visited=0;
   for(let i=0;i<urls.length;i+=2) {
     if(discoveryBudgetExpired())break;
     const found=await Promise.all(urls.slice(i,i+2).map(async url=>{
+      if(!takeDiscoveryCandidate())return null;
       try {const job=jobFromAblerPage(await read(url));return job&&Date.parse(job.publishedAt!)>=cutoff?job:null;}catch{return null;}
     }));
     jobs.push(...found.filter((j):j is Job=>!!j));

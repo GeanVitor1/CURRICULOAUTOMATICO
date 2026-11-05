@@ -9,19 +9,25 @@ import {
 } from "node:crypto";
 import { store, mutateWorkspace } from "./db";
 
-import { cloudPortalEnabled, portalSandboxName } from "./portal-cloud-policy";
+import { cloudPortalEnabled, cloudPortalCanApply, portalSandboxName } from "./portal-cloud-policy";
 import type { CandidatePortal } from "./portal-browser-policy";
 import type { LoginAction } from "./portal-sessions";
 import type { PortalApplication, PortalResult } from "./portal-application";
 import type { Workspace } from "../shared/types";
 import { RequestError } from "./errors";
-import type { GupyBrowserSession } from "./gupy-browser-session";
+import type { PortalBrowserSession } from "./portal-browser-session";
+import {PORTAL_RUNTIME_VERSION} from '../shared/portal-runtime-version';
+import {sessionTransferSuspension,linkedinSessionRetestEnabled} from './session-transfer-policy';
+import {portalSandboxLifecycle} from './portal-sandbox-files';
+import { browserNetworkPolicy } from "./browser-network-policy";
+import { ensureSandboxNode } from "./sandbox-node";
+import { sandboxPreparationFailure } from "./sandbox-failure";
 
 type Metadata = NonNullable<
   Workspace["infrastructure"]["portalConnections"]
 >[string];
 const root = "/vercel/sandbox/portal-runtime";
-const probe = `const fs=require('node:fs');(async()=>{try{const k=fs.readFileSync('${root}/controller.key','utf8');const r=await fetch('http://127.0.0.1:3000/health',{headers:{Authorization:'Bearer '+k},signal:AbortSignal.timeout(1000)});process.exit(r.ok?((await r.json()).version===10?0:2):1)}catch{process.exit(1)}})()`;
+const probe = `const fs=require('node:fs');(async()=>{try{const k=fs.readFileSync('${root}/controller.key','utf8');const r=await fetch('http://127.0.0.1:3000/health',{headers:{Authorization:'Bearer '+k},signal:AbortSignal.timeout(1000)});process.exit(r.ok?((await r.json()).version===${PORTAL_RUNTIME_VERSION}?0:2):1)}catch{process.exit(1)}})()`;
 const clientSource = `import {readFile,writeFile,rm} from 'node:fs/promises';
 import{createDecipheriv,createCipheriv,randomBytes}from'node:crypto';
 const id=process.argv[2];if(!/^[a-f0-9-]{36}$/.test(id))throw Error('Invalid request');
@@ -84,30 +90,36 @@ async function runtime(
         snapshotId: process.env.PORTAL_CLOUD_SNAPSHOT_ID!,
       },
       resources: { vcpus: 1 },
+      networkPolicy: browserNetworkPolicy(),
       ports: [3001],
       timeout: 15 * 60000,
       keepLastSnapshots: { count: 1, expiration: 0 },
-      onCreate: provision,
-      onResume: provision,
+      ...portalSandboxLifecycle(provision,root),
     });
   let s = await get();
-  let healthy = await s.runCommand({ cmd: "node", args: ["-e", probe] });
+  // getOrCreate may restore an older VM. Enforce the policy before any command.
+  await s.update({networkPolicy:browserNetworkPolicy()});
+  let node = await ensureSandboxNode(s);
+  let healthy = await s.runCommand({ cmd: node, args: ["-e", probe] });
   if (healthy.exitCode === 2 && upgrade) {
     await s.stop();
     s = await get();
-    healthy = await s.runCommand({ cmd: "node", args: ["-e", probe] });
+    await s.update({networkPolicy:browserNetworkPolicy()});
+    node = await ensureSandboxNode(s);
+    healthy = await s.runCommand({ cmd: node, args: ["-e", probe] });
   }
   if (healthy.exitCode !== 0 && healthy.exitCode !== 2) {
     await provision(s);
     await s.runCommand({
-      cmd: "node",
+      cmd: node,
       args: [root + "/runner.mjs", portal],
+      env: {PORTAL_LINKEDIN_SESSION_RETEST:linkedinSessionRetestEnabled(userId)?'true':'false'},
       cwd: root,
       detached: true,
     });
     for (let i = 0; i < 8; i++) {
       await new Promise((r) => setTimeout(r, 150));
-      healthy = await s.runCommand({ cmd: "node", args: ["-e", probe] });
+      healthy = await s.runCommand({ cmd: node, args: ["-e", probe] });
       if (healthy.exitCode === 0) break;
     }
   }
@@ -117,7 +129,7 @@ async function runtime(
       "O navegador na nuvem não iniciou. Tente abrir a conexão novamente.",
     );
   }
-  return s;
+  return {sandbox:s,node};
 }
 
 export async function cloudPortalCommand<T = unknown>(
@@ -132,13 +144,16 @@ export async function cloudPortalCommand<T = unknown>(
     viewportWidth?: number;
     viewportHeight?: number;
     viewerOrigin?: string;
-    browserSession?: GupyBrowserSession;
+    browserSession?: PortalBrowserSession;
   },
 ) {
+  const suspension = sessionTransferSuspension(portal,userId);
+  if (suspension && !['close', 'disconnect'].includes(request.op)) throw new RequestError(suspension);
   if (!cloudPortalEnabled(userId, portal))
     throw new RequestError(
       "A conexão de envio deste portal não está disponível para esta conta.",
     );
+  if(request.op==='apply'&&!cloudPortalCanApply(userId,portal))throw new RequestError('A conexão deste portal não libera envio automático.');
   if (request.op === "close") {
     try {
       const existing = await Sandbox.get({
@@ -151,9 +166,15 @@ export async function cloudPortalCommand<T = unknown>(
       throw error;
     }
   }
-  const s = await runtime(userId, portal, ["open", "import-browser-session"].includes(request.op));
+  let prepared: Awaited<ReturnType<typeof runtime>>;
+  try { prepared = await runtime(userId, portal, ["open", "import-browser-session", "apply", "verify-draft", "connection-policy"].includes(request.op)); }
+  catch (error) {
+    if (request.op === "apply") return sandboxPreparationFailure(error) as T;
+    throw new RequestError(sandboxPreparationFailure(error).message);
+  }
+  const {sandbox:s,node} = prepared;
   if (request.op === "apply") {
-    const health = await s.runCommand({ cmd: "node", args: ["-e", probe] });
+    const health = await s.runCommand({ cmd: node, args: ["-e", probe] });
     if (health.exitCode !== 0)
       throw new RequestError(
         "Abra novamente a conexão da Gupy para atualizar o navegador antes de enviar candidaturas.",
@@ -185,13 +206,13 @@ export async function cloudPortalCommand<T = unknown>(
       },
     ]);
     const command = await s.runCommand({
-      cmd: "node",
+      cmd: node,
       args: [root + "/client.mjs", id],
       detached: true,
       env: { PORTAL_REQUEST_KEY: key.toString("base64") },
     });
     const result = await command.wait({
-      signal: AbortSignal.timeout(request.op === "apply" ? 135000 : 44000),
+      signal: AbortSignal.timeout(["apply","verify-draft"].includes(request.op) ? 135000 : 44000),
     });
     if (result.exitCode !== 0) throw new Error("PORTAL_COMMAND_FAILED");
     const bytes = await s.readFileToBuffer({ path: path + ".response" });
@@ -213,7 +234,7 @@ export async function cloudPortalCommand<T = unknown>(
       await cacheMetadata(userId, portal, response.connection);
     stop =
       response.canStop !== false &&
-      ["confirm", "close", "disconnect", "apply"].includes(request.op);
+      (["confirm", "close", "disconnect", "apply", "verify-draft"].includes(request.op)||(request.op==='connection-policy'&&response.data?.hasActiveViewer===false));
     if (response.error) throw new RequestError(response.error);
     if (["open", "import-browser-session"].includes(request.op) && response.data?.live) {
       const url = new URL("/live", s.domain(3001));
@@ -229,7 +250,7 @@ export async function cloudPortalCommand<T = unknown>(
   } finally {
     await s
       .runCommand({
-        cmd: "node",
+        cmd: node,
         args: [
           "--input-type=module",
           "-e",

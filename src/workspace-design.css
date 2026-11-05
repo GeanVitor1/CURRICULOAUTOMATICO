@@ -1,0 +1,1718 @@
+/* ==========================================================================
+   EmpreGatos — Logged-In Workspace Design System Overhaul
+   Cohesive dark & light surfaces, typography hierarchy, card rhythm,
+   interactive controls, and responsive layout refinements.
+   ========================================================================== */
+
+:root {
+  --bg-0: #0c110e;
+  --bg-1: #121915;
+  --bg-2: #18211c;
+  --bg-3: #1f2b24;
+  --bg-hover: #24322a;
+  --surface: #121915;
+  --surface-2: #18211c;
+  --surface-elevated: #1b2620;
+  --text-0: #f2f7f3;
+  --text-1: #b2c2b6;
+  --text-2: #7e9083;
+  --text: #f2f7f3;
+  --muted: #9eb0a3;
+  --border: rgba(190, 224, 198, 0.11);
+  --border-strong: rgba(190, 224, 198, 0.21);
+  --accent: #a8df7c;
+  --accent-strong: #bce996;
+  --accent-soft: rgba(168, 223, 124, 0.12);
+  --accent-border: rgba(168, 223, 124, 0.34);
+  --emerald: #a8df7c;
+  --emerald-soft: rgba(168, 223, 124, 0.12);
+  --warning: #e5b54f;
+  --amber: #e5b54f;
+  --amber-soft: rgba(229, 181, 79, 0.12);
+  --danger: #f06a6a;
+  --rose: #f06a6a;
+  --rose-soft: rgba(240, 106, 106, 0.12);
+  --card-radius: 16px;
+  --card-inner-radius: 12px;
+  --control-radius: 10px;
+  --card-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 12px 32px -12px rgba(0, 0, 0, 0.45);
+  --card-shadow-hover:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 16px 38px -12px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] {
+  --bg-0: #f3f7f2;
+  --bg-1: #ffffff;
+  --bg-2: #edf3eb;
+  --bg-3: #e2ebe0;
+  --bg-hover: #d8e4d6;
+  --surface: #ffffff;
+  --surface-2: #edf3eb;
+  --surface-elevated: #ffffff;
+  --text-0: #111914;
+  --text-1: #3b4b40;
+  --text-2: #5b6d60;
+  --text: #111914;
+  --muted: #4a5b4f;
+  --border: rgba(24, 42, 30, 0.11);
+  --border-strong: rgba(24, 42, 30, 0.22);
+  --accent: #27661f;
+  --accent-strong: #1e5218;
+  --accent-soft: rgba(39, 102, 31, 0.09);
+  --accent-border: rgba(39, 102, 31, 0.28);
+  --emerald: #27661f;
+  --emerald-soft: rgba(39, 102, 31, 0.09);
+  --warning: #9a5b08;
+  --amber: #9a5b08;
+  --amber-soft: rgba(154, 91, 8, 0.09);
+  --danger: #b82e2e;
+  --rose: #b82e2e;
+  --rose-soft: rgba(184, 46, 46, 0.09);
+  --card-shadow:
+    0 1px 2px rgba(17, 25, 20, 0.04),
+    0 10px 26px -10px rgba(17, 25, 20, 0.07);
+  --card-shadow-hover:
+    0 2px 4px rgba(17, 25, 20, 0.06),
+    0 14px 32px -10px rgba(17, 25, 20, 0.11);
+}
+
+/* ==========================================================================
+   1. App Shell, Atmospheric Canvas, Sidebar & Topbar
+   ========================================================================== */
+
+.app-shell {
+  background:
+    radial-gradient(
+      980px 440px at 22% -8%,
+      rgba(168, 223, 124, 0.055),
+      transparent 62%
+    ),
+    var(--bg-0);
+}
+
+[data-theme="light"] .app-shell {
+  background:
+    radial-gradient(
+      980px 440px at 22% -8%,
+      rgba(65, 124, 53, 0.06),
+      transparent 62%
+    ),
+    var(--bg-0);
+}
+
+.sidebar {
+  background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+  border-right: 1px solid var(--border);
+  padding: 18px 14px;
+  gap: 16px;
+}
+
+.brand {
+  padding: 6px 8px 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+
+.brand-mark.mascot-brand {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+.brand-title strong {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.nav-group {
+  gap: 4px;
+}
+
+.nav-item {
+  min-height: 42px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-1);
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.nav-item svg {
+  opacity: 0.78;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.nav-item:hover {
+  background: var(--bg-2);
+  color: var(--text-0);
+}
+
+.nav-item:hover svg {
+  opacity: 1;
+}
+
+.nav-item.active {
+  background: var(--accent-soft);
+  color: var(--text-0);
+  border-color: var(--accent-border);
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.nav-item.active svg {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.sidebar-foot {
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  gap: 8px;
+}
+
+.user-row {
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 12.5px;
+}
+
+.topbar {
+  min-height: 58px;
+  padding: 10px 28px;
+  background: color-mix(in srgb, var(--bg-0) 84%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.crumbs strong {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.page-content {
+  padding: 28px 28px 64px;
+}
+
+.app-footer {
+  padding: 16px 28px;
+  border-top: 1px solid var(--border);
+  color: var(--text-2);
+  font-size: 12.5px;
+}
+
+/* ==========================================================================
+   2. Page Headers & Career Flow Container
+   ========================================================================== */
+
+.career-flow {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+
+.page-head,
+.career-flow .page-head {
+  padding-bottom: 20px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.page-head h1,
+.career-flow .page-head h1 {
+  font-size: clamp(24px, 2.5vw, 31px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.18;
+  color: var(--text-0);
+}
+
+.page-head p,
+.career-flow .page-head p {
+  margin-top: 6px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--text-1);
+  max-width: 68ch;
+}
+
+/* ==========================================================================
+   3. Buttons & Form Controls
+   ========================================================================== */
+
+.btn,
+.button {
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: var(--control-radius);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  gap: 8px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.12s ease,
+    box-shadow 0.15s ease;
+}
+
+.btn-secondary,
+.button:not(.primary):not(.danger):not(.danger-ghost):not(.ghost):not(.btn-primary):not(.btn-danger):not(.btn-ghost) {
+  background: var(--bg-2);
+  color: var(--text-0);
+  border: 1px solid var(--border-strong);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.btn-secondary:hover:not(:disabled),
+.button:not(.primary):not(.danger):not(.danger-ghost):not(.ghost):not(.btn-primary):not(.btn-danger):not(.btn-ghost):hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: color-mix(in srgb, var(--text-0) 28%, var(--border-strong));
+}
+
+.btn-primary,
+.button.primary {
+  background: linear-gradient(180deg, #b5e78c 0%, #9cd86e 100%);
+  color: #0e1810;
+  border: 1px solid rgba(188, 233, 150, 0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover:not(:disabled),
+.button.primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #bfe998 0%, #a6df79 100%);
+  border-color: #c8f0a4;
+}
+
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .button.primary {
+  background: linear-gradient(180deg, #2d7324 0%, #235d1b 100%);
+  color: #ffffff;
+  border-color: #1e5218;
+  box-shadow: 0 2px 6px rgba(35, 93, 27, 0.2);
+}
+
+[data-theme="light"] .btn-primary:hover:not(:disabled),
+[data-theme="light"] .button.primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #34822a 0%, #286920 100%);
+}
+
+.btn-danger,
+.button.danger,
+.button.danger-ghost {
+  background: var(--rose-soft);
+  color: var(--danger);
+  border: 1px solid rgba(240, 106, 106, 0.32);
+}
+
+.btn-danger:hover:not(:disabled),
+.button.danger:hover:not(:disabled),
+.button.danger-ghost:hover:not(:disabled) {
+  background: rgba(240, 106, 106, 0.2);
+  border-color: rgba(240, 106, 106, 0.5);
+}
+
+.field > span,
+.interview-field > span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-0);
+  letter-spacing: -0.005em;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+select,
+textarea {
+  border-radius: var(--control-radius);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-0);
+  color: var(--text-0);
+  font-size: 14px;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background: #ffffff;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  outline: none;
+}
+
+/* ==========================================================================
+   4. Unified Cards (.interview-card & .panel inside .career-flow)
+   ========================================================================== */
+
+.career-flow .interview-card,
+.career-flow > .panel {
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--accent) 2.5%, var(--bg-1)) 0%,
+    var(--bg-1) 60%
+  );
+  box-shadow: var(--card-shadow);
+  padding: 24px;
+  min-width: 0;
+}
+
+.career-flow > .panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.career-flow > .panel > .panel-head {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg-2) 45%, transparent);
+}
+
+.career-flow > .panel > .panel-head h2,
+.career-flow > .panel > .panel-head h3 {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--text-0);
+  margin: 0;
+}
+
+.career-flow > .panel > .panel-head p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-1);
+  margin: 4px 0 0;
+}
+
+.career-flow .panel .integration-info {
+  display: grid;
+  gap: 14px;
+  padding: 20px 24px 24px;
+  justify-items: start;
+}
+
+.career-flow .panel .integration-info p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-1);
+  max-width: 72ch;
+}
+
+.career-flow .panel .integration-info > .field {
+  width: min(100%, 540px);
+}
+
+/* Section Card Typography & Vertical Rhythm */
+.career-flow .interview-card h2 {
+  font-size: clamp(18px, 1.9vw, 21px);
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  line-height: 1.3;
+  color: var(--text-0);
+  margin: 0;
+}
+
+.career-flow .interview-card > p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-1);
+  margin: 0;
+  max-width: 75ch;
+}
+
+.career-flow :is(section, form, div).interview-card:not(.account-privacy):not(.question-review) > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.career-flow :is(section, form, div).interview-card:not(.account-privacy):not(.question-review) > * + * {
+  margin-top: 18px;
+}
+
+.career-flow :is(section, form, div).interview-card:not(.account-privacy):not(.question-review) > h2 + p,
+.career-flow :is(section, form, div).interview-card:not(.account-privacy):not(.question-review) > p + p {
+  margin-top: 10px;
+}
+
+.career-flow .interview-card > .journey-mascot {
+  display: block;
+  width: 76px;
+  height: 76px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.career-flow .journey-start > .journey-mascot {
+  margin-inline: auto;
+  width: 96px;
+  height: 96px;
+  border-radius: 20px;
+}
+
+.career-flow .interview-card > .integration-info {
+  display: grid;
+  gap: 10px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  justify-items: start;
+}
+
+.career-flow .interview-card > .integration-info h3 {
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--text-0);
+  margin: 0;
+}
+
+.career-flow .interview-card > .integration-info p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-1);
+  margin: 0;
+}
+
+/* Prevent standalone buttons in grid cards from stretching full 1280px width */
+.career-flow .interview-card > .btn,
+.career-flow .interview-card > .button,
+.career-flow .integration-info > .btn,
+.career-flow .integration-info > .button,
+.question-review-body > .btn,
+.question-review-body > .button {
+  justify-self: start;
+  width: auto;
+}
+
+/* ==========================================================================
+   5. Automation Page (SimpleAutomation.tsx)
+   ========================================================================== */
+
+.automation-overview {
+  display: grid;
+  gap: 14px;
+}
+
+.automation-summary {
+  position: relative;
+  padding: 22px 24px;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.automation-summary.is-active,
+.automation-summary.active {
+  border-color: var(--accent-border);
+  background:
+    radial-gradient(
+      560px 220px at 0% 0%,
+      rgba(168, 223, 124, 0.09),
+      transparent 70%
+    ),
+    var(--bg-1);
+}
+
+/* Fix invisible .live-dot (span needs inline-block) */
+.automation-summary .live-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 10px;
+  position: relative;
+  top: -1px;
+  background: var(--warning);
+  box-shadow: 0 0 0 4px rgba(229, 181, 79, 0.18);
+}
+
+.automation-summary .live-dot.on,
+.automation-summary.is-active .live-dot {
+  background: var(--accent);
+  box-shadow:
+    0 0 0 4px rgba(168, 223, 124, 0.2),
+    0 0 12px rgba(168, 223, 124, 0.6);
+}
+
+.automation-summary h2 {
+  display: inline;
+  margin: 0;
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.28;
+  color: var(--text-0);
+}
+
+.automation-summary p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-1);
+  max-width: 70ch;
+}
+
+.automation-scope {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 14px;
+  padding: 18px 22px;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+}
+
+.automation-scope > svg {
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.automation-scope strong {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--text-0);
+  margin-bottom: 4px;
+}
+
+.automation-scope p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-1);
+}
+
+/* Fix 2-card counter grid (was repeat(3, 1fr) leaving an empty 1/3 hole) */
+.automation-counters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.automation-counters > button,
+.automation-counter {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding: 22px 24px;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--bg-2) 0%, var(--bg-1) 100%);
+  box-shadow: var(--card-shadow);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.automation-counters > button:hover,
+.automation-counter:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-border);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.automation-counters > button strong,
+.automation-counter strong {
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text-0);
+}
+
+.automation-counters > button span,
+.automation-counter span {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-1);
+}
+
+.automation-preferences {
+  display: grid;
+  gap: 10px;
+  padding: 22px 24px;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+}
+
+.automation-preferences > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+}
+
+.automation-preferences > div:first-child strong {
+  font-size: 16px;
+  font-weight: 650;
+  color: var(--text-0);
+}
+
+.automation-preferences > p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-1);
+}
+
+/* Automation Quota Strip */
+.automation-quota {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 16px 22px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+}
+
+.automation-quota strong {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--text-0);
+}
+
+.automation-quota span {
+  font-size: 13.5px;
+  color: var(--text-1);
+}
+
+/* Discovery Status Card */
+.discovery-status {
+  padding: 24px;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+  gap: 12px;
+}
+
+.discovery-status h2 {
+  font-size: clamp(18px, 1.9vw, 21px);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.discovery-status p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-1);
+}
+
+.discovery-actions {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  gap: 10px;
+}
+
+/* ==========================================================================
+   6. Collapsible Accordions (<details.interview-card>, .conversion-indicators, .interview-extra)
+   ========================================================================== */
+
+details.interview-card,
+details.interview-extra {
+  padding: 0 !important;
+  overflow: hidden;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+details.interview-card:hover,
+details.interview-extra:hover {
+  border-color: var(--border-strong);
+}
+
+details.interview-card > summary,
+details.interview-extra > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--text-0);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+details.interview-card > summary::-webkit-details-marker,
+details.interview-extra > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.interview-card > summary:hover,
+details.interview-extra > summary:hover {
+  background: color-mix(in srgb, var(--bg-2) 60%, transparent);
+}
+
+details.interview-card > summary::after,
+details.interview-extra > summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--text-1);
+  border-bottom: 2px solid var(--text-1);
+  transform: rotate(45deg);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+details.interview-card[open] > summary::after,
+details.interview-extra[open] > summary::after {
+  transform: rotate(-135deg);
+  border-color: var(--accent);
+}
+
+details.interview-card[open] > summary,
+details.interview-extra[open] > summary {
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg-2) 45%, transparent);
+}
+
+details.interview-card[open] {
+  padding: 0 24px 24px !important;
+}
+
+details.interview-card[open] > summary {
+  margin: 0 -24px 18px;
+  padding: 18px 24px !important;
+}
+
+.career-flow > details.interview-extra {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--card-radius) !important;
+  background: var(--bg-1) !important;
+  box-shadow: var(--card-shadow);
+}
+
+.career-flow > details.interview-extra > summary {
+  padding: 18px 24px !important;
+}
+
+.career-flow > details.interview-extra[open] {
+  padding: 0 24px 24px !important;
+}
+
+.career-flow > details.interview-extra[open] > summary {
+  margin: 0 -24px 18px;
+  padding: 18px 24px !important;
+}
+
+.interview-card details.interview-extra {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--card-inner-radius) !important;
+  background: var(--bg-2) !important;
+}
+
+.interview-card details.interview-extra > summary {
+  padding: 14px 18px !important;
+}
+
+.interview-card details.interview-extra[open] {
+  padding: 0 18px 18px !important;
+}
+
+.interview-card details.interview-extra[open] > summary {
+  margin: 0 -18px 14px;
+  padding: 14px 18px !important;
+}
+
+details.interview-extra[open] > :not(summary) {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+details.interview-extra[open] > :not(summary) + :not(summary) {
+  margin-top: 14px;
+}
+
+details.interview-extra[open] > p + p {
+  margin-top: 8px;
+}
+
+/* Technical Conversion Indicators Table & Metrics */
+details.conversion-indicators[open] {
+  display: grid;
+  gap: 14px;
+}
+
+.conversion-indicators p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-1);
+  margin: 0;
+}
+
+.conversion-indicators table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-0);
+  margin-top: 4px;
+}
+
+.conversion-indicators caption {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  padding: 6px 2px 8px;
+}
+
+.conversion-indicators thead th {
+  background: var(--bg-2);
+  color: var(--text-1);
+  font-size: 11.5px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.conversion-indicators tbody td {
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-0);
+  border-bottom: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+
+.conversion-indicators tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ApplicationPreferences (<details className="interview-card">) 2-Column Responsive Form Grid */
+details.interview-card:not(.conversion-indicators)[open] > p {
+  margin-bottom: 16px;
+}
+
+details.interview-card:not(.conversion-indicators) > form > fieldset {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px 20px;
+  align-items: start;
+}
+
+details.interview-card:not(.conversion-indicators) > form > fieldset > .field {
+  margin: 0;
+}
+
+details.interview-card:not(.conversion-indicators) > form > fieldset > .checkbox-field,
+details.interview-card:not(.conversion-indicators) > form > fieldset > p,
+details.interview-card:not(.conversion-indicators) > form > fieldset > .button,
+details.interview-card:not(.conversion-indicators) > form > fieldset > .btn {
+  grid-column: 1 / -1;
+}
+
+details.interview-card:not(.conversion-indicators) > form > fieldset > .checkbox-field {
+  margin-top: 4px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  font-size: 13.5px;
+  color: var(--text-0);
+}
+
+details.interview-card:not(.conversion-indicators) > form > fieldset > p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-1);
+}
+
+details.interview-card:not(.conversion-indicators) > form > fieldset > .button,
+details.interview-card:not(.conversion-indicators) > form > fieldset > .btn {
+  justify-self: start;
+}
+
+/* ==========================================================================
+   7. Notice Inline Banners vs Structured Retry Cards (ReconciledRetry / RetryApplication)
+   ========================================================================== */
+
+div.notice-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+article.notice-inline,
+section.notice-inline {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text-0);
+}
+
+article.notice-inline h3,
+section.notice-inline h3 {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--text-0);
+}
+
+article.notice-inline p,
+section.notice-inline p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-1);
+}
+
+article.notice-inline ul,
+section.notice-inline ul {
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+  display: grid;
+  gap: 4px;
+  color: var(--warning);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+article.notice-inline .field,
+section.notice-inline .field {
+  width: 100%;
+  margin: 0;
+}
+
+article.notice-inline label,
+section.notice-inline label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-1);
+  cursor: pointer;
+}
+
+article.notice-inline label input[type="checkbox"],
+section.notice-inline label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   8. Preferences & Question Review (CareerInterview, AutomaticAnswering, PendingApplicationQuestions)
+   ========================================================================== */
+
+.question-review.interview-card {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.question-review-summary {
+  padding: 20px 24px;
+}
+
+.question-review-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+}
+
+.question-review .question-review-heading h2 {
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.question-review-body {
+  padding: 20px 24px 24px;
+  gap: 16px;
+}
+
+.question-step-card {
+  border-radius: 14px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-0);
+  padding: 20px;
+}
+
+.interview-option {
+  border-radius: 12px;
+  padding: 13px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.12s ease;
+}
+
+.interview-option:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+.interview-option.selected {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.interview-check {
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+}
+
+/* Uniform vertical stack for interview steps, resume upload form, and candidate details fieldset */
+.career-flow .interview-fields,
+.career-flow form.interview-card > fieldset,
+.career-flow .interview-card > form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.career-flow .interview-fields > *,
+.career-flow form.interview-card > fieldset > *,
+.career-flow .interview-card > form > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.career-flow .form-grid {
+  gap: 16px 20px;
+}
+
+.career-flow .form-grid > .field {
+  margin: 0 !important;
+}
+
+.career-flow .field > .interview-choices {
+  margin: 4px 0 0 !important;
+}
+
+.career-flow .interview-choices,
+.career-flow .interview-sites {
+  gap: 12px;
+}
+
+.career-flow .interview-choices button,
+.career-flow .interview-sites button {
+  min-height: 58px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-size: 14px;
+  font-weight: 550;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.12s ease,
+    box-shadow 0.15s ease;
+}
+
+.career-flow .interview-choices button:hover:not(:disabled),
+.career-flow .interview-sites button:hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: color-mix(in srgb, var(--text-0) 25%, var(--border-strong));
+}
+
+.career-flow .interview-choices button.selected,
+.career-flow .interview-sites button.selected {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.career-flow :is(.interview-fields, form.interview-card > fieldset, .integration-info) > .checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: 11px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text-0);
+  font-size: 13.5px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.career-flow :is(.interview-fields, form.interview-card > fieldset, .integration-info) > .checkbox-field:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-hover);
+}
+
+.career-flow :is(.interview-fields, form.interview-card > fieldset, .integration-info) > .checkbox-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+
+.career-flow .interview-help {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-1);
+}
+
+.career-flow .interview-availability {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text-1);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.interview-actions {
+  padding-top: 20px;
+  margin-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+/* ==========================================================================
+   9. Resume Page & Diagnostic Review (SimpleResume.tsx & ResumeReviewPanel.tsx)
+   ========================================================================== */
+
+.resume-current,
+.career-flow .resume-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-strong);
+}
+
+.career-flow .resume-summary > svg {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.career-flow .resume-summary > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.career-flow .resume-summary strong {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--text-0);
+}
+
+.career-flow .resume-summary p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-1);
+}
+
+.career-flow .resume-extracted {
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--bg-0);
+  border: 1px solid var(--border);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--text-1);
+}
+
+.resume-review-panel,
+.career-flow > .resume-review {
+  margin-top: 0;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+  padding: 24px;
+}
+
+.resume-review-sections > div,
+.resume-review-actions > li,
+.resume-review-targets li,
+.resume-score-box,
+.resume-review-card,
+.resume-fix-item {
+  border-radius: 12px;
+  border-color: var(--border);
+  background: var(--bg-2);
+}
+
+/* ==========================================================================
+   10. Applications Page & Application Detail Modal (src/pages/Applications.tsx)
+   ========================================================================== */
+
+.applications-flow .toolbar {
+  margin-bottom: 4px;
+}
+
+.applications-flow .search-input {
+  max-width: 420px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--control-radius);
+}
+
+.applications-flow .count-caption {
+  margin-bottom: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+}
+
+.applications-flow .table-scroll {
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+}
+
+.applications-flow table thead th {
+  background: var(--bg-2);
+  padding: 13px 18px;
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-1);
+}
+
+.applications-flow table tbody td {
+  padding: 14px 18px;
+  vertical-align: middle;
+}
+
+.applications-flow table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.14s ease;
+}
+
+.applications-flow table tbody tr:hover {
+  background: var(--bg-hover);
+}
+
+.applications-flow .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Modal & Application Receipt Styling */
+.modal {
+  border-radius: 18px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-1);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+}
+
+.modal > .modal-heading {
+  padding-bottom: 16px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal > div.notice-inline {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0;
+}
+
+.modal > p {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-1);
+  word-break: break-word;
+}
+
+.modal > a[target="_blank"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  padding: 9px 16px;
+  border-radius: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text-0);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.modal > a[target="_blank"]:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-border);
+}
+
+.modal > section[aria-label="Respostas da candidatura"] {
+  display: grid;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.modal > section[aria-label="Respostas da candidatura"] > h3 {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--text-0);
+}
+
+.modal details {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-2);
+  padding: 12px 16px;
+}
+
+.modal details > summary {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-0);
+  cursor: pointer;
+}
+
+.modal details > p {
+  margin: 8px 0 4px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-1);
+}
+
+.modal details > small {
+  display: block;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+/* ==========================================================================
+   11. Jobs Page (src/pages/Jobs.tsx)
+   ========================================================================== */
+
+.simple-job-filters {
+  padding: 16px 20px;
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+}
+
+.job-card {
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+  padding: 20px 22px;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* ==========================================================================
+   12. Account & Billing (SimpleAccount.tsx, Billing.tsx, Pricing.tsx)
+   ========================================================================== */
+
+.account-profile,
+.account-google,
+.account-billing,
+.account-danger {
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.account-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  .account-overview:not(:has(.account-profile .integration-info)) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .account-overview:not(:has(.account-profile .integration-info)) > .account-access {
+    display: contents;
+  }
+}
+
+.career-flow .interview-card.account-privacy {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 16px;
+}
+
+.career-flow .interview-card.account-privacy > svg {
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.career-flow .interview-card.account-privacy > div {
+  display: grid;
+  gap: 6px;
+}
+
+.account-billing .billing-summary {
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.billing-stat {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  padding: 16px;
+}
+
+.pricing-card {
+  border-radius: var(--card-radius);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+}
+
+.pricing-card.featured {
+  border-color: var(--accent-border);
+}
+
+/* ==========================================================================
+   13. Responsive Mobile Refinements
+   ========================================================================== */
+
+@media (max-width: 780px) {
+  .topbar {
+    padding: 10px 16px;
+  }
+
+  .page-content {
+    padding: 18px 16px 48px;
+  }
+
+  .career-flow .interview-card,
+  .automation-summary,
+  .discovery-status {
+    padding: 18px;
+  }
+
+  .career-flow > .panel > .panel-head,
+  .career-flow .panel .integration-info,
+  .question-review-summary,
+  .question-review-body {
+    padding: 16px 18px;
+  }
+
+  details.interview-card > summary {
+    padding: 15px 18px;
+  }
+
+  details.interview-card[open] {
+    padding: 0 18px 18px !important;
+  }
+
+  details.interview-card[open] > summary {
+    margin: 0 -18px 14px;
+    padding: 15px 18px;
+  }
+}
+
+/* ==========================================================================
+   14. Visual audit pass 2
+   ========================================================================== */
+
+/* Automation overview is one card: children must not draw their own card edges */
+.career-flow > .automation-overview {
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  background: var(--bg-1);
+  box-shadow: var(--card-shadow);
+}
+
+.automation-overview > .automation-summary,
+.automation-overview > .automation-scope,
+.automation-overview > .recoverable-error {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+}
+
+.automation-overview > .automation-summary {
+  background: transparent;
+}
+
+.automation-overview > .automation-scope,
+.automation-overview > .recoverable-error {
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg-2) 45%, transparent);
+  padding: 18px 24px 20px;
+}
+
+/* Pricing: disabled CTAs must not look like active muted buttons */
+.pricing-card .button.primary:disabled {
+  background: var(--bg-2);
+  color: var(--text-1);
+  border: 1px solid var(--border-strong);
+  box-shadow: none;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.pricing-card .button.primary {
+  width: 100%;
+  justify-content: center;
+  min-height: 42px;
+}
+
+/* Account / billing: notices and dividers should use the full card width */
+.career-flow .account-billing > p.billing-status,
+.career-flow .account-billing > p.pricing-note,
+.career-flow .account-billing hr {
+  max-width: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.career-flow .account-billing > p.billing-status {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  font-size: 13.5px;
+}
+
+.account-profile .interview-actions {
+  justify-content: flex-start;
+}

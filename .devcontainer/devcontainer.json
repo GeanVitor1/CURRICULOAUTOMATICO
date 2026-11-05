@@ -1,0 +1,16 @@
+{
+  "name": "EmpreGatos (CurriculoAutomatico)",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "postCreateCommand": "node scripts/install-secure-node.mjs && npm ci && npm run predev",
+  "forwardPorts": [5173, 3001],
+  "portsAttributes": {
+    "5173": {
+      "label": "EmpreGatos Web (Vite)",
+      "onAutoForward": "openPreview"
+    },
+    "3001": {
+      "label": "EmpreGatos API (Fastify)",
+      "onAutoForward": "silent"
+    }
+  }
+}

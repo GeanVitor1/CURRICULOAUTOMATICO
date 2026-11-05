@@ -11,8 +11,8 @@ const dayOf=(at:string)=>new Date(at).toLocaleDateString('en-CA',{timeZone:'Amer
 export function compatibleForAutomation(w:Workspace,j:Job) {
   const m=analyze(j,w.profile,w.filters);
   return !j.discarded&&j.availability!=='closed'&&!w.submissionExclusions?.includes(opportunityKey(j))&&
-    matchesSelectedSites(j,w)&&matchesObjectiveFilters(j,w.profile,w.filters)&&m.confidence!=='insufficient'&&
-    !m.blockers.length&&m.score>=w.routine.minScore;
+    matchesSelectedSites(j,w)&&matchesObjectiveFilters(j,w.profile,w.filters)&&
+    !m.blockers.length;
 }
 /** Snapshot of the retained pool; lifetime totals are deliberately not inferred.
  * Channel availability and actual form preflight are separate stages. */

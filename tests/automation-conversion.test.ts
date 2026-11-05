@@ -13,6 +13,7 @@ it('separates supported executor, CAPTCHA preflight and actual confirmation; exc
  w.jobs=[j,{...structuredClone(j),id:'off-filter',title:'Operador de Caixa',description:'Atendimento em supermercado. Presencial em Recife, PE.',modality:'Presencial',location:'Recife, PE',skills:[]}];
  w.applications=[{id:'a',jobId:j.id,resumeId:null,status:'Requer ação manual',mode:'automatic',createdAt:at,updatedAt:at,receipt:null,note:'',draft:'',history:[{at,actor:'Sistema',message:'Este formulário exige verificação humana.'}],attempts:[{id:'attempt',correlationId:'c',origin:'user_triggered_automation',executor:'company_wp_jobs',startedAt:at,outcome:'pre_submit_blocked'}]}];
  const r=automationConversion(w,[],false);
- expect(r.totals).toMatchObject({discovered:2,compatible:1,validDestination:1,executorAvailable:1,prepared:1,preflightBlocked:1,transmissionsStarted:0,confirmed:0});
+ // Standalone company sites remain excluded even with an old adapter grant.
+ expect(r.totals).toMatchObject({discovered:2,compatible:1,validDestination:1,executorAvailable:0,prepared:1,preflightBlocked:1,transmissionsStarted:0,confirmed:0});
  expect(r.blocked.human_verification).toBe(1);expect(r.platforms.company['blocked:human_verification']).toBe(1);expect(r.scope).toBe('retained_inventory');
 });

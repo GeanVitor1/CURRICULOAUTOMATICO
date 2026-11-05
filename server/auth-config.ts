@@ -1,4 +1,5 @@
 import { createHash, timingSafeEqual } from "node:crypto";
+import { assertSecureNode } from "./runtime-security";
 type Environment = Record<string, string | undefined>;
 export function proxyAuthorized(
   value: unknown,
@@ -56,6 +57,16 @@ export function appOrigins(env: Environment = process.env): string[] {
         ? env.VERCEL_URL
         : env.VERCEL_PROJECT_PRODUCTION_URL;
     if (domain) origins = `https://${domain}`;
+  }
+  if (!origins && env.CODESPACE_NAME?.trim()) {
+    const domain =
+      env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN?.trim() || "app.github.dev";
+    const name = env.CODESPACE_NAME.trim();
+    origins = `https://${name}-5173.${domain},https://${name}-3001.${domain}${
+      secureAuthCookies(env)
+        ? ""
+        : ",http://127.0.0.1:5173,http://localhost:5173"
+    }`;
   }
   if (!origins && !secureAuthCookies(env))
     origins = "http://127.0.0.1:5173,http://localhost:5173";
@@ -119,6 +130,7 @@ export function requirePersistentDatabase(env: Environment = process.env) {
 }
 
 export function validateHostedRuntime(env: Environment = process.env) {
+  assertSecureNode();
   requirePersistentDatabase(env);
   if (!hostedOnVercel(env)) return;
   if (!appOrigins(env).length)

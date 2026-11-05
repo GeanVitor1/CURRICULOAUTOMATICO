@@ -4,9 +4,12 @@ import { randomBytes, timingSafeEqual } from "node:crypto";
 import { PortalBrowserService } from "./portal-browser-service";
 import type { CandidatePortal } from "./portal-browser-policy";
 import { PortalLiveServer } from "./portal-live-server";
+import {PORTAL_RUNTIME_VERSION} from '../shared/portal-runtime-version';
+import { assertSecureNode } from "./runtime-security";
+assertSecureNode();
 const root = "/vercel/sandbox/portal-runtime";
 const portal = process.argv[2];
-if (!["gupy", "infojobs", "glassdoor"].includes(portal))
+if (!["gupy", "infojobs", "glassdoor", "linkedin"].includes(portal))
   throw new Error("Portal unavailable");
 let token: string;
 try {
@@ -18,6 +21,7 @@ try {
 const service = new PortalBrowserService(
   portal as CandidatePortal,
   root + "/private",
+  {allowLinkedInSessionRetest:process.env.PORTAL_LINKEDIN_SESSION_RETEST==='true'},
 );
 const live = new PortalLiveServer(service);
 live.server.listen(3001, "0.0.0.0");
@@ -31,7 +35,7 @@ const server = createServer(async (req, res) => {
     return;
   }
   if (req.method === "GET" && req.url === "/health") {
-    res.end('{"ok":true,"version":10}');
+    res.end(JSON.stringify({ok:true,version:PORTAL_RUNTIME_VERSION}));
     return;
   }
   if (req.method !== "POST" || req.url !== "/command") {

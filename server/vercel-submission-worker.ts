@@ -3,13 +3,15 @@ import { z } from "zod";
 import { validateHostedRuntime } from "./auth-config";
 import { automaticSend, recoverInterruptedSends } from "./operations";
 import { store, mutateWorkspace } from "./db";
-import { dispatchNextApplication } from "./submission-dispatch";
+import { dispatchNextApplication,dispatchGupyDraftVerification } from "./submission-dispatch";
 import { DailyLimitError, RequestError } from "./errors";
 import { continueAutomaticCycle } from "./automatic-cycle";
 import { preparationFingerprint } from "./submission-preparation";
+import { observeWorker } from "./worker-observation";
 const payload = z.object({
   workspaceId: z.string().min(1).max(200),
   applicationId: z.string().uuid(),
+  mode:z.enum(['apply','verify_draft']).default('apply'),
 });
 const client = new QueueClient();
 export default client.handleNodeCallback(
@@ -24,6 +26,12 @@ export default client.handleNodeCallback(
     console.info(JSON.stringify({event:"submission_queue_received",workspaceId,applicationId,
       messageId:metadata.messageId,deliveryCount:metadata.deliveryCount,topic:metadata.topicName,
       consumer:metadata.consumerGroup,revision:process.env.EMPREGATOS_REVISION}));
+    await observeWorker("submission", applicationId, metadata, async () => {
+    if(parsed.data.mode==='verify_draft'){
+      await (await import('./gupy-draft-recovery')).verifyUncertainGupyDraft(workspaceId,applicationId);
+      await continueAutomaticCycle(workspaceId);
+      return;
+    }
     await recoverInterruptedSends(workspaceId);
     const before = await store.submissionState(workspaceId);
     if (
@@ -44,7 +52,9 @@ export default client.handleNodeCallback(
       return;
     }
     try {
-      await automaticSend(workspaceId, applicationId);
+      const result=await automaticSend(workspaceId, applicationId);
+      if(result.status==='Resultado desconhecido'&&result.attempts?.at(-1)?.executor==='browser')
+        await dispatchGupyDraftVerification(workspaceId,applicationId,result.attempts.at(-1)!.id,125);
       // Explicit deployment-only fault injection for the isolated integration
       // account. Never changes eligibility, receipts, reservations or retries.
       if (process.env.QUEUE_INTEGRATION_WORKSPACE === workspaceId &&
@@ -76,6 +86,7 @@ export default client.handleNodeCallback(
     }
     await dispatchNextApplication(workspaceId);
     await continueAutomaticCycle(workspaceId);
+    }, workspaceId);
   },
   { visibilityTimeoutSeconds: 240, retry: (error,metadata) => {
     const e=error as {name?:string;code?:string|number;message?:string};

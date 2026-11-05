@@ -4,6 +4,7 @@ import { createWorkspace } from "../server/workspace";
 import { isJobUrl } from "../shared/portals";
 import type { Source } from "../shared/types";
 import { clearPublicPortalCache } from "../server/public-portal-discovery";
+import {withDiscoveryCandidates} from '../server/discovery-limits';
 beforeEach(() => vi.stubEnv("PORTAL_DISCOVERY_AUTHORIZED", "linkedin"));
 
 const source: Source = {
@@ -44,6 +45,14 @@ afterEach(() => {
   clearPublicPortalCache();
 });
 describe("Consulta pública sem Gemini", () => {
+  it('requests and examines at most fifteen candidates for five remaining slots, instead of accumulating hundreds',async()=>{
+    vi.stubEnv('GEMINI_API_KEY','');
+    const fetcher=vi.spyOn(globalThis,'fetch').mockImplementation(async()=>new Response(JSON.stringify({data:Array.from({length:50},(_,i)=>({...item,id:i+1,jobUrl:`https://empresa.gupy.io/jobs/${i+1}`})),pagination:{total:400}})));
+    const result=await withDiscoveryCandidates(15,()=>discoverPortal(source,workspace()));
+    expect(result.examined).toBe(15);expect(result.value.jobs).toHaveLength(15);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(new URL(String(fetcher.mock.calls[0][0])).searchParams.get('limit')).toBe('15');
+  });
   it("usa o tipo de contratação publicado pela Gupy mesmo quando a descrição não diz CLT", async () => {
     vi.stubEnv("GEMINI_API_KEY", "");
     vi.spyOn(globalThis, "fetch").mockImplementation(

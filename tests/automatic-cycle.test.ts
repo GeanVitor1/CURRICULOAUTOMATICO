@@ -143,6 +143,19 @@ it("não repete resultados desconhecidos nem ultrapassa a cota", async () => {
   expect(mocks.research).not.toHaveBeenCalled();
   expect(w.routine.progress).toMatchObject({ sent: 0, state: "waiting" });
 });
+it('allows only a verified existing Gupy draft to resume against its retained reservation at the daily limit',async()=>{
+ const at=new Date().toISOString();
+ const a={...sent('draft'),receipt:null,submittedAt:undefined,status:'Requer ação manual',resumeId:'resume',
+  history:[{at,actor:'Sistema',message:'Envio iniciado.'}],
+  attempts:[{id:'unknown',outcome:'unknown',startedAt:at,finishedAt:at}],
+  verifiedGupyDrafts:[{attemptId:'unknown',at,nativeApplicationId:'777',continuationUrl:'https://fixture.gupy.io/candidates/applications/777'}],
+  resumeState:{resumeId:'resume',destinationUrl:'https://fixture.gupy.io/jobs/12345',recordedAt:at}} as Workspace['applications'][number];
+ w.applications=[a];mocks.count.mockResolvedValue(5);
+ mocks.queue.mockImplementation(()=>{a.status='Aguardando aprovação';return 1;});
+ await continueAutomaticCycle('alice:live');
+ expect(mocks.queue).toHaveBeenCalledOnce();expect(mocks.dispatch).toHaveBeenCalledWith('alice:live');
+ expect(w.routine.progress).toMatchObject({state:'sending',usedToday:5,remaining:0,sent:0});
+});
 it('preserves an unknown attempt and continues researching other vacancies while quota remains',async()=>{
  w.applications=[{...sent('uncertain'),status:'Resultado desconhecido',receipt:null,submittedAt:undefined,
   attempts:[{id:'attempt-uncertain',correlationId:'uncertain',origin:'scheduled_automation',executor:'ats_browser',startedAt:new Date().toISOString(),outcome:'unknown'}],

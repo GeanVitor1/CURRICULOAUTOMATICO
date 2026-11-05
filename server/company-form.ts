@@ -5,9 +5,10 @@ import type {ExecutionResult} from './application-verification';
 import {WP_JOBS_EVIDENCE,wpJobsForm} from './company-board';
 import {normalized,canonicalJobUrl} from './job-identity';
 import {readPublicPage} from './public-web';
+import {publicFormRequest} from './public-form-request';
 import {approvedFieldAnswer} from './approved-answers';
 const success=/(?:candidatura|curr[ií]culo|application|mensagem).{0,70}(?:recebid[oa]|enviad[oa](?: com sucesso)?|submitted successfully|received|sent successfully)|(?:obrigad[oa]|thank you).{0,80}(?:candidat|curr[ií]culo|applying|application)/i;
-export async function sendCompanyForm(input:AtsApplication,read=readPublicPage,post:typeof fetch=fetch):Promise<ExecutionResult> {
+export async function sendCompanyForm(input:AtsApplication,read=readPublicPage,post:typeof fetch=publicFormRequest):Promise<ExecutionResult> {
   let attempted=false;
   const pause=(message:string):ExecutionResult=>({status:'action_required',retryable:true,message});
   try {

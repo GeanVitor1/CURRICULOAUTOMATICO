@@ -4,6 +4,7 @@ import { approvedFieldAnswer } from "./approved-answers";
 import { normalized } from "./job-identity";
 import { isJobUrl } from "../shared/portals";
 import { portalAccess } from "./portal-access";
+import {salaryOption} from './salary-options';
 
 const cleanQuestion = (value: string) =>
   value
@@ -18,6 +19,15 @@ const finalLabel =
   /^(Enviar candidatura|Finalizar candidatura|Concluir candidatura|Confirmar candidatura)$/i;
 const nextLabel =
   /^(Continuar|Avançar|Próximo|Revisar|Salvar e continuar|Responder agora|Personalizar candidatura|Next|Review)$/i;
+const sourceQuestion=(question:string)=>/por onde voce ficou sabendo desta oportunidade|onde voce encontrou (?:essa|esta) vaga/.test(normalized(question));
+function sourceOption(input:PortalApplication,question:string,options:string[]){
+  if(!sourceQuestion(question))return;
+  const hint=new URL(input.job.url).searchParams.get('jobBoardSource');
+  const pattern=hint&&/^gupy_(?:portal|opportunities)$/.test(hint)
+    ? /^portal de vagas da gupy$/
+    : !hint ? /^(?:pagina de carreiras da empresa|site da empresa)$/ : undefined;
+  return pattern?options.find(value=>pattern.test(normalized(value))):undefined;
+}
 
 async function button(page: Page, name: RegExp) {
   for (const target of [
@@ -29,7 +39,7 @@ async function button(page: Page, name: RegExp) {
   }
 }
 
-function jobId(value: string) {
+export function gupyJobId(value: string) {
   const url = new URL(value);
   const numeric = url.pathname.match(/^\/jobs\/(\d+)\/?$/)?.[1];
   if (numeric) return numeric;
@@ -72,6 +82,7 @@ async function fieldInfo(field: Locator) {
           parent && depth < 6;
           depth++, parent = parent.parentElement
         ) {
+          if(['BODY','HTML'].includes(parent.tagName))break;
           const headings = parent.querySelectorAll("h2,h3,h4,legend");
           if (headings.length === 1) {
             question = headings[0].textContent || "";
@@ -86,8 +97,8 @@ async function fieldInfo(field: Locator) {
           ? node.type
           : node.tagName.toLowerCase();
       const label =
-        type === "radio"
-          ? question
+        type === "radio" || type === "checkbox"
+          ? question || (type === 'checkbox' ? option : '')
           : option ||
             question ||
             node.getAttribute("placeholder") ||
@@ -95,6 +106,7 @@ async function fieldInfo(field: Locator) {
             node.id;
       return {
         type,
+        combobox:node.getAttribute('role')==='combobox',
         label,
         option,
         value: node.value,
@@ -127,6 +139,7 @@ export async function fillGupyQuestions(
     string,
     {
       question: string;
+      kind: string;
       required: boolean;
       fields: {
         field: Locator;
@@ -144,12 +157,34 @@ export async function fillGupyQuestions(
     const info = await fieldInfo(field);
     if (["button", "submit", "reset", "search"].includes(info.type)) continue;
     const question = cleanQuestion(info.label);
+    if(info.combobox && info.type!=='select'){
+      const approved=approvedFieldAnswer(question,input.profile,input.job.url);
+      if(approved===undefined&&!sourceQuestion(question)){
+        if(info.required&&!info.value.trim())missing.push(question);
+        continue;
+      }
+      await field.click();
+      const choices=page.getByRole('option');
+      await choices.first().waitFor({state:'visible',timeout:3000}).catch(()=>{});
+      const visible=[];
+      for(const choice of await choices.all())if(await choice.isVisible())visible.push({choice,label:(await choice.innerText()).trim()});
+      const labels=visible.map(item=>item.label);questionOptions[question]=labels;
+      const answer=approved??sourceOption(input,question,labels);
+      const match=visible.find(item=>answer!==undefined&&(normalized(item.label)===normalized(answer)||item.label===salaryOption(question,Number(answer),labels)));
+      if(match)await match.choice.click();
+      else{
+        await field.press('Escape');
+        if(info.required||approved!==undefined)missing.push(question);
+      }
+      continue;
+    }
     if (info.type === "select") questionOptions[question] = info.options.map(option => option.label).filter(Boolean);
-    if (info.type === "radio") {
+    if (info.type === "radio" || info.type === "checkbox") {
       // A label such as “Sim” is not a question and must never be guessed.
-      const key = info.name || question;
+      const key = info.type==='checkbox' ? `checkbox:${question || info.name}` : info.name || question;
       const group = radios.get(key) || {
         question,
+        kind: info.type,
         required: false,
         fields: [],
       };
@@ -163,13 +198,8 @@ export async function fillGupyQuestions(
       radios.set(key, group);
       continue;
     }
-    if (info.type === "checkbox") {
-      // No privacy notices, declarations or consents are accepted implicitly.
-      if (info.required && !info.checked)
-        missing.push(question || "Confirmação obrigatória");
-      continue;
-    }
-    const answer = approvedFieldAnswer(question, input.profile, input.job.url);
+    const answer = approvedFieldAnswer(question, input.profile, input.job.url)??
+      (info.type==='select'?sourceOption(input,question,info.options.map(option=>option.label)):undefined);
     if (answer === undefined) {
       if (info.required && !info.value.trim())
         missing.push(question || "Campo obrigatório sem resposta aprovada");
@@ -189,7 +219,7 @@ export async function fillGupyQuestions(
     if (info.type === "select") {
       const option = info.options.find(
         (o) => normalized(o.label) === normalized(answer),
-      );
+      ) || info.options.find(o=>o.label===salaryOption(question,Number(answer),info.options.map(item=>item.label)));
       if (!option) {
         missing.push(question);
         continue;
@@ -204,29 +234,26 @@ export async function fillGupyQuestions(
     }
   }
   for (const group of radios.values()) {
+    // A single checkbox remains an explicit declaration. A multiple-choice
+    // group is answered as one question, never as unrelated labels “Sim/Não”.
+    if(group.kind==='checkbox'&&group.fields.length===1){
+      if(group.required&&!group.fields[0].checked)missing.push(group.fields[0].option||group.question||'Confirmação obrigatória');
+      continue;
+    }
     questionOptions[group.question] = group.fields.map(field => field.option || field.value);
     let answer = approvedFieldAnswer(
       group.question,
       input.profile,
       input.job.url,
     );
-    // Factual source: this execution starts at the company's own Gupy career page.
-    if (
-      answer === undefined &&
-      /por onde voce ficou sabendo desta oportunidade|onde voce encontrou (?:essa|esta) vaga/.test(
-        normalized(group.question),
-      )
-    )
-      answer = group.fields.find(
-        (o) => normalized(o.option) === "pagina de carreiras da empresa",
-      )?.option;
+    if(answer===undefined)answer=sourceOption(input,group.question,group.fields.map(field=>field.option));
     if (answer !== undefined) {
       const choice = group.fields.find(
         (o) =>
           normalized(o.option) === normalized(answer) ||
           normalized(o.value) === normalized(answer),
-      );
-      if (choice) await choice.field.check();
+      ) || group.fields.find(o=>o.option===salaryOption(group.question,Number(answer),group.fields.map(item=>item.option)));
+      if (choice && !(group.kind==='checkbox'&&group.fields.some(o=>o!==choice&&o.checked))) await choice.field.check();
       else missing.push(group.question);
     } else if (group.required && !group.fields.some((o) => o.checked))
       missing.push(
@@ -244,9 +271,11 @@ export async function applyGupyApplication(
 ): Promise<PortalResult> {
   let applyClicked = false,
     finalClicked = false,
+    optionalAnswersSubmitted = false,
     draftRecognized = false,
     identityVerified = false;
   let continuationUrl: string | undefined;
+  let unrecognizedSince: number | undefined;
   const pause = (message: string, questions?: string[]): PortalResult => ({
     status: "action_required",
     message,
@@ -267,20 +296,25 @@ export async function applyGupyApplication(
   });
   if (!isJobUrl("gupy", input.job.url))
     return pause("Endereço da vaga Gupy inválido.");
-  const expectedJobId = jobId(input.job.url);
+  const expectedJobId = gupyJobId(input.job.url);
   if (!expectedJobId) return pause("Endereço da vaga Gupy inválido.");
   if (!profileApproved)
     return pause(
       "Confirme que o currículo estruturado da Gupy está atualizado e corresponde ao currículo aprovado antes do envio.",
     );
   const tenant = new URL(input.job.url).hostname;
+  let resumeTarget:URL|undefined;
+  if(input.continuationUrl){
+    try{resumeTarget=new URL(input.continuationUrl);}catch{return pause('Endereço de retomada Gupy inválido.');}
+    if(resumeTarget.protocol!=='https:'||resumeTarget.hostname!==tenant||!/^\/candidates\/applications\/\d+$/.test(resumeTarget.pathname))return pause('Endereço de retomada Gupy inválido.');
+  }
   try {
-    await page.goto(input.job.url, {
+    await page.goto(resumeTarget?.href||input.job.url, {
       waitUntil: "domcontentloaded",
       timeout: 25000,
     });
     const deadline = Date.now() + 85000;
-    for (let step = 0; step < 100 && Date.now() < deadline; step++) {
+    for (let step = 0; step < 200 && Date.now() < deadline; step++) {
       await page.waitForTimeout(350);
       const url = new URL(page.url());
       if (url.protocol !== "https:" || url.hostname !== tenant)
@@ -347,7 +381,7 @@ export async function applyGupyApplication(
           return existing(
             "A Gupy mostra uma candidatura anterior. Não foi realizado um novo envio.",
           );
-        if (native && !finalClicked)
+        if (native && !finalClicked && !optionalAnswersSubmitted)
           return existing(
             "A Gupy mostra uma candidatura já concluída. Confira o histórico antes de repetir.",
           );
@@ -362,10 +396,22 @@ export async function applyGupyApplication(
         native &&
         /seu progresso|acompanhe abaixo o andamento/i.test(text) &&
         !(await button(page, applyLabel))
-      )
+      ){
+        if(resumeTarget&&url.pathname===resumeTarget.pathname&&identityVerified){
+          let matchingJob=false;
+          for(const link of await page.locator(`a[href*="/jobs/${expectedJobId}"]`).all()){
+            const href=await link.getAttribute('href');if(!href)continue;
+            const target=new URL(href,page.url());matchingJob ||= target.hostname===tenant&&target.pathname===`/jobs/${expectedJobId}`;
+          }
+          const start=await button(page,/^Começar$/i);
+          if(matchingJob&&start&&await start.getAttribute('id')==='expandable-card-1'&&await start.isEnabled()){
+            draftRecognized=true;applyClicked=true;await start.click({timeout:8000});unrecognizedSince=undefined;continue;
+          }
+        }
         return existing(
           "Esta candidatura já está no acompanhamento da Gupy. Nenhum novo envio foi realizado.",
         );
+      }
       if (
         await page
           .getByRole("heading", { name: "Atualize seus dados", exact: true })
@@ -378,6 +424,7 @@ export async function applyGupyApplication(
             "A Gupy exige atualização cadastral. Faça essa revisão no portal; o sistema não altera e-mail nem dados da conta.",
           );
         await later.click();
+        unrecognizedSince = undefined;
         continue;
       }
       if (
@@ -412,6 +459,7 @@ export async function applyGupyApplication(
         }
         applyClicked = true;
         await apply.click({ timeout: 8000 });
+        unrecognizedSince = undefined;
         continue;
       }
       if (!identityVerified) {
@@ -421,6 +469,17 @@ export async function applyGupyApplication(
           "A Gupy ainda não confirmou o cargo e a conta. Reconecte o portal para continuar.",
         );
       }
+      const optionalWarning=page.getByRole('heading',{name:'Perguntas opcionais não respondidas',exact:true});
+      if(await optionalWarning.isVisible().catch(()=>false)){
+        if(optionalAnswersSubmitted)continue;
+        const proceed=await button(page,/^Enviar assim mesmo$/i);
+        if(proceed&&await proceed.isEnabled()){
+          optionalAnswersSubmitted=true;
+          await proceed.click({timeout:8000});unrecognizedSince=undefined;continue;
+        }
+        return pause('A Gupy está aguardando confirmação sobre perguntas opcionais sem resposta.');
+      }
+      if(optionalAnswersSubmitted&&/processando sua candidatura|não repita este envio/i.test(text))continue;
       const questionOptions: Record<string, string[]> = {};
       const questions = await fillGupyQuestions(page, input, questionOptions);
       if (questions.length)
@@ -456,6 +515,7 @@ export async function applyGupyApplication(
       const personalize = await button(page, /^Personalizar candidatura$/i);
       if (personalize) {
         await personalize.click();
+        unrecognizedSince = undefined;
         continue;
       }
       if (final) {
@@ -487,20 +547,26 @@ export async function applyGupyApplication(
       const next = await button(page, nextLabel);
       if (next && (await next.isEnabled())) {
         await next.click({ timeout: 8000 });
+        unrecognizedSince = undefined;
         continue;
       }
       if (/carregando|loading/i.test(text) || step < 12) continue;
+      // Some Gupy tenants render only the Diversity/Skills accordion shell
+      // before the welcome form arrives, without a loading message. Give that
+      // transition time to finish instead of pausing after twelve 350ms ticks.
+      unrecognizedSince ??= Date.now();
+      if (Date.now() - unrecognizedSince < 15000) continue;
       return pause(
         "Esta etapa da Gupy precisa de revisão. Nenhum botão de finalização foi acionado.",
       );
     }
-    return finalClicked
+    return finalClicked || optionalAnswersSubmitted
       ? unknown("A Gupy não confirmou o resultado. Confira antes de repetir.")
       : pause(
           "A Gupy demorou para carregar. Revise a conexão e as etapas pendentes.",
         );
   } catch {
-    return finalClicked || (applyClicked && !draftRecognized)
+    return finalClicked || optionalAnswersSubmitted || (applyClicked && !draftRecognized)
       ? unknown(
           "A conexão foi interrompida durante a tentativa. Confira a candidatura antes de repetir.",
         )

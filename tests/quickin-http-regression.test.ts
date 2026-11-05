@@ -10,11 +10,11 @@ const publication='https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c
 let browser:Browser;
 beforeAll(async()=>{browser=await chromium.launch({headless:true});});
 afterAll(async()=>{await browser?.close();});
-async function run(status:number,options:{uploadStatus?:number;media?:unknown;showConfirmation?:boolean;invalidControl?:boolean;priorConfirmation?:boolean}={}){
+async function run(status:number,options:{uploadStatus?:number;media?:unknown;showConfirmation?:boolean;invalidControl?:boolean;priorConfirmation?:boolean|string}={}){
  const context=await browser.newContext({serviceWorkers:'block'}),writes:string[]=[];
  const body=JSON.stringify({name:'ValidationError',errors:{email:{message:'PRIVATE_SENTINEL'}}});
  const posting={ '@type':'JobPosting',title:'Desenvolvedor',url:publication,hiringOrganization:{name:'Global TI'},description:'Desenvolvimento de sistemas com C# e .NET'};
- const html=`<script type="application/ld+json">${JSON.stringify(posting)}</script><h1>Desenvolvedor Global TI</h1>${options.priorConfirmation?'<p>Candidatura enviada!</p>':''}<form><label>Nome completo<input name="name" required></label><label>E-mail<input name="email" required type="email"></label>${options.invalidControl?'<input required name="unrecognized">':''}<button type="button" class="iti__selected-country" aria-label="Brazil (+55)"></button><input type="file"><button type="submit">Enviar candidatura</button></form><script>
+ const html=`<script type="application/ld+json">${JSON.stringify(posting)}</script><h1>Desenvolvedor Global TI</h1>${options.priorConfirmation?`<p>${typeof options.priorConfirmation==='string'?options.priorConfirmation:'Candidatura enviada!'}</p>`:''}<form><label>Nome completo<input name="name" required></label><label>E-mail<input name="email" required type="email"></label>${options.invalidControl?'<input required name="unrecognized">':''}<button type="button" class="iti__selected-country" aria-label="Brazil (+55)"></button><input type="file"><button type="submit">Enviar candidatura</button></form><script>
  document.querySelector('input[type=file]').addEventListener('change',async()=>{await fetch('${api}/media/multipart',{method:'POST',body:'controlled-pdf'});});
  document.querySelector('form').addEventListener('submit',async e=>{e.preventDefault();const r=await fetch('${api}/apply',{method:'POST',body:JSON.stringify({name:document.querySelector('[name=name]').value,email:document.querySelector('[name=email]').value})});if(r.ok&&${options.showConfirmation!==false})document.body.insertAdjacentHTML('beforeend','<p>Candidatura enviada!</p>');});</script>`;
  await context.route('**/*',async route=>{
@@ -50,6 +50,10 @@ it('requires a visible destination confirmation after accepted HTTP',async()=>{
  const {result}=await run(201);
  expect(result).toMatchObject({status:'sent',diagnostic:{httpStatus:201,responseKind:'receipt_verified'}});
  expect(result.receipt).toMatch(/^Quickin: Candidatura enviada!/);
+});
+it('blocks every accepted confirmation phrase already present before upload or submit',async()=>{
+ const {result,writes}=await run(200,{priorConfirmation:'Application submitted successfully'});
+ expect(result.status).toBe('action_required');expect(result.receipt).toBeUndefined();expect(writes).toEqual([]);
 });
 it('accepted HTTP without destination confirmation stays unknown',async()=>{
  const {result,writes}=await run(200,{showConfirmation:false});

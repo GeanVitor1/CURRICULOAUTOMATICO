@@ -28,8 +28,7 @@ const labels: Record<string, string> = {
   greenhouse: "Greenhouse",
   lever: "Lever",
   ashby: "Ashby",
-  jobicy: "Jobicy",
-  adzuna: "Adzuna",
+  smartrecruiters: "SmartRecruiters",
   authorized: "Envio autorizado",
   manual: "Registro manual",
   gemini: "Gemini",
@@ -76,15 +75,7 @@ export default function Settings() {
     w.filters.locations.join(", ") || w.profile.location,
   );
   const connect = async (
-    source:
-      | VerifiedOrganization
-      | {
-          type: "jobicy";
-          company: string;
-          board: string;
-          sector: string;
-          country: string;
-        },
+    source: VerifiedOrganization,
   ) => {
     const key = source.type + ":" + source.board;
     setConnecting(key);
@@ -262,28 +253,6 @@ export default function Settings() {
                     })}
                   </div>
                 )}
-                <div className="integration-info source-alternative">
-                  <h3>Quer conferir oportunidades remotas?</h3>
-                  <p>
-                    A Jobicy publica vagas remotas. Confira o país aceito:
-                    remoto não significa que a empresa contrata em qualquer
-                    lugar. Atualizamos essa fonte no máximo uma vez por hora.
-                  </p>
-                  <Button
-                    disabled={!!connecting}
-                    onClick={() =>
-                      connect({
-                        type: "jobicy",
-                        company: "Jobicy",
-                        board: "public",
-                        sector: "Vagas remotas",
-                        country: "",
-                      })
-                    }
-                  >
-                    Pesquisar com Jobicy <ArrowRight size={14} />
-                  </Button>
-                </div>
               </Panel>
               <Panel
                 title="2. Suas fontes conectadas"
@@ -679,8 +648,7 @@ export default function Settings() {
                 "greenhouse",
                 "lever",
                 "ashby",
-                "jobicy",
-                "adzuna",
+                "smartrecruiters",
                 ...(w.infrastructure.automatic ? ["authorized"] : []),
               ].map((type) => (
                 <option key={type} value={type}>
@@ -693,24 +661,13 @@ export default function Settings() {
             <input required name="company" maxLength={200} />
           </Field>
           <Field
-            label={
-              sourceType === "adzuna"
-                ? "Termo de busca"
-                : "Identificador do mural"
-            }
-            help={
-              sourceType === "jobicy"
-                ? "Use public. A Jobicy não exige um identificador de empresa."
-                : sourceType === "adzuna"
-                  ? "Ex.: auxiliar administrativo. A Adzuna exige credenciais e país com cobertura autorizada no servidor."
-                  : "É o nome que aparece no endereço do mural, como jobs.lever.co/nome-da-empresa."
-            }
+            label="Identificador do mural"
+            help="É o nome que aparece no endereço oficial do mural, como jobs.lever.co/nome-da-empresa."
           >
             <input
               name="board"
               required
-              defaultValue={sourceType === "jobicy" ? "public" : ""}
-              maxLength={sourceType === "adzuna" ? 200 : 100}
+              maxLength={100}
             />
           </Field>
           <Field label="Setor (opcional)">
@@ -722,7 +679,7 @@ export default function Settings() {
           </Field>
           <Field
             label="País (opcional)"
-            help="Código de duas letras, como br. Para Adzuna, informe um país autorizado."
+            help="Código de duas letras, como br."
           >
             <input
               name="country"

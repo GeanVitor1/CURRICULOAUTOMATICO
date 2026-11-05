@@ -65,6 +65,7 @@ export function useAction() {
       path: string;
       method?: string;
       body?: unknown;
+      invalidate?: boolean;
     }) => {
       const cleaned =
         body && !(body instanceof FormData)
@@ -92,7 +93,8 @@ export function useAction() {
         demo,
       );
     },
-    onSuccess: async () => {
+    onSuccess: async (_data, variables) => {
+      if (variables.invalidate === false) return;
       await Promise.all([
         client.invalidateQueries({ queryKey: ["workspace"] }),
         client.invalidateQueries({ queryKey: ["jobs"] }),

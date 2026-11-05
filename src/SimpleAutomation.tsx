@@ -6,9 +6,10 @@ import { Play, Pause, FileText, ArrowRight, Search, Info } from "lucide-react";
 import { Button, Mascot, PageHead, DiscoveryStatus } from "./components";
 import { api, date, useAction, useApp } from "./lib";
 import type { SiteCapability } from "./CareerInterview";
-import PortalConnections from "./PortalConnections";
 import { useBilling } from "./Billing";
 import AntigravityConnection from "./AntigravityConnection";
+import GettingStarted from './GettingStarted';
+import {gettingStarted} from '../shared/getting-started';
 
 export default function SimpleAutomation() {
   const { w, navigate, toast } = useApp();
@@ -21,27 +22,23 @@ export default function SimpleAutomation() {
     queryKey: ["automation-sites"],
     queryFn: () => api<SiteCapability[]>("/automation/sites"),
   });
-  const ready =
-    w.interview?.completed &&
-    w.interview.answers.resumeId === w.resumes[0]?.id &&
-    w.resumes[0]?.approved &&
-    w.profile.confirmed;
+  const ready = gettingStarted(w).configured;
   const officialAvailable =
     sites.data?.some((site) => site.independentAutomatic) || false;
   const available =
     !!ready &&
-    w.interview!.answers.sites.some((site) =>
+    (officialAvailable || w.interview!.answers.sites.some((site) =>
       sites.data?.some(
         (item) =>
-          item.id === site && (item.automatic || item.independentAutomatic),
+          item.id === site && item.automatic,
       ),
-    );
+    ));
   const allAvailable =
     available &&
     w.interview!.answers.sites.every((site) =>
       sites.data?.some(
         (item) =>
-          item.id === site && (item.automatic || item.independentAutomatic),
+          item.id === site && item.automatic,
       ),
     );
   const cloudAvailable = sites.data?.some(
@@ -70,9 +67,7 @@ export default function SimpleAutomation() {
           ...w.routine,
           enabled,
           mode,
-          ...(officialAvailable && enabled
-            ? { destinationPolicy: "official" }
-            : {}),
+          destinationPolicy: w.routine.destinationPolicy || "any",
         },
       },
       {
@@ -98,11 +93,11 @@ export default function SimpleAutomation() {
   return (
     <div className="career-flow">
       <PageHead
-        title="Sua automação"
-        description="Seu currículo, suas preferências e suas candidaturas. Tudo em um só lugar."
+        title={ready?'Sua automação':'Vamos preparar sua busca'}
+        description={ready?'Seu currículo, suas preferências e suas candidaturas. Tudo em um só lugar.':'Veja o que já está pronto e qual é seu próximo passo.'}
       />
-      <AntigravityConnection />
-      <details className="interview-card conversion-indicators" onToggle={e=>setShowConversion(e.currentTarget.open)}>
+      {ready&&<AntigravityConnection />}
+      {ready&&<details className="interview-card conversion-indicators" onToggle={e=>setShowConversion(e.currentTarget.open)}>
         <summary>Indicadores técnicos da automação</summary>
         <p>Inventário preservado e etapas de candidatura. Um executor disponível ainda pode encontrar perguntas ou verificação humana no formulário.</p>
         {conversion.isPending&&showConversion&&<p role="status">Consultando indicadores…</p>}
@@ -122,8 +117,8 @@ export default function SimpleAutomation() {
           </tbody></table>
           <p>Registros removidos anteriormente não são reconstruídos. Atualizado em {date(conversion.data.at)}.</p>
         </>}
-      </details>
-      {billing.data && (
+      </details>}
+      {ready&&billing.data && (
         <div className="automation-quota">
           <span>
             <strong>Plano {billing.data.name}</strong> ·{" "}
@@ -142,29 +137,7 @@ export default function SimpleAutomation() {
         </section>
       )}
       {!ready ? (
-        <section className="interview-card journey-start">
-          <Mascot
-            className="journey-mascot"
-            variant={w.resumes.length ? "idea" : "handing-resume"}
-            decorative
-          />
-          <h2>
-            {w.resumes.length
-              ? "Vamos conhecer suas preferências"
-              : "Seu próximo emprego começa aqui"}
-          </h2>
-          <p>
-            {w.resumes.length
-              ? "Seu currículo já está salvo. Responda algumas perguntas para definir as vagas que você quer."
-              : "Envie seu currículo. Depois, responda perguntas curtas sobre trabalho, salário e sites."}
-          </p>
-          <ol className="journey-steps">
-            <li className={w.resumes.length ? "done" : ""}>
-              Envie seu currículo
-            </li>
-            <li>Responda às perguntas</li>
-            <li>Acompanhe as candidaturas</li>
-          </ol>
+        <><GettingStarted/>
           {w.routine.enabled && (
             <div className="interview-availability" role="status">
               <p>
@@ -176,16 +149,7 @@ export default function SimpleAutomation() {
               </Button>
             </div>
           )}
-          <Button
-            className="primary"
-            onClick={() =>
-              navigate(w.resumes.length ? "preferencias" : "curriculo")
-            }
-          >
-            {w.resumes.length ? "Responder às perguntas" : "Enviar currículo"}
-            <ArrowRight size={16} />
-          </Button>
-        </section>
+        </>
       ) : (
         <>
           <section
@@ -264,7 +228,7 @@ export default function SimpleAutomation() {
                 <div>
                   <strong>
                     {officialAvailable
-                      ? "Candidaturas nos formulários oficiais das empresas"
+                      ? "Candidaturas automáticas nos canais disponíveis"
                       : available
                         ? "Envio automático nas fontes autorizadas"
                         : cloudAvailable
@@ -273,7 +237,7 @@ export default function SimpleAutomation() {
                   </strong>
                   <p>
                     {officialAvailable
-                      ? "Enviamos seu currículo aprovado quando a vaga atende às suas preferências e possui um formulário compatível. Não é necessário conectar Gupy ou LinkedIn nem instalar extensões. A IA responde com base no currículo e nas preferências. Sem informação, usa “não” ou “prefiro não informar”. O histórico mostra apenas envios confirmados."
+                      ? "Enviamos seu currículo aprovado nas vagas compatíveis pelos formulários oficiais, e-mails verificados e portais conectados. Destinos que exigem login usam a conexão autorizada na sua conta. A IA responde com os dados aprovados e sua regra para informações ausentes. Perguntas e consentimentos sem resposta autorizada aguardam sua revisão. O histórico mostra apenas envios confirmados."
                       : available
                         ? "Buscamos destinos oficiais e processamos automaticamente os formulários compatíveis. Apenas envios confirmados aparecem nas candidaturas."
                         : cloudAvailable
@@ -284,15 +248,7 @@ export default function SimpleAutomation() {
               </div>
             )}
           </section>
-          <details className="interview-extra">
-            <summary>Conexões opcionais com portais</summary>
-            <p>
-              Os portais são fontes de descoberta. Procuramos destinos oficiais
-              equivalentes antes de depender de uma conta de portal; cada envio
-              exige um destino verificado e autorizado.
-            </p>
-            <PortalConnections selected={w.interview!.answers.sites} />
-          </details>
+          <section className="integration-info"><h3>Suas contas conectadas</h3><p>Gerencie LinkedIn, Gupy, InfoJobs e Glassdoor na sua área de Conexões.</p><Button onClick={()=>navigate('conexoes')}>Abrir conexões</Button></section>
           <div className="automation-counters">
             <button onClick={() => navigate("vagas")}>
               <strong>

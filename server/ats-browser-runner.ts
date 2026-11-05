@@ -1,19 +1,21 @@
 import { readFile, writeFile, rm } from "node:fs/promises";
-import { chromium } from "playwright";
+import { launchProtectedBrowser } from "./browser-egress";
 import { executeAtsApplication, type AtsApplication } from "./ats-application";
 import { atsHostResolverRules, guardAtsPage } from "./ats-network";
+import { assertSecureNode } from "./runtime-security";
+assertSecureNode();
 const root = "/vercel/sandbox/portal-runtime/ats-execution";
 const input: AtsApplication = JSON.parse(
   await readFile(`${root}/input.json`, "utf8"),
 );
-const browser = await chromium.launch({
+const browser = await launchProtectedBrowser({
   headless: true,
   args: [
     `--host-resolver-rules=${await atsHostResolverRules(input.destination.url)}`,
   ],
 });
 try {
-  const context = await browser.newContext({ serviceWorkers: "block" });
+  const context = await browser.newContext({ serviceWorkers: "block", acceptDownloads: false });
   const page = await context.newPage();
   await guardAtsPage(context, input.destination.url);
   await writeFile(`${root}/form-execution-started`, "1", {mode:0o600});

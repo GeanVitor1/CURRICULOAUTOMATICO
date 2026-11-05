@@ -7,6 +7,7 @@ import { readyPortals } from "./portal-sessions";
 import { queuePreparedApplications } from "./operations";
 import { dispatchNextApplication } from "./submission-dispatch";
 import { dailySubmissionAttempts } from "./submission-attempts";
+import {discoveryQuota,discoveryDay} from './discovery-limits';
 import {
   enqueueResolution,
   needsResearch,
@@ -53,7 +54,9 @@ export function automaticBlockerMessage(w: Workspace) {
   ).length;
   const questions = pending.filter((a) => a.missingQuestions?.length).length;
   const uncertain=w.applications.filter(a=>a.status==='Resultado desconhecido'&&!a.receipt&&!a.submittedAt).length;
+  const nonReceived=w.applications.filter(a=>a.status==='Falha no envio'&&a.reconciliations?.at(-1)?.outcome==='not_received'&&!a.receipt&&!a.submittedAt).length;
   const reasons = [
+    nonReceived ? `${nonReceived} tentativa(s) confirmada(s) pelo empregador como não recebida(s); nova tentativa exige revalidação.` : '',
     uncertain ? `${uncertain} tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente.` : '',
     human
       ? `${human} candidatura(s) bloqueada(s) por verificação humana no formulário.`
@@ -82,8 +85,11 @@ export async function continueAutomaticCycle(
   if (!owner) return;
   const plan = await accountPlan(owner.userId);
   await mutateWorkspace(id, async (current, tx) => {
-    if (current.routine.enabled && current.routine.mode === "automatic")
+    if (current.routine.enabled && current.routine.mode === "automatic") {
       await releasePausedReservations(tx, owner.userId, current);
+      const prior=current.routine.discoveryBudget;
+      current.routine.discoveryBudget={day:discoveryDay(),target:Math.min(current.routine.dailyLimit,plan.dailyLimit),examined:prior?.day===discoveryDay()?prior.examined:0};
+    }
   });
   w = await readWorkspace(id);
   if (!w || !w.routine.enabled || w.routine.mode !== "automatic") return;
@@ -115,7 +121,11 @@ export async function continueAutomaticCycle(
     );
     return;
   }
-  if (used >= target) {
+  const verifiedResume=w.applications.some(a=>
+    ['Requer ação manual','Aguardando aprovação'].includes(a.status)&&!a.receipt&&!a.submittedAt&&
+    !a.missingQuestions?.length&&a.resumeState&&a.resumeState.resumeId===a.resumeId&&!!a.verifiedGupyDrafts?.length&&
+    a.verifiedGupyDrafts?.at(-1)?.attemptId===a.attempts?.at(-1)?.id);
+  if (used >= target && !verifiedResume) {
     await save(
       "waiting",
       "A cota diária foi utilizada pelos envios e tentativas registrados. Resultados incertos não são repetidos.",
@@ -188,7 +198,7 @@ export async function continueAutomaticCycle(
     await enqueueResolution(id);
     return;
   }
-  if (Object.values(w.routine.discoveryCheckpoints || {}).some(checkpoint => checkpoint.pending)) {
+  if (discoveryQuota(w,plan.dailyLimit,used).candidateLimit>0 && Object.values(w.routine.discoveryCheckpoints || {}).some(checkpoint => checkpoint.pending)) {
     const day = billingDay();
     const configured = Number(process.env.AUTOMATIC_DISCOVERY_CONTINUATION_LIMIT ?? 4);
     const maximum = Number.isFinite(configured) ? Math.max(0,Math.min(20,Math.floor(configured))) : 4;

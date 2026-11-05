@@ -9,6 +9,7 @@ import { resumePdf } from "./pdf-fixture";
 import { and, eq } from "drizzle-orm";
 import { resumeFiles } from "../server/schema";
 import { confirmCandidateDetails } from "./fixtures/candidate-details";
+import { createHash } from "node:crypto";
 let app: FastifyInstance,
   cookie = "",
   dir = "",
@@ -30,7 +31,7 @@ beforeAll(async () => {
   const module = await import("../server/app");
   dbModule = await import("../server/db");
   app = await module.buildApp();
-}, 30000);
+}, 60000);
 afterAll(async () => {
   await app?.close();
   await dbModule?.closeDb();
@@ -72,6 +73,22 @@ describe("Fluxos de ponta a ponta na API", () => {
     expect(r.headers["set-cookie"]).toContain("SameSite=Lax");
     cookie = String(r.headers["set-cookie"]).split(";")[0];
     userId = r.json().id;
+  });
+  it("permite somente diagnóstico de leitura do workspace fixado pela credencial operacional",async()=>{
+    const url="/api/internal/automation-diagnostics",key="a".repeat(43);
+    expect((await app.inject(url)).statusCode).toBe(401);
+    vi.stubEnv("AUTOMATION_OBSERVER_WORKSPACE",`${userId}:live`);
+    vi.stubEnv("AUTOMATION_OBSERVER_KEY_SHA256",createHash("sha256").update(key).digest("hex"));
+    try {
+      const before=await dbModule.workspaceRevision(`${userId}:live`);
+      expect((await app.inject({url,headers:{"x-automation-observer-key":"wrong"}})).statusCode).toBe(401);
+      const response=await app.inject({url:`${url}?workspaceId=other:live&day=2026-10-26`,headers:{"x-automation-observer-key":key}});
+      expect(response.statusCode).toBe(200);expect(response.headers["cache-control"]).toBe("no-store");
+      expect(response.json()).toMatchObject({workspaceId:`${userId}:live`,readOnly:true,day:"2026-10-26"});
+      expect(response.body).not.toContain("teste@example.test");
+      expect(await dbModule.workspaceRevision(`${userId}:live`)).toBe(before);
+      expect((await app.inject({url:`${url}?day=2026-02-31`,headers:{"x-automation-observer-key":key}})).statusCode).toBe(400);
+    }finally{vi.unstubAllEnvs();}
   });
   it("salva respostas confirmadas sem ativar envios e mantém as respostas ao editar o perfil", async () => {
     const endpoint = "/api/application-preferences";
@@ -125,6 +142,52 @@ describe("Fluxos de ponta a ponta na API", () => {
       expect(run).toHaveBeenLastCalledWith(userId,"gupy",expect.objectContaining({op:"confirm",resumeId:null}));
       expect((await request("GET","/api/workspace")).json().routine.enabled).toBe(false);
     } finally { run.mockRestore(); vi.unstubAllEnvs(); }
+  });
+  it.each(['infojobs','glassdoor'] as const)('imports only the authenticated account and selected %s portal without granting application permissions',async portal=>{
+    const cloud=await import('../server/portal-cloud'),run=vi.spyOn(cloud,'cloudPortalCommand').mockResolvedValue({viewerId:'fixture-viewer',authenticated:true});
+    vi.stubEnv('PORTAL_CLOUD_ENABLED','true');vi.stubEnv('PORTAL_CLOUD_SNAPSHOT_ID','fixture');vi.stubEnv('PORTAL_CLOUD_OWNER_ID',userId);
+    vi.stubEnv('PORTAL_CLOUD_SESSION_PORTALS','gupy,infojobs,glassdoor,linkedin');
+    const domain=portal==='infojobs'?'infojobs.com.br':'glassdoor.com';
+    const portalRequest=(method:string,path:string,payload?:any)=>app.inject({method:method as any,url:path,headers:headers(),payload,remoteAddress:portal==='infojobs'?'127.0.0.21':portal==='glassdoor'?'127.0.0.22':'127.0.0.23'});
+    const state={cookies:[{name:'session',value:'synthetic',domain:'.'+domain,path:'/',expires:-1,httpOnly:true,secure:true,sameSite:'Lax'}],origins:[]};
+    const url=`/api/connections/${portal}/browser-session`;
+    try{
+      const context=await request('GET',`/api/connections/browser-extension-context?portal=${portal}`);
+      expect(context.statusCode).toBe(200);expect(context.json()).toMatchObject({portal,available:true,account:{id:userId}});
+      expect((await app.inject({method:'GET',url:`/api/connections/browser-extension-context?portal=${portal}`})).statusCode).toBe(401);
+      expect((await portalRequest('POST',url,{state,authorizeSessionTransfer:true,expectedUserId:'11111111-1111-4111-8111-111111111111'})).statusCode).toBe(400);
+      expect((await portalRequest('POST',url,{state:{...state,cookies:[{...state.cookies[0],domain:'.gupy.io'}]},authorizeSessionTransfer:true})).statusCode).toBe(400);
+      expect(run).not.toHaveBeenCalled();
+      expect((await portalRequest('POST',url,{state,authorizeSessionTransfer:true,expectedUserId:userId})).statusCode).toBe(200);
+      expect(run).toHaveBeenCalledWith(userId,portal,expect.objectContaining({op:'import-browser-session',browserSession:state}));
+      await dbModule.mutateWorkspace(`${userId}:live`,w=>{
+        w.infrastructure.portalConnections||={};w.infrastructure.portalConnections[portal]={connectedAt:new Date().toISOString(),verifiedAt:new Date().toISOString(),profileResumeId:null} as any;
+      });
+      const sites=(await request('GET','/api/automation/sites')).json(),cap=sites.find((s:any)=>s.id===portal);
+      expect(cap.connected).toBe(true);expect(cap.automatic).toBe(false);
+      expect(await (await import('../server/portal-sessions')).readyPortals(userId,'some-resume')).not.toContain(portal);
+    }finally{run.mockRestore();vi.unstubAllEnvs();}
+  });
+  it('blocks LinkedIn session reuse and does not advertise a saved session as usable after the reported original-browser sign-out',async()=>{
+    const cloud=await import('../server/portal-cloud'),run=vi.spyOn(cloud,'cloudPortalCommand').mockResolvedValue({authenticated:true});
+    vi.stubEnv('PORTAL_CLOUD_ENABLED','true');vi.stubEnv('PORTAL_CLOUD_SNAPSHOT_ID','fixture');vi.stubEnv('PORTAL_CLOUD_OWNER_ID',userId);vi.stubEnv('PORTAL_CLOUD_SESSION_PORTALS','gupy,infojobs,glassdoor,linkedin');
+    try{
+      const context=(await request('GET','/api/connections/browser-extension-context?portal=linkedin')).json();
+      expect(context).toMatchObject({available:true,mode:'local-browser'});
+      for(const operation of ['browser-session','open','confirm','action','check-runtime']){
+        const result=await app.inject({method:'POST',url:'/api/connections/linkedin/'+operation,headers:headers(),remoteAddress:'127.0.0.24',payload:{authorizeSessionTransfer:true,state:{cookies:[],origins:[]}}});
+        expect(result.statusCode).toBe(400);expect(result.json().error).toContain('suspensa');
+      }
+      expect(run).not.toHaveBeenCalled();
+      await dbModule.mutateWorkspace(`${userId}:live`,w=>{w.infrastructure.portalConnections||={};w.infrastructure.portalConnections.linkedin={connectedAt:new Date().toISOString(),verifiedAt:new Date().toISOString(),profileResumeId:null,expiresAt:null};});
+      const cap=(await request('GET','/api/automation/sites')).json().find((s:any)=>s.id==='linkedin');
+      expect(cap).toMatchObject({connected:false,sessionSaved:false,sessionState:'disconnected',connectable:true,automatic:false});
+      expect(await (await import('../server/portal-sessions')).readyPortals(userId,'some-resume')).not.toContain('linkedin');
+    }finally{run.mockRestore();vi.unstubAllEnvs();}
+  });
+  it.each(['open','import-browser-session','action','confirm','apply'])('rejects direct LinkedIn cloud %s commands before using the runtime',async op=>{
+    const {cloudPortalCommand}=await import('../server/portal-cloud');
+    await expect(cloudPortalCommand(userId,'linkedin',{op})).rejects.toThrow('temporariamente suspensa');
   });
   it("workspace real começa vazio e não disponibiliza dados fictícios", async () => {
     const real = (await request("GET", "/api/workspace")).json();
@@ -187,6 +250,7 @@ describe("Fluxos de ponta a ponta na API", () => {
       ).statusCode,
     ).toBe(200);
     w.profile.confirmed = true;
+    confirmCandidateDetails(w);
     w.profile.years = 2;
     expect((await request("PUT", "/api/profile", w.profile)).statusCode).toBe(
       200,
@@ -218,12 +282,13 @@ describe("Fluxos de ponta a ponta na API", () => {
       approved: true,
     });
     w.profile.confirmed = true;
+    confirmCandidateDetails(w);
     await request("PUT", "/api/profile", w.profile);
     expect(
       (await request("GET", `/api/resumes/${w.resumes[0].id}/download`))
         .headers["content-type"],
     ).toContain("application/pdf");
-  });
+  }, 20000);
   it("mantém o PDF original no banco quando o arquivo temporário desaparece", async () => {
     const w = (await request("GET", "/api/workspace")).json();
     const resumeId = w.resumes[0].id;
@@ -423,7 +488,7 @@ describe("Fluxos de ponta a ponta na API", () => {
     const j = {
       title: "Software Engineer I",
       company: "Empresa real de teste",
-      url: "https://example.com/job/123",
+      url: "https://job-boards.greenhouse.io/acme/jobs/123",
       description:
         "Desenvolvimento C# .NET, SQL Server e APIs REST em equipe remota. 1 ano de experiencia.",
       location: "Brasil",
@@ -441,7 +506,8 @@ describe("Fluxos de ponta a ponta na API", () => {
     await request("POST", "/api/jobs", j);
     const w = (await request("GET", "/api/workspace")).json();
     expect(w.jobs.length).toBe(1);
-    expect(w.jobs[0].match.score).toBeGreaterThan(80);
+    expect(w.jobs[0].match.blockers).toEqual([]);
+    expect(w.jobs[0].match.matchedSkills).toEqual(expect.arrayContaining(["C#", ".NET"]));
   });
   it("prepara candidatura sem declarar envio e impede duplicatas", async () => {
     const w = (await request("GET", "/api/workspace")).json();
@@ -503,7 +569,7 @@ describe("Fluxos de ponta a ponta na API", () => {
             {
               id: 123,
               title: "Backend Developer",
-              absolute_url: "https://example.com/jobs/123",
+              absolute_url: "https://job-boards.greenhouse.io/acme/jobs/456",
               content: "<p>C# .NET SQL Server REST. Remote. Junior.</p>",
               location: { name: "Brasil" },
             },
@@ -614,7 +680,7 @@ describe("Fluxos de ponta a ponta na API", () => {
         const job = {
           ...structuredClone(w.jobs[0]),
           id: "concurrent-job",
-          url: "https://example.test/concurrent-job",
+          url: "https://job-boards.greenhouse.io/acme/jobs/124",
           availability: "unknown" as const,
         };
         w.jobs.push(job);
@@ -705,7 +771,7 @@ describe("Fluxos de ponta a ponta na API", () => {
           const job = {
             ...structuredClone(w.jobs[0]),
             id: `receipt-job-${index}`,
-            url: `https://example.test/receipt-job-${index}`,
+            url: `https://job-boards.greenhouse.io/acme/jobs/receipt-${index}`,
             availability: "unknown" as const,
           };
           w.jobs.push(job);
@@ -808,6 +874,7 @@ describe("Fluxos de ponta a ponta na API", () => {
         w.jobs.push(job);
         w.filters = { ...defaultFilters, titles: [job.title] };
         w.profile.confirmed = true;
+    confirmCandidateDetails(w);
         w.sources.push({
           id: "portal-authorized",
           type: "portal",

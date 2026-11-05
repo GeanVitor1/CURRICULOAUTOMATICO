@@ -12,6 +12,11 @@ import {
 import { extractDocx } from "../server/documents";
 import { zipSync, strToU8 } from "fflate";
 import { defaultFilters, defaultProfile, type Job } from "../shared/types";
+it("distingue Principal Engineer de linguagem corporativa sem remover senioridade real",()=>{
+  expect(classify("Software Engineer .NET II (Junior). Nossa principal alavanca de crescimento.").level).toBe("Júnior");
+  expect(classify("Principal Software Engineer").level).toBe("Sênior");
+  expect(classify("Desenvolvedor Full Stack - PL/SR").level).toBe("Sênior");
+});
 const profile = {
   ...defaultProfile,
   skills: ["C#", ".NET", "SQL Server", "APIs REST"],
@@ -44,20 +49,20 @@ const job: Job = {
   demo: false,
 };
 describe("Motor de aderência", () => {
-  it("não mantém uma nota alta de trecho incompleto ao ler os requisitos móveis da publicação", () => {
+  it("relê as competências do anúncio completo sem penalizar por nota", () => {
     const mobile = {...job, title:"Senior iOS Developer", description:"Desenvolvimento iOS com Swift, UIKit e testes. Integração com APIs REST e Git.", skills:["APIs REST"]};
     const before = structuredClone(mobile.skills);
     const corrected = correctJobEvidence(mobile);
     expect(corrected.skills).toEqual(expect.arrayContaining(["Swift", "iOS", "Git", "APIs REST"]));
     expect(mobile.skills).toEqual(before);
-    expect(analyze(mobile, profile, {...defaultFilters, titles:["Desenvolvedor de software"]}).score).toBeLessThan(70);
+    expect(analyze(mobile, profile, {...defaultFilters, titles:["Desenvolvedor de software"]}).missingSkills).toContain("Swift");
   });
-  it.each(["Não especificado", "Não informado", "", "Unknown", "Not specified", "A combinar"])("contratação ausente (%s) não bloqueia nem reduz a pontuação", (contract) => {
+  it.each(["Não especificado", "Não informado", "", "Unknown", "Not specified", "A combinar"])("contratação ausente (%s) não bloqueia nem cria pontuação", (contract) => {
     const filters = {...defaultFilters, contracts: ["CLT", "PJ"]};
     const result = analyze({...job, contract}, profile, filters);
     expect(result.blockers).not.toContain("Contratação fora das suas preferências.");
     expect(result.gaps).toContain("Regime de contratação não informado no anúncio.");
-    expect(result.score).toBe(analyze(job, profile, filters).score);
+    expect(result.criteria).toEqual([]);
     expect(matchesObjectiveFilters({...job, contract}, profile, filters)).toBe(true);
   });
   it("mantém o bloqueio de contratação explicitamente incompatível", () => {
@@ -125,7 +130,8 @@ describe("Motor de aderência", () => {
       skills: ["Figma"],
     });
     expect(m.radar).toBe(true);
-    expect(m.score).toBeGreaterThan(80);
+    expect(m.matchedSkills).toEqual(expect.arrayContaining(["Figma", "Pesquisa com usuários"]));
+    expect(m.blockers).toEqual([]);
   });
   it("não confunde a idade da empresa com experiência exigida", () =>
     expect(
@@ -150,7 +156,8 @@ describe("Motor de aderência", () => {
       titles: ["Desenvolvedor .NET Júnior"],
     });
     expect(m.radar).toBe(true);
-    expect(m.score).toBeGreaterThan(80);
+    expect(m.matchedSkills).toEqual(expect.arrayContaining(["C#", ".NET"]));
+    expect(m.blockers).toEqual([]);
     expect(m.strengths.length).toBeGreaterThan(0);
   });
   it("salário desconhecido não é zero nem é bloqueado pelo mínimo", () => {

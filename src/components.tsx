@@ -209,26 +209,8 @@ export function Score({
   compact?: boolean;
   confidence?: "sufficient" | "insufficient";
 }) {
-  if (confidence === "insufficient")
-    return <span className="score insufficient">Dados insuficientes</span>;
-  return (
-    <div
-      className={`score ${score >= 80 ? "high" : score >= 60 ? "medium" : "low"} ${compact ? "compact" : ""}`}
-    >
-      <span>
-        {score}
-        <small>/100</small>
-      </span>
-      {!compact && (
-        <>
-          <div className="score-track">
-            <i style={{ width: `${score}%` }} />
-          </div>
-          <span className="score-label">compatibilidade</span>
-        </>
-      )}
-    </div>
-  );
+  // Kept as a presentation adapter for existing callers. There is no score.
+  return <span className={`badge ${compact?'compact':''}`}>{confidence==='insufficient'?'Dados a conferir':'Requisitos da vaga'}</span>;
 }
 export function CompanyLogo({ name }: { name: string }) {
   const styles: Record<string, string> = {
@@ -479,7 +461,7 @@ export function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       layout
-      className={`job-card ${job.match.score >= 80 && job.match.confidence !== "insufficient" ? "high-match" : ""}`}
+      className="job-card"
     >
       <div className="job-card-top">
         <CompanyLogo name={job.company} />
@@ -615,8 +597,9 @@ export function JobDetail({
             </div>
           )}
           <div className="detail-actions">
+            {!demo&&<a className="button" href={`/app?vaga=${encodeURIComponent(job.url)}#curriculo-perfeito`}>Criar Currículo Perfeito</a>}
             {(!application || (application.resumeState?.kind === "ats" && application.status === "Requer ação manual" && !application.missingQuestions?.length)) && !demo && w.routine.enabled && w.routine.mode === "automatic" && (
-              <Button disabled={a.isPending || job.match.blockers.length > 0 || job.match.confidence === "insufficient" || job.match.score < w.routine.minScore}
+              <Button disabled={a.isPending || job.match.blockers.length > 0}
                 onClick={() => a.mutate({path:"/routine/process",body:{jobId:job.id}}, {onSuccess: result => {toast(result.queued ? "Esta vaga entrou na fila automática." : "Esta vaga ainda não tem destino disponível ou a cota está ocupada."); if(result.queued){close();navigate("candidaturas");}}})}>
                 {application ? "Retomar esta vaga pela rotina" : "Processar esta vaga pela rotina"}
               </Button>
@@ -686,7 +669,7 @@ export function JobDetail({
             )}
             <h3>
               <Sparkles size={17} />
-              Por que esta vaga combina com você?
+              Preferências e requisitos desta vaga
             </h3>
             <p>{job.match.explanation}</p>
             {w.intelligence?.enabled && (
@@ -808,7 +791,7 @@ export function JobDetail({
               Bloquear empresa
             </Button>
             <span className="muted">
-              Pontuação de aderência, não de contratação.
+              Preferências e requisitos publicados, sem pontuação.
             </span>
           </div>
         </>

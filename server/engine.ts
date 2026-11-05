@@ -5,6 +5,7 @@ import { resumeSections } from "./resume-sections";
 import { isJobUrl, isPortalId } from "../shared/portals";
 import type { Workspace } from "../shared/types";
 import { expandSearchTitles } from "./job-identity";
+import {mandatoryTechnicalSkills,mandatorySkillGroups,mandatoryRequirementLines} from './mandatory-requirements';
 export function matchesSelectedSites(job: Job, workspace: Workspace): boolean {
   return (
     (workspace.routine.destinationPolicy === 'official' && /^https:\/\/jobs\.quickin\.io\/[a-z0-9_-]+\/jobs\/[a-f0-9]{24}$/i.test(job.url) && !!job.destinations?.some(d=>d.platform==='quickin'&&d.publicationUrl===job.url&&d.url===`${job.url}/apply`&&d.company===job.company&&d.state==='verified'&&d.formFound&&Date.parse(d.expiresAt)>Date.now())) ||
@@ -361,6 +362,10 @@ export function correctJobEvidence(job: Job): Job {
   const evidence = experienceRequirements(job.description);
   const corrected = {
     ...job,
+    // Re-read old inferred conjunctions from the publisher. Explicit fields in
+    // a manually entered vacancy remain the person's own requirement choices.
+    requiredSkills: job.origins.some(origin=>origin.source==='manual') || /^(manual|importação manual)$/i.test(job.source)
+      ? job.requiredSkills : mandatoryTechnicalSkills(job.description),
     // A fuller publisher description must update the evidence used by matching.
     // Old snippets often kept only Git/APIs, hiding the actual mobile/data stack.
     skills: [...new Set([...job.skills, ...extractSkills(job.description),
@@ -399,7 +404,7 @@ export function classify(text: string) {
       ? "Aprendiz"
       : /sem experiencia|primeiro emprego|no experience/.test(n)
         ? "Primeiro emprego"
-        : /senior|\bsr\b|staff|principal|lead/.test(n)
+        : /senior|\bsr\b|staff|\bprincipal\s+(?:software\s+)?(?:engineer|developer|architect|designer)\b|\b(?:engineer|developer|architect|designer)\s+principal\b|lead/.test(n)
           ? "Sênior"
           : /pleno|\bmid/.test(n)
             ? "Pleno"
@@ -492,6 +497,16 @@ export function locationMatches(
     return !!city && locationParts.some((part) => part === city);
   });
 }
+/** Role matching shared by discovery and final filtering, for every profession. */
+export function matchesRoleTitle(title: string, titles: string[], headline = ""): boolean {
+  if (!titles.length) return true;
+  const actual = normalize(title);
+  const desired = normalize((titles.length ? titles : [headline]).join(" "));
+  return expandSearchTitles(titles).some((target) =>
+    normalize(target).split(" ").filter((token) => !["de", "do", "da", "e"].includes(token))
+      .every((token) => actual.includes(token)),
+  ) || roleFamilies.some((family) => family.test(actual) && family.test(desired));
+}
 export function matchesObjectiveFilters(
   job: Job,
   profile: Profile,
@@ -529,10 +544,6 @@ export function matchesObjectiveFilters(
     if (!desiredLanguage.some((language) => includesTerm(content, language)))
       return false;
   }
-  const title = normalize(job.title);
-  const desired = normalize(
-    (filters.titles.length ? filters.titles : [profile.headline]).join(" "),
-  );
   const firstJobWanted = filters.titles.some((title) =>
     /primeiro emprego|sem experiencia/.test(normalize(title)),
   );
@@ -546,13 +557,7 @@ export function matchesObjectiveFilters(
   if (
     filters.titles.length &&
     !beginnerRole &&
-    !expandSearchTitles(filters.titles).some((t) =>
-      normalize(t)
-        .split(" ")
-        .filter((token) => !["de", "do", "da", "e"].includes(token))
-        .every((token) => title.includes(token)),
-    ) &&
-    !roleFamilies.some((family) => family.test(title) && family.test(desired))
+    !matchesRoleTitle(job.title, filters.titles, profile.headline)
   )
     return false;
   // Related role families cannot silently erase an explicitly requested specialization.
@@ -599,6 +604,7 @@ export function matchSignature(
   return createHash("sha256")
     .update(
       JSON.stringify({
+        policy: 'preferences-and-explicit-requirements-v3',
         profile,
         filters,
         job: {
@@ -712,7 +718,7 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
         `Registro profissional obrigatório não confirmado: ${license}.`,
       );
   }
-  const driving = text.match(/cnh\s*(?:categoria\s*)?([abcde])\b/);
+  const driving = mandatoryRequirementLines(job.description).map(normalize).join('\n').match(/cnh\s*(?:categoria\s*)?([abcde])\b/);
   if (
     driving &&
     !new RegExp(`cnh\\s*(?:categoria\\s*)?${driving[1]}\\b`).test(
@@ -732,6 +738,8 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
           : 0;
   const requiredSchooling = schooling(text),
     confirmedSchooling = schooling(qualificationText);
+  const mandatorySchooling=Math.max(0,...mandatoryRequirementLines(job.description).map(line=>schooling(normalize(line))));
+  if(mandatorySchooling>confirmedSchooling)blockers.push('Escolaridade obrigatória não confirmada no perfil.');
   if (requiredSchooling && confirmedSchooling < requiredSchooling)
     gaps.push(
       "Escolaridade citada na vaga ainda não confirmada no seu perfil.",
@@ -749,19 +757,22 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     strengths.push(`Competências em comum: ${matchedSkills.join(", ")}.`);
   if (missingSkills.length)
     gaps.push(
-      `Conhecimentos citados a confirmar: ${missingSkills.join(", ")}.`,
+      `Competências citadas que não estão no perfil: ${missingSkills.join(", ")}. Uma menção isolada não impede a candidatura.`,
     );
   if (!profile.confirmed)
     blockers.push("Confirme seu perfil antes de preparar uma candidatura.");
   if (/s[eê]nior|tech lead|lideran[cç]a/i.test(job.level) && /^(?:n[aã]o|unknown|unspecified)/i.test(profile.level))
     blockers.push('Senioridade exigida ainda não confirmada no perfil.');
   if (!profile.skills.length)
-    gaps.push("Adicione suas competências para calcular uma aderência útil.");
+    gaps.push("Confira suas competências e os requisitos publicados.");
   if (!job.skills.length)
     gaps.push("A fonte não identificou competências; revise a descrição.");
   for (const required of [...job.requiredSkills, ...filters.requiredSkills]) {
     if (!known.has(normalize(required)))
       blockers.push(`Competência indispensável não confirmada: ${required}.`);
+  }
+  for(const alternatives of mandatorySkillGroups(job.description).filter(group=>group.length>1)){
+    if(!alternatives.some(skill=>known.has(normalize(skill))))blockers.push(`Competência indispensável não confirmada: ${alternatives.join(' ou ')}.`);
   }
   for (const required of filters.requiredSkills)
     if (!job.skills.some((s) => normalize(s) === normalize(required)))
@@ -863,80 +874,15 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     (!job.publishedAt || !Number.isFinite(Date.parse(job.publishedAt)))
   )
     blockers.push("Seu filtro exige uma data de publicação informada.");
-  const criteria: { label: string; earned: number; possible: number }[] = [];
-  const criterion = (label: string, earned: number, possible: number) =>
-    criteria.push({ label, earned: Math.round(earned * 100) / 100, possible });
-  if (job.skills.length)
-    criterion(
-      "Competências citadas na vaga",
-      (60 * matchedSkills.length) / job.skills.length,
-      60,
-    );
-  if (target)
-    criterion(
-      "Cargo e área desejados",
-      directTitle ? 20 : radar ? 17 : roleFamily ? 8 : 0,
-      20,
-    );
-  // A shared Git/API background cannot outweigh the specialty named in the role.
-  // Keep this as a scored criterion rather than inventing a mandatory requirement.
-  const titleTechnologies = extractSkills(job.title).filter(skill=>namedTechnologies.has(skill));
-  if (titleTechnologies.length)
-    criterion(
-      "Competências citadas no cargo",
-      30 * titleTechnologies.filter(skill => known.has(normalize(skill))).length / titleTechnologies.length,
-      30,
-    );
-  if (job.level !== "Não especificado" && profile.level !== "Não especificado")
-    criterion("Nível de experiência", job.level === profile.level ? 5 : 0, 5);
-  if (filters.modalities.length && job.modality !== "Não especificado")
-    criterion(
-      "Modalidade preferida",
-      filters.modalities.includes(job.modality) ? 10 : 0,
-      10,
-    );
-  if (job.requiredYears !== null)
-    criterion(
-      "Tempo de experiência confirmado",
-      profile.years !== null && profile.years >= job.requiredYears ? 5 : 0,
-      5,
-    );
-  if (requiredSchooling)
-    criterion(
-      "Escolaridade",
-      confirmedSchooling >= requiredSchooling ? 15 : 0,
-      15,
-    );
-  if (filters.locations.length && job.location)
-    criterion(
-      "Localização",
-      locationMatches(job.location, filters.locations) ? 10 : 0,
-      10,
-    );
-  if (filters.modalities.includes(job.modality))
-    strengths.push(
-      `Modalidade ${job.modality.toLowerCase()} alinhada às preferências.`,
-    );
-  if (job.level === profile.level && job.level !== "Não especificado")
-    strengths.push("Nível de experiência alinhado ao perfil confirmado.");
-  const enoughProfile =
-    known.size > 0 || !!profile.education || profile.years !== null;
-  const enoughJob =
-    job.skills.length > 0 || !!requiredSchooling || job.requiredYears !== null;
-  const confidence =
-    enoughProfile && enoughJob && criteria.length >= 2
-      ? "sufficient"
-      : "insufficient";
-  const possible = criteria.reduce((sum, c) => sum + c.possible, 0);
-  let score =
-    confidence === "sufficient" && possible
-      ? (100 * criteria.reduce((sum, c) => sum + c.earned, 0)) / possible
-      : 0;
-  if (confidence === "insufficient")
-    gaps.push(
-      "Dados insuficientes para comparar o perfil com os requisitos da vaga.",
-    );
-  if (blockers.length) score = Math.min(score, 49);
+  const enoughProfile = known.size > 0 || !!profile.education || profile.years !== null;
+  const enoughJob = job.skills.length > 0 || !!requiredSchooling || job.requiredYears !== null;
+  const confidence = enoughProfile && enoughJob ? "sufficient" : "insufficient";
+  if (!enoughJob) gaps.push("Confira os requisitos no anúncio completo; a fonte não trouxe todos os detalhes.");
+  if (directTitle) strengths.push("Cargo alinhado aos cargos escolhidos.");
+  if (filters.modalities.includes(job.modality)) strengths.push("Modalidade dentro das suas preferências.");
+  const criteria: {label:string;earned:number;possible:number}[] = [];
+  // Deprecated wire field for old clients. No score is calculated or used.
+  const score = 0;
   const result: Match = {
     score: Math.round(score),
     strengths,
@@ -947,10 +893,9 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     radar,
     confidence,
     criteria,
-    explanation:
-      confidence === "insufficient"
-        ? "Dados insuficientes. Complete seu perfil ou revise a descrição; a ausência de informação não significa baixa compatibilidade."
-        : `${radar ? "O título é diferente, mas a família profissional e competências se conectam ao perfil. " : ""}Pontuação dos critérios disponíveis: ${criteria.map((c) => `${c.label}: ${c.earned}/${c.possible}`).join("; ")}. ${blockers.length ? "Limitada a 49 por pendências obrigatórias. " : ""}Não representa a probabilidade de contratação.`,
+    explanation: blockers.length
+      ? "Confira os impedimentos específicos abaixo. A decisão usa preferências e exigências explícitas, sem pontuação."
+      : `${!enoughJob ? 'Há ausência de informação no anúncio; confira os requisitos na página completa. ' : ''}As competências citadas são contexto para sua avaliação. Apenas exigências obrigatórias explícitas podem impedir a candidatura; não é necessário dominar toda a lista de tecnologias.`,
   };
   if (job.match?.advice?.signature === matchSignature(profile, job, filters)) {
     result.advice = job.match.advice;

@@ -30,7 +30,7 @@ export default function CandidateDetails() {
     <div className="career-flow">
       <PageHead
         title="Seus dados para candidaturas"
-        description="Confirme estas informações para não faltarem dados quando uma vaga pedir seu currículo."
+        description="Confira os dados do currículo e complete o que falta. Eles serão usados nos formulários de candidatura."
       />
       <form
         className="interview-card"
@@ -79,13 +79,15 @@ export default function CandidateDetails() {
           disabled={action.isPending}
           style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
         >
+          <h3 className="candidate-group-heading">Contato e localização</h3>
+          <p className="candidate-explanation">As empresas usam esses dados para entrar em contato. Confirme antes de continuar.</p>
           <Field label="Cidade e estado onde você mora">
             <input
               required
               minLength={3}
               maxLength={200}
               autoComplete="address-level2"
-              placeholder="Ex.: Ilhéus, BA"
+              placeholder="Ex.: Recife, PE"
               value={location}
               onChange={(event) => {
                 setLocation(event.target.value);
@@ -107,6 +109,7 @@ export default function CandidateDetails() {
               }}
             />
           </Field>
+          <h3 className="candidate-group-heading">Seu momento profissional</h3>
           <Field label="Anos de experiência na área em que deseja trabalhar">
             <input
               required
@@ -169,6 +172,7 @@ export default function CandidateDetails() {
               <option value="false">Não aceito PJ</option>
             </select>
           </Field>
+          <p className="candidate-explanation">PJ significa pessoa jurídica, uma forma de contratação diferente de CLT. Você pode alterar essa preferência depois.</p>
           <Field label="Remuneração atual ou última e benefícios">
             <select
               required

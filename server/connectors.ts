@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { setTimeout as delay } from "node:timers/promises";
 import { decode } from "./html";
 import { discoverySignal, discoveryBudgetExpired } from "./discovery-budget";
+import {discoveryCandidateLimit,takeDiscoveryCandidate} from './discovery-limits';
 import { classify, extractSkills } from "./engine";
 import {mandatoryTechnicalSkills} from './mandatory-requirements';
 import type { Job, Source } from "../shared/types";
@@ -126,7 +127,11 @@ function make(
     url,
     description,
     location: location || "Não especificado",
-    ...classify(text(title) + " " + location + " " + description),
+    ...classify(text(title) + " " + location + " " + description.replace(
+      // A generic benefit for multiple contract models does not state this
+      // posting's work model. Keep actual hybrid/onsite requirements intact.
+      /\b(?:apenas|somente)\s+para\s+contratos?\s+h[ií]bridos?\s+ou\s+remotos?\b/gi, "",
+    )),
     contract: /\bCLT\b/i.test(description)
       ? "CLT"
       : /\bPJ\b/.test(description)
@@ -197,10 +202,10 @@ export const connectors: Record<string, Connector> = {
     application: false,
     async discover(s) {
       const jobs: Job[] = [];
-      const maxPostings = Math.max(
+      const maxPostings = discoveryCandidateLimit(Math.max(
         1,
         Math.min(100, Number(process.env.SMARTRECRUITERS_MAX_POSTINGS) || 30),
-      );
+      ));
       for (let offset = 0; offset < maxPostings; offset += 100) {
         const data = await get(
           `https://api.smartrecruiters.com/v1/companies/${board(s)}/postings?limit=100&offset=${offset}`,
@@ -208,6 +213,7 @@ export const connectors: Record<string, Connector> = {
         const entries = list(data.content);
         for (const summary of entries) {
           if (jobs.length >= maxPostings) return jobs;
+          if(!takeDiscoveryCandidate())return jobs;
           if (!/^[a-zA-Z0-9-]+$/.test(String(summary.id))) continue;
           const entry = await get(
             `https://api.smartrecruiters.com/v1/companies/${board(s)}/postings/${encodeURIComponent(summary.id)}`,

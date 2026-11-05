@@ -1,4 +1,4 @@
-FROM node:22-bookworm-slim AS builder
+FROM node:22.23.4-bookworm-slim AS builder
 WORKDIR /app
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 COPY package.json package-lock.json ./
@@ -15,7 +15,7 @@ COPY Video/README.md ./Video/README.md
 # TypeScript needs the media import declaration, not the binary file.
 RUN npm run build:api
 
-FROM node:22-bookworm-slim AS runtime
+FROM node:22.23.4-bookworm-slim AS runtime
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3001 SERVE_STATIC=false DATA_DIR=/var/lib/empregatos PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 NODE_OPTIONS=--max-old-space-size=384
 WORKDIR /app
 COPY package.json package-lock.json ./

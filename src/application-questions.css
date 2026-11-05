@@ -40,7 +40,11 @@
   border-top: 1px solid var(--border);
   padding: 24px;
   display: grid;
-  gap: 18px;
+  gap: 16px;
+}
+.question-review-body > .btn,
+.question-review-body > .button {
+  justify-self: start;
 }
 .question-review-body .field {
   margin: 0;

@@ -4,6 +4,11 @@ import { vercelQueueEnabled } from "./automation-runtime";
 import { accountPlan } from "./billing";
 
 export const SUBMISSION_TOPIC = "empregatos-submissions";
+export async function dispatchGupyDraftVerification(workspaceId:string,applicationId:string,attemptId:string,delaySeconds=0){
+  if(!vercelQueueEnabled())return false;
+  await send(SUBMISSION_TOPIC,{workspaceId,applicationId,mode:'verify_draft'},{idempotencyKey:`verify-draft:${applicationId}:${attemptId}`,retentionSeconds:86400,delaySeconds});
+  return true;
+}
 export async function dispatchNextApplication(workspaceId: string) {
   if (!vercelQueueEnabled()) return false;
   const w = await store.submissionState(workspaceId);
@@ -12,7 +17,7 @@ export async function dispatchNextApplication(workspaceId: string) {
     w.demo ||
     ((!w.routine.enabled || w.routine.mode !== "automatic") &&
       !w.next?.single) ||
-    w.sending
+    w.sending || (w.verificationUntil||0)>Date.now()
   )
     return false;
   const application = w.next;

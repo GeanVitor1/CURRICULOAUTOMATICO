@@ -421,7 +421,7 @@ export default function PortalConnections({
         {selected.map((site) => {
           const status = sites.data?.find((item) => item.id === site);
           const externalLoginOnly =
-            (officialPortalLoginOnly(site) && !status?.remoteLogin) ||
+            (officialPortalLoginOnly(site) && !status?.remoteLogin&&status?.connectionMode!=='local-browser') ||
             status?.externalLoginOnly;
           return (
             <div key={site} className="connection-card">
@@ -430,7 +430,13 @@ export default function PortalConnections({
                   {portals[site as keyof typeof portals]?.name || site}
                 </strong>
                 <span>
-                  {status?.identityConnected && !status?.connected ? (
+                  {status?.sessionState==='local_verified'? 'Login reconhecido no Chrome · verificação recente'
+                  :status?.sessionState==='local_stale'?'Última verificação registrada no Chrome'
+                  :status?.sessionState === 'suspended' ? (
+                    'Conexão temporariamente suspensa'
+                  ) : status?.sessionState === 'retest_required' ? (
+                    'Teste de conexão liberado · confirmação pendente'
+                  ) : status?.identityConnected && !status?.connected ? (
                     "Conta autenticada via OAuth"
                   ) : status?.sessionState === "expired" ||
                     status?.identityExpired ? (
@@ -467,7 +473,7 @@ export default function PortalConnections({
                     <Send size={13} />
                     {status?.automatic
                       ? "Envio automático"
-                      : status?.cloud
+                      : status?.submissionEnabled===false?'Envio automático indisponível':status?.cloud
                         ? "Conecte para enviar"
                         : "Envio no site"}
                   </span>
@@ -475,6 +481,8 @@ export default function PortalConnections({
                 <p className="connection-limitation">{status?.limitation}</p>
                 {site === "linkedin" &&
                   !status?.oauthConfigured &&
+                  !status?.remoteLogin &&
+                  status?.connectionMode!=='local-browser' &&
                   !sites.isPending && (
                     <p className="connection-limitation">
                       A conexão oficial do LinkedIn aguarda configuração do
@@ -483,8 +491,8 @@ export default function PortalConnections({
                   )}
                 {status?.remoteLogin && (
                   <p className="connection-limitation">
-                    Ao conectar, você abre o login em um navegador operado pela
-                    EmpreGatos e permite salvar a sessão para a automação.
+                    Conecte pelo seu Chrome usando a extensão do EmpreGatos.
+                    A sessão deste portal é verificada antes da confirmação.
                   </p>
                 )}
                 {externalLoginOnly && (
@@ -541,20 +549,21 @@ export default function PortalConnections({
                       busy || disconnecting || demo || !status?.connectable
                     }
                     onClick={() =>
-                      status?.remoteLogin ? openRemote(site) : void open(site)
+                      status?.remoteLogin||status?.connectionMode==='local-browser' ? openRemote(site) : void open(site)
                     }
                   >
                     <Link size={15} />
-                    {status?.needsResumeApproval
+                    {status?.connectionMode==='local-browser'?(status.verifiedAt?'Ver resultado da verificação':'Verificar no Chrome'):status?.needsResumeApproval
                       ? "Confirmar currículo"
                       : status?.connected
                         ? "Reconectar"
                         : status?.cloud
-                          ? "Conectar no navegador remoto"
+                          ? "Conectar pela extensão"
                           : "Conectar"}
                   </Button>
                 )}
                 {(status?.connected ||
+                  status?.sessionState==='local_verified'||status?.sessionState==='local_stale'||
                   status?.identityConnected ||
                   status?.sessionSaved ||
                   status?.identityExpired) && (

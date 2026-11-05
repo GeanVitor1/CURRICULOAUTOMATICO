@@ -7,6 +7,7 @@ export type SubmissionState = {
   demo: boolean;
   routine: Workspace["routine"];
   sending: boolean;
+  verificationUntil?:number;
   day: string;
   attempts: number;
   next: {
@@ -31,6 +32,7 @@ export function submissionState(w: Workspace, userId: string): SubmissionState {
     demo: w.demo,
     routine: w.routine,
     sending: w.applications.some((a) => a.status === "Enviando"),
+    verificationUntil:w.portalVerification?.until,
     day: new Date().toLocaleDateString("en-CA", {
       timeZone: "America/Sao_Paulo",
     }),

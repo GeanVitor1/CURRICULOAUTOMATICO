@@ -26,6 +26,8 @@ import { discoveryBudgetExpired } from "./discovery-budget";
 import type { Job, Workspace } from "../shared/types";
 import { detectAts } from "./ats-registry";
 import { companyIdentity, opportunityKey } from "./job-identity";
+import {permittedJobSource} from '../shared/job-source-policy';
+import {discoveryQuota} from './discovery-limits';
 /** Spend the research budget first on independent ATS publications and their apply links. */
 export function destinationResearchPriority(job: Job) {
   return [job.url, ...(job.applicationUrls || []).map((link) => link.url)].some(
@@ -42,6 +44,7 @@ export function destinationResearchPriority(job: Job) {
 }
 export function needsResearch(job: Job, workspace: Workspace) {
   return (
+    permittedJobSource(job) &&
     !job.discarded &&
     job.availability !== "closed" &&
     !workspace.submissionExclusions?.includes(opportunityKey(job)) &&
@@ -65,7 +68,7 @@ export function needsResearch(job: Job, workspace: Workspace) {
     (!job.resolution || Date.parse(job.resolution.retryAt) <= Date.now())
   );
 }
-export function researchAllowance(workspace: Workspace) {
+export function researchAllowance(workspace: Workspace, planDailyLimit?: number) {
   // An automatic cycle advances through its finite pool in small queue batches.
   // The manual diagnostic budget must never stop a cycle with submission quota left.
   const today = new Date().toLocaleDateString("en-CA", {
@@ -81,7 +84,10 @@ export function researchAllowance(workspace: Workspace) {
   if (workspace.routine.enabled && workspace.routine.mode === "automatic") {
     const budget=workspace.routine.researchBudget;
     const consumed=Math.max(used,budget?.day===today?budget.used:0);
-    const maximum=Math.max(4,Math.min(2000,Number(process.env.DESTINATION_RESEARCH_AUTOMATIC_DAILY_LIMIT)||200));
+    const target=Math.min(workspace.routine.dailyLimit,planDailyLimit??(workspace.routine.discoveryBudget?.day===today?workspace.routine.discoveryBudget.target:
+      workspace.routine.progress?.day===today?workspace.routine.progress.target:5));
+    if(!discoveryQuota(workspace,target).remaining)return 0;
+    const maximum=Math.max(0,Math.min(target*3,Number(process.env.DESTINATION_RESEARCH_AUTOMATIC_DAILY_LIMIT)||target*3));
     return Math.min(workspace.jobs.filter(job=>needsResearch(job,workspace)).length,Math.max(0,maximum-consumed));
   }
   return Math.max(
@@ -144,12 +150,10 @@ export function selectResearchJobs(
     candidates.sort(
       (a, b) =>
         Number(requested.has(b.job.id)) - Number(requested.has(a.job.id)) ||
-        Number(b.match.score >= workspace.routine.minScore) -
-          Number(a.match.score >= workspace.routine.minScore) ||
         (used.get(employer(a.job)) || 0) - (used.get(employer(b.job)) || 0) ||
         destinationResearchPriority(b.job) -
           destinationResearchPriority(a.job) ||
-        b.match.score - a.match.score,
+        Date.parse(b.job.discoveredAt) - Date.parse(a.job.discoveredAt),
     );
     const { job } = candidates.shift()!;
     selected.push(job);
@@ -279,10 +283,12 @@ export async function processResolutionTask(taskId?: string) {
       );
       return true;
     }
+    let researchPlanLimit:number|undefined;
     if (workspace.routine.enabled && workspace.routine.mode === "automatic") {
       const { accountPlan, billingDay } = await import("./billing");
       const { dailySubmissionAttempts } = await import("./submission-attempts");
       const plan = await accountPlan(owner.userId);
+      researchPlanLimit=plan.dailyLimit;
       const used = Math.max(
         dailySubmissionAttempts(workspace),
         await store.count(
@@ -310,7 +316,7 @@ export async function processResolutionTask(taskId?: string) {
     const jobs = selectResearchJobs(
       workspace,
       task.requestedJobIds || [],
-      Math.min(4, researchAllowance(workspace)),
+      Math.min(4, researchAllowance(workspace,researchPlanLimit)),
     );
     const resolveJob = async (job: Job) => {
     await mutateWorkspace(task.workspaceId,async(w,tx)=>{
@@ -486,7 +492,7 @@ export async function processResolutionTask(taskId?: string) {
       remaining &&
       (remaining.routine.mode !== "automatic" ||
         used < Math.min(remaining.routine.dailyLimit, plan.dailyLimit)) &&
-      researchAllowance(remaining) > 0 &&
+      researchAllowance(remaining,plan.dailyLimit) > 0 &&
       (pendingRequests.length ||
         (remaining.routine.enabled &&
           remaining.jobs.some((job) => needsResearch(job, remaining))))

@@ -72,9 +72,7 @@ export function submissionReadiness(
       !(route?.method === "email" && missingDataAuthorized(w, job, application)) && (
       !matchesSelectedSites(job, w) ||
       !matchesObjectiveFilters(job, w.profile, w.filters) ||
-      match.blockers.length ||
-      match.score < w.routine.minScore ||
-      match.confidence === "insufficient")
+      match.blockers.length)
     )
       blockers.push(
         "A vaga não atende aos cargos, filtros ou requisitos confirmados.",

@@ -17,6 +17,7 @@ import {
 } from "./destination-page";
 import { readPublicPage, type PublicPage } from "./public-web";
 import { verifyEmailDestination, emailDestinationReady } from "./email-destination";
+import {permittedPublicationUrl} from '../shared/job-source-policy';
 
 export type ResolverDependencies = {
   readPage?: (url: string) => Promise<PublicPage>;
@@ -116,6 +117,7 @@ export async function resolveApplicationDestinations(
     }
     const item = queue.shift();
     if (!item) break;
+    if(!permittedPublicationUrl(item.url))continue;
     if (seen.size >= limit || Date.now() >= deadline) {
       partial = true;
       break;

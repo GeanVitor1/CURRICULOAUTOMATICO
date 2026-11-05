@@ -9,5 +9,5 @@ export async function operatorStore(){
   if(!config.tokens?.access_token||config.tokens.expires_at<=Date.now())throw Error('Refresh existing Firebase CLI credential first');
   const auth=new OAuth2Client();auth.setCredentials({access_token:config.tokens.access_token});
   const projectId='curriculoautomatico-a15fa';
-  return {store:firestoreStore(new Firestore({projectId,ignoreUndefinedProperties:true,auth:new GoogleAuth({projectId,authClient:auth})})),operatorEmail:config.user.email};
+  return {store:firestoreStore(new Firestore({projectId,preferRest:true,ignoreUndefinedProperties:true,auth:new GoogleAuth({projectId,authClient:auth})})),operatorEmail:config.user.email};
 }

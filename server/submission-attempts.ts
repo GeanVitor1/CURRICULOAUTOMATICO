@@ -4,6 +4,9 @@ import { resumableSubmission } from "./submission-resume";
  * Unknown outcomes, receipts and a later attempt always keep their quota. */
 export function pausedBeforeSubmission(a: Application) {
   const attempt=a.attempts?.at(-1);
+  // A later portal check can permit resuming a draft, but the original unknown
+  // attempt and its quota reservation remain intact.
+  if(attempt?.outcome==='unknown'||a.verifiedGupyDrafts?.some(v=>a.attempts?.some(t=>t.id===v.attemptId&&t.outcome==='unknown')))return false;
   if (attempt?.outcome === "pre_submit_blocked" && attempt.finishedAt &&
       a.status === "Requer ação manual" && !a.receipt && !a.submittedAt &&
       a.history.filter(e=>e.message.startsWith("Envio iniciado.")).every(e=>Date.parse(e.at)<=Date.parse(attempt.finishedAt!))) return true;

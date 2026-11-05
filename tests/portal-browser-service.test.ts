@@ -34,6 +34,7 @@ beforeAll(async () => {
               body: "<button>Sair</button><p>Candidatura realizada</p>",
             });
           }
+          if(signed&&new URL(route.request().url()).hostname.endsWith('linkedin.com'))return route.fulfill({contentType:'text/html; charset=utf-8',body:'<a href="/messaging/">Mensagens</a><a href="/mynetwork/">Rede</a><button aria-expanded="false"><img width="20" height="20" alt="">Eu</button>'});
           return route.fulfill({
             contentType: "text/html; charset=utf-8",
             body: signed
@@ -80,6 +81,30 @@ it("não conecta uma sessão expirada ou aceita credenciais do Google", async ()
     await expect(imported.execute({op:"import-browser-session",browserSession:{cookies:[{...cookie,domain:"accounts.google.com"}],origins:[]}})).rejects.toThrow();
   } finally { await imported.close(); }
 }, 20000);
+it('rejects a suspended LinkedIn import before creating a browser context',async()=>{
+ const blocked=new PortalBrowserService('linkedin',directory);
+ const create=vi.spyOn(blocked as any,'createContext');
+ await expect(blocked.importBrowserSession({cookies:[],origins:[]})).rejects.toThrow('temporariamente suspensa');
+ expect(create).not.toHaveBeenCalled();
+});
+it('checks the authorized private-browser policy without launching a browser or navigating to the portal',async()=>{
+ const enabled=new PortalBrowserService('linkedin',directory,{allowLinkedInSessionRetest:true});
+ const create=vi.spyOn(enabled as any,'createContext');
+ await expect(enabled.execute({op:'connection-policy'})).rejects.toThrow('temporariamente suspensa');
+ expect(create).not.toHaveBeenCalled();
+});
+it.each(['infojobs','glassdoor'] as const)('stages and validates the %s browser session, then saves it only after confirmation',async portal=>{
+ const dir=await mkdtemp(join(tmpdir(),'cloud-portal-test-')),imported=new PortalBrowserService(portal,dir);
+ const domain=portal==='infojobs'?'infojobs.com.br':'glassdoor.com';
+ try{
+  const state={cookies:[{name:'candidate_session',value:'synthetic-'+portal,domain:'.'+domain,path:'/',expires:-1,httpOnly:true,secure:true as const,sameSite:'Lax' as const}],origins:[]};
+  const frame=await imported.execute({op:'import-browser-session',browserSession:state}) as any;
+  expect(frame.authenticated).toBe(true);expect(await imported.metadata()).toBeNull();
+  await imported.execute({op:'confirm',viewerId:frame.viewerId,resumeId:null});
+  expect(await imported.metadata()).not.toBeNull();
+  expect((await readFile(join(dir,'session.enc'))).toString()).not.toContain('synthetic-'+portal);
+ }finally{await imported.close();if(dir.startsWith(join(tmpdir(),'cloud-portal-test-')))await rm(dir,{recursive:true,force:true});}
+},20000);
 it("salva login cifrado, restaura a sessão e não repete a candidatura após reiniciar", async () => {
   const obsolete = (await service.execute({ op: "open" })) as any;
   const mobile = (await service.execute({

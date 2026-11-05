@@ -4,10 +4,12 @@ import { isJobUrl } from "../shared/portals";
 import { portalHost, type CandidatePortal } from "./portal-browser-policy";
 import { candidateAnswer } from "./candidate-answers";
 import { applyGupyApplication } from "./gupy-application";
+import {browserConnectors} from '../shared/browser-connectors';
 export { candidateAnswer } from "./candidate-answers";
 
 export type PortalApplication = {
   applicationId: string;
+  continuationUrl?:string;
   presentation?: string;
   job: { title: string; url: string; company: string };
   profile: Profile;
@@ -37,9 +39,9 @@ export const portalRules = {
       /(?:candidatura foi enviada|candidatura enviada|application (?:was )?sent|successfully applied)/i,
   },
   gupy: {
-    account: "https://login.gupy.io/candidates/applications",
+    account: "https://portal.gupy.io/my/applications",
     authenticated:
-      'a[href*="signout"], a[href*="logout"], button[aria-label*="perfil"], button[aria-label*="Profile"]',
+      'a[href*="signout"], a[href*="logout"], button[aria-label*="perfil"], button[aria-label*="Profile"], button[aria-label*="Abrir menu de usuário"]',
     apply: /^(Candidatar-se|Candidatar|Quero me candidatar|Apply)$/i,
     submit:
       /^(Enviar candidatura|Finalizar candidatura|Concluir candidatura|Confirmar candidatura)$/i,
@@ -86,7 +88,7 @@ export async function authenticated(
     )
   )
     return false;
-  const signals = page.locator(portalRules[portal].authenticated);
+  const signals = page.locator(`${portalRules[portal].authenticated}, ${browserConnectors[portal].signedSelector}`);
   for (let i = 0; i < (await signals.count()); i++)
     if (await signals.nth(i).isVisible()) return true;
   if (

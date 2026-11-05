@@ -1,10 +1,10 @@
 import {
-  chromium,
   type Browser,
   type BrowserContext,
   type Page,
   type CDPSession,
 } from "playwright";
+import { launchProtectedBrowser } from "./browser-egress";
 import {
   createCipheriv,
   createDecipheriv,
@@ -39,9 +39,13 @@ import { fitLinkedInVerification } from "./portal-login-layout";
 import { portalViewport, portalPixelRatio } from "../shared/portal-display";
 import { providerLoginIssue } from "./portal-login-issue";
 import { portalAccess } from "./portal-access";
-import { gupyBrowserSessionSchema, type GupyBrowserSession } from "./gupy-browser-session";
+import { portalBrowserSessionSchema, type PortalBrowserSession } from "./portal-browser-session";
+import {browserConnectors} from '../shared/browser-connectors';
+import {inspectGupyDraft} from './gupy-draft-verification';
+import {sessionTransferSuspension} from '../shared/session-transfer-policy';
 
 type Saved = {
+  sessionRetestVerified?: boolean;
   connectedAt: string;
   verifiedAt: string;
   profileResumeId: string | null;
@@ -81,6 +85,7 @@ export class PortalBrowserService {
   constructor(
     readonly portal: CandidatePortal,
     readonly directory: string,
+    readonly options: {allowLinkedInSessionRetest?:boolean} = {},
   ) {}
   private async encryptionKey() {
     await mkdir(this.directory, { recursive: true, mode: 0o700 });
@@ -163,6 +168,7 @@ export class PortalBrowserService {
         : null;
     if (expiresAt && expiresAt <= Date.now()) return null;
     return {
+      sessionRetestVerified: saved.sessionRetestVerified === true,
       connectedAt: saved.connectedAt,
       verifiedAt: saved.verifiedAt,
       profileResumeId: saved.profileResumeId,
@@ -176,7 +182,7 @@ export class PortalBrowserService {
     height = 720,
   ) {
     if (!this.browser?.isConnected())
-      this.browser = await chromium.launch({
+      this.browser = await launchProtectedBrowser({
         headless: true,
         chromiumSandbox: process.platform === "linux",
         timeout: 20000,
@@ -319,9 +325,10 @@ export class PortalBrowserService {
         .catch(() => {});
     return this.frame();
   }
-  async importBrowserSession(value: GupyBrowserSession) {
-    if (this.portal !== "gupy") throw new Error("Operação indisponível.");
-    const state = gupyBrowserSessionSchema.parse(value);
+  async importBrowserSession(value: PortalBrowserSession) {
+    const suspension = sessionTransferSuspension(this.portal,this.options.allowLinkedInSessionRetest===true);
+    if (suspension) throw new Error(suspension);
+    const state = portalBrowserSessionSchema(this.portal).parse(value);
     await this.close();
     this.viewerId = randomUUID();
     this.context = await this.createContext({
@@ -332,12 +339,12 @@ export class PortalBrowserService {
     this.rootPage = this.page;
     this.expires = Date.now() + 15 * 60000;
     try {
-      await this.page.goto(portalRules.gupy.account, { waitUntil: "domcontentloaded", timeout: 25000 });
-      await this.page.locator('#header-message-icon, button').first().waitFor({timeout:5000}).catch(() => {});
+      await this.page.goto(portalRules[this.portal].account, { waitUntil: "domcontentloaded", timeout: 25000 });
+      await this.page.locator(`${portalRules[this.portal].authenticated}, ${browserConnectors[this.portal].signedSelector}`).first().waitFor({state:'visible',timeout:10000}).catch(() => {});
       const frame = await this.frame();
       if (!frame.authenticated) {
         await this.close();
-        throw new Error("O login do Chrome não foi aceito pelo servidor da Gupy. A conta não foi conectada. Nenhuma candidatura foi enviada.");
+        throw new Error(`O login do Chrome não foi aceito pelo ${browserConnectors[this.portal].name}. A conta não foi conectada. Nenhuma candidatura foi enviada.`);
       }
       // Stage only. Existing confirm/resume approval remains mandatory before saving.
       return frame;
@@ -611,6 +618,7 @@ export class PortalBrowserService {
       );
     const previous = await this.load();
     await this.save({
+      sessionRetestVerified:this.portal==='linkedin'&&this.options.allowLinkedInSessionRetest===true,
       connectedAt: previous?.connectedAt || new Date().toISOString(),
       verifiedAt: new Date().toISOString(),
       profileResumeId,
@@ -622,6 +630,23 @@ export class PortalBrowserService {
   async disconnect() {
     await this.close();
     await rm(resolve(this.directory, "session.enc"), { force: true });
+  }
+  async verifyDraft(resumeId:string,input:PortalApplication){
+    if(this.portal!=='gupy'||this.page||!/^[a-f0-9-]{36}$/.test(input.applicationId))return null;
+    const saved=await this.load();if(!saved||saved.profileResumeId!==resumeId)return null;
+    const path=resolve(this.directory,`attempt-${input.applicationId}.json`);
+    const journal=JSON.parse(await readFile(path,'utf8'));
+    const priorResult=journal.priorResult||journal.result;
+    if(priorResult?.status!=='unknown'||priorResult.receipt||!['unknown','action_required'].includes(journal.result?.status))return null;
+    const context=await this.createContext(saved);
+    const deadline=setTimeout(()=>void context.close(),65000);
+    try{
+      const proof=await inspectGupyDraft(await context.newPage(),input,resumeId);
+      if(!proof)return null;
+      await this.save({...saved,verifiedAt:new Date().toISOString(),state:await context.storageState({indexedDB:true})});
+      await writeFile(path,JSON.stringify({priorResult,draftProof:proof,result:{status:'action_required',retryable:true,continuationUrl:proof.continuationUrl,message:'A Gupy confirmou que o currículo desta candidatura ainda não foi iniciado.'}}),{mode:0o600});
+      return proof;
+    }finally{clearTimeout(deadline);await context.close().catch(()=>{});}
   }
   async apply(
     resumeId: string,
@@ -682,6 +707,16 @@ export class PortalBrowserService {
         input,
         saved.profileResumeId === resumeId,
       );
+      // Keep the exact blocked view private to this account. A diagnostic is
+      // evidence for fixing the reader; it is never a receipt or a retry grant.
+      if(this.portal==='gupy' && result.status==='action_required' && result.retryable){
+        await page.screenshot({path:resolve(this.directory,`blocked-${input.applicationId}.png`),timeout:3000}).catch(()=>{});
+        await writeFile(resolve(this.directory,`blocked-${input.applicationId}.json`),JSON.stringify({
+          at:new Date().toISOString(),url:page.url(),
+          headings:await page.getByRole('heading').allTextContents().catch(()=>[]),
+          buttons:await page.locator('button,[role="button"]').evaluateAll(nodes=>nodes.filter(node=>node.getClientRects().length).map(node=>({label:node.textContent?.trim(),disabled:node.hasAttribute('disabled')||node.getAttribute('aria-disabled')==='true'}))).catch(()=>[]),
+        }),{mode:0o600}).catch(()=>{});
+      }
       // Preserve a portal receipt even if refreshing the session later fails.
       await writeFile(journal, JSON.stringify({ result }), { mode: 0o600 });
       if (
@@ -709,14 +744,17 @@ export class PortalBrowserService {
     viewerId?: string;
     viewportWidth?: number;
     viewportHeight?: number;
-    browserSession?: GupyBrowserSession;
+    browserSession?: PortalBrowserSession;
   }) {
+    const suspension = sessionTransferSuspension(this.portal,this.options.allowLinkedInSessionRetest===true);
+    if (suspension && !['status', 'close', 'disconnect'].includes(request.op)) throw new Error(suspension);
     if (this.busy)
       throw new Error(
         "O portal já está executando uma ação. Aguarde a conclusão.",
       );
     this.busy = true;
     try {
+      if(request.op==='connection-policy')return {sessionRetestAllowed:this.portal==='linkedin'&&this.options.allowLinkedInSessionRetest===true,hasActiveViewer:!!this.page};
       if (request.viewerId && request.viewerId !== this.viewerId)
         throw new Error(
           "Esta janela de conexão foi substituída ou expirou. Abra o navegador novamente.",
@@ -739,6 +777,7 @@ export class PortalBrowserService {
       }
       if (request.op === "apply" && request.input)
         return await this.apply(request.resumeId || "", request.input);
+      if(request.op==='verify-draft'&&request.input)return await this.verifyDraft(request.resumeId||'',request.input);
       if (request.op === "status") return { ok: true };
       throw new Error("Operação indisponível.");
     } finally {

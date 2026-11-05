@@ -3,7 +3,7 @@ export default function GupyChromeConnection({onCloud}:{onCloud:()=>void}) {
     <h1>Conecte a Gupy pelo seu Chrome</h1>
     <p>Faça login no navegador que você usa normalmente. Isso evita repetir o login pelo navegador da nuvem, onde a Gupy ou o Google podem recusar o acesso.</p>
     <ol>
-      <li><a href="https://login.gupy.io/candidates/applications" target="_blank" rel="noreferrer">Abra a Gupy</a> e entre na sua conta. Deixe a página de candidaturas aberta.</li>
+      <li><a href="https://portal.gupy.io/my/applications" target="_blank" rel="noreferrer">Abra a Gupy</a> e entre na sua conta. Deixe a página de candidaturas aberta.</li>
       <li><a href="/downloads/empregatos-gupy-chrome.zip" download>Baixe o conector do EmpreGatos</a> e extraia o ZIP em uma pasta.</li>
       <li>No Chrome, abra <strong>chrome://extensions</strong>, ative <strong>Modo do desenvolvedor</strong> e escolha <strong>Carregar sem compactação</strong>. Selecione a pasta extraída.</li>
       <li>Recarregue esta página. Abra o conector pelo ícone de extensões do Chrome e autorize <strong>Conectar sessão da Gupy</strong>.</li>

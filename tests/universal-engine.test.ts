@@ -166,16 +166,16 @@ describe("Compatibilidade para diferentes profissões", () => {
       ]),
     );
   });
-  it("pontua escolaridade e atendimento sem exigir portfólio", () => {
+  it("reconhece escolaridade e atendimento sem exigir portfólio ou pontuação", () => {
     const match = analyze(job, profile, {
       ...defaultFilters,
       titles: ["Operador de caixa"],
     });
     expect(match.confidence).toBe("sufficient");
-    expect(match.score).toBeGreaterThan(75);
     expect(match.blockers).toEqual([]);
-    expect(match.criteria?.some((c) => c.label === "Escolaridade")).toBe(true);
-    expect(match.explanation).toContain("Não representa a probabilidade");
+    expect(match.strengths).toContain("Escolaridade informada atende ao nível citado na vaga.");
+    expect(match.criteria).toEqual([]);
+    expect(match.explanation).toContain("não é necessário dominar toda a lista");
   });
   it("distingue dados insuficientes de baixa compatibilidade", () => {
     const match = analyze(

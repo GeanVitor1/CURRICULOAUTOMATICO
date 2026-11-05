@@ -5,7 +5,7 @@
   "outputDirectory": "dist",
   "functions": {
     "api/server.mjs": {
-      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs,dist-server/ats-browser-runner.mjs}",
+      "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs,dist-server/ats-browser-runner.mjs,dist-server/document-parser-worker.mjs}",
       "maxDuration": 60
     },
     "api/search-worker.mjs": {

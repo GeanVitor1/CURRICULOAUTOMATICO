@@ -3,11 +3,18 @@ import {nuxtPublicData} from '../server/nuxt-public-data';
 import {ablerSource,ablerPublication,jobFromAblerPage,discoverAblerJobs} from '../server/abler-discovery';
 import {verifyEmailDestination} from '../server/email-destination';
 import {createWorkspace} from '../server/workspace';
+import {discoverCorporateEmailCareers} from '../server/official-discovery';
 import type {PublicPage} from '../server/public-web';
 const url='https://candidatos.abler.com.br/vagas/desenvolvedor-net-123456';
 const vacancy={id:'456789',identifier:'abler-456789',provider:'abler',slug:'desenvolvedor-net-123456',title:'Desenvolvedor .NET',companyName:'Empresa Oficial',released:true,hideCompany:false,status:'Em andamento',publishedAt:new Date().toISOString(),candidatureEmailAddress:'vaga-456789@vagas.abler.in',workTypes:[{id:'remoto'}],contractingRegime:'clt',salaryValue:5000,address:{cityName:'São Paulo',stateAbbr:'SP',country:'Brasil'},allDescriptions:'<p>Desenvolvimento com C#, .NET, Angular, SQL Server e APIs REST. Trabalho remoto no Brasil em projetos com revisão de código e testes.</p>'};
 const page=(v:Record<string,any>=vacancy):PublicPage=>({url,status:200,contentType:'text/html',html:`<script>window.__NUXT__=(function(a,b){return {state:{candidate:{vacancy:{vacancy:${JSON.stringify(v)}}}},error:a,serverRendered:b}}(null,true));</script>`});
 afterEach(()=>vi.unstubAllEnvs());
+it('uses a search-found Abler vacancy without requiring JobPosting JSON-LD or an occupation whitelist',async()=>{
+ const w=createWorkspace('Pessoa','private@example.test');w.filters.titles=['Auxiliar administrativo'];
+ const result=await discoverCorporateEmailCareers(w,undefined,{search:async()=>({available:true,urls:[url]}),readPage:async()=>page({...vacancy,title:'Auxiliar administrativo'})});
+ expect(result.jobs).toHaveLength(1);expect(result.jobs[0].title).toBe('Auxiliar administrativo');
+ expect(result.jobs[0].emailDestination?.email).toBe(vacancy.candidatureEmailAddress);
+});
 it('decodifica somente dados; chamadas, propriedades calculadas e comandos não são executados',()=>{
   expect(nuxtPublicData(page().html)?.state.candidate.vacancy.vacancy.id).toBe('456789');
   for(const code of ['process.exit()','globalThis.fetch("https://attacker.example")','({["key"]:1})','new Date()'])

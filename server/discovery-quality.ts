@@ -4,11 +4,13 @@ import {createHash} from 'node:crypto';
 import {canonicalJobUrl,opportunityKey} from './job-identity';
 import {detectAts} from './ats-registry';
 import {confirmedApplication} from '../shared/confirmed-applications';
+import {permittedJobSource,permittedDiscoverySource} from '../shared/job-source-policy';
 
 /** Screen per workspace AFTER the shared public cache, BEFORE retaining/ranking.
  * Missing publication fields can still be researched; known incompatibility cannot. */
-export function discoveryQuerySignature(w:Workspace){return createHash('sha256').update(JSON.stringify([w.filters,w.routine.minScore,w.profile.skills,w.profile.experience,w.profile.education,w.profile.years,w.profile.level])).digest('hex');}
+export function discoveryQuerySignature(w:Workspace){const {minScore:_legacy,...filters}=w.filters;return createHash('sha256').update(JSON.stringify(['preferences-and-explicit-requirements-v3',filters,w.profile.skills,w.profile.experience,w.profile.education,w.profile.years,w.profile.level])).digest('hex');}
 export function sourceDue(w:Workspace,s:Source){
+ if(w.routine.discoveryCheckpoints?.[s.id]?.pending)return true;
  const p=w.routine.discoveryProductivity?.[s.id];
  return !/^(?:catalog:|quickin-board:)/.test(s.id)||!p||p.compatible>0||p.querySignature!==discoveryQuerySignature(w)||!p.nextCheckAt||Date.parse(p.nextCheckAt)<=Date.now();
 }
@@ -16,6 +18,7 @@ export function screenDiscovery(w:Workspace,source:Source,jobs:Job[],checkedAt:s
  const retained:Job[]=[],excluded:Record<string,number>={};let compatible=0,channelVerified=0;
  const reject=(reason:string)=>{excluded[reason]=(excluded[reason]||0)+1;};
  for(const input of jobs){
+  if(!permittedJobSource(input)){reject('source_not_permitted');continue;}
   const j=structuredClone(input);
   const prior=w.jobs.find(old=>canonicalJobUrl(old.url)===canonicalJobUrl(j.url)||opportunityKey(old)===opportunityKey(j));
   if(prior&&w.applications.some(a=>a.jobId===prior.id&&(a.receipt||a.submittedAt||['Resultado desconhecido','Enviando'].includes(a.status)))){reject('existing_or_uncertain_application');continue;}
@@ -26,22 +29,23 @@ export function screenDiscovery(w:Workspace,source:Source,jobs:Job[],checkedAt:s
    const reasons=match.blockers.filter(b=>/fora|exclu|bloqueada|filtro|limite|mínimo|máximo/i.test(b));
    reject(reasons[0]||'objective_preferences');continue;
   }
-  const mandatory=match.blockers.filter(b=>/indispensável|obrigatório|Habilitação exigida|experiência exigida/i.test(b));
+  const mandatory=match.blockers.filter(b=>/indispensável|obrigatóri|Habilitação exigida|experiência exigida/i.test(b));
   if(mandatory.length){reject(mandatory[0]);continue;}
   j.match=match;j.discoverySourceIds=[...new Set([...(prior?.discoverySourceIds||[]),...(j.discoverySourceIds||[]),source.id])];
   retained.push(j);
-  const eligible=matchesObjectiveFilters(j,w.profile,w.filters)&&matchesSelectedSites(j,w)&&!match.blockers.length&&match.confidence!=='insufficient'&&match.score>=w.routine.minScore;
+  const eligible=matchesObjectiveFilters(j,w.profile,w.filters)&&matchesSelectedSites(j,w)&&!match.blockers.length;
   if(eligible){compatible++;if(j.emailDestination||j.destinations?.some(d=>d.state==='verified'&&d.formFound&&Date.parse(d.expiresAt)>Date.now()))channelVerified++;}
  }
  const productivity:DiscoveryProductivity={sourceId:source.id,company:source.company,checkedAt,examined,retained:retained.length,compatible,channelVerified,excluded,querySignature:discoveryQuerySignature(w),...(compatible===0?{nextCheckAt:nextExecution(w.routine.time)}:{})};
  return {jobs:retained,productivity};
 }
 export function learnedDiscoverySources(w:Workspace):Source[]{
- return (w.routine.learnedBoards||[]).slice(0,12).map(b=>({id:b.type==='manual'?`quickin-board:${b.board}`:`catalog:${b.type}:${b.board}`,...b,enabled:true,discovery:true,application:false,status:'Quadro público aprendido de publicação oficial'}));
+ return (w.routine.learnedBoards||[]).slice(0,12).map(b=>({id:b.type==='manual'?`quickin-board:${b.board}`:`catalog:${b.type}:${b.board}`,...b,enabled:true,discovery:true,application:false,status:'Quadro público aprendido de publicação oficial'})).filter(permittedDiscoverySource);
 }
 /** Only an individually re-read official posting teaches a board. No grant is created. */
 export function learnOfficialBoards(w:Workspace,jobs:Job[],at:string){
  for(const j of jobs){const a=detectAts(j.url);
+  if(!permittedJobSource(j))continue;
   if(!a?.board||!['quickin','greenhouse','lever','ashby','smartrecruiters'].includes(a.platform)||!j.company||!j.publishedAt)continue;
   const type=a.platform==='quickin'?'manual':a.platform as Source['type'];
   const previous=w.routine.learnedBoards||[];

@@ -184,13 +184,43 @@ afterAll(async () => {
     await rm(directory, { recursive: true, force: true });
 });
 describe("Encaminhamento real de candidaturas, sem serviços externos no teste", () => {
+  it.each(["sent","unknown"] as const)("processes one reconciled Quickin retry through authorization and the existing backend: %s",async outcome=>{
+    vi.stubEnv("APPLICATION_WEBHOOK_AUTHORIZED","false");vi.stubEnv("PORTAL_CLOUD_SNAPSHOT_ID","controlled");vi.stubEnv("ATS_BROWSER_AUTHORIZED","quickin:qaemployer");
+    const retry=await import("../server/reconciled-retry"),ats=await import("../server/ats-execution");
+    const vacancy=job("reconciled-quickin");vacancy.url="https://jobs.quickin.io/qaemployer/jobs/6ad64c6582963200138f28c0";
+    vacancy.destinations=[{id:"quickin",platform:"quickin",company:vacancy.company,url:`${vacancy.url}/apply`,publicationUrl:vacancy.url,state:"verified",method:"browser",formFound:true,confidence:100,verifiedAt:new Date().toISOString(),expiresAt:new Date(Date.now()+60000).toISOString(),evidence:["Controlled"]}];
+    const [originalId]=await prepare([vacancy]);let fingerprint="",originalAttempts:unknown;
+    await database.mutateWorkspace(workspaceId,async(w,tx)=>{
+      const a=w.applications.find(a=>a.id===originalId)!;a.status="Falha no envio";a.destinationUrl=`${vacancy.url}/apply`;
+      a.attempts=[{id:"original-attempt",correlationId:"original",executor:"ats_browser",origin:"user_triggered_automation",startedAt:"2026-10-23T13:52:00Z",finishedAt:"2026-10-23T13:53:00Z",outcome:"unknown"}];
+      a.history.push({at:"2026-10-23T13:52:00Z",actor:"Sistema",message:"Envio iniciado."});
+      a.reconciliations=[{id:"official-evidence",attemptId:"original-attempt",outcome:"not_received",source:"official_employer_reply",at:new Date().toISOString(),threadId:"thread",messageId:"message",replyAt:"2026-10-23T19:00:00Z",evidenceSha256:"a".repeat(64),quotaDisposition:"retained_post_submit_attempt",retryAuthorized:false}];
+      fingerprint=retry.retryFingerprint(w,a,w.jobs.find(j=>j.id===a.jobId)!);
+      a.retryReview={fingerprint,reconciliationId:"official-evidence",destinationUrl:a.destinationUrl,resumeId:a.resumeId!,expiresAt:new Date(Date.now()+60000).toISOString()};
+      originalAttempts=structuredClone(a.attempts);
+      await tx.insert("applicationUsage",{applicationId:a.id,userId:workspaceId.split(':')[0],day:"2026-10-23"});
+    });
+    const request=()=>app.inject({method:"POST",url:`/api/applications/${originalId}/retry/authorize`,headers:{cookie,origin:"http://127.0.0.1:5173","x-orbita-request":"1"},payload:{confirmation:true,fingerprint}});
+    const authorized=await request();expect(authorized.statusCode).toBe(200);const childId=authorized.json().applicationId;
+    expect((await request()).json().applicationId).toBe(childId);
+    vi.spyOn(retry,"freshRetryJob").mockImplementation(async(w,id)=>structuredClone(w.jobs.find(j=>j.id===w.applications.find(a=>a.id===id)?.jobId)!));
+    const send=vi.spyOn(ats,"sendAtsApplication").mockResolvedValueOnce({status:"action_required",preflightReady:true,message:"Ready"})
+      .mockResolvedValueOnce(outcome==="sent"?{status:"sent",receipt:"controlled-quickin-recovery-receipt",message:"Received"}:{status:"unknown",message:"Interrupted after submission",diagnostic:{provider:"quickin",phase:"application_response",httpStatus:502}});
+    const result=await operations.automaticSend(workspaceId,childId);
+    expect(result.attempts?.[0]).toMatchObject({previousAttemptId:"original-attempt",reconciliationId:"official-evidence",outcome:outcome==="sent"?"confirmed":"unknown"});
+    expect(result.status).toBe(outcome==="sent"?"Enviada":"Resultado desconhecido");
+    const w=(await database.readWorkspace(workspaceId))!;
+    expect(w.applications.find(a=>a.id===originalId)?.attempts).toEqual(originalAttempts);
+    const reservations=await database.store.select("applicationUsage");expect(reservations.map(r=>r.applicationId).sort()).toEqual([originalId,childId].sort());
+    await expect(operations.automaticSend(workspaceId,childId)).rejects.toThrow();expect(send).toHaveBeenCalledTimes(2);
+  });
   it('persists the Quickin rejection diagnostic on the attempt and refuses another transmission',async()=>{
     vi.stubEnv('APPLICATION_WEBHOOK_AUTHORIZED','false');
     vi.stubEnv('PORTAL_CLOUD_SNAPSHOT_ID','controlled-snapshot');
-    vi.stubEnv('ATS_BROWSER_AUTHORIZED','quickin:globalti');
+    vi.stubEnv('ATS_BROWSER_AUTHORIZED','quickin:qaemployer');
     const ats=await import('../server/ats-execution');
     const vacancy=job('quickin-rejection');
-    vacancy.url='https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0';
+    vacancy.url='https://jobs.quickin.io/qaemployer/jobs/6ad64c6582963200138f28c0';
     vacancy.destinations=[{id:'quickin',platform:'quickin',company:vacancy.company,url:`${vacancy.url}/apply`,publicationUrl:vacancy.url,state:'verified',method:'browser',formFound:true,confidence:100,verifiedAt:new Date().toISOString(),expiresAt:new Date(Date.now()+60000).toISOString(),evidence:['Fixture']}];
     const [id]=await prepare([vacancy]);
     const diagnostic={provider:'quickin' as const,phase:'application_response' as const,httpStatus:400,providerCode:'ValidationError' as const,fieldNames:['email'],responseSha256:'a'.repeat(64)};
@@ -211,7 +241,9 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
     const ats=await import("../server/ats-execution");
     const vacancy=job("dynamic-questions");
     vacancy.destinations=[{id:"dynamic",platform:"lever",company:vacancy.company,url:"https://jobs.lever.co/empresa/96ec1808-6b61-4fda-832b-58d7c104edd9/apply",publicationUrl:vacancy.url,state:"verified",method:"browser",formFound:true,confidence:100,verifiedAt:new Date().toISOString(),expiresAt:new Date(Date.now()+60000).toISOString(),evidence:["Fixture"]}];
-    await database.mutateWorkspace(workspaceId,w=>{w.profile.answerPolicy={enabled:true,missing:"no",confirmedAt:new Date().toISOString()};});
+    vacancy.description+='\nRequisitos e qualificações\nC#, .NET, Git, AWS, Angular, React, Docker e Kubernetes.';
+    vacancy.skills.push('AWS','Angular','React','Docker','Kubernetes');
+    await database.mutateWorkspace(workspaceId,w=>{w.routine.minScore=100;w.filters.minScore=100;w.profile.answerPolicy={enabled:true,missing:"no",confirmedAt:new Date().toISOString()};});
     const [id]=await prepare([vacancy]);
     const send=vi.spyOn(ats,"sendAtsApplication")
       .mockResolvedValueOnce({status:"action_required",preflightReady:true,message:"Pronto"})
@@ -332,6 +364,23 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
       expect(operations.queuePreparedApplications(w,[],1)).toBe(0);
     });
   });
+  it('resumes a definite Gupy pause using the already confirmed salary band without duplicating the application',async()=>{
+    vi.stubEnv('APPLICATION_WEBHOOK_AUTHORIZED','false');
+    const vacancy=job('9400123'),[id]=await prepare([vacancy],false);
+    await database.mutateWorkspace(workspaceId,w=>{
+      const j=w.jobs[0],a=w.applications.find(a=>a.id===id)!;
+      j.resolution={state:'partial'} as any;
+      w.profile.salaryDesired=3000;w.profile.answerPolicy={enabled:true,missing:'no',confirmedAt:new Date().toISOString()};
+      a.history.push({at:new Date().toISOString(),actor:'Sistema',message:'Envio iniciado.'});
+      a.attempts=[{id:'definite-pause',executor:'browser',outcome:'pre_submit_blocked',startedAt:new Date().toISOString()} as any];
+      a.resumeState={resumeId:a.resumeId!,destinationUrl:j.url,recordedAt:new Date().toISOString()};
+      a.missingQuestions=['Qual sua pretensão salarial?'];a.questionOptions={'Qual sua pretensão salarial?':['De R$ 2.000 a R$3.000','De R$3.000 a R$4.000']};
+      expect(operations.queuePreparedApplications(w,['gupy'])).toBe(1);
+      expect(a.automaticAnswers?.[0].value).toBe('De R$3.000 a R$4.000');
+      expect(a.status).toBe('Aguardando aprovação');expect(w.applications).toHaveLength(1);
+      expect(operations.queuePreparedApplications(w,['gupy'])).toBe(0);
+    });
+  });
   it('não repete um formulário bloqueado sem alteração dos dados confirmados',async()=>{
     const {preparationFingerprint}=await import('../server/submission-preparation');
     const vacancy=job('9501');const [id]=await prepare([vacancy],false);
@@ -340,6 +389,33 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
       expect(operations.queuePreparedApplications(w,[])).toBe(0);
       w.profile.phone='11988887777';
       expect(operations.queuePreparedApplications(w,[])).toBe(1);
+    });
+  });
+  it.each(['pre_submit_blocked','unknown','confirmed','current_runtime','policy_disabled'])('rechecks a Gupy draft once after a parser update, preserving uncertain and confirmed sends: %s',async scenario=>{
+    vi.stubEnv('APPLICATION_WEBHOOK_AUTHORIZED','false');
+    const {PORTAL_RUNTIME_VERSION}=await import('../shared/portal-runtime-version');
+    const {preparationFingerprint}=await import('../server/submission-preparation');
+    const vacancy=job('9600123'),[id]=await prepare([vacancy],false);
+    await database.mutateWorkspace(workspaceId,w=>{
+      const j=w.jobs[0],a=w.applications.find(a=>a.id===id)!;
+      j.resolution={state:'partial'} as any;
+      w.profile.answerPolicy={enabled:scenario!=='policy_disabled',missing:'no',confirmedAt:new Date().toISOString()};
+      a.history.push({at:new Date().toISOString(),actor:'Sistema',message:'Envio iniciado.'});
+      a.attempts=[{id:'parser-pause',executor:'browser',outcome:['unknown','confirmed'].includes(scenario)?scenario:'pre_submit_blocked',startedAt:new Date().toISOString()} as any];
+      if(scenario==='unknown')a.status='Resultado desconhecido';
+      if(scenario==='confirmed'){a.status='Enviada';a.receipt='confirmed-receipt';a.submittedAt=new Date().toISOString();}
+      a.resumeState={resumeId:a.resumeId!,destinationUrl:j.url,recordedAt:new Date().toISOString(),portalRuntimeVersion:scenario==='current_runtime'?PORTAL_RUNTIME_VERSION:PORTAL_RUNTIME_VERSION-1};
+      a.missingQuestions=['Sim','Não'];a.automaticBlockedFingerprint=preparationFingerprint(w,a);
+      expect(operations.queuePreparedApplications(w,['gupy'])).toBe(scenario==='pre_submit_blocked'?1:0);
+      if(scenario==='pre_submit_blocked'){
+        expect(a.resumeState.portalRuntimeVersion).toBe(PORTAL_RUNTIME_VERSION);
+        expect(a.automaticAnswers).toBeUndefined();
+        expect(a.missingQuestions).toEqual([]);
+        // Another definite pause from the same reader waits for actual new data.
+        a.status='Requer ação manual';a.missingQuestions=['Consentimento específico'];
+        a.automaticBlockedFingerprint=preparationFingerprint(w,a);
+        expect(operations.queuePreparedApplications(w,['gupy'])).toBe(0);
+      }else expect(a.missingQuestions).toEqual(['Sim','Não']);
     });
   });
   it.each([false, true])("worker Gmail confirms acceptance (individual exception: %s)", async (exception) => {
@@ -351,7 +427,7 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
     const email=await import("../server/email-application");
     vi.spyOn(gmail,"gmailConnection").mockResolvedValue({configured:true,connected:true,email:"sending@example.test",permission:"send_only"});
     const deliver=vi.spyOn(email,"sendEmailApplication").mockResolvedValue({status:"sent",receipt:"Gmail message ID: controlled-worker-message",message:"Gmail confirmou aceitação; não confirma entrega."});
-    const candidate=job("email-job");candidate.url="https://employer.example/careers/dotnet";
+    const candidate=job("email-job");candidate.url="https://empresa.gupy.io/jobs/145";
     candidate.contract="Não especificado";
     await database.mutateWorkspace(workspaceId,w=>{w.filters.contracts=["CLT","PJ"];});
     candidate.emailDestination={email:"talentos@employer.example",publicationUrl:candidate.url,employerUrl:"https://employer.example/",verifiedAt:new Date().toISOString(),expiresAt:new Date(Date.now()+86400000).toISOString()};
@@ -407,6 +483,35 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
     expect((await request()).json().queued).toBe(0);
     await database.mutateWorkspace(workspaceId,w=>{w.routine.enabled=false;});
     expect((await request()).statusCode).toBe(400);
+  });
+  it('acknowledges a durable worker dispatch without running another synchronous continuation cycle',async()=>{
+    const dispatch=await import('../server/submission-dispatch');
+    const cycle=await import('../server/automatic-cycle');
+    const send=vi.spyOn(dispatch,'dispatchNextApplication').mockResolvedValue(true);
+    const continuation=vi.spyOn(cycle,'continueAutomaticCycle').mockRejectedValue(new Error('The durable worker owns continuation'));
+    await database.mutateWorkspace(workspaceId,w=>{w.jobs=[job('9412')];});
+    const response=await app.inject({method:'POST',url:'/api/routine/process',headers:{cookie,origin:'http://127.0.0.1:5173','x-orbita-request':'1'},payload:{jobId:'9412'}});
+    expect(response.statusCode).toBe(200);
+    expect(response.json()).toEqual({ok:true,queued:1});
+    expect(send).toHaveBeenCalledWith(workspaceId);
+    expect(continuation).not.toHaveBeenCalled();
+  });
+  it('queues read-only verification for an owned uncertain Gupy application without accepting caller-supplied proof',async()=>{
+    const dispatch=await import('../server/submission-dispatch');
+    const verify=vi.spyOn(dispatch,'dispatchGupyDraftVerification').mockResolvedValue(true);
+    const [id]=await prepare([job('9413')],false),at=new Date(Date.now()-300000).toISOString();
+    await database.mutateWorkspace(workspaceId,w=>{
+      const a=w.applications.find(a=>a.id===id)!;
+      a.status='Resultado desconhecido';a.attempts=[{id:'old-unknown',executor:'browser',outcome:'unknown',startedAt:at,finishedAt:at} as any];
+    });
+    const headers={cookie,origin:'http://127.0.0.1:5173','x-orbita-request':'1'};
+    const result=await app.inject({method:'POST',url:`/api/applications/${id}/verify-draft`,headers,payload:{proof:{resumeAllowed:true}}});
+    expect(result.statusCode).toBe(200);expect(result.json()).toEqual({ok:true,queued:true,readOnlyVerification:true});
+    expect(verify).toHaveBeenCalledWith(workspaceId,id,'old-unknown');
+    const a=(await database.readWorkspace(workspaceId))!.applications.find(a=>a.id===id)!;
+    expect(a.status).toBe('Resultado desconhecido');expect(a.resumeState).toBeUndefined();
+    expect((await app.inject({method:'POST',url:'/api/applications/11111111-1111-4111-8111-111111111111/verify-draft',headers})).statusCode).toBe(400);
+    expect(verify).toHaveBeenCalledOnce();
   });
   it("recovery requires an explicit no-submission review, then resumes only the pinned ATS destination", async()=>{
     const candidate=job("9501");
@@ -858,7 +963,7 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
       ];
     });
     const [id] = await prepare([
-      { ...job("102"), url: "https://empresa.example.test/jobs/102" },
+      { ...job("102"), url: "https://job-boards.greenhouse.io/empresa/jobs/102" },
     ]);
     expect((await operations.automaticSend(workspaceId, id)).status).toBe(
       "Enviada",
@@ -886,6 +991,9 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
   it("preparações sem integração não consomem a cota diária da busca automática", async () => {
     const portal = await import("../server/portal-discovery");
     await prepare([job("105", "infojobs")]);
+    // The normal cycle classifies an unsupported preparation before searching.
+    // An artificially queued item must not reserve a second pending quota slot.
+    await operations.processAutomaticApplications(workspaceId);
     vi.spyOn(portal, "discoverPortal").mockImplementation(async (source) => ({
       jobs: source.board === "gupy" ? [job("106")] : [],
       checkedAt: new Date().toISOString(),

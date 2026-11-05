@@ -34,7 +34,7 @@ const providerBody = {
     {
       id: 1,
       title: "Auxiliar administrativo",
-      absolute_url: "https://example.test/jobs/1",
+      absolute_url: "https://job-boards.greenhouse.io/qa/jobs/1",
       content: "Atendimento presencial.",
       location: { name: "Recife" },
     },
@@ -176,7 +176,7 @@ describe("Catálogo compartilhado persistente", () => {
     expect(run.status).toBe('completed');expect(run.errors).toEqual([]);expect(run.discovered).toBe(0);expect(mock).not.toHaveBeenCalled();
     expect((await dbModule.readWorkspace('queue-user:live'))!.routine.nextRun).not.toBeNull();
   });
-  it("vaga fechada não permite preparo e comparação insuficiente não inicia envio", async () => {
+  it("bloqueia vaga fechada e envio sem o arquivo original do currículo", async () => {
     const { createWorkspace } = await import("../server/workspace");
     const { prepare, automaticSend } = await import("../server/operations");
     const { users, workspaces } = await import("../server/schema");
@@ -249,7 +249,7 @@ describe("Catálogo compartilhado persistente", () => {
     try {
       await expect(
         automaticSend("safety-user:live", application.id, sender as any),
-      ).rejects.toThrow("critérios");
+      ).rejects.toThrow("currículo original");
       expect(sender).not.toHaveBeenCalled();
       expect(
         (await dbModule.readWorkspace("safety-user:live"))!.applications[0]

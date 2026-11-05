@@ -18,6 +18,11 @@ const revision=sourceHash.digest("hex");
 await mkdir(".data",{recursive:true});
 await writeFile(".data/automation-source-revision.json",JSON.stringify({revision}));
 await build({
+  entryPoints: ["server/document-parser-worker.ts"],
+  outfile: "dist-server/document-parser-worker.mjs",
+  bundle:true,platform:"node",format:"esm",packages:"external",logLevel:"info",
+});
+await build({
   entryPoints: ["server/ats-browser-runner.ts"],
   outfile: "dist-server/ats-browser-runner.mjs",
   bundle: true,

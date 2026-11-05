@@ -13,8 +13,9 @@ export function restoreResumeFile(file: NonNullable<Resume["storedFile"]>) {
   return Buffer.from(decryptSecret(file.ciphertext), "base64");
 }
 export function publicWorkspace(w: Workspace): Workspace {
+  const { processingSecurity: _privateProcessing, ...visible } = w;
   return {
-    ...w,
+    ...visible,
     resumes: w.resumes.map(({ storedFile, ...resume }) => ({
       ...resume,
       originalFileAvailable:

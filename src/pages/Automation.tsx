@@ -159,22 +159,7 @@ export default function Automation() {
                     }
                   />
                 </Field>
-                <Field
-                  label={`Compatibilidade mínima para preparar: ${r.minScore}/100`}
-                >
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={r.minScore}
-                    onChange={(e) =>
-                      setR((old) => ({
-                        ...old,
-                        minScore: Number(e.target.value),
-                      }))
-                    }
-                  />
-                </Field>
+
               </div>
               <div className="form-actions">
                 <Button disabled={a.isPending} className="primary">

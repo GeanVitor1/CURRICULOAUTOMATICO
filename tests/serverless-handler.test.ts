@@ -28,6 +28,14 @@ async function start(build: () => Promise<FastifyInstance>) {
   return `http://127.0.0.1:${address.port}`;
 }
 describe("API da Vercel", () => {
+  it("identifica runtime inseguro com versão efetiva sem expor a mensagem do erro", async () => {
+    const log=vi.spyOn(console,"error").mockImplementation(()=>{});
+    const origin=await start(async()=>{throw Object.assign(new Error("private-runtime-detail"),{code:"NODE_RUNTIME_UNSAFE"});});
+    expect((await fetch(`${origin}/api/health`)).status).toBe(503);
+    const entry=JSON.parse(log.mock.calls[0][0]);
+    expect(entry.reason).toBe("NODE_RUNTIME_UNSAFE");expect(entry.runtime.node).toBe(process.versions.node);
+    expect(JSON.stringify(entry)).not.toContain("private-runtime-detail");
+  });
   it("registra somente posições de arquivos para falhas sem código, sem a mensagem nem valores privados", async () => {
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
     const origin = await start(async () => {
@@ -134,6 +142,7 @@ describe("API da Vercel", () => {
       JSON.stringify({
         event: "api_initialization_failed",
         reason: "DATABASE_URL_MISSING",
+        runtime: {node:process.versions.node,undici:process.versions.undici},
       }),
     );
     expect(await failed.text()).not.toMatch(
@@ -151,6 +160,7 @@ describe("API da Vercel", () => {
       JSON.stringify({
         event: "api_initialization_failed",
         reason: "REFERENCE_ERROR",
+        runtime: {node:process.versions.node,undici:process.versions.undici},
       }),
     );
     expect(await failed.text()).not.toContain(

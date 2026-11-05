@@ -335,7 +335,7 @@ describe("Permissões reais, OAuth e privacidade", () => {
       headers: headers(),
     });
     expect(response.statusCode).toBe(400);
-    expect(response.json().error).toContain("autorização");
+    expect(response.json().error).toContain("temporariamente suspensa");
   });
   it("desconectar durante a troca de código impede uma conexão tardia", async () => {
     const url = await authorization();

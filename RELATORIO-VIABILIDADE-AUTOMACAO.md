@@ -1,5 +1,7 @@
 # Viabilidade da automação do Empregatos
 
+> **Reconciliação observada em 26/10:** a Global TI confirmou oficialmente que a tentativa IMW7499 não foi recebida; não houve reenvio nem alteração do banco. Há execuções persistidas `scheduled_automation` em 24 e 25/10, com descoberta/resolução e zero recibos. Logs HTTP/mensagens históricos indisponíveis pela retenção; candidatura autônoma completa segue sem prova. [Atualização com evidências](docs/DESTINOS-SUBMETIVEIS-2026-10-23.md#observação-agendada-e-reconciliação-oficial--26102026).
+
 > **Atualização final de 23/10, 15h39 Brasília:** [verificação de Candidatura Rápida e dos 33 formulários](#validação-final--candidatura-rápida-e-formulários-existentes). Três indícios de modalidade rápida no índice, todos encerrados na origem; zero rápidos abertos e compatíveis comprovados. Os 33 formulários foram reavaliados: zero elegíveis para novo envio. Piloto empresarial especificado, não iniciado. Produção preservada; **0/5 confirmadas**.
 
 Data: **23/10/2026**. Pesquisa documental e demonstração encerradas às **14h48 de Brasília**, com estado do banco lido às **14h47**. Referência anterior lida: [Destinos de candidatura — especialmente “Expansão orientada a candidaturas submetíveis”](docs/DESTINOS-SUBMETIVEIS-2026-10-23.md).

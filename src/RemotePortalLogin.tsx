@@ -6,7 +6,9 @@ import "./RemotePortalLogin.css";
 import { PortalLiveClient } from "./portal-live-client";
 import type { LiveInput, LiveTicket } from "../shared/portal-live";
 import { portalViewport } from "../shared/portal-display";
-import GupyChromeConnection from "./GupyChromeConnection";
+import ChromePortalConnection from "./ChromePortalConnection";
+import type {BrowserSessionPortal} from '../shared/browser-connectors';
+import type {BrowserConnectionAccess} from '../shared/session-transfer-policy';
 
 type Frame = {
   viewerId: string;
@@ -27,7 +29,7 @@ export default function RemotePortalLogin({
   portal,
   workspace,
 }: {
-  portal: "gupy" | "infojobs" | "glassdoor";
+  portal: BrowserSessionPortal;
   workspace?: Workspace;
 }) {
   const name = portals[portal].name;
@@ -38,7 +40,14 @@ export default function RemotePortalLogin({
   const [done, setDone] = useState(false);
   const [automatic, setAutomatic] = useState(false);
   const [ending, setEnding] = useState(false);
-  const [chromeConnection, setChromeConnection] = useState(portal === "gupy");
+  const [saving, setSaving] = useState(false);
+  const [saveDelayed, setSaveDelayed] = useState(false);
+  const savingRequest = useRef(false);
+  const [chromeConnection, setChromeConnection] = useState(true);
+  const [extensionStatus,setExtensionStatus]=useState<{version:string;text:string;kind:string}|null>(null);
+  const [connectionAccess,setConnectionAccess]=useState<BrowserConnectionAccess|null>(null);
+  const connectionAllowed=portal!=='linkedin';
+  const pendingImportedFrame=useRef<Frame|null>(null);
   const current = useRef<Frame | null>(null);
   const live = useRef<PortalLiveClient | null>(null);
   const finished = useRef(false);
@@ -209,6 +218,7 @@ export default function RemotePortalLogin({
     enqueue,
   ]);
   const start = useCallback(async () => {
+    if (!connectionAllowed) return;
     if (started.current || pending.current || current.current) return;
     started.current = true;
     pending.current++;
@@ -233,17 +243,43 @@ export default function RemotePortalLogin({
       pending.current--;
       setBusy(false);
     }
-  }, [portal, connectLive]);
+  }, [portal, connectLive, connectionAllowed]);
   useEffect(() => {
     if (!chromeConnection) void start();
   }, [start, chromeConnection]);
+  useEffect(()=>{
+    if(portal!=='linkedin'){setConnectionAccess(null);return;}
+    let mounted=true;
+    let sequence=0;
+    setConnectionAccess(null);
+    const load=async()=>{
+      const request=++sequence;
+      try{const access=await api<BrowserConnectionAccess>('/connections/browser-extension-context?portal=linkedin',{cache:'no-store'});if(mounted&&request===sequence){setConnectionAccess(access);if(access.localLogin)window.opener?.postMessage({type:'empregatos:portal-connected',portal},location.origin);}}
+      catch(failure){if(mounted&&request===sequence)setConnectionAccess({available:false,unavailableReason:(failure as Error).message});}
+    };
+    const localVerified=(event:MessageEvent)=>{if(event.source===window&&event.origin===location.origin&&event.data?.type==='empregatos:local-login-verified'&&event.data.portal===portal)void load();};
+    void load();window.addEventListener('focus',load);window.addEventListener('message',localVerified);
+    return()=>{mounted=false;window.removeEventListener('focus',load);window.removeEventListener('message',localVerified);};
+  },[portal]);
   useEffect(() => {
-    if (portal !== "gupy") return;
-    const imported = (event: MessageEvent) => {
-      if (event.source !== window || event.origin !== location.origin ||
-        event.data?.type !== "empregatos:gupy-browser-session") return;
-      const next = event.data.frame as Frame;
-      if (!next?.authenticated || !next.viewerId || !next.image?.startsWith("data:image/")) return;
+    setSaveDelayed(false);
+    if (!saving) return;
+    const timer = setTimeout(() => setSaveDelayed(true), 12000);
+    return () => clearTimeout(timer);
+  }, [saving]);
+  useEffect(()=>{
+    const status=(event:MessageEvent)=>{
+      if(event.source!==window||event.origin!==location.origin||event.data?.type!=='empregatos:connector-status'||event.data.portal!==portal)return;
+      if(typeof event.data.version!=='string'||!/^\d+(\.\d+){1,3}$/.test(event.data.version)||typeof event.data.text!=='string')return;
+      setExtensionStatus({version:event.data.version,text:event.data.text.slice(0,800),kind:['error','connecting','verified'].includes(event.data.kind)?event.data.kind:'ready'});
+    };
+    window.addEventListener('message',status);
+    window.postMessage({type:'empregatos:request-connector-status',portal},location.origin);
+    return()=>window.removeEventListener('message',status);
+  },[portal]);
+  useEffect(() => {
+    const accept = (next:Frame) => {
+      if(!connectionAllowed){if(portal==='linkedin'&&!connectionAccess)pendingImportedFrame.current=next;return;}
       live.current?.close();
       started.current = true;
       finished.current = false;
@@ -251,13 +287,23 @@ export default function RemotePortalLogin({
       closing.current = false;
       setError("");
       setDone(false);
+      setApproved(false);
       receive(next);
       connectLive(next);
       setChromeConnection(false);
     };
+    const imported = (event: MessageEvent) => {
+      if (event.source !== window || event.origin !== location.origin ||
+        !((event.data?.type === 'empregatos:browser-session'&&event.data.portal===portal)||
+          (portal==='gupy'&&event.data?.type==='empregatos:gupy-browser-session'))) return;
+      const next = event.data.frame as Frame;
+      if (!next?.authenticated || !next.viewerId || !next.image?.startsWith("data:image/")) return;
+      accept(next);
+    };
+    if(connectionAccess&&pendingImportedFrame.current){const next=pendingImportedFrame.current;pendingImportedFrame.current=null;if(connectionAllowed)accept(next);}
     window.addEventListener("message", imported);
     return () => window.removeEventListener("message", imported);
-  }, [portal, connectLive]);
+  }, [portal, connectLive, connectionAllowed, connectionAccess]);
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     const resize = () => {
@@ -318,20 +364,23 @@ export default function RemotePortalLogin({
     }, 120);
   };
   const confirm = async (connectionOnly = false) => {
-    await flush();
-    if (
-      failed.current ||
-      !current.current ||
-      (!connectionOnly && (!approved || !ready || !resume)) ||
-      finished.current
-    )
-      return;
-    pending.current++;
-    setBusy(true);
+    if (savingRequest.current || closing.current || finished.current) return;
+    savingRequest.current = true;
+    setSaving(true);
     setError("");
-    live.current?.close();
-    live.current = null;
+    let queued = false;
     try {
+      await flush();
+      if (
+        failed.current || !current.current ||
+        (!connectionOnly && (!approved || !ready || !resume)) ||
+        finished.current
+      ) return;
+      pending.current++;
+      queued = true;
+      setBusy(true);
+      live.current?.close();
+      live.current = null;
       const result = await api<{ automatic: boolean }>(
         `/connections/${portal}/confirm`,
         {
@@ -358,16 +407,17 @@ export default function RemotePortalLogin({
         },
         location.origin,
       );
-      if (window.opener) window.close();
     } catch (failure) {
       setError((failure as Error).message);
     } finally {
-      pending.current--;
-      setBusy(false);
+      if (queued) pending.current--;
+      setBusy(pending.current > 0);
+      savingRequest.current = false;
+      setSaving(false);
     }
   };
   const close = async () => {
-    if (closing.current) return;
+    if (closing.current || savingRequest.current) return;
     closing.current = true;
     setEnding(true);
     pending.current++;
@@ -401,9 +451,9 @@ export default function RemotePortalLogin({
   return (
     <main
       className="remote-login"
-      aria-label={`Login do ${name} no navegador da EmpreGatos`}
+      aria-label={portal==='linkedin'?'Verificação do LinkedIn no seu Chrome':`Login do ${name} no navegador da EmpreGatos`}
     >
-      {chromeConnection && <GupyChromeConnection onCloud={() => setChromeConnection(false)} />}
+      {chromeConnection && <ChromePortalConnection portal={portal} access={connectionAccess} extensionStatus={extensionStatus} onOpenConnector={()=>window.postMessage({type:'empregatos:request-open-connector',portal},location.origin)} onCloud={() => setChromeConnection(false)} />}
       {!chromeConnection && !frame && !error && (
         <div className="remote-loading" role="status">
           <span className="remote-spinner" aria-hidden="true" />
@@ -412,6 +462,7 @@ export default function RemotePortalLogin({
       )}
       {!chromeConnection && frame && !done && (
         <>
+          {!frame.authenticated && <>
           <div className="remote-screen" aria-busy={busy}>
             <img
               ref={screen}
@@ -541,27 +592,36 @@ export default function RemotePortalLogin({
               }
             }}
           />
+          </>}
           {frame.authenticated && !error && (
-            <div className="remote-overlay">
+            <div className="remote-overlay remote-connection-overlay">
               <section
-                className="remote-confirm"
+                className="remote-confirm remote-connection-card"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="remote-confirm-title"
               >
-                <h1 id="remote-confirm-title">Login confirmado</h1>
-                {!ready && (
+                <span className="remote-connection-brand">EmpreGatos · Conexão com {name}</span>
+                {connectionAccess?.sessionRetest&&<p className="remote-connection-detail" role="note">{connectionAccess.notice}</p>}
+                <h1 id="remote-confirm-title">{saving ? `Salvando conexão do ${name}…` : 'Login confirmado'}</h1>
+                {saving ? <div className="remote-save-progress" role="status" aria-live="polite" aria-atomic="true">
+                  <span className="remote-spinner" aria-hidden="true" />
+                  <p>{saveDelayed ? 'Está levando mais tempo que o habitual. Ainda estamos aguardando a confirmação do salvamento. Não é necessário clicar novamente.' : 'O EmpreGatos está salvando sua conexão. Aguarde nesta tela; a confirmação aparecerá ao terminar.'}</p>
+                </div> : <p>Seu login no {name} foi reconhecido. Falta salvar a conexão no EmpreGatos para concluir.</p>}
+                {portal==='linkedin'&&<p className="remote-connection-detail">Salvar esta conexão não ativa candidaturas automáticas pelo LinkedIn.</p>}
+                {busy && !saving && <p role="status">Concluindo a verificação do login…</p>}
+                {portal!=='linkedin'&&!ready && (
                   <p>
                     Conclua suas preferências e aprove o currículo no painel
                     para liberar os envios.
                   </p>
                 )}
-                <label>
+                {portal!=='linkedin'&&<><label>
                   <input
                     autoFocus
                     type="checkbox"
                     checked={approved}
-                    disabled={!ready}
+                    disabled={saving || busy || !ready}
                     onChange={(event) => setApproved(event.target.checked)}
                   />
                   Confirmo que o currículo do meu perfil no {name} está
@@ -569,17 +629,17 @@ export default function RemotePortalLogin({
                   meu limite diário.
                 </label>
                 <button
-                  disabled={busy || !approved || !ready}
+                  disabled={saving || busy || !approved || !ready}
                   onClick={() => void confirm()}
                 >
-                  {busy ? "Conectando…" : "Conectar e iniciar envios"}
-                </button>
-                <button className="remote-secondary" disabled={busy} onClick={() => void confirm(true)}>
-                  Salvar conexão sem ativar envios
+                  {saving ? "Salvando conexão…" : "Conectar e iniciar envios"}
+                </button></>}
+                <button className="remote-secondary" disabled={saving || busy} onClick={() => void confirm(true)}>
+                  {saving ? 'Salvando conexão…' : portal==='linkedin'?'Salvar conexão do LinkedIn':'Salvar conexão sem ativar envios'}
                 </button>
                 <button
                   className="remote-secondary"
-                  disabled={busy}
+                  disabled={saving || busy}
                   onClick={() => void close()}
                 >
                   Cancelar
@@ -600,13 +660,15 @@ export default function RemotePortalLogin({
         </>
       )}
       {done && (
-        <div className="remote-overlay">
-          <section className="remote-confirm">
+        <div className="remote-overlay remote-connection-overlay">
+          <section className="remote-confirm remote-connection-card" role="status" aria-live="polite">
+            <span className="remote-connection-brand">EmpreGatos · Conexão com {name}</span>
+            <span className="remote-connection-check" aria-hidden="true">✓</span>
             <h1>Conta conectada</h1>
             <p>
               {automatic
                 ? "As candidaturas elegíveis já podem ser tentadas automaticamente."
-                : "Revise suas preferências no painel para ativar os envios."}
+                : portal==='linkedin'?'Sua conexão do LinkedIn foi confirmada e salva no EmpreGatos. O envio automático permanece indisponível.':"Sua conexão foi salva. Revise suas preferências no painel para ativar os envios."}
             </p>
             <button onClick={() => void close()}>Concluir</button>
           </section>
@@ -620,7 +682,7 @@ export default function RemotePortalLogin({
         !done && (
           <div className="remote-verification" role="status">
             {frame.notice}
-            {portal === "gupy" && <button onClick={() => { live.current?.close(); setChromeConnection(true); }}>Não consigo concluir. Conectar pelo meu Chrome</button>}
+            <button onClick={() => { live.current?.close(); setChromeConnection(true); }}>Não consigo concluir. Conectar pelo meu Chrome</button>
           </div>
         )}
       {!chromeConnection && frame?.navigationError && !error && !done && (
@@ -628,7 +690,7 @@ export default function RemotePortalLogin({
           <section className="remote-confirm" role="alert">
             <h1>Não foi possível concluir o login</h1>
             <p>{frame.navigationError}</p>
-            {portal === "gupy" && <button onClick={() => { live.current?.close(); setChromeConnection(true); }}>Conectar pelo meu Chrome</button>}
+            <button onClick={() => { live.current?.close(); setChromeConnection(true); }}>Conectar pelo meu Chrome</button>
             <button
               disabled={busy}
               onClick={() => {
@@ -675,8 +737,12 @@ export default function RemotePortalLogin({
         </div>
       )}
       {ending && (
-        <div className="remote-overlay">
-          <p role="status">Encerrando conexão…</p>
+        <div className="remote-overlay remote-connection-overlay">
+          <section className="remote-confirm remote-connection-card" role="status">
+            <span className="remote-spinner" aria-hidden="true" />
+            <h1>Fechando a janela de conexão…</h1>
+            <p>{done ? 'Sua conexão já está salva no EmpreGatos. Voltando ao painel.' : 'Aguarde enquanto o EmpreGatos fecha esta janela.'}</p>
+          </section>
         </div>
       )}
     </main>

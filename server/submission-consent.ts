@@ -1,4 +1,15 @@
-import type { Application } from "../shared/types";
+import type { Application, Workspace } from "../shared/types";
+
+/** Called only after explicit portal automation consent and verified login. */
+export function activateAuthorizedPortal(w: Workspace, portal: string, resumeId: string, readySites: string[]) {
+  if (!readySites.includes(portal) || !w.profile.confirmed || !w.interview?.completed ||
+      w.interview.answers.resumeId !== resumeId || !w.interview.answers.sites.some(site => site === portal) ||
+      !w.resumes.some(r => r.id === resumeId && r.approved)) return false;
+  w.routine.enabled = true;
+  w.routine.mode = 'automatic';
+  w.routine.destinationPolicy = 'any';
+  return true;
+}
 
 /** Only an explicit provider refusal can be reviewed for another individual attempt. */
 export function emailExplicitlyRejected(application: Application) {

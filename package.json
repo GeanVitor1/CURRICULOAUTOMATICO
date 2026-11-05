@@ -4,30 +4,33 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/dev.mjs",
-    "dev:api": "tsx watch server/index.ts",
-    "dev:web": "vite --host 127.0.0.1",
-    "worker": "tsx server/worker.ts",
-    "build": "node scripts/build.mjs",
-    "build:api": "tsc --noEmit && node scripts/build-api.mjs",
-    "start": "node dist-server/index.js",
-    "start:worker": "node dist-server/worker.js",
-    "test": "vitest run",
-    "db:migrate": "tsx server/migrate.ts",
-    "typecheck": "tsc --noEmit",
-    "configure:google": "node scripts/configure-google.mjs",
-    "configure:stripe": "node scripts/configure-stripe.mjs",
-    "configure:vm": "node scripts/configure-vm.mjs",
-    "test:browser": "playwright test",
-    "audit:production": "node scripts/audit-production.mjs",
-    "verify:connectors": "tsx scripts/verify-connectors.ts",
-    "verify:zen": "tsx scripts/verify-zen.ts",
-    "verify:workflow": "tsx scripts/verify-workflow.ts",
-    "verify:single-submission": "tsx scripts/verify-single-submission.ts",
-    "verify:gupy-submission": "tsx scripts/verify-gupy-submission.ts",
-    "verify:persistence": "node scripts/verify-persistence.mjs",
-    "verify:gemini": "tsx scripts/verify-gemini.ts",
-    "evaluate:resume": "tsx scripts/evaluate-resume-analysis.ts"
+    "dev": "node scripts/secure-node.mjs scripts/dev.mjs",
+    "dev:api": "node scripts/secure-node.mjs tsx watch server/index.ts",
+    "dev:web": "node scripts/secure-node.mjs vite --host 127.0.0.1",
+    "worker": "node scripts/secure-node.mjs tsx server/worker.ts",
+    "build": "node scripts/secure-node.mjs scripts/build.mjs",
+    "build:api": "node scripts/secure-node.mjs scripts/build-api-checked.mjs",
+    "start": "node scripts/secure-node.mjs dist-server/index.js",
+    "start:worker": "node scripts/secure-node.mjs dist-server/worker.js",
+    "test": "node scripts/secure-node.mjs vitest run",
+    "db:migrate": "node scripts/secure-node.mjs tsx server/migrate.ts",
+    "typecheck": "node scripts/secure-node.mjs tsc --noEmit",
+    "configure:google": "node scripts/secure-node.mjs scripts/configure-google.mjs",
+    "configure:stripe": "node scripts/secure-node.mjs scripts/configure-stripe.mjs",
+    "configure:vm": "node scripts/secure-node.mjs scripts/configure-vm.mjs",
+    "test:browser": "node scripts/secure-node.mjs playwright test",
+    "audit:production": "node scripts/secure-node.mjs scripts/audit-production.mjs",
+    "verify:connectors": "node scripts/secure-node.mjs tsx scripts/verify-connectors.ts",
+    "verify:zen": "node scripts/secure-node.mjs tsx scripts/verify-zen.ts",
+    "verify:workflow": "node scripts/secure-node.mjs tsx scripts/verify-workflow.ts",
+    "verify:single-submission": "node scripts/secure-node.mjs tsx scripts/verify-single-submission.ts",
+    "verify:gupy-submission": "node scripts/secure-node.mjs tsx scripts/verify-gupy-submission.ts",
+    "verify:persistence": "node scripts/secure-node.mjs scripts/verify-persistence.mjs",
+    "verify:gemini": "node scripts/secure-node.mjs tsx scripts/verify-gemini.ts",
+    "evaluate:resume": "node scripts/secure-node.mjs tsx scripts/evaluate-resume-analysis.ts",
+    "pretest": "node scripts/secure-node.mjs scripts/build-document-worker.mjs",
+    "predev": "node scripts/secure-node.mjs scripts/build-document-worker.mjs",
+    "predev:api": "node scripts/secure-node.mjs scripts/build-document-worker.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.14",
@@ -49,7 +52,7 @@
     "cheerio": "^1.2.0",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.4",
-    "fastify": "^5.6.1",
+    "fastify": "^5.12.7",
     "fflate": "^0.8.3",
     "google-auth-library": "^11.2.0",
     "ioredis": "^5.8.1",
@@ -64,7 +67,7 @@
     "react-hook-form": "^7.63.0",
     "stripe": "^23.0.0",
     "ws": "^8.22.0",
-    "zod": "^4.1.11"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",
@@ -82,5 +85,13 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.9",
     "vitest": "^5.0.3"
+  },
+  "overrides": {
+    "@vercel/cli-config": {
+      "zod": "^4.6.7"
+    }
+  },
+  "engines": {
+    "node": "^22.23.4 || ^24.22.1 || ^26.12.1"
   }
 }

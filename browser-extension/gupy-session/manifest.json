@@ -1,14 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "EmpreGatos — conexão Gupy",
-  "version": "1.0.0",
+  "name": "EmpreGatos — conexões de portais",
+  "version": "2.0.10",
+  "minimum_chrome_version": "120",
   "background": { "service_worker": "background.js" },
-  "description": "Conecta, por sua autorização, apenas a sessão da Gupy ao EmpreGatos. Não acessa sua conta Google.",
-  "permissions": ["cookies", "scripting"],
-  "host_permissions": ["https://*.gupy.io/*", "https://curriculoautomatico.vercel.app/*"],
-  "action": { "default_popup": "popup.html", "default_title": "Conectar Gupy ao EmpreGatos" },
+  "description": "Conecte seus portais de vagas ao EmpreGatos. Verifique o LinkedIn no Chrome e autorize cada conexão separadamente.",
+  "homepage_url": "https://curriculoautomatico.vercel.app",
+  "icons": {"16":"icon-16.png","32":"icon-32.png","48":"icon-48.png","128":"icon-128.png"},
+  "permissions": ["cookies", "scripting", "storage", "alarms"],
+  "host_permissions": ["https://curriculoautomatico.vercel.app/*"],
+  "optional_host_permissions": ["https://*.gupy.io/*", "https://*.infojobs.com.br/*", "https://*.glassdoor.com/*", "https://*.glassdoor.com.br/*", "https://*.linkedin.com/*"],
+  "action": { "default_title": "Abrir conector do EmpreGatos", "default_icon": {"16":"icon-16.png","32":"icon-32.png"} },
   "content_scripts": [{
     "matches": ["https://curriculoautomatico.vercel.app/app*"],
-    "js": ["content.js"]
+    "js": ["config.js", "content.js"]
   }]
 }

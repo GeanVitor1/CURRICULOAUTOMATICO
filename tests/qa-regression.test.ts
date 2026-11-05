@@ -49,6 +49,7 @@ const jobBody = {
   requiredSkills: [],
   requiredYears: null,
 };
+let uploadIp = 50;
 const upload = async (name = "novo.docx") => {
   const bytes = zipSync({
     "word/document.xml": strToU8(
@@ -58,6 +59,8 @@ const upload = async (name = "novo.docx") => {
   return app.inject({
     method: "POST",
     url: "/api/resumes",
+    // Independent scenarios must not share a per-IP upload abuse budget.
+    remoteAddress: `127.0.0.${uploadIp++}`,
     headers: {
       ...headers(),
       "content-type": "multipart/form-data; boundary=qa",
@@ -120,6 +123,7 @@ beforeEach(async () => {
     Object.assign(w, createWorkspace("Pessoa QA", "regression@example.test"), {
       interview: undefined,
       interviewDraft: undefined,
+      processingSecurity: undefined,
     }),
   );
 });
@@ -189,7 +193,7 @@ describe("Regressões da auditoria", () => {
     const jobId = (
       await request("POST", "/api/jobs", {
         ...jobBody,
-        url: "https://example.test/job/criteria",
+        url: "https://job-boards.greenhouse.io/qa/jobs/1",
       })
     ).json().id;
     const applicationId = await database.mutateWorkspace(

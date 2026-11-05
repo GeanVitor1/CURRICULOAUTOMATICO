@@ -100,25 +100,26 @@ describe("Resolução persistente, catálogo público e isolamento", () => {
   it("limita custo diário da pesquisa automática e mantém o conjunto restante",()=>{
     const w=createWorkspace("Pessoa","qa@example.test");w.routine.enabled=true;w.routine.mode="automatic";w.jobs=[job()];
     const day=new Date().toLocaleDateString("en-CA",{timeZone:"America/Sao_Paulo"});
-    w.routine.researchBudget={day,used:199};expect(queue.researchAllowance(w)).toBe(1);
-    w.routine.researchBudget.used=200;expect(queue.researchAllowance(w)).toBe(0);
+    w.routine.dailyLimit=5;
+    w.routine.researchBudget={day,used:14};expect(queue.researchAllowance(w)).toBe(1);
+    w.routine.researchBudget.used=15;expect(queue.researchAllowance(w)).toBe(0);
     expect(queue.needsResearch(w.jobs[0],w)).toBe(true);
   });
-  it("prioriza uma vaga compatível antes de diversificar para vagas abaixo da pontuação mínima", () => {
+  it("prioriza vagas recentes e distribui a pesquisa entre empresas sem corte por nota", () => {
     const w=createWorkspace("Pessoa","qa@example.test");
     w.profile.confirmed=true;w.profile.skills=["React","TypeScript","Git"];w.profile.headline="Desenvolvedor React";w.profile.education="Ensino médio completo";
     w.routine.minScore=70;
     w.jobs=[{...job(),id:"researched",resolution:{state:"no_destination",checkedAt:new Date().toISOString(),retryAt:new Date(Date.now()+86400000).toISOString(),complete:true,consulted:[],matches:[],message:"Consultada"}},
-      {...job(),id:"compatible",url:"https://www.linkedin.com/jobs/view/900004"},
-      {...job(),id:"different",company:"Outra empresa",url:"https://www.linkedin.com/jobs/view/900005",title:"Desenvolvedor Python",description:"Python",skills:["Python"]}];
-    expect(queue.selectResearchJobs(w,[],1)[0].id).toBe("compatible");
+      {...job(),id:"compatible",discoveredAt:'2026-10-29T12:00:00Z',url:"https://www.linkedin.com/jobs/view/900004"},
+      {...job(),id:"different",discoveredAt:'2026-10-30T12:00:00Z',company:"Outra empresa",url:"https://www.linkedin.com/jobs/view/900005",title:"Desenvolvedor Python",description:"Python",skills:["Python"]}];
+    expect(queue.selectResearchJobs(w,[],1)[0].id).toBe("different");
   });
-  it("continua pelas vagas ainda não consultadas depois das primeiras vinte", () => {
+  it("preserva a fila sem pesquisar além do orçamento proporcional do dia", () => {
     const w=createWorkspace("Pessoa","qa@example.test");
     w.routine.enabled=true;w.routine.mode="automatic";
     w.jobs=Array.from({length:25},(_,index)=>({...job(),id:`pool-${index}`,url:`https://www.linkedin.com/jobs/view/${900100+index}`,
       ...(index<20 ? {resolution:{state:"no_destination" as const,checkedAt:new Date().toISOString(),retryAt:new Date(Date.now()+86400000).toISOString(),complete:true,consulted:[],matches:[],message:"Consultada"}} : {})}));
-    expect(queue.researchAllowance(w)).toBe(5);
+    expect(queue.researchAllowance(w)).toBe(0);
     expect(queue.selectResearchJobs(w,[],4)).toHaveLength(4);
     for(const vacancy of w.jobs) vacancy.resolution={state:"no_destination",checkedAt:new Date().toISOString(),retryAt:new Date(Date.now()+86400000).toISOString(),complete:true,consulted:[],matches:[],message:"Consultada"};
     expect(queue.researchAllowance(w)).toBe(0);

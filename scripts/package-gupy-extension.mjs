@@ -1,8 +1,21 @@
-import { readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
+import { readdir, readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import { zipSync } from 'fflate';
+import {build} from 'esbuild';
+import {fileURLToPath} from 'node:url';
 const root = new URL('../browser-extension/gupy-session/', import.meta.url);
+const config=await build({entryPoints:[fileURLToPath(new URL('../shared/browser-connectors.ts',import.meta.url))],bundle:true,write:false,format:'iife',globalName:'EmpreGatosPortals',platform:'browser',target:'chrome120'});
+await writeFile(new URL('config.js',root),config.outputFiles[0].contents);
+const manifest=JSON.parse(await readFile(new URL('manifest.json',root),'utf8'));
+const release={version:manifest.version,channel:'development'};
+// The marker is replaced only after generated code is completely written.
+await writeFile(new URL('release.json.tmp',root),JSON.stringify(release));
+await rename(new URL('release.json.tmp',root),new URL('release.json',root));
 const files = {};
-for (const name of await readdir(root)) files[name] = new Uint8Array(await readFile(new URL(name,root)));
+for (const name of await readdir(root)) if(!name.endsWith('.tmp')) files[name] = new Uint8Array(await readFile(new URL(name,root)));
 const output = new URL('../public/downloads/',import.meta.url);
 await mkdir(output,{recursive:true});
 await writeFile(new URL('empregatos-gupy-chrome.zip',output),zipSync(files));
+await writeFile(new URL('empregatos-conexoes-chrome.zip',output),zipSync(files));
+const storeManifest={...manifest,permissions:manifest.permissions.filter(permission=>permission!=='alarms')};
+const storeFiles={...files,'manifest.json':new TextEncoder().encode(JSON.stringify(storeManifest,null,2)),'release.json':new TextEncoder().encode(JSON.stringify({version:manifest.version,channel:'store'}))};
+await writeFile(new URL('empregatos-chrome-web-store.zip',output),zipSync(storeFiles));

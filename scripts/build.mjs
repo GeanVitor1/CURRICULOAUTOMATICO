@@ -27,3 +27,8 @@ await run(
 await run(resolve("scripts/precompress.mjs"), []);
 await run(resolve("scripts/verify-secrets.mjs"), []);
 await run(resolve("scripts/build-api.mjs"), []);
+// Optional staged-build QA. Artifacts must pass review before promoting this deployment.
+if(process.env.VERIFY_ONBOARDING_QA==='1'){
+  await run(require.resolve('tsx/cli'),[resolve('scripts/prepare-onboarding-ci.ts')]);
+  await run(resolve('scripts/verify-onboarding-remote.mjs'),[]);
+}

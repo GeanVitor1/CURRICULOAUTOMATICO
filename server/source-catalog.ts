@@ -5,6 +5,8 @@ import { connectors, SourceError } from "./connectors";
 import type { Job, Source } from "../shared/types";
 import { createHash } from "node:crypto";
 import { publishOpportunities } from "./opportunity-catalog";
+import {permittedDiscoverySource,removedJobSource,SOURCE_POLICY_MESSAGE} from '../shared/job-source-policy';
+import {discoveryCandidateLimit} from './discovery-limits';
 
 export function catalogKey(source: Source) {
   // Jobicy is one global public sync, even across different user preferences.
@@ -13,13 +15,14 @@ export function catalogKey(source: Source) {
     source.type === "adzuna"
       ? source.country || process.env.ADZUNA_COUNTRY || ""
       : "";
-  return JSON.stringify([source.type, source.board, country]);
+  return JSON.stringify([source.type, source.board, country,...(source.type==='smartrecruiters'?[discoveryCandidateLimit(30)]:[])]);
 }
 const inflight = new Map<
   string,
   Promise<{ jobs: Job[]; cached: boolean; checkedAt: string }>
 >();
 export async function discoverCachedSource(source: Source) {
+  if(!permittedDiscoverySource(source))throw new SourceError(SOURCE_POLICY_MESSAGE);
   const key = catalogKey(source);
   const running = inflight.get(key);
   if (running) return structuredClone(await running);
@@ -158,7 +161,7 @@ export async function inspectSourceCatalog() {
   // Public metadata only: no user preferences and no complete job feed in this endpoint.
   // Adzuna board contains a search preference, not an organization. Keep it private.
   return rows
-    .filter((row) => !["adzuna", "jooble", "portal"].includes(row.type))
+    .filter((row) => ['greenhouse','lever','ashby','smartrecruiters'].includes(row.type)&&![row.board,row.company].some(removedJobSource))
     .map((row) => ({
       key: row.key,
       type: row.type,

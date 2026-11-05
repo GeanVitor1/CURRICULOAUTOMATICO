@@ -1,8 +1,15 @@
-<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Conectar Gupy</title>
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Conexões EmpreGatos</title>
 <link rel="stylesheet" href="popup.css">
-<main><h1>Conectar sua Gupy</h1>
-<p>Entre normalmente na Gupy pelo seu Chrome. Deixe aberta a aba de conexão no EmpreGatos.</p>
-<p>Ao autorizar, somente os cookies e dados de autenticação da Gupy serão enviados ao servidor do EmpreGatos e guardados de forma cifrada após sua confirmação. Isso permite enviar candidaturas. A extensão não acessa senhas nem a sessão do Google.</p>
-<label><input id="consent" type="checkbox"> Autorizo transferir minha sessão da Gupy para o EmpreGatos.</label>
-<button id="connect" disabled>Conectar sessão da Gupy</button><p id="status" role="status"></p>
-<script type="module" src="popup.js"></script></main></html>
+<main><h1>Conectar seus portais</h1><p id="version" class="note"></p>
+<p>Este conector fica aberto em uma aba própria. Entre no portal e volte a esta aba para concluir a conexão. No LinkedIn, a verificação acontece no seu Chrome e não transfere a sessão.</p>
+<label for="portal">Escolha o portal</label><select id="portal"><option value="gupy">Gupy</option><option value="infojobs">InfoJobs</option><option value="glassdoor">Glassdoor</option><option value="linkedin">LinkedIn</option></select>
+<p id="account" aria-live="polite">Verificando sua conta no EmpreGatos…</p>
+<button id="refresh-account" class="secondary">Atualizar conta do EmpreGatos</button>
+<button id="login" class="secondary">1. Abrir login do portal</button>
+<p>Entre normalmente no portal e volte a este conector. A autorização vale somente para o portal escolhido. Não lemos senhas nem a sessão do Google.</p>
+<label class="consent"><input id="consent" type="checkbox"> <span id="consent-label"></span></label>
+<button id="connect" disabled>2. Conectar sessão ao EmpreGatos</button>
+<p id="status" role="status" aria-live="polite"></p>
+<button id="project" class="secondary">Abrir conexão no EmpreGatos</button>
+<p id="limitation" class="note"></p>
+<script src="config.js"></script><script src="popup.js"></script></main></html>

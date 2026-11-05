@@ -1,0 +1,413 @@
+.getting-started {
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  background:
+    linear-gradient(135deg, var(--accent-soft), transparent 56%), var(--surface);
+  padding: clamp(20px, 4vw, 36px);
+  min-width: 0;
+}
+.start-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+.start-eyebrow {
+  display: block;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+.start-intro h2 {
+  font-family: "Manrope Variable", var(--font-sans);
+  font-size: clamp(26px, 3.2vw, 36px);
+  line-height: 1.2;
+  letter-spacing: -1px;
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+.start-intro p {
+  max-width: 490px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+}
+.start-mascot {
+  width: 116px;
+  height: 116px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+.start-progress-label,
+.setup-progress-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.start-progress-label strong,
+.setup-progress-heading strong {
+  color: var(--text);
+  white-space: nowrap;
+  font-weight: 650;
+}
+.start-progress {
+  height: 6px;
+  border-radius: 99px;
+  background: var(--border);
+  overflow: hidden;
+  margin: 10px 0 23px;
+}
+.start-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
+  transition: width 0.2s ease;
+}
+.start-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.start-steps > li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  min-width: 0;
+  background: var(--surface-2);
+}
+.start-steps > .is-current {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+}
+.start-step-number {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+}
+.is-current > .start-step-number,
+.is-done > .start-step-number {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg-0);
+}
+.start-step-copy {
+  flex: 1;
+  min-width: 0;
+}
+.start-step-copy strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.start-step-copy p {
+  margin: 5px 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+  max-width: 490px;
+}
+.start-step-state {
+  font-size: 11px;
+  color: var(--muted);
+  display: block;
+  margin-top: 5px;
+}
+.is-current .start-step-state,
+.is-done .start-step-state {
+  color: var(--accent);
+}
+.start-steps .button {
+  font-size: 12px;
+  padding: 10px 13px;
+  min-height: 40px;
+  flex-shrink: 0;
+  max-width: 100%;
+  white-space: normal;
+}
+.start-reassurance {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+  margin: 20px 0;
+}
+.start-reassurance svg {
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.start-faq {
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+.start-faq details,
+.product-help-faq {
+  border-bottom: 1px solid var(--border);
+  padding: 13px 0;
+  font-size: 13px;
+}
+.start-faq summary,
+.product-help-faq summary {
+  cursor: pointer;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.start-faq details p,
+.product-help-faq p {
+  color: var(--muted);
+  line-height: 1.75;
+  margin: 10px 0 0;
+}
+.setup-progress {
+  max-width: 980px;
+  margin: 0 auto 24px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 14px;
+}
+.setup-progress-heading {
+  margin-bottom: 14px;
+}
+.setup-progress-heading > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.start-steps.is-compact {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.start-steps.is-compact > li {
+  padding: 10px 8px;
+  gap: 8px;
+  background: transparent;
+  border: 0;
+  align-items: flex-start;
+}
+.is-compact .start-step-number {
+  width: 25px;
+  height: 25px;
+  font-size: 11px;
+}
+.is-compact .start-step-copy strong {
+  font-size: 12px;
+}
+.is-compact .start-step-state {
+  font-size: 10px;
+  line-height: 1.4;
+}
+.setup-continue {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.topbar .topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.start-help-button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 8px 11px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  min-height: 36px;
+}
+.start-help-button:hover,
+.product-help-links > button:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+}
+.start-help-button:focus-visible,
+.start-faq summary:focus-visible,
+.product-help-links > button:focus-visible,
+.setup-continue:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.product-help-intro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 20px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.product-help-intro svg {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.product-help-intro p {
+  margin: 0;
+}
+.product-help-links {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+.product-help-links > button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 15px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.product-help-links strong {
+  font-size: 13px;
+  display: block;
+}
+.product-help-links small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.auth-entry-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+  margin: 16px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--border);
+}
+.candidate-group-heading {
+  font-size: 15px;
+  margin: 24px 0 8px;
+  color: var(--text);
+}
+.candidate-explanation {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+  margin: 6px 0 15px;
+}
+.interview-step-context {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+@media (max-width: 640px) {
+  .start-intro {
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .start-mascot {
+    width: 72px;
+    height: 72px;
+    border-radius: 15px;
+  }
+  .start-intro h2 {
+    font-size: 26px;
+  }
+  .start-intro p {
+    font-size: 13px;
+  }
+  .start-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  .start-steps > li {
+    flex-wrap: wrap;
+    padding: 14px;
+    gap: 11px;
+    align-items: flex-start;
+  }
+  .start-steps .button {
+    margin-left: 43px;
+  }
+  .start-step-copy {
+    flex-basis: calc(100% - 46px);
+  }
+  .start-steps.is-compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .start-steps.is-compact > li {
+    flex-wrap: nowrap;
+    padding: 7px 0;
+  }
+  .is-compact .start-step-copy {
+    flex-basis: auto;
+  }
+  .setup-progress {
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  .start-progress-label {
+    font-size: 11px;
+  }
+  .start-help-button {
+    padding: 7px 9px;
+  }
+  .topbar .topbar-actions {
+    gap: 7px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .start-progress > span {
+    transition: none;
+  }
+}
+@media (max-width: 480px) {
+  .start-help-button span {
+    display: none;
+  }
+  .start-help-button {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+}

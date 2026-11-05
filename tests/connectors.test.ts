@@ -22,6 +22,13 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 describe("Conectores: contratos oficiais e erros sem vagas artificiais", () => {
+  it.each([false,true])("não confunde benefícios genéricos com modelo de trabalho, preservando exigência híbrida real: %s",async hybrid=>{
+    vi.spyOn(globalThis,"fetch").mockResolvedValue(response({jobs:[{id:8036128003,title:"SOFTWARE ENGINEER .NET II (Junior)",
+      absolute_url:"https://job-boards.greenhouse.io/stone/jobs/8036128003",location:{name:"Remoto"},first_published:"2026-10-22T13:57:14Z",
+      content:`<p>Principal alavanca de crescimento. Desenvolvimento C# .NET.</p><p>Auxílio home office (apenas para contratos Híbridos ou Remotos).</p>${hybrid?'<p>Esta vaga exige trabalho híbrido, com três dias presenciais em São Paulo.</p>':''}`}]}));
+    const [job]=await connectors.greenhouse.discover(source("greenhouse",{board:"stone"}));
+    expect(job.level).toBe("Júnior");expect(job.modality).toBe(hybrid?"Híbrido":"Remoto");
+  });
   it("Greenhouse preserva URL e namespace, sem tratar atualização como publicação", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
       response({

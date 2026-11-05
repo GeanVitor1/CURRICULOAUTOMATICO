@@ -23,6 +23,14 @@ const result = (jobs = [job]) =>
   });
 
 describe("Antigravity remoto", () => {
+  it('parses the final validated result despite CLI diagnostics and decorated JSON',()=>{
+    const output='Warning: CLI diagnostic\n'+JSON.stringify({event:'result',result:{status:'SUCCESS',response:'Resultado da pesquisa:\n```json\n'+JSON.stringify({jobs:[job]})+'\n```\n'}});
+    expect(parseAntigravitySearch(output).jobs).toEqual([job]);
+    expect(parseAntigravitySearch(output).searchPerformed).toBe(false);
+    const stringOutput=JSON.stringify({event:'result',result:{status:'SUCCESS',structured_output:JSON.stringify({jobs:[job]})}});
+    expect(parseAntigravitySearch(stringOutput).jobs).toEqual([job]);
+    expect(()=>parseAntigravitySearch('Warning only')).toThrow('CLI_SEARCH_FAILED');
+  });
   it("restringe o uso da assinatura ao titular configurado", () => {
     vi.stubEnv("ANTIGRAVITY_ENABLED", "true");
     vi.stubEnv("ANTIGRAVITY_OWNER_ID", "owner");

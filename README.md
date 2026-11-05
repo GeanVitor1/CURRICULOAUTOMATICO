@@ -6,7 +6,11 @@ O mascote também acompanha o cadastro, o guia, a escrita do currículo, as busc
 
 ## Executar
 
-Requisitos: Node.js 22.12+ e npm.
+Requisitos: npm e Node.js com as correções de segurança de outubro de 2026: 22.23.4+, 24.22.1+ ou 26.12.1+ na respectiva linha. Veja `engines` em `package.json`. A Vercel seleciona a linha 26 entre as versões permitidas; a checagem de segurança também é executada no runtime da função.
+
+No Windows x64, `powershell -File scripts/install-secure-node.ps1` instala uma versão corrigida no usuário, conferindo o SHA-256 publicado pelo Node. Os comandos `npm run` do projeto selecionam essa instalação quando o Node global está desatualizado. Isso não altera a instalação global do Windows. API e executores recusam runtimes anteriores às versões corrigidas.
+
+O parsing de PDF/DOCX usa um processo descartável sem os segredos da API, com prazo de 15 segundos, heap de 192 MiB e interrupção quando o RSS observado excede 384 MiB. Upload, geração e reanálise têm cota persistida por conta. `npm run dev`, `npm run dev:api`, `npm test` e o build preparam o worker compilado necessário ao parser.
 
 ```powershell
 npm install

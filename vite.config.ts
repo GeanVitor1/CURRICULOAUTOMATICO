@@ -8,6 +8,8 @@ export default defineConfig(({ command }) => {
     server: {
       port: 5173,
       strictPort: true,
+      allowedHosts:
+        process.env.CODESPACES === "true" ? [".app.github.dev"] : undefined,
       fs: {
         deny: [
           ".env", ".env.*", "*.{crt,pem}", "**/.git/**",

@@ -31,7 +31,7 @@ export default function Applications() {
   const current = applications.find((app) => app.id === selectedId);
   const job = w.jobs.find((job) => job.id === current?.jobId);
   return (
-    <div>
+    <div className="career-flow applications-flow">
       <PageHead
         eyebrow="ENVIOS CONFIRMADOS"
         title="Candidaturas enviadas"
@@ -60,7 +60,7 @@ export default function Applications() {
             <thead>
               <tr>
                 <th>Oportunidade</th>
-                <th>Compatibilidade</th>
+                <th>Requisitos</th>
                 <th>Status</th>
                 <th>Data do envio</th>
               </tr>

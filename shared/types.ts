@@ -143,6 +143,7 @@ export type Routine = {
   discoveryProductivity?: Record<string, DiscoveryProductivity>;
   learnedBoards?: {type: Source['type']; board: string; company: string; verifiedAt: string}[];
   researchBudget?: { day: string; used: number };
+  discoveryBudget?: { day: string; target: number; examined: number };
   discoveryCheckpoints?: Record<string, { cursor: string; pending: boolean }>;
   discoveryContinuation?: { day: string; batches: number };
   progress?: {
@@ -260,14 +261,32 @@ export type Job = {
 };
 export type Event = { at: string; actor: string; message: string };
 export type Application = {
+  retryEvaluation?: { at: string; reconciliationId: string; attemptId: string; ready: boolean; score: number; blockers: string[] };
+  retryReview?: { fingerprint: string; reconciliationId: string; destinationUrl: string; resumeId: string; expiresAt: string; childId?: string };
+  retryOf?: { applicationId: string; attemptId: string; reconciliationId: string; fingerprint: string };
+  /** External reconciliation is appended; the original attempt remains immutable. */
+  reconciliations?: {
+    id: string;
+    at: string;
+    attemptId: string;
+    outcome: "not_received";
+    source: "official_employer_reply";
+    threadId: string;
+    messageId: string;
+    evidenceSha256: string;
+    replyAt: string;
+    quotaDisposition: "retained_post_submit_attempt";
+    retryAuthorized: false;
+  }[];
   execution?: { correlationId: string; runId?: string; origin: ExecutionOrigin };
   attempts?: SubmissionAttempt[];
   automaticAnswers?: AutomaticAnswer[];
   answerPolicyAttemptedAt?: string;
+  verifiedGupyDrafts?: {attemptId:string;at:string;nativeApplicationId:string;continuationUrl:string}[];
   answersUsed?: { question: string; value: string; at: string; source: string }[];
   missingDataConsent?: { fingerprint: string; resumeId: string; confirmedAt: string; expiresAt: string };
   /** Set only after the portal definitively pauses before final submission. */
-  resumeState?: { resumeId: string; destinationUrl: string; recordedAt: string; kind?: "ats"; targetUrl?: string };
+  resumeState?: { resumeId: string; destinationUrl: string; recordedAt: string; kind?: "ats"; targetUrl?: string; portalRuntimeVersion?: number };
   singleSubmission?: {
     confirmedAt: string;
     expiresAt: string;
@@ -379,6 +398,7 @@ export type Notice = {
   read: boolean;
 };
 export type Run = {
+  discoveryBudget?: {target:number;remaining:number;limit:number;examined:number};
   sourceProductivity?: DiscoveryProductivity[];
   continuation?: boolean;
   origin?: ExecutionOrigin;
@@ -420,6 +440,8 @@ export type SubmissionDiagnostic = {
   responseKind?: "validation_rejection" | "http_rejection" | "accepted_awaiting_confirmation" | "receipt_verified";
 };
 export type SubmissionAttempt = {
+  previousAttemptId?: string;
+  reconciliationId?: string;
   id: string;
   correlationId: string;
   runId?: string;
@@ -432,6 +454,25 @@ export type SubmissionAttempt = {
   diagnostic?: SubmissionDiagnostic;
 };
 export type Workspace = {
+  perfectResumes?: import('./perfect-resume').PerfectResume[];
+  /** Server-only atomic abuse budget and lease; stripped from API/export. */
+  processingSecurity?: {
+    buckets: Partial<Record<"upload" | "build" | "analysis", number[]>>;
+    lease?: {token:string;until:number};
+  };
+  portalVerification?: {id:string;until:number};
+  /** Bounded operational facts only, without candidate values or provider prose. */
+  workerEvents?: {
+    at: string;
+    kind: "discovery" | "resolution" | "submission";
+    state: "received" | "completed" | "failed";
+    subjectId: string;
+    messageId: string;
+    deliveryCount: number;
+    deployment?: string;
+    revision?: string;
+    errorCode?: string;
+  }[];
   /** One-way URL fingerprints prevent reapplying after clearing visible history. */
   submissionExclusions?: string[];
   /** Response revision used for lightweight change polling; not persisted in data. */
@@ -525,9 +566,12 @@ export type Workspace = {
     automatic: boolean;
     worker: boolean;
     scheduleWindow?: string;
+    /** Recent extension observations only; no credentials or automation grant. */
+    localPortalLogins?: Record<string, {observedAt:string;expiresAt:number;extensionVersion:string}>;
     portalConnections?: Record<
       string,
       {
+        sessionRetestVerified?: boolean;
         connectedAt: string;
         verifiedAt: string;
         profileResumeId: string | null;
@@ -597,7 +641,7 @@ export const defaultRoutine: Routine = {
   mode: "discovery",
   time: "08:00",
   dailyLimit: 5,
-  minScore: 80,
+  minScore: 0,
   lastRun: null,
   nextRun: null,
 };

@@ -3,6 +3,7 @@ import { isJobUrl, isPortalId } from "../shared/portals";
 import { automaticPortals, supportsAutomatic } from "./connectors";
 import { emailDestinationReady } from "./email-destination";
 import { googleOAuthConfig } from "./auth-config";
+import {permittedJobSource,permittedPublicationUrl,SOURCE_POLICY_MESSAGE} from '../shared/job-source-policy';
 import {
   destinationBrowserAllowed,
   independentExecutionAvailable,
@@ -10,6 +11,7 @@ import {
 } from "./ats-registry";
 
 export function submissionRoute(w: Workspace, job: Job, nativeSites: string[], options: {emailAvailable?:boolean} = {}) {
+  if(!permittedJobSource(job))return null;
   if (options.emailAvailable !== false && emailDestinationReady(job) && googleOAuthConfig())
     return {
       source: {
@@ -52,6 +54,7 @@ export function submissionRoute(w: Workspace, job: Job, nativeSites: string[], o
   const destination = job.destinations?.find(
     (item) =>
       item.state === "verified" &&
+      permittedPublicationUrl(item.url) &&
       item.formFound &&
       Date.parse(item.expiresAt) > Date.now() &&
       destinationBrowserAllowed(item) && destinationExecutionAvailable(item),
@@ -78,6 +81,7 @@ export function submissionRoute(w: Workspace, job: Job, nativeSites: string[], o
   return native ? { source: native, method: "browser" as const } : null;
 }
 export function submissionRouteBlocker(job: Job) {
+  if(!permittedJobSource(job))return SOURCE_POLICY_MESSAGE;
   const destinations = job.destinations || [];
   if (destinations.some(d => d.state === "blocked")) return "O destino bloqueou a automação ou exige verificação humana.";
   if (destinations.some(d => d.state === "login_required")) return "O destino exige autenticação e não possui executor independente liberado.";

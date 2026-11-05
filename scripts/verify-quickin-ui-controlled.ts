@@ -1,6 +1,6 @@
 import {chromium} from 'playwright';
 import {readFile,writeFile} from 'node:fs/promises';
-import {executeQuickinForm} from '../server/quickin-form';
+import {executeQuickinForm,quickinMediaReference} from '../server/quickin-form';
 import {guardAtsPage,atsHostResolverRules} from '../server/ats-network';
 import {defaultProfile} from '../shared/types';
 import {confirmCandidateDetails} from '../tests/fixtures/candidate-details';
@@ -14,7 +14,7 @@ profile.approvedAnswers=[{id:'qa-only',question:schema.at(-1).label,aliases:[],v
 const browser=await chromium.launch({headless:true,args:[`--host-resolver-rules=${await atsHostResolverRules(url)}`]});
 try{
  const context=await browser.newContext({serviceWorkers:'block'});await guardAtsPage(context,url);
- const intercepted:{method:string;path:string;bytes:number;fieldNames?:string[];syntheticIdentity?:boolean}[]=[];
+ const intercepted:{method:string;path:string;bytes:number;fieldNames?:string[];syntheticIdentity?:boolean;contractValid?:boolean;payloadFacts?:unknown}[]=[];
  // Every write is intercepted before reaching the publisher. This validates
  // their current UI with fictional data, not a real employer application.
  await context.route('**/*',async route=>{
@@ -25,7 +25,20 @@ try{
    intercepted.push(record);return route.fulfill({status:rejectUpload?413:200,contentType:'application/json',body:JSON.stringify(rejectUpload?{error:'Controlled rejection'}:{_id:'qa-media',name:'qa.pdf',extension:'pdf',title:'qa.pdf'})});
   }
   if(target.origin==='https://api.quickin.io'&&target.pathname==='/public/692a0e88fa9dcb00134dc379/apply'){
-   const data=JSON.parse(body?.toString()||'{}');intercepted.push({...record,fieldNames:Object.keys(data),syntheticIdentity:data.email==='qa@example.test'&&data.name==='Pessoa QA Fictícia'});
+   const data=JSON.parse(body?.toString()||'{}');
+   const contractValid=data.job_id==='6ad64c6582963200138f28c0'&&data.origin==='applied'&&
+     quickinMediaReference(data.resume_media_id)==='qa-media'&&schema.filter((f:any)=>f.required&&f.type!=='message').every((f:any)=>
+       data[f.name]!==undefined&&data[f.name]!==null&&data[f.name]!==''&&(!Array.isArray(data[f.name])||data[f.name].length>0));
+   const cpfField=schema.find((f:any)=>/\bCPF\b/i.test(f.label));
+   const payloadFacts={salaryType:typeof data.salary,salaryMatchesConfirmed:Number(data.salary)===profile.salaryDesired,
+     phoneArray:Array.isArray(data.phones),phoneValuesAreE164:Array.isArray(data.phones)&&data.phones.every((v:unknown)=>typeof v==='string'&&/^\+55\d{10,11}$/.test(v)),
+     cpfMatchesScopedAnswer:!!cpfField&&data[cpfField.name]==='52998224725',mediaReferenceMatches:quickinMediaReference(data.resume_media_id)==='qa-media'};
+   intercepted.push({...record,fieldNames:Object.keys(data),syntheticIdentity:data.email==='qa@example.test'&&data.name==='Pessoa QA Fictícia',contractValid,payloadFacts});
+   if(!contractValid) {
+     console.log(JSON.stringify({controlled:true,contractValid:false,jobMatches:data.job_id==='6ad64c6582963200138f28c0',originMatches:data.origin==='applied',
+       mediaShape:typeof data.resume_media_id,missing:schema.filter((f:any)=>f.required&&f.type!=='message'&&(data[f.name]===undefined||data[f.name]===null||data[f.name]==='')).map((f:any)=>f.name),fieldNames:Object.keys(data)}));
+     return route.fulfill({status:400,contentType:'application/json',body:JSON.stringify({name:'ValidationError',errors:{resume_media_id:{message:'Controlled contract mismatch'}}})});
+   }
    return route.fulfill({status:rejectApplication?400:200,contentType:'application/json',body:rejectApplication?JSON.stringify({name:'ValidationError',errors:{email:{message:'PRIVATE_SENTINEL'}}}):'{}'});
   }
   intercepted.push(record);return route.abort();
@@ -38,7 +51,8 @@ try{
  // Rejection fixture text can include provider-echoed fictitious values;
  // only the sanitized executor result is retained in those fixtures.
  if(suffix)report.visibleText='omitted for rejection diagnostic privacy';
- await writeFile(`artifacts/quickin-ui-controlled${suffix}-2026-10-23.json`,JSON.stringify(report,null,2));
+ const output=process.argv.find(a=>a.startsWith('--output='))?.slice(9)||`artifacts/quickin-ui-controlled${suffix}-2026-10-23.json`;
+ await writeFile(output,JSON.stringify(report,null,2));
  if(rejectUpload&&(result.status!=='action_required'||intercepted.length!==1||!result.retryable))throw Error('Upload rejection must stop before application POST');
  if(rejectApplication&&(result.status!=='unknown'||result.retryable||!result.message.includes('HTTP 400')||JSON.stringify(result).includes('PRIVATE_SENTINEL')))throw Error('Application rejection must remain uncertain and redact provider values');
  if(!suffix&&result.status!=='sent')throw Error('Controlled happy path failed');

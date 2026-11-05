@@ -11,11 +11,11 @@ import {
 } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
-  chromium,
   type Browser,
   type BrowserContext,
   type Page,
 } from "playwright";
+import { launchProtectedBrowser } from "./browser-egress";
 import {
   editableLoginFields,
   loginInputs,
@@ -23,7 +23,9 @@ import {
   submitLoginForm,
 } from "./portal-login-fields";
 import { candidatePortals } from "../shared/portals";
-import { dataDir } from "./db";
+import {sessionTransferSuspension} from './session-transfer-policy';
+import { dataDir,store,mutateWorkspace } from "./db";
+import {localLoginStatus} from './local-portal-login';
 import { encryptSecret, decryptSecret } from "./intelligence";
 import {
   authenticated,
@@ -39,7 +41,7 @@ import {
 } from "./portal-browser-policy";
 import { browserAuthorized } from "./provider-capabilities";
 import { portalBrowserRuntime } from "./browser-runtime";
-import { cloudPortalEnabled } from "./portal-cloud-policy";
+import { cloudPortalEnabled,cloudPortalCanApply } from "./portal-cloud-policy";
 import type { PortalLoginFrame } from "./portal-browser-service";
 import {
   cloudConnectionMetadata,
@@ -81,7 +83,7 @@ async function getBrowser() {
       throw new RequestError(
         "O navegador de candidaturas está indisponível. Instale o Chromium em um sistema compatível ou configure um navegador compatível no servidor.",
       );
-    browser = chromium.launch({
+    browser = launchProtectedBrowser({
       executablePath: runtime.executablePath,
       headless: true,
       chromiumSandbox: process.platform === "linux",
@@ -174,13 +176,19 @@ export async function connectionStatuses(userId: string) {
   const runtime = portalBrowserRuntime();
   return Promise.all(
     candidatePortals.map(async (portal) => {
+      if(portal==='linkedin'){
+        const [row]=await store.select('workspaces',{where:{field:'id',op:'==',value:`${userId}:live`}});
+        return localLoginStatus(row?.data.infrastructure.localPortalLogins?.linkedin);
+      }
       if (cloudPortalEnabled(userId, portal)) {
         const saved = await cloudConnectionMetadata(userId, portal);
         const expired = !!saved?.expiresAt && saved.expiresAt <= Date.now();
+        const suspension = sessionTransferSuspension(portal,userId);
+        const retestRequired = false;
         return {
           id: portal,
-          connected: !!saved && !expired,
-          sessionState: saved
+          connected: !suspension && !retestRequired && !!saved && !expired,
+          sessionState: suspension ? 'suspended' : retestRequired ? 'retest_required' : saved
             ? expired
               ? "expired"
               : "verified"
@@ -189,9 +197,11 @@ export async function connectionStatuses(userId: string) {
           verifiedAt: saved?.verifiedAt || null,
           connectedAt: saved?.connectedAt || null,
           profileResumeId: saved?.profileResumeId || null,
-          connectable: true,
-          browserAvailable: true,
+          connectable: !suspension,
+          browserAvailable: !suspension,
+          suspensionReason: suspension,
           cloud: true,
+          submissionEnabled:cloudPortalCanApply(userId,portal),
         };
       }
       const saved = await load(userId, portal);
@@ -236,8 +246,10 @@ export async function readyPortals(userId: string, resumeId: string) {
     .filter(
       (connection) =>
         connection.connected &&
-        (!["gupy", "infojobs"].includes(connection.id) ||
-          connection.profileResumeId === resumeId),
+        connection.submissionEnabled!==false &&
+        (!cloudPortalEnabled(userId,connection.id)||cloudPortalCanApply(userId,connection.id)) &&
+        (!(cloudPortalEnabled(userId,connection.id)||["gupy", "infojobs"].includes(connection.id)) ||
+          (!!resumeId&&connection.profileResumeId === resumeId)),
     )
     .map((connection) => connection.id);
 }
@@ -525,6 +537,14 @@ export async function disconnectPortal(
   userId: string,
   portal: CandidatePortal,
 ) {
+  if(portal==='linkedin'){
+    await mutateWorkspace(`${userId}:live`,w=>{
+      if(w.infrastructure.localPortalLogins)delete w.infrastructure.localPortalLogins.linkedin;
+      if(w.infrastructure.portalConnections)delete w.infrastructure.portalConnections.linkedin;
+    });
+    // No provider requests: removing a local observation cannot log Chrome out.
+    return;
+  }
   if (cloudPortalEnabled(userId, portal)) {
     await disconnectCloudPortal(userId, portal);
     return;

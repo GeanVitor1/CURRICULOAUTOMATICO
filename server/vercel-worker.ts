@@ -4,6 +4,7 @@ import { validateHostedRuntime } from "./auth-config";
 import { withDiscoveryBudget } from "./discovery-budget";
 import { withAntigravitySearchSession } from "./antigravity";
 import { recoverInterruptedSends } from "./operations";
+import { observeWorker } from "./worker-observation";
 import {
   DiscoveryTaskBusyError,
   processNextDiscoveryTask,
@@ -22,12 +23,14 @@ export default client.handleNodeCallback(
     }
     console.info(JSON.stringify({event:'discovery_queue_received',taskId:parsed.data.taskId,messageId:metadata.messageId,deliveryCount:metadata.deliveryCount,topic:metadata.topicName,consumer:metadata.consumerGroup}));
     // The database claim prevents a duplicate delivery from repeating an application.
+    await observeWorker("discovery", parsed.data.taskId, metadata, async () => {
     await recoverInterruptedSends();
     await withDiscoveryBudget(240000, () =>
       withAntigravitySearchSession(() =>
         processNextDiscoveryTask(parsed.data.taskId),
       ),
     );
+    });
   },
   {
     visibilityTimeoutSeconds: 420,

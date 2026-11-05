@@ -25,6 +25,9 @@ const privateNames = [
   "DATABASE_URL",
   "REDIS_URL",
   "POSTGRES_PASSWORD",
+  "CRON_SECRET",
+  "QUEUE_INTEGRATION_KEY",
+  "AUTOMATION_OBSERVER_KEY",
 ];
 const keys = environments
   .flatMap((environment) => privateNames.map((name) => environment[name]))

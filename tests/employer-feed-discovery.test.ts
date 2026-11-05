@@ -34,3 +34,9 @@ it('preserva o ponto de .NET ao extrair o cargo declarado pelo empregador',async
   const result=await jobFromEmployerPost(page(next,{...post,articleBody:netBody},netBody),async(url)=>page(url,{},'Empresa Oficial talentos@empresa.example <a href="https://empresa.example/">Site oficial</a>'));
   expect(result?.title).toBe('Desenvolvedor .NET Pleno');
 });
+it.each(['Auxiliar administrativo','Vendedor','Auxiliar de logística','Recepcionista','Técnico de enfermagem'])(
+ 'aceita o cargo publicado %s sem uma lista exclusiva de profissões de TI',async title=>{
+  const article=body.replace('Desenvolvedor Full Stack Pleno',title);
+  const result=await jobFromEmployerPost(page(next,{...post,articleBody:article},article),async(url)=>page(url,{},'Empresa Oficial talentos@empresa.example <a href="https://empresa.example/">Site oficial</a>'));
+  expect(result?.title).toBe(title);
+ });

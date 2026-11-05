@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import {publicContact} from '../shared/public-contact';
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AnimatePresence,
@@ -24,7 +25,13 @@ import {
   UsersRound,
   Mail,
   LockKeyhole,
+  HelpCircle,
+  Link2,
+  Sparkles,
 } from "lucide-react";
+import {SetupProgress,ProductHelp} from './GettingStarted';
+import {needsCandidateDetailsPage} from '../shared/getting-started';
+import {authEntryPath,clearAppReturn,pendingAppReturn,rememberAppReturn,safeAppReturn,saveTheme,storedTheme} from '../shared/browser-navigation';
 import { Context, api } from "./lib";
 import { Logo, Mascot, Button, Field } from "./components";
 import type { Workspace } from "../shared/types";
@@ -36,6 +43,7 @@ import GoogleSignIn, {
 import { selectedPlan } from "./Pricing";
 const Landing = lazy(() => import("./Landing"));
 const RemotePortalLogin = lazy(() => import("./RemotePortalLogin"));
+const PortalConnectionFlow = lazy(() => import("./PortalConnectionFlow"));
 const CandidateDetails = lazy(() => import("./CandidateDetails"));
 const pages = {
   dados: CandidateDetails,
@@ -43,13 +51,17 @@ const pages = {
   candidaturas: lazy(() => import("./pages/Applications")),
   automacao: lazy(() => import("./SimpleAutomation")),
   curriculo: lazy(() => import("./SimpleResume")),
+  'curriculo-perfeito': lazy(() => import('./PerfectResume')),
   preferencias: lazy(() => import("./CareerInterview")),
   conta: lazy(() => import("./SimpleAccount")),
+  conexoes: lazy(() => import("./pages/Connections")),
 };
 const nav = [
   { id: "automacao", label: "Automação", icon: Zap },
   { id: "curriculo", label: "Currículo", icon: FileText },
+  { id: "curriculo-perfeito", label: "Currículo Perfeito", icon: Sparkles },
   { id: "preferencias", label: "Preferências", icon: Settings2 },
+  { id: "conexoes", label: "Conexões", icon: Link2 },
   { id: "candidaturas", label: "Candidaturas", icon: BriefcaseBusiness },
 ];
 const canonicalPage = (page: string) =>
@@ -64,6 +76,9 @@ const canonicalPage = (page: string) =>
   })[page] ||
   page ||
   "automacao";
+function optionalStorage(kind:'localStorage'|'sessionStorage'){
+  try{return window[kind];}catch{return null;}
+}
 function Privacy() {
   return (
     <div className="privacy-page">
@@ -100,6 +115,11 @@ function Privacy() {
         região; confira requisitos e elegibilidade antes de enviar dados ao
         empregador.
       </p>
+      <h2>Extensão do Chrome</h2>
+      <p>A extensão localiza as abas do EmpreGatos e do portal escolhido para realizar a conexão que você autorizou. Ela não lê senhas nem a sessão do Google. A autorização de acesso é solicitada separadamente para cada portal.</p>
+      <p>No LinkedIn, o reconhecimento acontece no próprio Chrome. Cookies, tokens e armazenamento de autenticação do LinkedIn não são transferidos. O servidor guarda somente a data da verificação, sua versão da extensão e o resultado associado à sua conta; esse registro não habilita candidaturas automáticas pelo LinkedIn.</p>
+      <p>Em Gupy, InfoJobs e Glassdoor, após sua autorização, cookies seguros e entradas de armazenamento relacionadas à autenticação do portal são enviados por HTTPS à sua conta do EmpreGatos para verificação em um navegador privado. A sessão fica armazenada de forma cifrada após a confirmação. Esses dados de autenticação não são enviados aos provedores de IA.</p>
+      <p>A extensão guarda no Chrome apenas o portal selecionado e o estado de abertura do login. Ela não guarda credenciais no armazenamento da extensão nem coleta sessões em segundo plano. As URLs das abas dos portais selecionados são usadas para localizar o login. Na área de conexões, você pode remover a conexão do projeto; na conta, pode solicitar a exclusão dos dados associados.</p>
       <h2>Assinaturas e pagamentos</h2>
       <p>
         Os planos pagos são assinaturas mensais com renovação automática. O
@@ -111,14 +131,12 @@ function Privacy() {
         financeiros podem ser mantidos pelo processador conforme suas
         obrigações.
       </p>
-      <h2>Operação desta instalação</h2>
-      <p>
-        Esta versão usa o armazenamento configurado pelo operador. Antes de
-        oferecê-la publicamente, o operador precisa informar sua identificação,
-        contato para pedidos de privacidade, prazo de retenção e política de
-        backups. Esta página descreve o comportamento implementado; não
-        substitui essas informações específicas da operação.
-      </p>
+      <h2>Responsável e contato</h2>
+      <p>O EmpreGatos é operado por <strong>{publicContact.name}</strong>. Para suporte, dúvidas sobre seus dados ou solicitações de privacidade, entre em contato pelo e-mail <a href={`mailto:${publicContact.email}`}>{publicContact.email}</a>.</p>
+      <h2>Armazenamento e retenção</h2>
+      <p>Conta, perfil, currículos, preferências e histórico permanecem associados à sua conta enquanto ela existir, até você remover esses dados ou excluir a conta. As conexões dos portais podem ser removidas separadamente na área de conexões. Excluir dados no EmpreGatos não exclui suas contas ou os dados mantidos pelos próprios portais de vagas.</p>
+      <p>Na configuração do banco conferida em 29 de outubro de 2026, o histórico técnico de versões tem retenção de uma hora e não há backups periódicos agendados. Isso não representa uma funcionalidade de recuperação oferecida pelo EmpreGatos. Você pode exportar os dados da conta antes de solicitar sua exclusão.</p>
+      <p>Registros técnicos e dados de cobrança mantidos pelos provedores de infraestrutura e pagamento seguem as regras desses serviços e suas obrigações de segurança. Para esclarecer a retenção de um dado específico ou solicitar sua remoção, use o contato de privacidade acima.</p>
       <a href="/" className="button" style={{ marginTop: 30 }}>
         Voltar ao início
       </a>
@@ -156,6 +174,8 @@ function AuthAnimation({ className }: { className: string }) {
 }
 function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
   const register = location.pathname === "/register";
+  const returnTo=pendingAppReturn(location.search,optionalStorage('sessionStorage'));
+  useEffect(()=>{if(returnTo)rememberAppReturn(optionalStorage('sessionStorage'),returnTo);},[returnTo]);
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
   const [error, setError] = useState(() =>
@@ -218,9 +238,9 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
                 <BriefcaseBusiness size={23} aria-hidden="true" />
               </span>
               <p>
-                Mais
+                Seu
                 <br />
-                oportunidades
+                currículo
               </p>
             </li>
             <li>
@@ -228,9 +248,9 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
                 <ChartNoAxesColumnIncreasing size={23} aria-hidden="true" />
               </span>
               <p>
-                No seu
+                Suas
                 <br />
-                ritmo
+                preferências
               </p>
             </li>
             <li>
@@ -238,9 +258,9 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
                 <UsersRound size={23} aria-hidden="true" />
               </span>
               <p>
-                Conexões
+                Você escolhe
                 <br />
-                reais
+                quando começar
               </p>
             </li>
           </ul>
@@ -261,8 +281,8 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
           </h1>
           <p>
             {register
-              ? "Crie sua conta e encontre oportunidades que combinam com você. Um passo de cada vez."
-              : "Encontre oportunidades que combinam com você e acompanhe cada candidatura em um só lugar."}
+              ? "Comece sem cartão. Depois, vamos guiar você pelo currículo, pelos dados e pelas vagas que procura."
+              : "Retome sua configuração ou acompanhe suas candidaturas. Seu próximo passo estará no painel."}
           </p>
           <GoogleSignIn disabled={busy} />
           <div className="auth-divider">
@@ -408,18 +428,19 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
             )}
             <Button type="submit" className="primary full" disabled={busy}>
               <span>
-                {busy ? "Aguarde…" : register ? "Criar minha conta" : "Entrar"}
+                {busy ? register ? "Criando sua conta…" : "Entrando na sua conta…" : register ? "Criar minha conta" : "Entrar"}
               </span>
               <ArrowRight size={22} aria-hidden="true" />
             </Button>
           </form>
-          <a className="auth-switch" href={register ? "/login" : "/register"}>
+          {register&&<p className="auth-entry-note">Depois do cadastro: adicione ou crie seu currículo, confirme seus dados e escolha as vagas. Os envios só começam quando você autorizar a rotina.</p>}
+          <a className="auth-switch" href={authEntryPath(register?'/login':'/register',returnTo)}>
             <UserRound size={22} aria-hidden="true" />
             {register ? "Já tenho uma conta" : "Criar uma conta"}
           </a>
           <div className="auth-foot">
             <LockKeyhole size={19} aria-hidden="true" />
-            Suas oportunidades. Seu ritmo.
+            Criar a conta não inicia candidaturas.
           </div>
         </div>
       </main>
@@ -432,30 +453,38 @@ export default function App() {
   const [route, setRoute] = useState(location.pathname);
   const [page, setPage] = useState(canonicalPage(location.hash.slice(1)));
   const [sidebar, setSidebar] = useState(false);
+  const [helpOpen,setHelpOpen]=useState(false);
   const [compact, setCompact] = useState(
     () => window.matchMedia("(max-width: 780px)").matches,
   );
   const sidebarRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const helpButtonRef=useRef<HTMLButtonElement>(null);
   const loggingOut = useRef(false);
   const [logoutPending, setLogoutPending] = useState(false);
-  const [theme, setTheme] = useState(
-    localStorage.getItem("orbita-theme") || "dark",
-  );
+  const [theme, setTheme] = useState(()=>storedTheme(optionalStorage('localStorage')));
   const [toastMessage, setToast] = useState<{
     text: string;
     error: boolean;
   } | null>(null);
   const me = useQuery({
     queryKey: ["me"],
-    queryFn: () => api<AuthIdentity>("/auth/me"),
+    queryFn: async () => {
+      const identity=await api<AuthIdentity>('/auth/me');
+      const previous=client.getQueryData<AuthIdentity>(['me']);
+      if(previous&&previous.id!==identity.id)client.removeQueries({predicate:q=>!['me','auth-providers'].includes(String(q.queryKey[0]))});
+      return identity;
+    },
+    staleTime:0,
+    refetchOnWindowFocus:true,
     enabled: ["/login", "/register", "/app"].includes(route),
   });
   const workspace = useQuery({
-    queryKey: ["workspace", false],
+    queryKey: ["workspace", false,me.data?.id],
     queryFn: () => api<Workspace>("/workspace?summary=true"),
     enabled: !!me.data && route === "/app",
   });
+  useEffect(()=>{setHelpOpen(false);},[me.data?.id]);
   useQuery({
     queryKey: ["workspace-version", me.data?.id],
     enabled: !!me.data && !!workspace.data && route === "/app",
@@ -464,7 +493,7 @@ export default function App() {
         "/workspace/version",
         { signal },
       );
-      const current = client.getQueryData<Workspace>(["workspace", false]);
+      const current = client.getQueryData<Workspace>(["workspace", false,me.data?.id]);
       // While work is active, check one timestamp. Fetch the dashboard and
       // dependent lists only when a worker has actually changed the workspace.
       if (version.revision && current && version.revision !== current.revision)
@@ -583,13 +612,18 @@ export default function App() {
       (workspace.isError &&
         (workspace.error as Error & { status?: number }).status === 401);
     if (sessionExpired && route === "/app") {
+      const returnTo=rememberAppReturn(optionalStorage('sessionStorage'),location.pathname+location.search+location.hash);
       client.clear();
-      history.replaceState({}, "", "/login");
+      history.replaceState({}, "", authEntryPath('/login',returnTo));
       setRoute("/login");
-    } else if (me.data && ["/login", "/register"].includes(route)) {
+    } else if (me.data && (["/login", "/register"].includes(route)||(route==='/app'&&pendingAppReturn('',optionalStorage('sessionStorage'))))) {
       const destination = selectedPlan() ? "conta" : "automacao";
-      history.replaceState({}, "", `/app#${destination}`);
-      setPage(destination);
+      const activePortal=new URLSearchParams(location.search).get('portal');
+      const currentPortal=route==='/app'&&['gupy','linkedin','infojobs','glassdoor'].includes(activePortal||'')?safeAppReturn(location.pathname+location.search):null;
+      const target=currentPortal||pendingAppReturn(location.search,optionalStorage('sessionStorage'))||`/app#${destination}`;
+      clearAppReturn(optionalStorage('sessionStorage'));
+      history.replaceState({}, "", target);
+      setPage(canonicalPage(location.hash.slice(1)));
       setRoute("/app");
     }
   }, [
@@ -603,7 +637,7 @@ export default function App() {
   ]);
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem("orbita-theme", theme);
+    saveTheme(optionalStorage('localStorage'),theme);
   }, [theme]);
   useEffect(() => {
     if (!toastMessage) return;
@@ -611,11 +645,12 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [toastMessage]);
   const w = workspace.data;
+  const displayPage=w&&needsCandidateDetailsPage(w,page)?'dados':page;
   const remotePortal = new URLSearchParams(location.search).get("portal");
   const Page = pages[page as keyof typeof pages] || pages.automacao;
   const title =
-    nav.find((item) => item.id === page)?.label ||
-    (page === "vagas" ? "Vagas encontradas" : "Minha conta");
+    nav.find((item) => item.id === displayPage)?.label ||
+    (displayPage === "vagas" ? "Vagas encontradas" : displayPage==='dados'?'Seus dados':"Minha conta");
   useEffect(() => {
     document.title =
       route === "/"
@@ -674,20 +709,20 @@ export default function App() {
       ) : !me.data ? (
         <Auth
           onSuccess={async () => {
+            client.removeQueries({predicate:q=>!['me','auth-providers'].includes(String(q.queryKey[0]))});
             await client.invalidateQueries({ queryKey: ["me"] });
-            history.replaceState({}, "", "/app");
-            setRoute("/app");
-            navigate(selectedPlan() ? "conta" : "automacao");
           }}
         />
       ) : route === "/app" &&
         (remotePortal === "gupy" ||
           remotePortal === "infojobs" ||
-          remotePortal === "glassdoor") ? (
+          remotePortal === "glassdoor" || remotePortal==='linkedin') ? (
         <Suspense
           fallback={<div className="app-loading">Carregando navegador…</div>}
         >
-          <RemotePortalLogin portal={remotePortal} workspace={w} />
+          {new URLSearchParams(location.search).get('flow')==='connections'
+            ? <PortalConnectionFlow portal={remotePortal}/>
+            : <RemotePortalLogin portal={remotePortal} workspace={w} />}
         </Suspense>
       ) : (
         <div className="app-shell simple-shell">
@@ -774,6 +809,7 @@ export default function App() {
                     setLogoutPending(true);
                     try {
                       await api("/auth/logout", { method: "POST" });
+                      setHelpOpen(false);
                       client.clear();
                       history.replaceState({}, "", "/login");
                       setRoute("/login");
@@ -814,7 +850,7 @@ export default function App() {
                 </button>
                 <span>{title}</span>
               </div>
-              <button
+              <div className="topbar-actions"><button type="button" ref={helpButtonRef} className="start-help-button" aria-label="Como usar o EmpreGatos" title="Como usar" onClick={()=>setHelpOpen(true)}><HelpCircle size={17} aria-hidden="true"/><span>Como usar</span></button><button
                 className="icon-button"
                 aria-label={
                   theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"
@@ -822,7 +858,7 @@ export default function App() {
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               >
                 {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
-              </button>
+              </button></div>
             </header>
             <main id="main-content" tabIndex={-1}>
               {workspace.isPending ? (
@@ -838,13 +874,14 @@ export default function App() {
               ) : (
                 w && (
                   <Context.Provider value={{ w, demo: false, navigate, toast }}>
+                    <SetupProgress page={displayPage}/>
+                    {helpOpen&&<ProductHelp open onClose={()=>{setHelpOpen(false);requestAnimationFrame(()=>helpButtonRef.current?.focus());}}/>}
                     <Suspense
                       fallback={
                         <div className="app-loading">Carregando...</div>
                       }
                     >
-                      {w.infrastructure.candidateDetailsRequired &&
-                      page !== "conta" ? (
+                      {needsCandidateDetailsPage(w,page) ? (
                         <CandidateDetails />
                       ) : (
                         <Page />

@@ -1,4 +1,8 @@
-# Pedido de confirmação da candidatura — enviado, aguardando resposta
+# Pedido de confirmação da candidatura — respondido
+
+> **Reconciliação aplicada em 26/10 às 11h58:** o banco agora registra **Falha no envio**, com evidência externa `not_received` vinculada à tentativa original, que foi preservada. Sem reenvio: a revalidação atual tem 49 pontos e bloqueio de senioridade. A reserva de 23/10 foi mantida conforme a regra de tentativa já transmitida. [Relatório final e evidências](../RELATORIO-AUTOMACAO-FINAL.md).
+
+**Atualização verificada em 26/10/2026:** resposta oficial de 23/10 às 16h18m57s Brasília, mensagem `1a16a33ce23f137c` na conversa `1a16937d1e63856d`, confirma que a candidatura IMW7499 não foi recebida. A empresa ofereceu nova inscrição ou envio do currículo para vínculo com a vaga. **Nenhum reenvio foi realizado e o banco não foi alterado pelo acompanhamento.** [Evidência sanitizada](../artifacts/globalti-official-reconciliation-2026-10-26.json). As informações abaixo preservam o registro do pedido original.
 
 Destinatário: contato@globalti.com.br, publicado no [site oficial da Global TI](https://www.globalti.com.br/).
 

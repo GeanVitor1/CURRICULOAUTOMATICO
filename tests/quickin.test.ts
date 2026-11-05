@@ -1,4 +1,4 @@
-import {describe,it,expect} from 'vitest';
+import {describe,it,expect,vi,afterEach} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {quickinFieldPlan,quickinResponseFailure,quickinMediaReference,type QuickinField} from '../server/quickin-form';
 import {defaultProfile} from '../shared/types';
@@ -12,8 +12,15 @@ import {matchesSelectedSites} from '../server/engine';
 import {submissionRoute} from '../server/submission-routing';
 const url='https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0/apply';
 const fields:QuickinField[]=JSON.parse(readFileSync('artifacts/quickin-globalti-form-schema-2026-10-23.json','utf8'));
+afterEach(()=>vi.unstubAllEnvs());
 function profile(){const p={...structuredClone(defaultProfile),confirmed:true,name:'Pessoa QA',email:'qa@example.test'};confirmCandidateDetails({profile:p} as any);return p;}
 describe('Quickin public form',()=>{
+ it('allows different verified Quickin employers through the explicit platform opt-in',()=>{
+  vi.stubEnv('ATS_BROWSER_AUTHORIZED','');vi.stubEnv('ATS_PUBLIC_FORM_PLATFORMS','quickin');
+  for(const board of ['retail','healthcare','administrative'])
+   expect(destinationBrowserAllowed({platform:'quickin',url:url.replace('/globalti/',`/${board}/`)})).toBe(true);
+  expect(destinationBrowserAllowed({platform:'quickin',url:url.replace('jobs.quickin.io','evil.example')})).toBe(false);
+ });
  it('reuses confirmed headline, state and PJ salary without manufacturing address, seniority or consent',()=>{
   const p=profile();p.headline='Desenvolvedor Full Stack';p.location='Ilhéus, BA';p.acceptsPj=true;
   const extra:QuickinField[]=[{name:'headline',label:'Cargo pretendido',type:'short_text',required:true},{name:'region',label:'Estado/Região',type:'short_text',required:true},{name:'salary',label:'Qual sua expectativa salarial como Prestador(a) ?',type:'short_text',required:true},{name:'address',label:'Endereço',type:'short_text',required:true},{name:'consent',label:'Autorizo o processamento dos meus dados',type:'boolean',required:true}];
@@ -52,7 +59,7 @@ describe('Quickin public form',()=>{
   p.approvedAnswers=[{id:'test',question:'Autorizo o processamento?',value:'talvez',aliases:[],confirmedAt:new Date().toISOString(),destinationUrl:url}];
   expect(quickinFieldPlan([{name:'consent',label:'Autorizo o processamento?',type:'boolean',required:true}],p,url).missing).toEqual(['Autorizo o processamento?']);
  });
- it('recognizes a verified official Quickin channel in a completed portal interview without changing selected sites',()=>{
+ it('preserves old publication evidence without restoring the removed employer or changing selected sites',()=>{
   const inspection=JSON.parse(readFileSync('artifacts/quickin-globalti-form-inspection-2026-10-23.json','utf8'))[0];
   const posting=JSON.parse(inspection.structured[0]),publication=url.slice(0,-6);
   const job=jobFromQuickinPage({id:'quickin-board:globalti',type:'manual',board:'globalti',company:'Global TI',enabled:true,discovery:true,application:true,status:''},{url:publication,status:200,contentType:'text/html',html:`<script type="application/ld+json">${JSON.stringify(posting)}</script><a href="${url}">Candidatar-se</a>`})!;
@@ -66,7 +73,7 @@ describe('Quickin public form',()=>{
   job.origins=[];expect(matchesSelectedSites(job,w)).toBe(true);
   const grant=process.env.ATS_BROWSER_AUTHORIZED,snapshot=process.env.PORTAL_CLOUD_SNAPSHOT_ID;
   try{process.env.ATS_BROWSER_AUTHORIZED='quickin:globalti';process.env.PORTAL_CLOUD_SNAPSHOT_ID='qa-snapshot';
-   expect(submissionRoute(w,job,[])?.method).toBe('ats_browser');
+   expect(submissionRoute(w,job,[])).toBeNull();
    delete process.env.ATS_BROWSER_AUTHORIZED;expect(submissionRoute(w,job,[])).toBeNull();
   }finally{if(grant===undefined)delete process.env.ATS_BROWSER_AUTHORIZED;else process.env.ATS_BROWSER_AUTHORIZED=grant;if(snapshot===undefined)delete process.env.PORTAL_CLOUD_SNAPSHOT_ID;else process.env.PORTAL_CLOUD_SNAPSHOT_ID=snapshot;}
   job.destinations![0].url=url.replace('globalti','other');expect(matchesSelectedSites(job,w)).toBe(false);
@@ -92,13 +99,13 @@ describe('Quickin public form',()=>{
   p.approvedAnswers[0].value='11111111111';expect(quickinFieldPlan(fields,p,url).missing).toContain(question);
   expect(quickinFieldPlan([{name:'consent',type:'boolean',label:'Aceito uso de dados para marketing',required:true}],p,url).missing).toHaveLength(1);
  });
- it('requires a board grant and restricts execution to the two publisher origins',()=>{
+ it('recognizes the historical publisher but an old board grant cannot override its removal',()=>{
   expect(detectAts(url)).toMatchObject({platform:'quickin',board:'globalti',postingId:'6ad64c6582963200138f28c0'});
   expect(detectAts(url.replace('jobs.quickin.io','jobs.quickin.io.evil.example'))).toBeNull();
   expect(atsExecutionHosts(url)).toEqual(['jobs.quickin.io','api.quickin.io']);
   const before=process.env.ATS_BROWSER_AUTHORIZED;
   try{delete process.env.ATS_BROWSER_AUTHORIZED;expect(destinationBrowserAllowed({platform:'quickin',url} as any)).toBe(false);
-   process.env.ATS_BROWSER_AUTHORIZED='quickin:globalti';expect(destinationBrowserAllowed({platform:'quickin',url} as any)).toBe(true);
+   process.env.ATS_BROWSER_AUTHORIZED='quickin:globalti';expect(destinationBrowserAllowed({platform:'quickin',url} as any)).toBe(false);
    expect(destinationBrowserAllowed({platform:'quickin',url:url.replace('/globalti/','/other/')} as any)).toBe(false);
   }finally{if(before===undefined)delete process.env.ATS_BROWSER_AUTHORIZED;else process.env.ATS_BROWSER_AUTHORIZED=before;}
  });

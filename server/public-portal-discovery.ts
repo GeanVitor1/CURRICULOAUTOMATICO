@@ -1,3 +1,4 @@
+import {searchWorkspaces,searchPlace,searchScopeText} from './search-scopes';
 import { randomUUID } from "node:crypto";
 import { discoverySignal } from "./discovery-budget";
 import { z } from "zod";
@@ -7,6 +8,7 @@ import { classify, extractSkills, locationMatches } from "./engine";
 import { decode } from "./html";
 import { SourceError } from "./connectors";
 import { publicDiscoveryAvailable } from "./provider-capabilities";
+import {discoveryCandidateLimit,takeDiscoveryCandidate} from './discovery-limits';
 
 export type PortalResult = {
   jobs: Job[];
@@ -164,7 +166,7 @@ const gupyJob = z.object({
   applicationDeadline: z.string().nullish(),
 });
 /** Read the public listings used by each portal; no account credentials or access to private listings. */
-export async function discoverPublicPortal(
+async function discoverPublicPortalScope(
   portal: "gupy" | "linkedin",
   workspace: Workspace,
 ): Promise<PortalResult> {
@@ -173,6 +175,7 @@ export async function discoverPublicPortal(
       "A busca LinkedIn exige autorização do provedor nesta instalação.",
     );
   const key = JSON.stringify([
+    discoveryCandidateLimit(450),
     portal,
     workspace.filters.titles,
     workspace.filters.locations,
@@ -224,6 +227,7 @@ async function readPublicPortal(
   titleSearch: for (const title of titles) {
     if (portal === "gupy") {
       const list: unknown[] = [];
+      const maximum=discoveryCandidateLimit(450), pageSize=Math.max(1,Math.min(50,maximum));
       const locations =
         workspace.filters.locations.length &&
         !(
@@ -233,9 +237,10 @@ async function readPublicPortal(
           ? workspace.filters.locations.slice(0, 3)
           : [""];
       for (const location of locations) {
+        if(list.length>=maximum)break;
         const params = new URLSearchParams({
           jobName: title,
-          limit: "50",
+          limit: String(pageSize),
           offset: "0",
         });
         const modalities = workspace.filters.modalities
@@ -261,7 +266,8 @@ async function readPublicPortal(
         // Bounded pagination; never infer an empty search from the first page alone.
         const seenPages = new Set<string>();
         for (let page = 0; page < 3; page++) {
-          params.set("offset", String(page * 50));
+          if(list.length>=maximum)break;
+          params.set("offset", String(page * pageSize));
           const response = await publicHtml(
             `https://portal.gupy.io/api/job-search/jobs?${params}`,
             "application/json",
@@ -284,16 +290,24 @@ async function readPublicPortal(
               "A Gupy repetiu uma página de resultados. A consulta precisa ser refeita.",
             );
           seenPages.add(signature);
-          list.push(...data);
+          const selected=data.filter(item=>{
+            const row=gupyJob.safeParse(item);if(!row.success)return true;
+            const mode=({remote:"Remoto","on-site":"Presencial",hybrid:"Híbrido"} as Record<string,string>)[row.data.workplaceType||""];
+            if(mode&&workspace.filters.modalities.length&&!workspace.filters.modalities.includes(mode))return false;
+            if(mode&&(mode!=="Remoto"||workspace.filters.remoteAnywhere===false)&&workspace.filters.locations.length&&!locationMatches([row.data.city,row.data.state].filter(Boolean).join(", "),workspace.filters.locations))return false;
+            return true;
+          });
+          list.push(...selected.slice(0,Math.max(0,maximum-list.length)));
           if (
-            data.length < 50 ||
-            (typeof total === "number" && (page + 1) * 50 >= total)
+            data.length < pageSize ||
+            (typeof total === "number" && (page + 1) * pageSize >= total)
           )
             break;
         }
       }
       let validRecords = 0;
       for (const item of list.slice(0, 450)) {
+        if(!takeDiscoveryCandidate())break titleSearch;
         const parsed = gupyJob.safeParse(item);
         if (!parsed.success || !isJobUrl("gupy", parsed.data.jobUrl)) continue;
         validRecords++;
@@ -350,9 +364,8 @@ async function readPublicPortal(
           workspace.filters.modalities.includes("Remoto")
             ? "Brazil"
             : workspace.filters.locations[0]) ||
-          workspace.profile.location ||
           "Brazil",
-        geoId: "106057199",
+        ...(workspace.filters.modalities.includes("Remoto")&&workspace.filters.remoteAnywhere!==false ? {geoId:"106057199"} : {}),
         start: "0",
       });
       if (workspace.filters.dateKnownOnly)
@@ -392,6 +405,8 @@ async function readPublicPortal(
           company = field("base-search-card__subtitle"),
           location = field("job-search-card__location");
         if (!id || !title || !company || !isJobUrl("linkedin", url)) continue;
+        if(!workspace.filters.modalities.includes('Remoto')&&location&&workspace.filters.locations.length&&!locationMatches(location,workspace.filters.locations))continue;
+        if(!takeDiscoveryCandidate())break titleSearch;
         const published = card.match(/datetime="([^"]+)"/)?.[1];
         const job = makeJob(portal, {
           title,
@@ -455,9 +470,19 @@ async function readPublicPortal(
     }
   }
   return {
-    jobs: [...jobs.values()],
+    jobs: [...jobs.values()].filter(job=>!['Remoto','Presencial','Híbrido'].includes(job.modality)||!workspace.filters.modalities.length||workspace.filters.modalities.includes(job.modality)),
     checkedAt: new Date().toISOString(),
     cached: false,
     method: "consulta à página pública",
   };
+}
+
+export async function discoverPublicPortal(portal: "gupy" | "linkedin",workspace:Workspace):Promise<PortalResult>{
+ const jobs=new Map<string,Job>();let latest:PortalResult|undefined;
+ for(const scoped of searchWorkspaces(workspace)){
+  if(discoveryCandidateLimit(1)<=0)break;
+  latest=await discoverPublicPortalScope(portal,scoped);
+  for(const job of latest.jobs)jobs.set(job.url,job);
+ }
+ return {...latest,jobs:[...jobs.values()],checkedAt:new Date().toISOString(),cached:latest?.cached||false};
 }

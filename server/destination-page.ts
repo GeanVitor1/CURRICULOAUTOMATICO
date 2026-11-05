@@ -141,6 +141,7 @@ export function publicationFromStructured(
     )
     .filter(Boolean);
   const ats = detectAts(pageUrl);
+  const classified = classify(`${data.title} ${decode(data.description)}`);
   return {
     ...original,
     title: decode(data.title),
@@ -156,9 +157,9 @@ export function publicationFromStructured(
         .filter(Boolean)
         .join("; ") ||
       "Não informado",
-    ...classify(`${data.title} ${data.description}`),
+    ...classified,
     modality:
-      data.jobLocationType === "TELECOMMUTE" ? "Remoto" : "Não informado",
+      [data.jobLocationType].flat().includes("TELECOMMUTE") ? "Remoto" : classified.modality,
     requisitionId:
       typeof data.identifier?.value === "string"
         ? data.identifier.value

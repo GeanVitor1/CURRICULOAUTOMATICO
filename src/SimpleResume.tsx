@@ -35,7 +35,7 @@ export default function SimpleResume() {
       const form = new FormData();
       form.append("file", file);
       await a.mutateAsync({ path: "/resumes", body: form });
-      toast("Currículo analisado. Vamos conhecer suas preferências.");
+      toast("Currículo recebido. Vamos conferir seus dados e escolher suas vagas.");
       navigate("preferencias");
     } catch (error) {
       setError(
@@ -52,8 +52,9 @@ export default function SimpleResume() {
     <div className="career-flow">
       <PageHead
         title="Seu currículo"
-        description="Envie o arquivo. Nós identificamos sua experiência e os cargos que combinam com ela."
+        description="Envie um PDF ou DOCX, ou crie seu primeiro currículo com nossa ajuda. Adicionar o documento não inicia candidaturas."
       />
+      {resume&&<section className="interview-card"><h2>Currículo Perfeito</h2><p>Crie uma nova versão a partir do link de uma vaga, revise no editor e baixe o PDF.</p><Button onClick={()=>navigate('curriculo-perfeito')}>Criar uma versão para outra oportunidade<ArrowRight size={16}/></Button></section>}
       <section className="interview-card">
         <Mascot
           className="journey-mascot"

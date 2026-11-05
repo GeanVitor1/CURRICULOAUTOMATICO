@@ -1,4 +1,6 @@
 import { sendAtsApplication } from "./ats-execution";
+import { activateAuthorizedPortal } from './submission-consent';
+import {permittedDiscoverySource,removedJobSource,SOURCE_POLICY_MESSAGE} from '../shared/job-source-policy';
 import "dotenv/config";
 import Fastify, { type FastifyRequest, type FastifyReply } from "fastify";
 import cookie from "@fastify/cookie";
@@ -10,9 +12,11 @@ import { mkdir, readFile, rm, stat } from "node:fs/promises";
 import { resolve, extname, relative } from "node:path";
 import { eq, and, lt, asc } from "./storage-types";
 import { z } from "zod";
-import { extractDocx } from "./documents";
-import { extractPdfText, PdfReaderUnavailableError } from "./pdf-text";
+import { PdfReaderUnavailableError } from "./pdf-text";
+import { parseResumeDocument } from "./document-processing";
+import { claimResumeProcessing, releaseResumeProcessing, ProcessingBudgetError, type ResumeProcessingAction } from "./processing-budget";
 import { createResumePdf, createResumeTextPdf, resumeText } from "./resume-pdf";
+import {registerPerfectResumeRoutes} from './perfect-resume-routes';
 import {
   store,
   dataDir,
@@ -153,7 +157,11 @@ import { applicationPreferenceFields } from "../shared/application-preferences";
 import { resolveApplicationDestinations } from "./destination-resolver";
 import { cloudPortalEnabled } from "./portal-cloud-policy";
 import { cloudPortalCommand } from "./portal-cloud";
-import { gupyBrowserSessionSchema } from "./gupy-browser-session";
+import {portalBrowserSessionSchema} from './portal-browser-session';
+import {sessionTransferSuspension,linkedinSessionRetestEnabled} from './session-transfer-policy';
+import {linkedinLocalNotice} from '../shared/session-transfer-policy';
+import {LOCAL_LOGIN_TTL} from './local-portal-login';
+import {browserConnectors,isBrowserSessionPortal} from '../shared/browser-connectors';
 import { dispatchNextApplication } from "./submission-dispatch";
 import {
   accountPlan,
@@ -199,6 +207,9 @@ export async function buildApp({ serveStatic = true } = {}) {
               "req.headers.cookie",
               "req.headers.authorization",
               "req.headers.x-empregatos-proxy-secret",
+              "req.headers.x-automation-observer-key",
+              "req.headers.x-queue-integration-key",
+              "req.headers.x-portal-viewer",
               "password",
               "token",
               "req.url",
@@ -281,6 +292,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     }
   });
   app.setErrorHandler((error: any, _request, reply) => {
+    if (error instanceof ProcessingBudgetError) reply.header("Retry-After",String(error.retryAfter));
     if (error instanceof z.ZodError)
       return reply.code(400).send({
         error: error.issues
@@ -376,6 +388,21 @@ export async function buildApp({ serveStatic = true } = {}) {
       );
     return { u, id, demo };
   }
+  const processingClaims = new WeakMap<FastifyRequest,{id:string;token:string}>();
+  function resumeProcessing(action: ResumeProcessingAction) {
+    return async (req: FastifyRequest) => {
+      const {id} = await scope(req), token = randomUUID();
+      await mutateWorkspace(id,w=>claimResumeProcessing(w,action,token));
+      processingClaims.set(req,{id,token});
+    };
+  }
+  app.addHook("onSend",async (req,_reply,payload)=>{
+    const claim = processingClaims.get(req);
+    if (!claim) return payload;
+    processingClaims.delete(req);
+    await mutateWorkspace(claim.id,w=>releaseResumeProcessing(w,claim.token)).catch(()=>{});
+    return payload;
+  });
   app.get("/api/health", async () => {
     await healthDb();
     return { status: "ok", database: databaseKind, revision: process.env.EMPREGATOS_REVISION || "development" };
@@ -596,8 +623,18 @@ export async function buildApp({ serveStatic = true } = {}) {
     const { id, u } = await scope(req);
     const w = (await readWorkspace(id))!;
     refreshMatches(w);
-    const sending = await applicationCapabilities(u.id, w.resumes[0]?.id || "");
-    const workers = queue ? await queue.getWorkers().catch(() => []) : [];
+    const [sending, workers, intelligence] = await Promise.all([
+      applicationCapabilities(u.id, w.resumes[0]?.id || ""),
+      queue ? queue.getWorkers().catch(() => []) : Promise.resolve([]),
+      w.demo
+        ? Promise.resolve({
+            provider: "local" as const,
+            model: "",
+            enabled: false,
+            keyConfigured: false,
+          })
+        : getIntelligence(u.id),
+    ]);
     w.infrastructure = {
       candidateDetailsRequired: !w.demo && !candidateDetailsReady(w.profile),
       database: databaseKind,
@@ -634,9 +671,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     w.jobs.forEach((j) => {
       j.application = applications.get(j.id);
     });
-    w.intelligence = w.demo
-      ? { provider: "local", model: "", enabled: false, keyConfigured: false }
-      : await getIntelligence(u.id);
+    w.intelligence = intelligence;
     if ((req.query as any).summary === "true") {
       const active = w.jobs.filter(
         (j) => !j.discarded && j.availability !== "closed",
@@ -656,19 +691,19 @@ export async function buildApp({ serveStatic = true } = {}) {
         recommended: visible.filter(
           (j) =>
             matchesObjectiveFilters(j, w.profile, w.filters) &&
-            j.match.score >= w.filters.minScore &&
-            !j.match.blockers.length &&
-            j.match.confidence !== "insufficient",
+            !j.match.blockers.length,
         ).length,
       };
       const previewIds = new Set(
         [...visible]
-          .sort((a, b) => b.match.score - a.match.score)
+          .sort((a,b) => Date.parse(b.discoveredAt)-Date.parse(a.discoveredAt))
           .slice(0, 8)
           .map((j) => j.id),
       );
       w.applications.forEach((a) => previewIds.add(a.jobId));
       w.jobs = w.jobs.filter((j) => previewIds.has(j.id));
+      // The editor loads private document versions on demand, outside the dashboard poll.
+      delete w.perfectResumes;
     }
     return publicWorkspace(w);
   });
@@ -685,7 +720,7 @@ export async function buildApp({ serveStatic = true } = {}) {
         radar: z.enum(["true", "false"]).default("false"),
         purpose: z.enum(["search", "manual"]).default("search"),
         tab: z.enum(["all", "compatible", "saved"]).default("all"),
-        sort: z.enum(["score", "recent"]).default("score"),
+        sort: z.enum(["score", "recent"]).default("recent"),
         demo: z.string().optional(),
       })
       .parse(req.query);
@@ -706,15 +741,9 @@ export async function buildApp({ serveStatic = true } = {}) {
               : matchesObjectiveFilters(j, w.profile, w.filters)) &&
           (q.tab !== "saved" || j.saved) &&
           (q.tab !== "compatible" ||
-            (j.match.confidence !== "insufficient" &&
-              !j.match.blockers.length &&
-              j.match.score >= w.filters.minScore)),
+            (!j.match.blockers.length)),
       )
-      .sort((a, b) =>
-        q.sort === "score"
-          ? b.match.score - a.match.score
-          : Date.parse(b.discoveredAt) - Date.parse(a.discoveredAt),
-      );
+      .sort((a,b)=>Date.parse(b.publishedAt||b.discoveredAt)-Date.parse(a.publishedAt||a.discoveredAt));
     return {
       items: jobs
         .slice((q.page - 1) * q.pageSize, q.page * q.pageSize)
@@ -771,6 +800,16 @@ export async function buildApp({ serveStatic = true } = {}) {
       import("./automation-conversion"),readyPortals(u.id,w.resumes[0]?.id||""),gmailConnection(u.id),
     ]);
     return automationConversion(w,native,email.connected);
+  });
+  app.get("/api/internal/automation-diagnostics", { config: { rateLimit: { max: 12, timeWindow: "1 minute" } } }, async (req, reply) => {
+    const { diagnosticsWorkspace, automationDiagnostics } = await import("./automation-diagnostics");
+    const workspaceId = diagnosticsWorkspace(req.headers["x-automation-observer-key"]);
+    if (!workspaceId) return reply.code(401).send({ error: "Acesso não autorizado." });
+    const { day } = z.object({ day: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(s => {
+      const d = new Date(`${s}T12:00:00Z`);
+      return Number.isFinite(d.getTime()) && d.toISOString().slice(0,10) === s;
+    }).default(billingDay()) }).parse(req.query);
+    return automationDiagnostics(store, workspaceId, day);
   });
   app.post("/api/internal/queue-integration",async req=>{
     const {publishQueueIntegration}=await import("./queue-integration-producer");
@@ -831,9 +870,11 @@ export async function buildApp({ serveStatic = true } = {}) {
   });
   app.get("/api/automation/sites", async (req) => {
     const u = await identity(req);
-    const resumeId = await store.latestResumeId(`${u.id}:live`);
+    const [resumeId, linkedIdentity] = await Promise.all([
+      store.latestResumeId(`${u.id}:live`),
+      linkedinIdentity(u.id),
+    ]);
     const connections = await applicationCapabilities(u.id, resumeId);
-    const linkedIdentity = await linkedinIdentity(u.id);
     return candidatePortals.map((site) => ({
       id: site,
       independentAutomatic: independentExecutionAvailable(),
@@ -858,24 +899,17 @@ export async function buildApp({ serveStatic = true } = {}) {
         !!linkedIdentity &&
         linkedIdentity.expiresAt <= Date.now(),
       oauthConfigured: site === "linkedin" && linkedinOAuthConfigured(),
-      limitation: officialPortalLoginOnly(site)
+      limitation: site==='linkedin'?linkedinLocalNotice:(officialPortalLoginOnly(site)
         ? cloudPortalEnabled(u.id, site)
-          ? "Conexão em navegador remoto na nuvem, sem instalação. A sessão só libera envios após autenticação e confirmação do currículo."
+          ? "Conexão pela extensão do Chrome ou pelo navegador da nuvem. A sessão só libera envios após autenticação e confirmação do currículo."
           : "Login diretamente no portal. Abrir ou fechar a aba não conecta sua sessão à automação do EmpreGatos."
-        : providerLimits[site],
+        : providerLimits[site]),
       applicationMethod: automaticPortals().includes(site)
         ? "authorized-api"
-        : connections.find((c) => c.id === site)?.connected
+        : connections.find((c) => c.id === site)?.submissionEnabled===false?'external':connections.find((c) => c.id === site)?.connected
           ? "authorized-browser"
           : "external",
-      needsResumeApproval:
-        ["gupy", "infojobs"].includes(site) &&
-        connections.some(
-          (connection) =>
-            connection.id === site &&
-            connection.connected &&
-            connection.profileResumeId !== resumeId,
-        ),
+      needsResumeApproval:connections.find(connection=>connection.id===site)!.needsResumeApproval,
       automatic: connections.find((connection) => connection.id === site)!
         .automatic,
     }));
@@ -958,6 +992,8 @@ export async function buildApp({ serveStatic = true } = {}) {
     const { u, demo } = await scope(req);
     if (demo) throw new RequestError("Conecte os sites na sua conta real.");
     const portal = connectionPortal.parse((req.params as any).portal);
+    const suspension = sessionTransferSuspension(portal,u.id);
+    if (interactive && suspension) throw new RequestError(suspension);
     if (
       interactive &&
       officialPortalLoginOnly(portal) &&
@@ -983,22 +1019,49 @@ export async function buildApp({ serveStatic = true } = {}) {
     }
     return { u, portal };
   };
+  app.get('/api/connections/browser-extension-context',async (req,reply)=>{
+    const u=await identity(req),portal=z.enum(['gupy','infojobs','glassdoor','linkedin']).parse((req.query as any).portal);
+    reply.header('Cache-Control','no-store');
+    if(portal==='linkedin'){
+      const w=await readWorkspace(`${u.id}:live`);
+      return {portal,account:{id:u.id,name:u.name,email:u.email},available:true,mode:'local-browser',notice:linkedinLocalNotice,localLogin:w?.infrastructure.localPortalLogins?.linkedin||null};
+    }
+    return {portal,account:{id:u.id,name:u.name,email:u.email},available:cloudPortalEnabled(u.id,portal),mode:'cloud-session',unavailableReason:sessionTransferSuspension(portal,u.id)};
+  });
+  app.post('/api/connections/:portal/local-browser',{config:{rateLimit:{max:4,timeWindow:'1 minute'}}},async(req,reply)=>{
+    const {u,portal}=await connectionScope(req);
+    if(portal!=='linkedin')throw new RequestError('Este portal usa o fluxo de conexão por sessão.');
+    const body=z.object({authorizeLocalConnection:z.literal(true),expectedUserId:z.string().uuid(),authenticated:z.literal(true),extensionVersion:z.string().regex(/^\d+(\.\d+){1,3}$/).max(20)}).strict().parse(req.body);
+    if(body.expectedUserId!==u.id)throw new RequestError('A conta do EmpreGatos mudou. Confira o destino e autorize novamente.');
+    const observation={observedAt:new Date().toISOString(),expiresAt:Date.now()+LOCAL_LOGIN_TTL,extensionVersion:body.extensionVersion};
+    await mutateWorkspace(`${u.id}:live`,w=>{w.infrastructure.localPortalLogins||={};w.infrastructure.localPortalLogins.linkedin=observation;});
+    reply.header('Cache-Control','no-store');
+    return {portal,mode:'local-browser',localLogin:observation,automatic:false};
+  });
   app.post("/api/connections/:portal/browser-session", {
     config: { rateLimit: { max: 4, timeWindow: "1 minute" } },
   }, async (req, reply) => {
     const { u, portal } = await connectionScope(req, true);
-    if (portal !== "gupy") throw new RequestError("Esta conexão está disponível somente para a Gupy.");
+    if(!isBrowserSessionPortal(portal))throw new RequestError('Portal não suportado pelo conector.');
     const body = z.object({
       authorizeSessionTransfer: z.literal(true),
-      state: gupyBrowserSessionSchema,
+      state: portalBrowserSessionSchema(portal),
+      expectedUserId:z.string().uuid().optional(),
     }).strict().parse(req.body);
     reply.header("Cache-Control", "no-store");
-    if (!cloudPortalEnabled(u.id, "gupy"))
-      throw new RequestError("A conexão da Gupy não está disponível para esta conta.");
-    return cloudPortalCommand(u.id, "gupy", {
+    if(body.expectedUserId&&body.expectedUserId!==u.id)throw new RequestError('A conta do EmpreGatos mudou. Confira o destino e autorize novamente.');
+    if (!cloudPortalEnabled(u.id, portal))
+      throw new RequestError(`A conexão do ${browserConnectors[portal].name} não está disponível para esta conta.`);
+    return cloudPortalCommand(u.id, portal, {
       op: "import-browser-session", browserSession: body.state,
       viewerOrigin: req.headers.origin || appOrigins()[0],
     });
+  });
+  app.post('/api/connections/:portal/check-runtime',{config:{rateLimit:{max:2,timeWindow:'1 minute'}}},async(req,reply)=>{
+    const {u,portal}=await connectionScope(req,true);
+    if(portal!=='linkedin'||!linkedinSessionRetestEnabled(u.id))throw new RequestError('O teste de conexão do LinkedIn está indisponível.');
+    reply.header('Cache-Control','no-store');
+    return cloudPortalCommand(u.id,portal,{op:'connection-policy'});
   });
   app.post(
     "/api/connections/:portal/open",
@@ -1115,6 +1178,7 @@ export async function buildApp({ serveStatic = true } = {}) {
           profileResumeId: z.null(),
         }).strict().parse(req.body);
       } else {
+        if(portal==='linkedin')throw new RequestError('A sessão do LinkedIn pode ser salva sem ativar envios. A integração de envio é separada.');
         z.object({
           authorizeAutomation: z.literal(true),
           profileResumeId: z.string().min(1),
@@ -1142,15 +1206,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     if (cloudPortalEnabled(u.id, portal) && profileResumeId) {
       const nativeSites = await readyPortals(u.id, profileResumeId);
       await mutateWorkspace(`${u.id}:live`, (w) => {
-        if (
-          !w.profile.confirmed ||
-          !w.resumes.some((r) => r.id === profileResumeId && r.approved) ||
-          !w.interview?.completed ||
-          w.interview.answers.resumeId !== profileResumeId
-        )
-          return;
-        w.routine.enabled = true;
-        w.routine.mode = "automatic";
+        if (!activateAuthorizedPortal(w, portal, profileResumeId, nativeSites)) return;
         w.routine.nextRun = nextExecution(w.routine.time);
         queuePreparedApplications(w, nativeSites);
         automatic = true;
@@ -1187,20 +1243,22 @@ export async function buildApp({ serveStatic = true } = {}) {
     );
     if (demo && body.start !== "save")
       throw new RequestError("A demonstração não inicia buscas ou envios.");
-    const availableSites = [
-      ...(independentExecutionAvailable() ? ["independent"] : []),
-      ...automaticPortals(),
-      ...(await readyPortals(u.id, body.answers.resumeId)),
-    ];
-    await mutateWorkspace(id, (w) => {
-      w.routine.time = scheduledTime(w.routine.time);
+    const availableSites = body.complete
+      ? [
+          ...(independentExecutionAvailable() ? ["independent"] : []),
+          ...automaticPortals(),
+          ...(await readyPortals(u.id, body.answers.resumeId)),
+        ]
+      : [];
+    const routine = await mutateWorkspace(id, (w) => {
+      if (body.complete) w.routine.time = scheduledTime(w.routine.time);
       applyInterview(w, body, availableSites);
-      refreshMatches(w);
+      if (body.complete) refreshMatches(w);
+      return w.routine;
     });
     if (body.complete) {
-      const w = (await readWorkspace(id))!;
-      await configureSchedule(id, w.routine.enabled, w.routine.time);
-      if (w.routine.enabled) await enqueueDiscovery(id);
+      await configureSchedule(id, routine.enabled, routine.time);
+      if (routine.enabled) await enqueueDiscovery(id);
     }
     return { ok: true };
   });
@@ -1456,9 +1514,40 @@ export async function buildApp({ serveStatic = true } = {}) {
       const used=await tx.count("applicationUsage",and(eq("userId",u.id),eq("day",billingDay())));
       return queuePreparedApplications(w, nativeSites, dailyLimit-Math.max(0,used-dailySubmissionAttempts(w)), jobId);
     });
-    await dispatchNextApplication(id);
-    await (await import("./automatic-cycle")).continueAutomaticCycle(id);
+    const dispatched = await dispatchNextApplication(id);
+    // The durable submission worker owns continuation after dispatch. Waiting
+    // for another full workspace cycle here can return 504 after queuing.
+    if (!dispatched) await (await import("./automatic-cycle")).continueAutomaticCycle(id);
     return { ok: true, queued };
+  });
+  app.post('/api/applications/:appId/verify-draft',{config:{rateLimit:{max:2,timeWindow:'1 minute'}}},async req=>{
+    const {id,demo}=await scope(req);if(demo)throw new RequestError('Use sua conta real.');
+    const appId=z.string().uuid().parse((req.params as {appId:string}).appId);
+    const w=(await readWorkspace(id))!;
+    if(!(await import('./gupy-draft-recovery')).recoverableGupyDraft(w,appId))throw new RequestError('Esta tentativa não permite verificação de rascunho.');
+    const a=w.applications.find(a=>a.id===appId)!;
+    const queued=await (await import('./submission-dispatch')).dispatchGupyDraftVerification(id,appId,a.attempts!.at(-1)!.id);
+    if(!queued)throw new RequestError('A fila de verificação não está disponível.');
+    return {ok:true,queued,readOnlyVerification:true};
+  });
+  app.post("/api/applications/:appId/retry/review", {config:{rateLimit:{max:3,timeWindow:"1 minute"}}}, async req=>{
+    const {id,u,demo}=await scope(req);
+    if(demo)throw new RequestError("Use sua conta real.");
+    const appId=(req.params as {appId:string}).appId;
+    const snapshot=(await readWorkspace(id))!;
+    const {reviewReconciledRetry,recordReconciledRetryReview}=await import("./reconciled-retry");
+    const result=await reviewReconciledRetry(snapshot,appId,(await accountPlan(u.id)).dailyLimit,sendAtsApplication);
+    await mutateWorkspace(id,w=>recordReconciledRetryReview(w,appId,result));
+    return {ready:result.ready,blockers:result.blockers,score:result.score,review:result.review};
+  });
+  app.post("/api/applications/:appId/retry/authorize",async req=>{
+    const {id,demo}=await scope(req);
+    if(demo)throw new RequestError("Use sua conta real.");
+    const body=z.object({confirmation:z.literal(true),fingerprint:z.string().regex(/^[a-f0-9]{64}$/)}).parse(req.body);
+    const {authorizeReconciledRetry}=await import("./reconciled-retry");
+    const applicationId=await mutateWorkspace(id,w=>authorizeReconciledRetry(w,(req.params as {appId:string}).appId,body.fingerprint).id);
+    await dispatchNextApplication(id);
+    return {applicationId,status:"queued"};
   });
   app.post("/api/applications/:appId/confirm-not-submitted", async req => {
     const {id,demo}=await scope(req);
@@ -1513,6 +1602,7 @@ export async function buildApp({ serveStatic = true } = {}) {
               ? "Busca pública · candidatura no portal"
               : "API pública · candidatura assistida",
       };
+      if((source.discovery&&!permittedDiscoverySource(source))||[source.board,source.company].some(removedJobSource))throw new RequestError(SOURCE_POLICY_MESSAGE);
       w.sources.push(source);
       return source;
     });
@@ -1999,6 +2089,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       return a;
     });
   });
+  registerPerfectResumeRoutes(app,scope,()=>resumeProcessing('analysis'));
   app.put("/api/resumes/draft", async (req) => {
     const { id } = await scope(req);
     const draft = z
@@ -2021,7 +2112,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     });
     return { ok: true };
   });
-  app.post("/api/resumes/build", async (req) => {
+  app.post("/api/resumes/build", { preHandler:resumeProcessing("build"), config: { rateLimit: { max: 5, timeWindow: "1 minute" } } }, async (req) => {
     const { id, u, demo } = await scope(req);
     if (demo)
       throw new RequestError("Crie seu currículo no espaço de dados reais.");
@@ -2083,7 +2174,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     await configureSchedule(id, false, "08:00");
     return { resumeId };
   });
-  app.post("/api/resumes", async (req) => {
+  app.post("/api/resumes", { preHandler:resumeProcessing("upload"), config: { rateLimit: { max: 5, timeWindow: "1 minute" } } }, async (req) => {
     const { id, u, demo } = await scope(req);
     if (demo)
       throw new RequestError("Envie seu currículo no espaço de dados reais.");
@@ -2097,33 +2188,11 @@ export async function buildApp({ serveStatic = true } = {}) {
       throw new RequestError("Apenas PDF ou DOCX são aceitos.");
     if (ext === ".pdf" && buffer.subarray(0, 5).toString() !== "%PDF-")
       throw new RequestError("O arquivo não é um PDF válido.");
-    if (ext === ".docx") {
-      if (buffer.length < 46 || buffer.readUInt32LE(0) !== 0x04034b50)
-        throw new RequestError("O arquivo não é um DOCX válido.");
-      // Inspect central directory before decompression; reject zip bombs and non-document archives.
-      let bytes = 0,
-        entries = 0,
-        document = false;
-      for (let i = 0; i < buffer.length - 46; i++)
-        if (buffer.readUInt32LE(i) === 0x02014b50) {
-          bytes += buffer.readUInt32LE(i + 24);
-          entries++;
-          const nameLength = buffer.readUInt16LE(i + 28);
-          const name = buffer.subarray(i + 46, i + 46 + nameLength).toString();
-          if (name === "word/document.xml") document = true;
-        }
-      if (!document || bytes > 30 * 1024 * 1024 || entries > 500)
-        throw new RequestError(
-          "DOCX inválido ou excessivamente grande após descompactação.",
-        );
-    }
     let text = "";
     try {
-      if (ext === ".pdf") {
-        text = await extractPdfText(buffer);
-      } else text = extractDocx(buffer);
+      text = await parseResumeDocument(buffer, ext as ".pdf" | ".docx");
     } catch (error) {
-      if (error instanceof PdfReaderUnavailableError) throw error;
+      if (error instanceof PdfReaderUnavailableError || error instanceof RequestError || (error as {code?:string})?.code === "DOCUMENT_PROCESSING_LIMIT") throw error;
       throw new RequestError(
         "Não foi possível ler este documento. Tente um PDF com texto selecionável ou DOCX.",
       );
@@ -2188,7 +2257,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     await configureSchedule(id, false, "08:00");
     return { id: resumeId, name, skills: extractSkills(text) };
   });
-  app.post("/api/resumes/:resumeId/analyze", async (req) => {
+  app.post("/api/resumes/:resumeId/analyze", { preHandler:resumeProcessing("analysis"), config: { rateLimit: { max: 5, timeWindow: "1 minute" } } }, async (req) => {
     const { id, u, demo } = await scope(req);
     if (demo)
       throw new RequestError("Analise um currículo no seu espaço real.");

@@ -108,8 +108,12 @@
 }
 .career-flow .integration-info {
   display: grid;
-  gap: 12px;
-  padding: 20px 0;
+  gap: 14px;
+  padding: 20px 24px 24px;
+  justify-items: start;
+}
+.career-flow .integration-info > .field {
+  width: min(100%, 540px);
 }
 .career-flow .integration-info h3,
 .career-flow .integration-info p {

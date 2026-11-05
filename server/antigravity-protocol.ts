@@ -68,7 +68,8 @@ export function parseAntigravitySearch(output: string) {
   let searchPerformed = false;
   for (const line of output.split(/\r?\n/)) {
     if (!line.trim()) continue;
-    const event = JSON.parse(line);
+    let event: any;
+    try { event = JSON.parse(line); } catch { continue; }
     if (event.event === "result") result = event.result;
     const step = event.step_update;
     const tool = step?.tool_info;
@@ -98,14 +99,11 @@ export function parseAntigravitySearch(output: string) {
     }
   }
   if (result?.status !== "SUCCESS") throw new Error("CLI_SEARCH_FAILED");
-  const response =
-    result.structured_output ??
-    JSON.parse(
-      result.response
-        .trim()
-        .replace(/^```(?:json)?\s*/i, "")
-        .replace(/\s*```$/, ""),
-    );
+  const text = typeof result.response === 'string' ? result.response.trim() : '';
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i)?.[1];
+  const structured = result.structured_output;
+  const response = typeof structured === 'string' ? JSON.parse(structured) :
+    structured ?? JSON.parse(fenced ?? text);
   const parsed = antigravityJobsSchema.parse(response);
   const googleCitationUrls = new Set<string>();
   // CLI 1.3.5 omits native search output from its event stream. The opaque
@@ -135,6 +133,8 @@ export const antigravitySettings = {
       "read_url(lever.co)",
       "read_url(ashbyhq.com)",
       "read_url(smartrecruiters.com)",
+      "read_url(quickin.io)",
+      "read_url(abler.com.br)",
       "read_url(vertexaisearch.cloud.google.com)",
     ],
     deny: [

@@ -1,0 +1,31 @@
+export type PerfectResumeTemplate = 'essencial' | 'moderno' | 'executivo';
+export type PerfectResumeClaim = {text:string;evidence:string};
+export type PerfectResumeContent = {
+  headline:string;
+  summary:string;
+  skills:string[];
+  experience:{heading:string;period:string;bullets:PerfectResumeClaim[]}[];
+  education:string[];
+  projects:{heading:string;bullets:PerfectResumeClaim[]}[];
+  languages:string;
+  coverLetter:string;
+  changes:string[];
+  reviewNotes:string[];
+};
+export type PerfectResumeJob = {url:string;title:string;company:string;description:string;source:'link'|'pasted'};
+export type PerfectResume = {
+  id:string;
+  requestId:string;
+  sourceResumeId:string;
+  sourceFingerprint:string;
+  sourceResumeName:string;
+  createdAt:string;
+  updatedAt:string;
+  revision:number;
+  job:PerfectResumeJob;
+  template:PerfectResumeTemplate;
+  language:'pt-BR'|'en';
+  additionalContext:string;
+  contact:{name:string;email:string;phone:string;location:string;links:string[]};
+  content:PerfectResumeContent;
+};

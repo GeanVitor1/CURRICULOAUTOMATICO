@@ -34,7 +34,7 @@ export default function Dashboard() {
   const [selected, setSelected] = useState<Job | null>(null);
   const jobs = w.jobs
     .filter((j) => !j.discarded && j.availability !== "closed")
-    .sort((a, b) => b.match.score - a.match.score);
+    .sort((a,b)=>Date.parse(b.discoveredAt)-Date.parse(a.discoveredAt));
   const recommendations = useQuery({
     queryKey: ["jobs", "recommended", w.filters, w.profile, w.runs[0]?.status],
     queryFn: () =>

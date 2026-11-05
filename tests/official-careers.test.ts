@@ -48,8 +48,8 @@ describe("Busca e envio direto nas empresas", () => {
     expect(search.mock.calls[0][0]).toContain('.NET');expect(search.mock.calls[0][0]).toContain('1 ano(s)');expect(search.mock.calls[0][0]).not.toContain(w.profile.email);
   });
   it('pesquisa vagas por e-mail separadamente e confirma o endereço no anúncio e no site da empresa',async()=>{
-    const publication='https://empresa.example/carreiras/desenvolvedor-react';
-    const emailRecord={...record,url:publication,description:record.description+' Envie seu currículo para talentos@empresa.example.'};
+    const publication=url;
+    const emailRecord={...record,url:publication,hiringOrganization:{...record.hiringOrganization,url:'https://empresa.example/'},description:record.description+' Envie seu currículo para talentos@empresa.example.'};
     const search=vi.fn(async(_prompt:string)=>({available:true,urls:[publication]}));
     const result=await discoverCorporateEmailCareers(workspace(),undefined,{search,readPage:async(target)=>target===publication
       ? {...page(publication,emailRecord),html:`<h1>${record.title}</h1><p>Empresa Oficial ${emailRecord.description}</p><script type="application/ld+json">${JSON.stringify(emailRecord)}</script>`}
@@ -124,9 +124,8 @@ describe("Busca e envio direto nas empresas", () => {
         readPage,
       }),
     ).rejects.toThrow("oficiais");
-    // Unknown company domains may be inspected for the implemented native form;
-    // the URL alone never creates a job or grants submission.
-    expect(readPage).toHaveBeenCalledOnce();
+    // Unlisted websites are excluded before spending a page request.
+    expect(readPage).not.toHaveBeenCalled();
   });
   it("libera somente plataformas explícitas e confere a plataforma contra o domínio", () => {
     vi.stubEnv("ATS_BROWSER_AUTHORIZED", "");

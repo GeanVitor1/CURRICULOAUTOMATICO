@@ -18,7 +18,7 @@ O domínio, protocolo e caminho precisam ser exatamente iguais aos do callback e
 
 ## 2. Preparar a Vercel
 
-Importe o repositório com o preset **Vite**. O `vercel.json` já define `npm run build`, a pasta `dist`, a função Node `api/server.mjs` e as rotas. Selecione uma versão Node.js compatível com o projeto (22.12+).
+Importe o repositório com o preset **Vite**. O `vercel.json` já define `npm run build`, a pasta `dist`, a função Node `api/server.mjs` e as rotas. Use as linhas Node.js 22 ou 24 com as correções de outubro de 2026 (22.23.4+ ou 24.22.1+); confira `engines` no `package.json` e a versão efetiva da função após publicar.
 
 Em **Settings → Environment Variables**, configure estas variáveis no ambiente **Production**:
 

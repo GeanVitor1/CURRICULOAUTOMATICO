@@ -164,7 +164,7 @@ export function applyInterview(
       ? { destinationPolicy: body.destinationPolicy }
       : {}),
     dailyLimit: a.dailyLimit,
-    minScore: 70,
+    minScore: 0,
     nextRun: body.start === "save" ? null : nextExecution(w.routine.time),
   };
 }

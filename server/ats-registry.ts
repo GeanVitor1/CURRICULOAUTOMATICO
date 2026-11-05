@@ -1,5 +1,6 @@
 import type { ApplicationDestination, Job, Source } from "../shared/types";
 import { WP_JOBS_EVIDENCE } from "./company-board";
+import {permittedPublicationUrl} from '../shared/job-source-policy';
 export type AtsPlatform = ApplicationDestination["platform"];
 export function detectAts(
   value: string,
@@ -83,6 +84,7 @@ const publicFormPlatforms = [
   "lever",
   "ashby",
   "smartrecruiters",
+  "quickin",
 ] as const;
 /** Operator opt-in for supported public forms; never grants private API access. */
 export function enabledPublicFormPlatforms() {
@@ -97,6 +99,7 @@ export function enabledPublicFormPlatforms() {
 export function destinationBrowserAllowed(
   destination: Pick<ApplicationDestination, "url" | "platform">,
 ) {
+  if(!permittedPublicationUrl(destination.url))return false;
   if (
     !["greenhouse", "lever", "ashby", "smartrecruiters", "quickin", "company"].includes(
       destination.platform,

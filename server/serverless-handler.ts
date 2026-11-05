@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import type { FastifyInstance } from "fastify";
 
 const startupReasons = new Set([
+  "NODE_RUNTIME_UNSAFE",
   "DATABASE_URL_MISSING",
   "APP_ORIGIN_MISSING",
   "APP_ORIGIN_INVALID",
@@ -96,6 +97,7 @@ export function createServerlessHandler(build: () => Promise<FastifyInstance>) {
         JSON.stringify({
           event: "api_initialization_failed",
           reason,
+          runtime: {node:process.versions.node,undici:process.versions.undici},
           ...(reason === "UNEXPECTED_INITIALIZATION_FAILURE" ||
           reason.startsWith("ERR_REQUIRE_")
             ? {

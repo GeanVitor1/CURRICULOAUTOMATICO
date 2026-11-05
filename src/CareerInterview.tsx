@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, ArrowRight, Check, Play } from "lucide-react";
 import { Button, Field, Mascot, PageHead } from "./components";
 import { api, useAction, useApp } from "./lib";
 import { candidatePortals, portals } from "../shared/portals";
-import type { InterviewAnswers } from "../shared/types";
-import PortalConnections from "./PortalConnections";
+import type { InterviewAnswers, Workspace } from "../shared/types";
 import { useBilling } from "./Billing";
 import ApplicationPreferences from "./ApplicationPreferences";
 import { EmailConnection } from "./EmailApplications";
+import ReconciledRetry from "./ReconciledRetry";
 
 export type SiteCapability = {
   independentAutomatic?: boolean;
@@ -24,7 +24,9 @@ export type SiteCapability = {
   connectedAt?: string | null;
   profileResumeId?: string | null;
   needsResumeApproval?: boolean;
-  sessionState?: "disconnected" | "expired" | "verified" | "unavailable";
+  sessionState?: "disconnected" | "expired" | "verified" | "unavailable" | "suspended" | "retest_required" | "local_verified" | "local_stale";
+  connectionMode?: 'local-browser';
+  localLoginVerified?: boolean;
   sessionSaved?: boolean;
   verifiedAt?: string | null;
   authMethod?: "oauth" | "authorized-browser" | "external";
@@ -36,6 +38,7 @@ export type SiteCapability = {
   applicationBlocker?: string | null;
   applicationMessage?: string;
   browserAvailable?: boolean;
+  submissionEnabled?: boolean;
 };
 export function Choices({
   options,
@@ -72,6 +75,7 @@ export function Choices({
 export default function CareerInterview() {
   const { w, navigate, toast } = useApp();
   const a = useAction();
+  const client = useQueryClient();
   const billing = useBilling();
   const planLimit = billing.data?.dailyLimit || 5;
   const resume = w.resumes[0];
@@ -114,6 +118,7 @@ export default function CareerInterview() {
   );
   const [customTitle, setCustomTitle] = useState("");
   const [error, setError] = useState("");
+  const [extrasOpen,setExtrasOpen]=useState(false);
   const saving = useRef(false);
   const questionHeading = useRef<HTMLHeadingElement>(null);
   const previousStep = useRef(step);
@@ -215,13 +220,14 @@ export default function CareerInterview() {
       {
         path: "/interview",
         method: "PUT",
+        invalidate: complete,
         body: {
           step: next,
           answers,
           complete,
           ...(complete ? {answerAutomatically} : {}),
           start,
-          ...(officialAvailable ? { destinationPolicy: "official" } : {}),
+          destinationPolicy: w.routine.destinationPolicy || "any",
         },
       },
       {
@@ -235,7 +241,19 @@ export default function CareerInterview() {
                   : "Busca e preparação automáticas ativadas. O envio ainda será concluído por você.",
             );
             navigate("automacao");
-          } else setStep(next);
+          } else {
+            const draft = { step: next, completed: false, answers };
+            client.setQueriesData<Workspace>(
+              { queryKey: ["workspace"] },
+              (current) =>
+                !current
+                  ? current
+                  : current.interview?.completed
+                    ? { ...current, interviewDraft: draft }
+                    : { ...current, interview: draft },
+            );
+            setStep(next);
+          }
         },
         onSettled: () => {
           saving.current = false;
@@ -272,8 +290,6 @@ export default function CareerInterview() {
         title="Suas preferências"
         description="Uma pergunta de cada vez. Você pode mudar as respostas depois."
       />
-      <ApplicationPreferences />
-      <EmailConnection />
       <section
         className="interview-card"
         aria-label="Entrevista de preferências"
@@ -287,6 +303,7 @@ export default function CareerInterview() {
             ))}
           </div>
         </div>
+        <p className="interview-step-context">Escolha o que faz sentido para você. Cada etapa é salva ao clicar em Continuar; você pode voltar e ajustar depois.</p>
         <h2 ref={questionHeading} tabIndex={-1}>
           {questions[step]}
         </h2>
@@ -493,13 +510,10 @@ export default function CareerInterview() {
               <p className="interview-help">
                 Estes sites ajudam a descobrir vagas. Também buscamos
                 diretamente nas páginas de carreira das empresas. O envio
-                automático usa os formulários oficiais compatíveis e dispensa
-                conexão com os portais.
+                automático depende dos canais disponíveis. Se uma vaga exigir
+                login, mostraremos qual portal precisa ser conectado.
               </p>
-              <details className="interview-extra">
-                <summary>Conexões opcionais com portais</summary>
-                <PortalConnections selected={answers.sites} />
-              </details>
+              <div className="interview-help"><p>Você pode conectar suas contas dos portais na aba Conexões.</p><Button onClick={()=>navigate('conexoes')}>Gerenciar conexões</Button></div>
             </>
           )}
           {step === 5 && (
@@ -592,7 +606,8 @@ export default function CareerInterview() {
                 Buscamos oportunidades nos sites escolhidos e diretamente nas
                 empresas. O envio automático usa o currículo aprovado e os
                 formulários oficiais compatíveis. Vagas sem destino disponível
-                continuam para revisão; não é necessário instalar extensões.
+                continuam para revisão. Se um portal precisar da extensão,
+                mostraremos como instalar e conectar.
               </p>
               {capabilities.isError && (
                 <div className="recoverable-error" role="alert">
@@ -674,6 +689,11 @@ export default function CareerInterview() {
           </div>
         </fieldset>
       </section>
+      <details className="interview-extra" onToggle={event=>setExtrasOpen(event.currentTarget.open)}>
+        <summary>Outras opções para suas candidaturas</summary>
+        <p>Você pode ajustar regras de resposta e conectar o e-mail quando precisar. Primeiro, conclua as perguntas acima.</p>
+        {extrasOpen&&<><ApplicationPreferences/><ReconciledRetry/><EmailConnection/></>}
+      </details>
     </div>
   );
 }

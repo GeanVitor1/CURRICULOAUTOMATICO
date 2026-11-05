@@ -9,6 +9,9 @@ export type GupyFixtureOptions = {
   already?: boolean;
   differentJob?: boolean;
   ambiguous?: boolean;
+  initialSkeletonMs?: number;
+  customSource?: boolean;
+  optionalWarning?: 'continue'|'submit';
 };
 export type GupyFixtureMetrics = {
   updates: number;
@@ -22,10 +25,13 @@ export async function installGupyFixture(
 ) {
   const header =
     '<header><button aria-label="Menu">Menu</button><button id="header-message-icon" aria-label="Email"></button></header>';
+  const additionalSource=options.customSource
+    ? '<label>Onde você encontrou essa vaga? (Opcional)<input role="combobox" readonly onclick="document.querySelector(\'#source-options\').hidden=false"></label><ul id="source-options" role="listbox" hidden><li role="option" onclick="window.additionalSource=this.textContent;document.querySelector(\'[role=combobox]\').value=this.textContent;this.parentElement.hidden=true;document.querySelector(\'#save-additional\').disabled=false">Site da empresa</li><li role="option">LinkedIn</li></ul>'
+    : '<label>Onde você encontrou essa vaga? (Opcional)<select><option value="">Selecione</option></select></label>';
   const script = `
     window.answers={};window.skills=[];
     function welcome(){document.body.innerHTML=${JSON.stringify(header + "<h1>Olá Pessoa, vamos continuar sua candidatura?</h1><p>Você está se candidatando para " + title + '</p><button onclick="additional()">Continuar</button>')};}
-    function additional(){document.body.innerHTML=${JSON.stringify(header + `<h1>Dados adicionais</h1><fieldset><legend>Alguém que trabalha nesta empresa indicou você para esta vaga?</legend><label><input type="radio" name="referral" value="Sim">Sim</label><label><input type="radio" name="referral" value="Não" checked>Não</label></fieldset><fieldset><legend>Você trabalha na empresa Fixture?</legend><label><input type="radio" name="employee" value="Sim">Sim</label><label><input type="radio" name="employee" value="Não" checked>Não</label></fieldset><label>Onde você encontrou essa vaga? (Opcional)<select><option value="">Selecione</option></select></label><button onclick="questionsIntro()">Salvar e continuar</button>`)};}
+    function additional(){document.body.innerHTML=${JSON.stringify(header + `<h1>Dados adicionais</h1><fieldset><legend>Alguém que trabalha nesta empresa indicou você para esta vaga?</legend><label><input type="radio" name="referral" value="Sim">Sim</label><label><input type="radio" name="referral" value="Não" checked>Não</label></fieldset><fieldset><legend>Você trabalha na empresa Fixture?</legend><label><input type="radio" name="employee" value="Sim">Sim</label><label><input type="radio" name="employee" value="Não" checked>Não</label></fieldset>${additionalSource}<button id="save-additional" ${options.customSource?'disabled':''} onclick="questionsIntro()">Salvar e continuar</button>`)};}
     function questionsIntro(){document.body.innerHTML=${JSON.stringify(header + '<h1>Perguntas criadas pela empresa</h1><p>Para continuar com o processo responda as perguntas a seguir.</p><button onclick="questions()">Responder agora</button>')};}
     function questions(){document.body.innerHTML=${JSON.stringify(
       header +
@@ -38,9 +44,10 @@ export async function installGupyFixture(
       ${options.unknownRadio ? '<section><h3>5. Você possui certificação profissional? *</h3><label><input type="radio" name="certification" value="Sim" required>Sim</label><label><input type="radio" name="certification" value="Não" required>Não</label></section>' : ""}
       <button>Salvar e continuar</button></form>`,
     )};}
-    function saveQuestions(){window.answers=Object.fromEntries(new FormData(document.querySelector('form')));document.body.innerHTML=${JSON.stringify('<div role="dialog"><h3>Apresente-se!</h3><p>Você pode fazer uma apresentação pessoal para esta vaga.</p><button onclick="personalization()">Personalizar candidatura</button><button onclick="finish()">Finalizar candidatura</button></div>')};}
+    function saveQuestions(){window.answers=Object.fromEntries(new FormData(document.querySelector('form')));${options.optionalWarning ? 'document.body.innerHTML='+JSON.stringify('<div role="dialog"><h2>Perguntas opcionais não respondidas</h2><p>Existem perguntas opcionais que não foram respondidas. Deseja enviar assim mesmo?</p><button onclick="'+(options.optionalWarning==='submit'?'finish()':'presentationIntro()')+'">Enviar assim mesmo</button><button>Voltar e responder</button></div>')+';' : 'presentationIntro();'}}
+    function presentationIntro(){document.body.innerHTML=${JSON.stringify('<div role="dialog"><h3>Apresente-se!</h3><p>Você pode fazer uma apresentação pessoal para esta vaga.</p><button onclick="personalization()">Personalizar candidatura</button><button onclick="finish()">Finalizar candidatura</button></div>')};}
     function personalization(){document.body.innerHTML=${JSON.stringify(header + '<h1>Apresente-se!</h1><p>Fale sobre você e sua trajetória profissional (etapa opcional).</p><textarea id="personalization-step-text-area"></textarea>' + ["C#", ".NET", "Microsoft SQL Server"].map((v) => `<button onclick="window.skills.push('${v}');this.setAttribute('aria-label','${v} Remover habilidade destacada')">${v} Destacar habilidade</button>`).join("") + '<button onclick="finish()">Finalizar candidatura</button>')};}
-    async function finish(){window.answers.presentation=document.querySelector('textarea')?.value;window.answers.skills=window.skills;await fetch('/submit-fixture',{method:'POST',body:JSON.stringify(window.answers)});${options.ambiguous ? "document.body.innerHTML='<h1>Aguarde</h1><p>Processando sua candidatura. Não repita este envio.</p><button onclick=\"finish()\">Finalizar candidatura</button>';" : "document.body.innerHTML=" + JSON.stringify(header + "<h1>Candidatura finalizada!</h1><p>Agora a empresa Fixture vai analisar sua compatibilidade com a vaga e decidirá se você avança para as próximas etapas. Fique de olho no seu e-mail e telefone.</p><button>Acompanhar candidatura</button><p>" + "Rodapé da Gupy. ".repeat(20) + "</p>") + ";"}}
+    async function finish(){window.answers.additionalSource=window.additionalSource;window.answers.presentation=document.querySelector('textarea')?.value;window.answers.skills=window.skills;await fetch('/submit-fixture',{method:'POST',body:JSON.stringify(window.answers)});${options.ambiguous ? "document.body.innerHTML='<h1>Aguarde</h1><p>Processando sua candidatura. Não repita este envio.</p><button onclick=\"finish()\">Finalizar candidatura</button>';" : "document.body.innerHTML=" + JSON.stringify(header + "<h1>Candidatura finalizada!</h1><p>Agora a empresa Fixture vai analisar sua compatibilidade com a vaga e decidirá se você avança para as próximas etapas. Fique de olho no seu e-mail e telefone.</p><button>Acompanhar candidatura</button><p>" + "Rodapé da Gupy. ".repeat(20) + "</p>") + ";"}}
   `;
   await page.route("https://*.gupy.io/**", async (route) => {
     const url = new URL(route.request().url());
@@ -77,7 +84,9 @@ export async function installGupyFixture(
       });
     return route.fulfill({
       contentType: "text/html; charset=utf-8",
-      body: `<h2>Atualize seus dados</h2><p>Confirme seus contatos.</p><label>E-mail<input type="email" value="original@example.test"></label><label>Telefone<input value="11911111111"></label><button onclick="fetch('/account-update',{method:'POST'})">Atualizar</button>${options.contactBlocked ? "" : '<button onclick="welcome()">Me lembrar depois</button>'}<script>${script}</script>`,
+      body: options.initialSkeletonMs
+        ? `${header}<button>Diversidade</button><button>Habilidades</button><script>${script};setTimeout(welcome,${options.initialSkeletonMs})</script>`
+        : `<h2>Atualize seus dados</h2><p>Confirme seus contatos.</p><label>E-mail<input type="email" value="original@example.test"></label><label>Telefone<input value="11911111111"></label><button onclick="fetch('/account-update',{method:'POST'})">Atualizar</button>${options.contactBlocked ? "" : '<button onclick="welcome()">Me lembrar depois</button>'}<script>${script}</script>`,
     });
   });
   return metrics;
