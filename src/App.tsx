@@ -509,9 +509,9 @@ export default function App() {
     refetchInterval: (q) => {
       if (q.state.status === "error") return 30000;
       const data = workspace.data;
-      if(data?.routine.enabled && data.routine.progress && Date.now()-Date.parse(data.routine.progress.updatedAt)<10*60_000 && ['sending','searching','researching'].includes(data.routine.progress.state)) return 5000;
+      if(data?.routine.enabled && data.routine.progress && Date.now()-Date.parse(data.routine.progress.updatedAt)<10*60_000 && ['sending','searching','researching'].includes(data.routine.progress.state)) return 15000;
       if (data?.runs.some((run) => ["running", "queued"].includes(run.status)))
-        return 5000;
+        return 15000;
       if (
         data?.applications.some(
           (application) =>
@@ -519,7 +519,7 @@ export default function App() {
             (!!application.singleSubmission || (data.routine.enabled && data.routine.mode === "automatic")),
         )
       )
-        return 5000;
+        return 15000;
       if (
         data?.applications.some(
           (application) => application.status === "Enviando",
