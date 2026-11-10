@@ -10,6 +10,8 @@ COPY server ./server
 COPY tests ./tests
 COPY browser-tests ./browser-tests
 COPY scripts ./scripts
+COPY api ./api
+COPY migrations ./migrations
 COPY Video/README.md ./Video/README.md
 # The backend build does not package frontend images, videos or fonts.
 # TypeScript needs the media import declaration, not the binary file.
