@@ -3,7 +3,7 @@ WORKDIR /app
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 COPY package.json package-lock.json ./
 RUN npm ci
-COPY tsconfig.json vite.config.ts playwright.config.ts ./
+COPY tsconfig.json vite.config.ts playwright.config.ts vercel.json firestore.indexes.json ./
 COPY src ./src
 COPY shared ./shared
 COPY server ./server
