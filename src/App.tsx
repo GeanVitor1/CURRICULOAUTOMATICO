@@ -56,6 +56,7 @@ const pages = {
   preferencias: lazy(() => import("./CareerInterview")),
   conta: lazy(() => import("./SimpleAccount")),
   conexoes: lazy(() => import("./pages/Connections")),
+  onboarding: lazy(() => import("./Onboarding")),
 };
 const nav = [
   { id: "automacao", label: "Automação", icon: Zap },
@@ -70,7 +71,6 @@ const canonicalPage = (page: string) =>
     "visao-geral": "automacao",
     radar: "vagas",
     perfil: "preferencias",
-    onboarding: "preferencias",
     analises: "automacao",
     notificacoes: "candidaturas",
     configuracoes: "conta",
@@ -882,7 +882,9 @@ export default function App() {
                         <div className="app-loading">Carregando...</div>
                       }
                     >
-                      {needsCandidateDetailsPage(w,page) ? (
+                      {page === "onboarding" || (!w.onboarding?.completed && !w.interview?.completed && !w.resumes.length) ? (
+                        <pages.onboarding />
+                        ) : needsCandidateDetailsPage(w,page) ? (
                         <CandidateDetails />
                       ) : (
                         <Page />

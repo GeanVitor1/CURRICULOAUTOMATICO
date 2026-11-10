@@ -5,6 +5,7 @@ import { useAction, useApp } from "./lib";
 import ResumeBuilder from "./ResumeBuilder";
 import IntelligenceControl from "./IntelligenceControl";
 import ResumeReviewPanel from "./ResumeReviewPanel";
+import ResumeScore from "./ResumeScore";
 
 export default function SimpleResume() {
   const { w, navigate, toast } = useApp();
@@ -185,6 +186,7 @@ export default function SimpleResume() {
           </Button>
         )}
       </section>
+      {resume?.review && <div style={{maxWidth:460,margin:"0 auto 20px"}}><ResumeScore resume={resume} /></div>}
       {resume && <ResumeReviewPanel resume={resume} showTargets />}
     </div>
   );

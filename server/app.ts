@@ -1263,7 +1263,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     return { ok: true };
   });
   const onboardingSchema = z.object({
-    step: z.number().int().min(0).max(7),
+    step: z.number().int().min(0).max(30),
     completed: z.boolean().default(false),
     complete: z.boolean().optional(),
     answers: z.object({
@@ -1274,6 +1274,11 @@ export async function buildApp({ serveStatic = true } = {}) {
       modalities: z.array(z.enum(["Remoto", "Presencial", "Híbrido"])).max(3),
       contracts: z.array(z.string().max(50)).max(10),
       salaryMin: z.number().min(0).max(1000000),
+      country: z.string().trim().max(60).optional(),
+      timelineMonths: z.number().int().min(1).max(12).optional(),
+      interviewsPerWeek: z.number().int().min(1).max(7).optional(),
+      blockers: z.array(z.string().max(80)).max(6).optional(),
+      seniority: z.string().trim().max(40).optional(),
     }),
   });
   app.put("/api/guide", async (req) => {

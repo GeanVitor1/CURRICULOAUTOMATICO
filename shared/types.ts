@@ -524,6 +524,11 @@ export type Workspace = {
       modalities: string[];
       contracts: string[];
       salaryMin: number;
+      country?: string;
+      timelineMonths?: number;
+      interviewsPerWeek?: number;
+      blockers?: string[];
+      seniority?: string;
     };
   };
   intelligence?: {
