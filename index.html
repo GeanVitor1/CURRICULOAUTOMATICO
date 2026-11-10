@@ -9,19 +9,11 @@
       content="EmpreGatos — conte sua história, descubra vagas reais e acompanhe seu próximo emprego, um passo de cada vez."
     />
     <title>EmpreGatos · Seu próximo emprego</title>
-    <link rel="icon" type="image/jpeg" href="/mascot-original.jpeg" />
-    <link rel="apple-touch-icon" href="/mascot-original.jpeg" />
+    <link rel="icon" type="image/jpeg" href="%BASE_URL%mascot-original.jpeg" />
+    <link rel="apple-touch-icon" href="%BASE_URL%mascot-original.jpeg" />
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      (function () {
-        var b = "%BASE_URL%";
-        if (b !== "/" && location.pathname.indexOf(b) === 0) {
-          history.replaceState(null, "", "/" + location.pathname.slice(b.length) + location.search + location.hash);
-        }
-      })();
-    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
