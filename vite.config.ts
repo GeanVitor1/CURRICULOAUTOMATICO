@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig(({ command }) => {
   if (command === "build") process.env.NODE_ENV = "production";
   return {
+    base: process.env.VITE_BASE || "/",
     plugins: [react(), tailwindcss()],
     server: {
       port: 5173,

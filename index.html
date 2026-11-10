@@ -14,6 +14,14 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (function () {
+        var b = "%BASE_URL%";
+        if (b !== "/" && location.pathname.indexOf(b) === 0) {
+          history.replaceState(null, "", "/" + location.pathname.slice(b.length) + location.search + location.hash);
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
