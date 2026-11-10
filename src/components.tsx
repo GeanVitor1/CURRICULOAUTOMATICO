@@ -32,7 +32,7 @@ export function Logo({ small = false }: { small?: boolean }) {
   return (
     <span className={`logo ${small ? "small" : ""}`}>
       <img
-        src="/mascot-original.jpeg"
+        src={import.meta.env.BASE_URL + "mascot-original.jpeg"}
         width={small ? 16 : 32}
         height={small ? 16 : 32}
         alt=""

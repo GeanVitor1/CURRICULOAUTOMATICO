@@ -1,3 +1,4 @@
+import { appPathname } from './basePath';
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "./lib";
@@ -37,7 +38,7 @@ export default function Billing() {
       history.replaceState(
         {},
         "",
-        `${location.pathname}${query.size ? `?${query}` : ""}${location.hash}`,
+        `${appPathname()}${query.size ? `?${query}` : ""}${location.hash}`,
       );
     }
   }, []);

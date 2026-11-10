@@ -1,3 +1,4 @@
+import { withBase } from './basePath';
 import {useEffect,useRef,useState} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {ArrowLeft,ArrowUpRight,Check,Link2,LoaderCircle,Puzzle,ShieldCheck} from 'lucide-react';
@@ -13,7 +14,7 @@ export default function PortalConnectionFlow({portal}:{portal:BrowserSessionPort
  const provider=browserConnectors[portal],saving=useRef(false),opened=useRef(false),mounted=useRef(true);
  const [extension,setExtension]=useState<{version:string;kind:string;text:string}|null>(null),[savePending,setSavePending]=useState(false),[error,setError]=useState(''),[detected,setDetected]=useState(false);
  const access=useQuery({queryKey:['connection-flow-context',portal],queryFn:()=>api<BrowserConnectionAccess>(`/connections/browser-extension-context?portal=${portal}`,{cache:'no-store'}),staleTime:0});
- const finish=()=>location.replace(`/app?connected=${portal}#conexoes`);
+ const finish=()=>location.replace(withBase(`/app?connected=${portal}#conexoes`));
  const open=()=>window.postMessage({type:'empregatos:request-open-connector',portal},location.origin);
  useEffect(()=>{
   mounted.current=true;

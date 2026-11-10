@@ -1,3 +1,4 @@
+import { withBase } from './basePath';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./lib";
 import { portals } from "../shared/portals";
@@ -446,7 +447,7 @@ export default function RemotePortalLogin({
     }
     pending.current--;
     window.close();
-    if (!window.closed) location.href = "/app#automacao";
+    if (!window.closed) location.href = withBase("/app#automacao");
   };
   return (
     <main

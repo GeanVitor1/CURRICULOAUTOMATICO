@@ -1,3 +1,4 @@
+import { appPathname } from './basePath';
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {publicContact} from '../shared/public-contact';
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -159,7 +160,7 @@ function AuthAnimation({ className }: { className: string }) {
         ref={video}
         className="auth-video-media"
         src={reduced === true ? undefined : loginAnimation}
-        poster="/login-video-poster.png"
+        poster={import.meta.env.BASE_URL + "login-video-poster.png"}
         autoPlay={playing}
         muted
         loop
@@ -173,7 +174,7 @@ function AuthAnimation({ className }: { className: string }) {
   );
 }
 function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
-  const register = location.pathname === "/register";
+  const register = appPathname() === "/register";
   const returnTo=pendingAppReturn(location.search,optionalStorage('sessionStorage'));
   useEffect(()=>{if(returnTo)rememberAppReturn(optionalStorage('sessionStorage'),returnTo);},[returnTo]);
   const [busy, setBusy] = useState(false);
@@ -450,7 +451,7 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
 }
 export default function App() {
   const client = useQueryClient();
-  const [route, setRoute] = useState(location.pathname);
+  const [route, setRoute] = useState(appPathname());
   const [page, setPage] = useState(canonicalPage(location.hash.slice(1)));
   const [sidebar, setSidebar] = useState(false);
   const [helpOpen,setHelpOpen]=useState(false);
@@ -595,7 +596,7 @@ export default function App() {
   }, [sidebar, compact]);
   useEffect(() => {
     const change = () => {
-      setRoute(location.pathname);
+      setRoute(appPathname());
       setPage(canonicalPage(location.hash.slice(1)));
     };
     window.addEventListener("popstate", change);
@@ -612,14 +613,14 @@ export default function App() {
       (workspace.isError &&
         (workspace.error as Error & { status?: number }).status === 401);
     if (sessionExpired && route === "/app") {
-      const returnTo=rememberAppReturn(optionalStorage('sessionStorage'),location.pathname+location.search+location.hash);
+      const returnTo=rememberAppReturn(optionalStorage('sessionStorage'),appPathname()+location.search+location.hash);
       client.clear();
       history.replaceState({}, "", authEntryPath('/login',returnTo));
       setRoute("/login");
     } else if (me.data && (["/login", "/register"].includes(route)||(route==='/app'&&pendingAppReturn('',optionalStorage('sessionStorage'))))) {
       const destination = selectedPlan() ? "conta" : "automacao";
       const activePortal=new URLSearchParams(location.search).get('portal');
-      const currentPortal=route==='/app'&&['gupy','linkedin','infojobs','glassdoor'].includes(activePortal||'')?safeAppReturn(location.pathname+location.search):null;
+      const currentPortal=route==='/app'&&['gupy','linkedin','infojobs','glassdoor'].includes(activePortal||'')?safeAppReturn(appPathname()+location.search):null;
       const target=currentPortal||pendingAppReturn(location.search,optionalStorage('sessionStorage'))||`/app#${destination}`;
       clearAppReturn(optionalStorage('sessionStorage'));
       history.replaceState({}, "", target);

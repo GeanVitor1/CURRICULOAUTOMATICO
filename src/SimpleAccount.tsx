@@ -1,3 +1,4 @@
+import { appPathname, withBase } from './basePath';
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Download, ShieldCheck, Trash2 } from "lucide-react";
@@ -52,7 +53,7 @@ export default function SimpleAccount() {
       history.replaceState(
         {},
         "",
-        `${location.pathname}${query.size ? `?${query}` : ""}${location.hash}`,
+        `${appPathname()}${query.size ? `?${query}` : ""}${location.hash}`,
       );
     }
   }, []);
@@ -179,7 +180,7 @@ export default function SimpleAccount() {
                   me.data?.hasPassword ? { password } : { confirmEmail },
                 ),
               });
-              location.href = "/";
+              location.href = withBase("/");
             } catch (error) {
               setError(
                 error instanceof Error

@@ -1,3 +1,4 @@
+import { withBase } from '../basePath';
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -712,7 +713,7 @@ export default function Settings() {
               {
                 onSuccess: () => {
                   client.clear();
-                  location.href = "/";
+                  location.href = withBase("/");
                 },
               },
             );

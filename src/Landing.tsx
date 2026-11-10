@@ -344,7 +344,7 @@ export default function Landing() {
                   className="hero-mascot"
                   data-mascot="cover-animation"
                   src={
-                    heroPlaying ? "/novogifcapa.gif" : "/novogifcapa-poster.png"
+                    import.meta.env.BASE_URL + (heroPlaying ? "novogifcapa.gif" : "novogifcapa-poster.png")
                   }
                   alt="Mascote da EmpreGatos: gato preto de terno e gravata azul, com uma pasta"
                   width={400}

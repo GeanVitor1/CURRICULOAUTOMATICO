@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { installBasePath } from "./basePath";
+installBasePath();
 import App from "./App";
 import ErrorBoundary from "./ErrorBoundary";
 import "./styles.css";

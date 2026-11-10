@@ -11,7 +11,7 @@ import thinkingAnimation from "../Video/output/GIF ANIMADO DELE PENSANDO.gif";
 
 export const mascots = {
   welcome: {
-    src: "/mascot-original.jpeg",
+    src: import.meta.env.BASE_URL + "mascot-original.jpeg",
     alt: "Mascote da EmpreGatos: gato preto de terno e gravata azul, com uma pasta",
   },
   surprised: {

@@ -1,3 +1,4 @@
+import { appPathname } from '../basePath';
 import {useEffect,useState} from 'react';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {ArrowUpRight,Check,CheckCircle2,Clock3,Link2,RefreshCw,ShieldCheck,Unplug,X} from 'lucide-react';
@@ -18,7 +19,7 @@ export default function Connections(){
  const [disconnect,setDisconnect]=useState<BrowserSessionPortal|null>(null),[busy,setBusy]=useState(false);
  const [returned,setReturned]=useState(()=>{const value=new URLSearchParams(location.search).get('connected');return value&&isBrowserSessionPortal(value)?value:null;});
  const data=sites.isError?[]:sites.data||[],count=order.filter(id=>confirmed(data.find(s=>s.id===id))).length;
- useEffect(()=>{if(new URLSearchParams(location.search).has('connected'))history.replaceState({},'',location.pathname+'#conexoes');},[]);
+ useEffect(()=>{if(new URLSearchParams(location.search).has('connected'))history.replaceState({},'',appPathname()+'#conexoes');},[]);
  const remove=async()=>{
   if(!disconnect||busy)return;setBusy(true);
   try{await api(`/connections/${disconnect}`,{method:'DELETE'});setDisconnect(null);await Promise.all([client.invalidateQueries({queryKey:['automation-sites']}),client.invalidateQueries({queryKey:['workspace']})]);toast('Conta desconectada do EmpreGatos.');}
