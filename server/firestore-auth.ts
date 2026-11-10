@@ -18,6 +18,14 @@ export function firestoreAuth() {
       projectId: process.env.FIREBASE_PROJECT_ID,
     });
   }
+  // Hospedagem fora da Vercel (ex.: Render): chave JSON de conta de serviço.
+  const json = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
+  if (json)
+    return new GoogleAuth({
+      credentials: JSON.parse(json.startsWith("{") ? json : Buffer.from(json, "base64").toString("utf8")),
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      scopes: ["https://www.googleapis.com/auth/datastore"],
+    });
   // Local development uses the emulator or explicit Application Default Credentials.
   return new GoogleAuth({
     projectId: process.env.FIREBASE_PROJECT_ID,

@@ -1,3 +1,4 @@
+import { apiUrl } from "../lib";
 import { useState } from "react";
 import {
   FileText,
@@ -172,7 +173,7 @@ export default function Resume() {
                     {!demo && (
                       <a
                         className="button"
-                        href={`/api/resumes/${r.id}/download?demo=false`}
+                        href={apiUrl(`/api/resumes/${r.id}/download?demo=false`)}
                       >
                         <Download size={14} />
                         Baixar original

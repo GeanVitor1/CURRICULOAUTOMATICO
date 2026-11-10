@@ -1,3 +1,4 @@
+import { apiUrl } from "./lib";
 import { useRef, useState } from "react";
 import { ArrowRight, FileText, Download } from "lucide-react";
 import { Button, Field, Mascot, PageHead } from "./components";
@@ -83,7 +84,7 @@ export default function SimpleResume() {
               </p>
             </div>
             <a
-              href={`/api/resumes/${resume.id}/download`}
+              href={apiUrl(`/api/resumes/${resume.id}/download`)}
               className="button"
               aria-label="Baixar currículo"
             >

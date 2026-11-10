@@ -1,3 +1,4 @@
+import { apiUrl } from "../lib";
 import { withBase } from '../basePath';
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -550,7 +551,7 @@ export default function Settings() {
                     arquivos PDF podem ser baixados em Meu currículo.
                   </p>
                   <div className="detail-actions">
-                    <a className="button" href="/api/export">
+                    <a className="button" href={apiUrl("/api/export")}>
                       <Download size={14} />
                       Exportar meus dados
                     </a>

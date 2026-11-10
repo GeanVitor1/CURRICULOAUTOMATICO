@@ -186,6 +186,8 @@ import {
   hostedOnVercel,
   secureAuthCookies,
   proxyAuthorized,
+  cookieSameSite,
+  crossSiteCookies,
 } from "./auth-config";
 const tokenHash = (s: string) => createHash("sha256").update(s).digest("hex");
 function oauthCallbackPage(provider: OfficialOAuthProvider, success: boolean) {
@@ -199,7 +201,7 @@ function oauthCallbackPage(provider: OfficialOAuthProvider, success: boolean) {
 }
 export async function buildApp({ serveStatic = true } = {}) {
   const app = Fastify({
-    trustProxy: hostedOnVercel(),
+    trustProxy: hostedOnVercel() || process.env.TRUST_PROXY === "true",
     logger:
       process.env.NODE_ENV !== "test"
         ? {
@@ -240,6 +242,23 @@ export async function buildApp({ serveStatic = true } = {}) {
       return path !== "/api" && !path.startsWith("/api/");
     },
   });
+  // CORS somente para as origens de APP_ORIGIN quando front e API estão em domínios diferentes.
+  if (crossSiteCookies())
+    app.addHook("onRequest", async (request, reply) => {
+      const origin = request.headers.origin;
+      if (!origin || !request.url.startsWith("/api") || !appOrigins().includes(origin)) return;
+      reply
+        .header("Access-Control-Allow-Origin", origin)
+        .header("Access-Control-Allow-Credentials", "true")
+        .header("Vary", "Origin");
+      if (request.method === "OPTIONS")
+        return reply
+          .header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS")
+          .header("Access-Control-Allow-Headers", "Content-Type, X-Orbita-Request")
+          .header("Access-Control-Max-Age", "600")
+          .code(204)
+          .send();
+    });
   app.addHook("onRequest", async (request, reply) => {
     reply
       .header("X-Content-Type-Options", "nosniff")
@@ -356,7 +375,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     reply.setCookie("orbita_session", token, {
       path: "/",
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: cookieSameSite(),
       secure: secureAuthCookies(),
       maxAge: 7 * 86400,
     });
@@ -485,7 +504,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     reply.setCookie(GOOGLE_COOKIE, challenge.browserToken, {
       path: GOOGLE_COOKIE_PATH,
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: cookieSameSite(),
       secure: secureAuthCookies(),
       maxAge: 600,
     });
@@ -513,7 +532,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     reply.setCookie("orbita_session", req.cookies.orbita_session!, {
       path: "/",
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: cookieSameSite(),
       secure: secureAuthCookies(),
       expires: session.expiresAt,
     });

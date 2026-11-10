@@ -8,6 +8,9 @@ export const Context = createContext<{
   toast: (message: string, error?: boolean) => void;
 }>(null!);
 export const useApp = () => useContext(Context);
+// Backend em outro domínio (ex.: front no GitHub Pages + API no Render).
+export const API_BASE = String(import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+export const apiUrl = (path: string) => API_BASE + path;
 export async function api<T = any>(
   path: string,
   options: RequestInit = {},
@@ -16,8 +19,9 @@ export async function api<T = any>(
   let response: Response;
   try {
     response = await fetch(
-      `/api${path}${path.includes("?") ? "&" : "?"}demo=${demo}`,
+      `${API_BASE}/api${path}${path.includes("?") ? "&" : "?"}demo=${demo}`,
       {
+        credentials: API_BASE ? "include" : "same-origin",
         ...options,
         headers: {
           ...(options.body === undefined || options.body instanceof FormData

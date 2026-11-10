@@ -1,3 +1,4 @@
+import { apiUrl } from "./lib";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Download, FileText } from "lucide-react";
 import { Button, Field, Mascot } from "./components";
@@ -154,7 +155,7 @@ export default function ResumeBuilder({
         <div className="wizard-success-actions">
           <a
             className="button primary"
-            href={"/api/resumes/" + encodeURIComponent(ready) + "/download"}
+            href={apiUrl("/api/resumes/" + encodeURIComponent(ready) + "/download")}
           >
             <Download size={16} />
             Baixar meu currículo em PDF

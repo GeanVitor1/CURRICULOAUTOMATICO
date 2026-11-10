@@ -1,3 +1,4 @@
+import { apiUrl } from "./lib";
 import { withBase } from './basePath';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./lib";
@@ -183,7 +184,7 @@ export default function RemotePortalLogin({
       buffer.current = "";
       const viewerId = current.current?.viewerId;
       if (!viewerId || finished.current) return;
-      void fetch(`/api/connections/${portal}/close`, {
+      void fetch(apiUrl(`/api/connections/${portal}/close`), { credentials: "include",
         method: "POST",
         keepalive: true,
         headers: { "X-Orbita-Request": "1", "X-Portal-Viewer": viewerId },

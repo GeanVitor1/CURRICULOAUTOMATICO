@@ -1,3 +1,4 @@
+import { apiUrl } from "./lib";
 import { appPathname, withBase } from './basePath';
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -96,7 +97,7 @@ export default function SimpleAccount() {
           </div>
           <IntelligenceControl />
           <div className="interview-actions">
-            <a className="button" href="/api/export" download>
+            <a className="button" href={apiUrl("/api/export")} download>
               <Download size={16} />
               Baixar meus dados
             </a>

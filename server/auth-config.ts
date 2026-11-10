@@ -147,3 +147,10 @@ export function validateHostedRuntime(env: Environment = process.env) {
       "Configure ENCRYPTION_KEY com uma chave fixa de 32 bytes em base64 na Vercel.",
     );
 }
+
+// Front e API em domínios diferentes (ex.: GitHub Pages + Render) exigem
+// cookie SameSite=None; Secure. Ative com CROSS_SITE_COOKIES=true.
+export const crossSiteCookies = (env: Environment = process.env) =>
+  env.CROSS_SITE_COOKIES === "true" && secureAuthCookies(env);
+export const cookieSameSite = (env: Environment = process.env) =>
+  crossSiteCookies(env) ? ("none" as const) : ("lax" as const);

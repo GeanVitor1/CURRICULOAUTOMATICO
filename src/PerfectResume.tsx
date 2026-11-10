@@ -1,3 +1,4 @@
+import { apiUrl } from "./lib";
 import {useEffect,useRef,useState} from 'react';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
 import {ArrowLeft,ArrowRight,Check,Download,FileText,Link2,LoaderCircle,Plus,Save,Sparkles,Trash2} from 'lucide-react';
@@ -48,7 +49,7 @@ export default function PerfectResume(){
   setDraft(copy(next));setSaved(copy(next));setDirty(false);await refresh();return next;
  };
  const download=(kind:'resume'|'letter',format:'pdf'|'txt'='pdf')=>void run('Preparando download',async()=>{
-  const value=await save(),response=await fetch(`/api/perfect-resumes/${value.id}/download?kind=${kind}&format=${format}`);
+  const value=await save(),response=await fetch(apiUrl(`/api/perfect-resumes/${value.id}/download?kind=${kind}&format=${format}`),{credentials:"include"});
   if(!response.ok){const detail=await response.json().catch(()=>null);throw Error(detail?.error||'Não foi possível preparar o download.');}
   const blob=await response.blob(),link=URL.createObjectURL(blob),a=document.createElement('a');a.href=link;a.download=`${kind==='letter'?'carta-apresentacao':'curriculo-perfeito'}.${format}`;a.click();setTimeout(()=>URL.revokeObjectURL(link),1000);
  });
