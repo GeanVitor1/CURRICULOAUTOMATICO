@@ -114,7 +114,8 @@ export function requirePersistentDatabase(env: Environment = process.env) {
       );
     if (
       hostedOnVercel(env) &&
-      !(env.GCP_WORKLOAD_IDENTITY_AUDIENCE && env.GCP_SERVICE_ACCOUNT_EMAIL)
+      !(env.GCP_WORKLOAD_IDENTITY_AUDIENCE && env.GCP_SERVICE_ACCOUNT_EMAIL) &&
+      !env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim()
     )
       throw new RuntimeConfigurationError(
         "FIREBASE_CREDENTIALS_MISSING",
