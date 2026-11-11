@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import {
   Search,
   Bookmark,
@@ -15,8 +15,7 @@ export default function OrganizationDemo({
   organized: boolean;
 }) {
   const reduced = useReducedMotion();
-  const cards = organized
-    ? [
+  const after = [
         {
           title: "Oportunidades reunidas",
           detail: "Uma lista com fontes e links originais",
@@ -47,8 +46,8 @@ export default function OrganizationDemo({
           ],
           status: "Você sabe o que falta",
         },
-      ]
-    : [
+      ];
+  const before = [
         {
           title: "Mais uma aba aberta",
           detail: "LinkedIn · Gupy · outros portais",
@@ -82,7 +81,7 @@ export default function OrganizationDemo({
       className="organization-cards"
       data-organization-state={organized ? "after" : "before"}
     >
-      {cards.map((card, i) => (
+      {after.map((_, i) => (
         <motion.div
           className="organization-card"
           key={i}
@@ -93,43 +92,60 @@ export default function OrganizationDemo({
           }}
           transition={{
             duration: reduced ? 0 : 0.75,
-            delay: reduced ? 0 : i * 0.1,
+            delay: reduced ? 0 : 0.18 + i * 0.09,
             ease: [0.22, 1, 0.36, 1],
           }}
         >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={String(organized)}
-              className="organization-card-content"
-              initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : -6 }}
-              transition={{ duration: reduced ? 0 : 0.18 }}
-            >
-              <div className="organization-card-top">
-                <card.icon size={21} />
-                <span>
-                  {organized
-                    ? `0${i + 1}`
-                    : ["ABA 08", "ARQUIVO 03", "NOTA SOLTA"][i]}
-                </span>
-              </div>
-              <h3>{card.title}</h3>
-              <p>{card.detail}</p>
-              <div className="organization-card-items">
-                {card.items.map((item) => (
-                  <div key={item}>
-                    {organized ? <Check size={13} /> : <Clock3 size={13} />}
-                    <span>{item}</span>
+          {/* Os dois estados ficam empilhados na mesma célula: altura estável, sem saltos. */}
+          <div className="organization-card-stack">
+            {[false, true].map((isAfter) => {
+              const card = (isAfter ? after : before)[i];
+              const active = isAfter === organized;
+              return (
+                <motion.div
+                  key={String(isAfter)}
+                  className="organization-card-content"
+                  aria-hidden={!active}
+                  inert={!active}
+                  initial={false}
+                  animate={{
+                    opacity: active ? 1 : 0,
+                    y: reduced || active ? 0 : isAfter ? 10 : -8,
+                    scale: reduced || active ? 1 : 0.97,
+                    filter: reduced || active ? "blur(0px)" : "blur(3px)",
+                  }}
+                  transition={{
+                    duration: reduced ? 0 : active ? 0.5 : 0.28,
+                    delay: reduced ? 0 : active ? 0.2 + i * 0.09 : i * 0.06,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  <div className="organization-card-top">
+                    <card.icon size={21} />
+                    <span>
+                      {isAfter
+                        ? `0${i + 1}`
+                        : ["ABA 08", "ARQUIVO 03", "NOTA SOLTA"][i]}
+                    </span>
                   </div>
-                ))}
-              </div>
-              <span className="organization-card-status">
-                {card.status}
-                {organized && <ArrowRight size={13} />}
-              </span>
-            </motion.div>
-          </AnimatePresence>
+                  <h3>{card.title}</h3>
+                  <p>{card.detail}</p>
+                  <div className="organization-card-items">
+                    {card.items.map((item) => (
+                      <div key={item}>
+                        {isAfter ? <Check size={13} /> : <Clock3 size={13} />}
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <span className="organization-card-status">
+                    {card.status}
+                    {isAfter && <ArrowRight size={13} />}
+                  </span>
+                </motion.div>
+              );
+            })}
+          </div>
         </motion.div>
       ))}
     </div>

@@ -205,15 +205,33 @@ export default function Landing() {
     }, 4800);
     return () => clearInterval(timer);
   }, [reduced, organizationVisible, organizationRevision]);
-  const reveal = {
-    initial: { opacity: reduced ? 1 : 0, y: reduced ? 0 : 24 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, amount: 0.08 },
-    transition: {
-      duration: reduced ? 0 : 0.65,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  };
+  /* Entradas coordenadas: os filhos diretos de [data-reveal] entram em sequência (CSS).
+     Um único verificador marca data-in em tudo que já está na tela ou acima dela,
+     então rolagem rápida nunca deixa conteúdo invisível. */
+  const reveal = { "data-reveal": "" } as const;
+  useEffect(() => {
+    let frame = 0;
+    const scan = () => {
+      frame = 0;
+      const limit = window.innerHeight * 0.94;
+      document
+        .querySelectorAll<HTMLElement>(".landing [data-reveal]:not([data-in])")
+        .forEach((el) => {
+          if (el.getBoundingClientRect().top < limit) el.setAttribute("data-in", "");
+        });
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(scan);
+    };
+    scan();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
   return (
     <div className="landing">
       {!reduced && (
@@ -328,13 +346,6 @@ export default function Landing() {
               delay: reduced ? 0 : 0.12,
             }}
           >
-            <div className="hero-sparkles" aria-hidden="true">
-              <Plus />
-              <Plus />
-              <Plus />
-              <Plus />
-              <Plus />
-            </div>
             <motion.div
               className="hero-artwork"
               style={reduced ? undefined : { y: mascotY, x: mascotX }}
@@ -445,6 +456,13 @@ export default function Landing() {
                     <h3>{s.title}</h3>
                     <p>{s.text}</p>
                   </div>
+                  {step === i && playing && !reduced && (
+                    <span
+                      key={`timer-${step}`}
+                      className={`step-timer ${previewVisible ? "" : "is-paused"}`}
+                      aria-hidden="true"
+                    />
+                  )}
                   {step === i && (
                     <motion.span
                       className="step-active"
@@ -534,22 +552,13 @@ export default function Landing() {
                 Conte o que você procura <ArrowUpRight size={18} />
               </a>
             </div>
-            <div className="profession-list">
+            <div className="profession-list" {...reveal}>
               {professions.map(([name, Icon], i) => (
-                <motion.div
-                  key={name}
-                  initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: reduced ? 0 : undefined,
-                    delay: reduced ? 0 : i * 0.035,
-                  }}
-                >
+                <div key={name} style={{ "--n": i + 1 } as CSSProperties}>
                   <Icon size={20} />
                   <span>{name}</span>
                   <span className="profession-index">0{i + 1}</span>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>

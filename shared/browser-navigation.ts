@@ -32,6 +32,6 @@ export function authEntryPath(path:'/login'|'/register',target:string|null){
  return path+(safe?'?returnTo='+encodeURIComponent(safe):'');
 }
 export function storedTheme(storage:BrowserStorage|null):'dark'|'light'{
- try{return storage?.getItem('orbita-theme')==='light'?'light':'dark';}catch{return 'dark';}
+ try{return storage?.getItem('orbita-theme')==='dark'?'dark':'light';}catch{return 'light';}
 }
 export function saveTheme(storage:BrowserStorage|null,theme:'dark'|'light'){try{storage?.setItem('orbita-theme',theme);}catch{}}

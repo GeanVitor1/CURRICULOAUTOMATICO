@@ -1,4 +1,4 @@
-/* Primitivas de motion leves (sem dependências). Animam apenas transform/opacity
+﻿/* Primitivas de motion leves (sem dependências). Animam apenas transform/opacity
    e respeitam prefers-reduced-motion. O texto real permanece no DOM. */
 import {
   useEffect,
@@ -40,17 +40,42 @@ export function useInViewport<T extends Element>(
       setInView(true);
       return;
     }
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      setInView(true);
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          if (once) observer.disconnect();
+          if (once) finish();
         } else if (!once) setInView(false);
       },
       { threshold, rootMargin },
     );
+    // Rolagem rápida pode pular a interseção: revela o que já passou ou está na tela.
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      if (node.getBoundingClientRect().top < window.innerHeight) finish();
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(check);
+    };
     observer.observe(node);
-    return () => observer.disconnect();
+    if (once) {
+      window.addEventListener("scroll", onScroll, { passive: true });
+      check();
+    }
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, [once, threshold, rootMargin]);
   return [ref, inView] as const;
 }
@@ -70,7 +95,10 @@ export function Reveal({
   style?: CSSProperties;
   [key: string]: unknown;
 }) {
-  const [ref, inView] = useInViewport<HTMLElement>({ threshold: 0.12 });
+  const [ref, inView] = useInViewport<HTMLElement>({
+    threshold: 0.05,
+    rootMargin: "0px 0px -6% 0px",
+  });
   return (
     <Tag
       ref={ref}
@@ -189,18 +217,29 @@ export function spotlightHandler(event: PointerEvent<HTMLElement>) {
   event.currentTarget.style.setProperty("--spot-y", `${event.clientY - rect.top}px`);
 }
 
-/** Folhas/pétalas caindo. Posições determinísticas, pausa fora da viewport. */
+/* Pétalas: 3 formatos orgânicos. tone: 0 verde suave, 1 verde-acinzentado, 2 off-white.
+   depth 0 = distante (menor, desfocada, mais transparente). Os 5 primeiros aparecem no mobile. */
+const PETAL_SHAPES = [
+  // pétala em gota com nervura
+  { d: "M12 2C18 7 20 14 12 22C4 14 6 7 12 2Z", vein: "M12 5C12.6 10 12.4 15 12 20" },
+  // folha alongada curva
+  { d: "M3 21C3 11 10 4 21 3C20 13 13 20 3 21Z", vein: "M4.5 19.5C9 15 13 10 18 5.5" },
+  // pétala arredondada com entalhe (cerejeira)
+  { d: "M12 22C6 18 3 12 5 6.5C7 3 10 3.5 12 6.5C14 3.5 17 3 19 6.5C21 12 18 18 12 22Z", vein: "M12 9C12 13 12 17 12 20" },
+];
 const PETALS = [
-  { left: 6, delay: 0, dur: 14, size: 14, drift: 40, kind: 0 },
-  { left: 18, delay: 5.5, dur: 17, size: 11, drift: -30, kind: 1 },
-  { left: 29, delay: 2.2, dur: 15, size: 16, drift: 50, kind: 0 },
-  { left: 41, delay: 8.4, dur: 19, size: 10, drift: -45, kind: 1 },
-  { left: 53, delay: 3.6, dur: 16, size: 13, drift: 35, kind: 0 },
-  { left: 64, delay: 10.1, dur: 18, size: 12, drift: -25, kind: 1 },
-  { left: 75, delay: 1.3, dur: 15, size: 15, drift: 30, kind: 0 },
-  { left: 86, delay: 6.8, dur: 20, size: 11, drift: -40, kind: 1 },
-  { left: 94, delay: 12.2, dur: 17, size: 13, drift: 20, kind: 0 },
-  { left: 12, delay: 9.3, dur: 21, size: 9, drift: 25, kind: 1 },
+  { left: 7, delay: 2.1, dur: 16, size: 20, sway: 46, shape: 0, tone: 0, depth: 2 },
+  { left: 31, delay: 9.4, dur: 19, size: 15, sway: -38, shape: 2, tone: 2, depth: 1 },
+  { left: 55, delay: 5.2, dur: 14, size: 24, sway: 54, shape: 1, tone: 1, depth: 2 },
+  { left: 78, delay: 13.6, dur: 21, size: 14, sway: -30, shape: 0, tone: 2, depth: 0 },
+  { left: 92, delay: 7.7, dur: 17, size: 18, sway: 36, shape: 2, tone: 0, depth: 1 },
+  { left: 18, delay: 15.3, dur: 20, size: 13, sway: 28, shape: 1, tone: 1, depth: 0 },
+  { left: 43, delay: 0.8, dur: 18, size: 17, sway: -48, shape: 0, tone: 1, depth: 1 },
+  { left: 66, delay: 11.2, dur: 15, size: 22, sway: 40, shape: 2, tone: 0, depth: 2 },
+  { left: 85, delay: 3.9, dur: 22, size: 12, sway: -24, shape: 1, tone: 2, depth: 0 },
+  { left: 24, delay: 6.6, dur: 13, size: 26, sway: -56, shape: 1, tone: 0, depth: 2 },
+  { left: 49, delay: 17.1, dur: 21, size: 14, sway: 30, shape: 2, tone: 1, depth: 0 },
+  { left: 72, delay: 8.8, dur: 17, size: 16, sway: -36, shape: 0, tone: 2, depth: 1 },
 ];
 
 export function FallingPetals() {
@@ -213,36 +252,50 @@ export function FallingPetals() {
       className={`fx-petals ${inView ? "" : "is-paused"}`}
       aria-hidden="true"
     >
-      {PETALS.map((p, i) => (
-        <span
-          key={i}
-          className={`fx-petal ${i >= 4 ? "desktop-only" : ""}`}
-          style={
-            {
-              left: `${p.left}%`,
-              "--petal-delay": `${-p.delay}s`,
-              "--petal-dur": `${p.dur}s`,
-              "--petal-size": `${p.size}px`,
-              "--petal-drift": `${p.drift}px`,
-            } as CSSProperties
-          }
-        >
-          <svg viewBox="0 0 20 20" width="100%" height="100%">
-            {p.kind === 0 ? (
-              <path d="M10 1C15 5 17 11 10 19C3 11 5 5 10 1Z" fill="currentColor" />
-            ) : (
-              <path
-                d="M3 17C3 8 9 3 18 2C17 11 12 17 3 17Z M3 17L12 8"
-                fill="currentColor"
-                stroke="var(--eg-green-soft)"
-                strokeWidth="0.8"
-              />
-            )}
-          </svg>
-        </span>
-      ))}
+      {PETALS.map((p, i) => {
+        const shape = PETAL_SHAPES[p.shape];
+        return (
+          <span
+            key={i}
+            className={`fx-petal tone-${p.tone} depth-${p.depth} ${i >= 5 ? "desktop-only" : ""}`}
+            style={
+              {
+                left: `${p.left}%`,
+                "--petal-delay": `${-p.delay}s`,
+                "--petal-dur": `${p.dur}s`,
+                "--petal-size": `${p.size}px`,
+                "--petal-sway": `${p.sway}px`,
+                "--petal-sway-dur": `${(p.dur / 3.2).toFixed(2)}s`,
+                "--petal-spin-dur": `${(p.dur / 2.4).toFixed(2)}s`,
+              } as CSSProperties
+            }
+          >
+            <span className="fx-petal-sway">
+              <svg className="fx-petal-spin" viewBox="0 0 24 24" width="100%" height="100%">
+                <path className="fx-petal-body" d={shape.d} />
+                <path className="fx-petal-vein" d={shape.vein} />
+              </svg>
+            </span>
+          </span>
+        );
+      })}
     </div>
   );
+}
+
+/** Índice que avança em loop lento; pausa fora da viewport, com aba oculta e em reduced-motion. */
+export function useLoopStep<T extends Element>(count: number, interval = 2400) {
+  const reduced = usePrefersReducedMotion();
+  const [ref, inView] = useInViewport<T>({ once: false, threshold: 0.1 });
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    if (reduced || !inView) return;
+    const timer = setInterval(() => {
+      if (!document.hidden) setIndex((i) => (i + 1) % count);
+    }, interval);
+    return () => clearInterval(timer);
+  }, [reduced, inView, count, interval]);
+  return [ref, index, inView && !reduced] as const;
 }
 
 /** Progresso de scroll (0–1) de um elemento atravessando a viewport. */

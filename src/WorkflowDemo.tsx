@@ -71,9 +71,15 @@ export default function WorkflowDemo({
             initial={false}
             animate={{
               opacity: index === stage ? 1 : 0,
-              y: reduced || index === stage ? 0 : 8,
+              y: reduced || index === stage ? 0 : index < stage ? -10 : 10,
+              scale: reduced || index === stage ? 1 : 0.985,
+              filter: reduced || index === stage ? "blur(0px)" : "blur(4px)",
             }}
-            transition={{ duration: reduced ? 0 : 0.25 }}
+            transition={{
+              duration: reduced ? 0 : 0.42,
+              delay: reduced || index !== stage ? 0 : 0.08,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
             <h3>
               {
@@ -222,8 +228,10 @@ export default function WorkflowDemo({
         aria-valuenow={stage + 1}
       >
         <motion.span
-          animate={{ width: `${((stage + 1) / 6) * 100}%` }}
-          transition={{ duration: reduced ? 0 : 0.4 }}
+          style={{ width: "100%", transformOrigin: "left center" }}
+          initial={false}
+          animate={{ scaleX: (stage + 1) / 6 }}
+          transition={{ duration: reduced ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}
         />
       </div>
       <div className="demo-panel-foot">

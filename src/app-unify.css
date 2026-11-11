@@ -1,0 +1,584 @@
+/* ==========================================================================
+   EmpreGatos — Unificação das telas autenticadas com a identidade da landing.
+   Importado por último (main.tsx). Estratégia: mapear TODAS as variáveis
+   legadas (styles.css, workspace-design.css, auth.css) para os tokens --eg-*
+   e refinar shell, cards, formulários, modais e estados vazios.
+   Seletores :root:root elevam a especificidade acima de [data-theme] legado.
+   ========================================================================== */
+
+/* ---------- 1. Ponte de tokens (vale para claro e escuro) ---------- */
+:root:root,
+:root:root .app-shell {
+  --font-sans: var(--eg-font-body);
+  --bg: var(--eg-bg);
+  --bg-0: var(--eg-bg);
+  --bg-1: var(--eg-surface);
+  --bg-2: var(--eg-surface-2);
+  --bg-3: color-mix(in srgb, var(--eg-surface-2) 80%, var(--eg-text) 6%);
+  --bg-hover: var(--eg-surface-2);
+  --sidebar: var(--eg-surface);
+  --surface: var(--eg-surface);
+  --surface-2: var(--eg-surface-2);
+  --surface-elevated: var(--eg-surface);
+  --raised: var(--eg-surface-2);
+  --hover: var(--eg-surface-2);
+  --text: var(--eg-text);
+  --text-0: var(--eg-text);
+  --text-1: color-mix(in srgb, var(--eg-text) 78%, var(--eg-text-2));
+  --text-2: var(--eg-text-2);
+  --muted: var(--eg-text-2);
+  --dim: var(--eg-text-2);
+  --border: var(--eg-border);
+  --border-strong: color-mix(in srgb, var(--eg-border) 60%, var(--eg-text-2) 40%);
+  --accent: var(--eg-green);
+  --primary: var(--eg-green);
+  --accent-strong: var(--eg-green-strong);
+  --accent-soft: var(--eg-green-soft);
+  --accent-bg: var(--eg-green-soft);
+  --accent-border: color-mix(in srgb, var(--eg-green) 32%, transparent);
+  --emerald: var(--eg-green);
+  --emerald-soft: var(--eg-green-soft);
+  --green: var(--eg-green);
+  --blue: var(--eg-blue);
+  --amber: var(--eg-amber);
+  --warning: var(--eg-amber);
+  --amber-soft: var(--eg-amber-soft);
+  --danger: var(--eg-red);
+  --rose: var(--eg-red);
+  --rose-soft: var(--eg-red-soft);
+  --card-radius: var(--eg-radius-lg);
+  --card-inner-radius: var(--eg-radius-md);
+  --control-radius: var(--eg-radius-sm);
+  --card-shadow: var(--eg-shadow-sm);
+  --card-shadow-hover: var(--eg-shadow-md);
+  --ease: var(--ease-out);
+  --motion-fast: var(--dur-micro);
+  --motion-normal: var(--dur-state);
+}
+:root[data-theme="light"] {
+  color: var(--eg-text);
+  background: var(--eg-bg);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+body {
+  background: var(--eg-bg);
+  color: var(--eg-text);
+  font-family: var(--eg-font-body);
+  overflow-x: hidden;
+}
+#main-content :is(h1, h2, h3),
+.modal :is(h2, h3),
+.auth-card h1,
+.auth-editorial h2 {
+  font-family: var(--eg-font-display);
+  color: var(--eg-text);
+}
+
+/* ---------- 2. Shell ---------- */
+:root:root .app-shell {
+  background: var(--eg-bg);
+}
+.sidebar {
+  background: var(--eg-surface);
+  border-right: 1px solid var(--eg-border);
+}
+.sidebar .brand {
+  border-bottom-color: var(--eg-border);
+  color: var(--eg-text);
+  font-family: var(--eg-font-display);
+  font-weight: 700;
+}
+.nav-item {
+  position: relative;
+  color: var(--eg-text-2);
+  border: 1px solid transparent;
+  border-radius: var(--eg-radius-sm);
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+.nav-item::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--eg-green);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform var(--dur-state) var(--ease-out);
+}
+.nav-item:hover {
+  background: var(--eg-surface-2);
+  color: var(--eg-text);
+}
+:root:root .nav-item.active {
+  background: var(--eg-green-soft);
+  border-color: transparent;
+  color: var(--eg-green-deep);
+  box-shadow: none;
+  font-weight: 600;
+}
+:root:root .nav-item.active svg {
+  color: var(--eg-green);
+}
+.nav-item.active::before {
+  transform: scaleY(1);
+}
+.user-block {
+  border-top: 1px solid var(--eg-border);
+}
+.avatar {
+  background: var(--eg-green-soft);
+  border-color: transparent;
+  color: var(--eg-green-deep);
+}
+.topbar {
+  background: color-mix(in srgb, var(--eg-bg) 86%, transparent);
+  border-bottom: 1px solid var(--eg-border);
+  color: var(--eg-text);
+}
+.topbar > div > span {
+  font-family: var(--eg-font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.icon-button,
+.start-help-button {
+  border-radius: var(--eg-radius-sm);
+  color: var(--eg-text-2);
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+.icon-button:hover:not(:disabled),
+.start-help-button:hover {
+  background: var(--eg-surface-2);
+  color: var(--eg-text);
+}
+.app-footer {
+  border-top-color: var(--eg-border);
+  color: var(--eg-text-2);
+}
+
+/* Transição entre rotas: cada página remonta, então a animação reexecuta. */
+#main-content > * {
+  animation: eg-route-in 250ms var(--ease-out) backwards;
+}
+@keyframes eg-route-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---------- 3. Superfícies, cards, listas ---------- */
+:root:root :is(.panel, .form-card, .registry-card, .job-card, .metric, .stat-card, .dashboard-card) {
+  background: var(--eg-surface);
+  border: 1px solid var(--eg-border);
+  border-radius: var(--eg-radius-lg);
+  box-shadow: var(--eg-shadow-sm);
+}
+:root:root .job-card {
+  transition:
+    transform var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+}
+:root:root .job-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--eg-green) 35%, var(--eg-border));
+  box-shadow: var(--eg-shadow-md);
+}
+.job-grid {
+  align-items: stretch;
+}
+.job-grid > * {
+  height: 100%;
+}
+/* Stagger só nos 8 primeiros itens; o resto aparece sem animação. */
+.job-grid > :nth-child(-n + 8) {
+  animation: eg-rise var(--dur-state) var(--ease-out) backwards;
+}
+.job-grid > :nth-child(2) { animation-delay: 30ms; }
+.job-grid > :nth-child(3) { animation-delay: 60ms; }
+.job-grid > :nth-child(4) { animation-delay: 90ms; }
+.job-grid > :nth-child(5) { animation-delay: 120ms; }
+.job-grid > :nth-child(6) { animation-delay: 150ms; }
+.job-grid > :nth-child(7) { animation-delay: 180ms; }
+.job-grid > :nth-child(8) { animation-delay: 210ms; }
+:is(.job-card, .panel) :is(small, .muted, .count-caption) {
+  color: var(--eg-text-2);
+}
+.count-caption {
+  color: var(--eg-text-2);
+  font-size: var(--eg-text-sm);
+}
+table {
+  border-color: var(--eg-border);
+}
+th {
+  color: var(--eg-text-2);
+  font-weight: 600;
+  font-size: var(--eg-text-xs);
+  letter-spacing: 0.02em;
+}
+tr {
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+tbody tr:hover {
+  background: var(--eg-surface-2);
+}
+
+/* Badges: tons sólidos suaves nos dois temas */
+:root:root .badge {
+  border-radius: var(--eg-radius-sm);
+  border: 1px solid transparent;
+  background: var(--eg-surface-2);
+  color: var(--eg-text-2);
+  font-weight: 600;
+}
+:root:root .badge.green { background: var(--eg-green-soft); color: var(--eg-green-deep); }
+:root:root .badge.amber { background: var(--eg-amber-soft); color: var(--eg-amber); }
+:root:root .badge.red { background: var(--eg-red-soft); color: var(--eg-red); }
+:root:root .badge.blue { background: var(--eg-blue-soft); color: var(--eg-blue); }
+
+/* ---------- 4. Botões e campos (todas as telas) ---------- */
+:root:root .button {
+  border-radius: var(--eg-radius-md);
+  border-color: var(--eg-border);
+  background: var(--eg-surface);
+  color: var(--eg-text);
+}
+:root:root .button:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--eg-green) 30%, var(--eg-border));
+  background: var(--eg-surface-2);
+}
+:root:root :is(.button.primary, .btn-primary) {
+  background: var(--eg-green);
+  border-color: var(--eg-green);
+  color: var(--eg-on-green);
+  box-shadow: var(--eg-shadow-sm);
+}
+:root:root :is(.button.primary, .btn-primary):hover:not(:disabled) {
+  background: var(--eg-green-strong);
+  border-color: var(--eg-green-strong);
+}
+:root:root .button.danger {
+  background: var(--eg-red);
+  border-color: var(--eg-red);
+  color: #fff;
+}
+:root:root .app-shell :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), select, textarea),
+:root:root .modal :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), select, textarea) {
+  background: var(--eg-surface);
+  border: 1px solid var(--eg-border);
+  border-radius: var(--eg-radius-sm);
+  color: var(--eg-text);
+  transition:
+    border-color var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+}
+:root:root .app-shell :is(input, select, textarea):hover:not(:disabled):not(:focus) {
+  border-color: var(--border-strong);
+}
+:root:root .app-shell :is(input, select, textarea):focus,
+:root:root .modal :is(input, select, textarea):focus {
+  outline: none;
+  border-color: var(--eg-green);
+  box-shadow: var(--eg-focus);
+}
+::placeholder {
+  color: color-mix(in srgb, var(--eg-text-2) 80%, transparent);
+}
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--eg-green);
+}
+.field > label,
+label > span:first-child {
+  color: var(--eg-text);
+}
+.field small {
+  color: var(--eg-text-2);
+}
+.settings-nav :is(a, button)[aria-current],
+.settings-nav :is(a, button).active {
+  background: var(--eg-green-soft);
+  color: var(--eg-green-deep);
+}
+.form-actions {
+  border-top: 1px solid var(--eg-border);
+  padding-top: var(--eg-space-4);
+}
+.notice-inline,
+.info-inline {
+  border-radius: var(--eg-radius-md);
+  border: 1px solid var(--eg-border);
+  background: var(--eg-surface-2);
+  color: var(--eg-text);
+}
+
+/* Toasts / feedback de salvamento */
+:is(.toast, [data-sonner-toast], .toast-item) {
+  background: var(--eg-surface);
+  color: var(--eg-text);
+  border: 1px solid var(--eg-border);
+  border-radius: var(--eg-radius-md);
+  box-shadow: var(--eg-shadow-lg);
+  animation: eg-rise var(--dur-state) var(--ease-out) backwards;
+}
+
+/* ---------- 5. Modais (fade + scale leve; foco fica no Radix) ---------- */
+.modal-overlay {
+  background: color-mix(in srgb, #0d1a13 42%, transparent);
+  backdrop-filter: blur(4px);
+  animation: eg-fade-in var(--dur-state) var(--ease-out);
+}
+:root:root .modal {
+  background: var(--eg-surface);
+  border: 1px solid var(--eg-border);
+  border-radius: var(--eg-radius-xl);
+  box-shadow: var(--eg-shadow-lg);
+  color: var(--eg-text);
+  animation: eg-modal-scale var(--dur-state) var(--ease-out);
+}
+@keyframes eg-modal-scale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.97);
+  }
+}
+@media (max-width: 600px) {
+  :root:root .modal.wide {
+    animation-name: eg-fade-in;
+  }
+}
+
+/* ---------- 6. Estados vazios e skeletons ---------- */
+:root:root .empty {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--eg-space-3);
+  padding: var(--eg-space-7) var(--eg-space-5);
+  border: 1px dashed var(--eg-border);
+  border-radius: var(--eg-radius-lg);
+  background: var(--eg-surface);
+}
+.empty .empty-mascot {
+  width: min(132px, 40vw);
+  height: auto;
+  image-rendering: pixelated;
+}
+.empty h3 {
+  margin: 0;
+  font-size: var(--eg-text-lg);
+}
+.empty p {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--eg-text-2);
+}
+.skeleton {
+  background: var(--eg-surface-2);
+}
+[data-theme="light"] .skeleton::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+}
+.app-loading {
+  color: var(--eg-text-2);
+}
+
+/* ---------- 7. Login / cadastro (sempre na identidade clara da landing) ---------- */
+:root:root .auth-page {
+  --auth-accent: #31875c;
+  --accent: #31875c;
+  --text: #19241d;
+  --muted: #68746c;
+  --dim: #68746c;
+  --border: #e2e9e2;
+  --surface: #ffffff;
+  color-scheme: light;
+  color: #19241d;
+  background: #f7f9f6;
+}
+.auth-page::before,
+.auth-page::after {
+  display: none;
+}
+.auth-brand {
+  color: #19241d;
+  font-family: var(--eg-font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.auth-layout {
+  align-items: stretch;
+}
+.auth-editorial {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--eg-space-6);
+  border-radius: var(--eg-radius-xl);
+  background: #e8f3ec;
+  border: 1px solid #d5e6da;
+}
+.auth-page .eyebrow {
+  color: #31875c;
+  font-weight: 700;
+}
+.auth-editorial h2 {
+  color: #19241d;
+}
+.auth-editorial h2 > span {
+  color: #174c35;
+}
+.auth-editorial > p,
+.auth-benefits p {
+  color: #4f5c54;
+}
+.auth-benefits li > span {
+  background: #ffffff;
+  color: #31875c;
+  border-color: #d5e6da;
+}
+.auth-mascot,
+.auth-card-mascot,
+.auth-video,
+.auth-video-media {
+  image-rendering: pixelated;
+}
+:root:root .auth-card {
+  background: #ffffff;
+  border: 1px solid #e2e9e2;
+  border-radius: var(--eg-radius-xl);
+  box-shadow: 0 1px 2px rgba(25, 36, 29, 0.04), 0 24px 48px -28px rgba(23, 76, 53, 0.22);
+}
+.auth-card > p,
+.auth-card .field small,
+.auth-foot,
+.auth-version {
+  color: #68746c;
+}
+.auth-input-icon {
+  color: #68746c;
+}
+:root:root .auth-card .auth-input input {
+  background: #ffffff;
+  border: 1px solid #d3ddd4;
+  color: #19241d;
+  border-radius: var(--eg-radius-sm);
+  transition:
+    border-color var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+}
+.auth-card input::placeholder {
+  color: #8b968e;
+}
+:root:root .auth-card .auth-input input:hover:not(:focus) {
+  border-color: #b9c7bc;
+}
+:root:root .auth-card .auth-input input:focus {
+  border-color: #31875c;
+  box-shadow: 0 0 0 3px rgba(49, 135, 92, 0.22);
+}
+/* Autofill do navegador: mantém fundo claro e texto legível */
+.auth-card input:-webkit-autofill,
+.auth-card input:-webkit-autofill:hover,
+.auth-card input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #19241d;
+  -webkit-box-shadow: 0 0 0 1000px #f2f8f3 inset;
+  caret-color: #19241d;
+}
+:root:root .auth-card .button.primary {
+  background: #31875c;
+  border-color: #31875c;
+  color: #fff;
+  border-radius: var(--eg-radius-md);
+}
+:root:root .auth-card .button.primary:hover:not(:disabled) {
+  background: #276f4b;
+  border-color: #276f4b;
+}
+.auth-divider {
+  color: #68746c;
+}
+.auth-divider::before,
+.auth-divider::after {
+  background: #e2e9e2;
+}
+.auth-switch,
+.auth-remember {
+  color: #19241d;
+}
+.auth-switch:hover {
+  color: #174c35;
+}
+:root:root .google-button {
+  background: #ffffff;
+  border: 1px solid #d3ddd4;
+  color: #19241d;
+  border-radius: var(--eg-radius-md);
+}
+:root:root .google-button:hover:not(:disabled) {
+  background: #f7f9f6;
+  border-color: #b9c7bc;
+}
+.auth-card .password-input > button {
+  color: #68746c;
+}
+@media (max-width: 780px) {
+  .auth-editorial {
+    padding: 0;
+    background: none;
+    border: 0;
+  }
+}
+
+/* ---------- 8. Responsivo / sem overflow ---------- */
+.main-shell,
+#main-content {
+  min-width: 0;
+}
+#main-content img,
+#main-content video {
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #main-content > *,
+  .job-grid > *,
+  .modal,
+  .modal-overlay {
+    animation: none !important;
+  }
+  .nav-item::before {
+    transition: none;
+  }
+}
+
+/* Botão secundário: superfície branca + borda suave (vence regras legadas do shell) */
+:root:root .app-shell .button:not(.primary):not(.danger):not(.text-button),
+:root:root .modal .button:not(.primary):not(.danger) {
+  background: var(--eg-surface);
+  border: 1px solid var(--eg-border);
+  color: var(--eg-text);
+  box-shadow: var(--eg-shadow-sm);
+}
+:root:root .app-shell .button:not(.primary):not(.danger):not(.text-button):hover:not(:disabled),
+:root:root .modal .button:not(.primary):not(.danger):hover:not(:disabled) {
+  background: var(--eg-surface-2);
+  border-color: color-mix(in srgb, var(--eg-green) 30%, var(--eg-border));
+}
+
+@media (max-width: 420px) {
+  .auth-benefits { display: none; }
+}

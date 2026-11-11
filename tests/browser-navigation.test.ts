@@ -24,12 +24,12 @@ it('drops unrelated parameters and unknown fragments',()=>{
 });
 it('continues navigation and theme changes when storage is unavailable',()=>{
  const blocked={getItem:vi.fn(()=>{throw Error('Blocked');}),setItem:vi.fn(()=>{throw Error('Quota exceeded');}),removeItem:vi.fn(()=>{throw Error('Blocked');})};
- expect(storedTheme(blocked)).toBe('dark');expect(()=>saveTheme(blocked,'light')).not.toThrow();
+ expect(storedTheme(blocked)).toBe('light');expect(()=>saveTheme(blocked,'light')).not.toThrow();
  expect(rememberAppReturn(blocked,'/app?portal=linkedin')).toBe('/app?portal=linkedin');
  expect(pendingAppReturn('?returnTo=%2Fapp%3Fportal%3Dlinkedin',blocked)).toBe('/app?portal=linkedin');
  expect(pendingAppReturn('',blocked)).toBeNull();expect(()=>clearAppReturn(blocked)).not.toThrow();
 });
 it('uses only supported themes',()=>{
- const store=storage();store.setItem('orbita-theme','invalid');expect(storedTheme(store)).toBe('dark');
- saveTheme(store,'light');expect(storedTheme(store)).toBe('light');
+ const store=storage();store.setItem('orbita-theme','invalid');expect(storedTheme(store)).toBe('light');
+ saveTheme(store,'dark');expect(storedTheme(store)).toBe('dark');
 });
