@@ -479,8 +479,9 @@ export default function App() {
       return identity;
     },
     staleTime:0,
-    refetchOnWindowFocus:true,
-    enabled: ["/login", "/register", "/app"].includes(route),
+    refetchOnWindowFocus:true,    // Também na página inicial: quem já está logado vai direto ao painel.
+    enabled: ["/", "/login", "/register", "/app"].includes(route),
+    retry: false,
   });
   const workspace = useQuery({
     queryKey: ["workspace", false,me.data?.id],
@@ -618,8 +619,7 @@ export default function App() {
       const returnTo=rememberAppReturn(optionalStorage('sessionStorage'),appPathname()+location.search+location.hash);
       client.clear();
       history.replaceState({}, "", authEntryPath('/login',returnTo));
-      setRoute("/login");
-    } else if (me.data && (["/login", "/register"].includes(route)||(route==='/app'&&pendingAppReturn('',optionalStorage('sessionStorage'))))) {
+      setRoute("/login");    } else if (me.data && (["/", "/login", "/register"].includes(route)||(route==='/app'&&pendingAppReturn('',optionalStorage('sessionStorage'))))) {
       const destination = selectedPlan() ? "conta" : "automacao";
       const activePortal=new URLSearchParams(location.search).get('portal');
       const currentPortal=route==='/app'&&['gupy','linkedin','infojobs','glassdoor'].includes(activePortal||'')?safeAppReturn(appPathname()+location.search):null;

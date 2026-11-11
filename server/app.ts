@@ -331,7 +331,7 @@ export async function buildApp({ serveStatic = true } = {}) {
           ? "Não foi possível concluir a solicitação."
           : error.message || "Solicitação inválida.",
     });
-  });
+  });  const SESSION_DAYS = 30;
   async function sessionIdentity(request: FastifyRequest) {
     const session = request.cookies.orbita_session;
     if (!session)
@@ -366,17 +366,33 @@ export async function buildApp({ serveStatic = true } = {}) {
     const token = randomBytes(32).toString("hex");
     await store.insert("sessions", {
       token: tokenHash(token),
-      userId,
-      expiresAt: new Date(Date.now() + 7 * 86400000),
+      userId,      expiresAt: new Date(Date.now() + SESSION_DAYS * 86400000),
       googleAuthenticatedAt: google ? new Date() : null,
     });
     // Lax lets the session accompany the Google redirect. Mutations also require the CSRF header.
     reply.setCookie("orbita_session", token, {
       path: "/",
       httpOnly: true,
+      sameSite: cookieSameSite(),      secure: secureAuthCookies(),
+      maxAge: SESSION_DAYS * 86400,
+    });
+  }
+  // Sessão deslizante: cada visita renova o prazo, no máximo uma vez por dia.
+  async function renewSession(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    session: { token: string; expiresAt: Date },
+  ) {
+    const remaining = session.expiresAt.getTime() - Date.now();
+    if (remaining > (SESSION_DAYS - 1) * 86400000) return;
+    const expiresAt = new Date(Date.now() + SESSION_DAYS * 86400000);
+    await store.update("sessions", { expiresAt }, eq("token", session.token));
+    reply.setCookie("orbita_session", request.cookies.orbita_session!, {
+      path: "/",
+      httpOnly: true,
       sameSite: cookieSameSite(),
       secure: secureAuthCookies(),
-      maxAge: 7 * 86400,
+      maxAge: SESSION_DAYS * 86400,
     });
   }
   async function scope(request: FastifyRequest) {
@@ -424,9 +440,9 @@ export async function buildApp({ serveStatic = true } = {}) {
   app.get("/api/health", async () => {
     await healthDb();
     return { status: "ok", database: databaseKind, revision: process.env.EMPREGATOS_REVISION || "development" };
-  });
-  app.get("/api/auth/me", async (req) => {
+  });  app.get("/api/auth/me", async (req, reply) => {
     const { user: u, session } = await sessionIdentity(req);
+    await renewSession(req, reply, session);
     return {
       id: u.id,
       name: u.name,
