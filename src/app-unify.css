@@ -139,7 +139,7 @@ body {
   color: var(--eg-green-deep);
 }
 .topbar {
-  background: color-mix(in srgb, var(--eg-bg) 86%, transparent);
+  background: var(--eg-bg);
   border-bottom: 1px solid var(--eg-border);
   color: var(--eg-text);
 }

@@ -56,3 +56,11 @@
 .sp-choices .sp-choice input[type="radio"],
 .sp-choices .sp-choice input[type="checkbox"] { width: 16px; height: 16px; min-width: 16px; flex: 0 0 16px; padding: 0; }
 @media (max-width: 480px) { .sp-choices label.sp-choice { white-space: normal; } }
+/* Resumo das preferências salvas (modo leitura) */
+.sp-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; margin: 4px 0 0; border: 1px solid var(--eg-border); border-radius: var(--eg-radius-md, 12px); overflow: hidden; }
+.sp-summary-item { padding: 14px 16px; border-bottom: 1px solid var(--eg-border); border-right: 1px solid var(--eg-border); margin-right: -1px; margin-bottom: -1px; }
+.sp-summary dt { font-size: 12px; color: var(--eg-text-2); margin-bottom: 4px; }
+.sp-summary dd { margin: 0; font-weight: 600; color: var(--eg-text); overflow-wrap: anywhere; }
+.sp-summary dd.muted { font-weight: 400; color: var(--eg-text-2); font-style: italic; }
+.sp-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.sp-saved { margin-right: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--eg-green); font-weight: 600; }

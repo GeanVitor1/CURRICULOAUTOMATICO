@@ -36,7 +36,7 @@ function describe(entry: AnswerMemoryEntry) {
   if (v === "conditional") return `Depende${entry.conditions?.cities?.length ? `: ${entry.conditions.cities.join(", ")}` : ""}`;
   if (entry.topic === "work_modality") return v.split(",").map((x) => modalityOptions.find(([k]) => k === x)?.[1] || x).join(", ");
   if (entry.topic === "contract_type") return v.split(",").map((x) => contractOptions.find(([k]) => k === x)?.[1] || x).join(", ");
-  if (entry.topic === "salary_expectation") return `R$ ${Number(v).toLocaleString("pt-BR")}`;
+  if (entry.topic === "salary_expectation") return /^\d+$/.test(v) ? `R$ ${Number(v).toLocaleString("pt-BR")}` : v;
   return v;
 }
 
@@ -140,6 +140,11 @@ export default function SmartProfile() {
     };
   };
   const [form, setForm] = useState<Essentials>(initial);
+  const essentialTopics: AnswerTopic[] = ["relocation_willingness","work_modality","travel_availability","weekend_availability","contract_type","salary_expectation","start_availability","english_level"];
+  const hasEssentials = essentialTopics.some((t) => memory.some((m) => m.topic === t && m.source === "user"));
+  const [editingEssentials, setEditingEssentials] = useState(!hasEssentials);
+  const learned = memory.filter((m) => !essentialTopics.includes(m.topic));
+  const cancelEssentials = () => { setForm(initial()); setEditingEssentials(false); };
   const [editing, setEditing] = useState<{ id: string; value: string } | null>(null);
   const set = <K extends keyof Essentials>(key: K, value: Essentials[K]) => setForm((f) => ({ ...f, [key]: value }));
   const toggle = (key: "modalities" | "contracts", value: string, on: boolean) =>
@@ -158,7 +163,7 @@ export default function SmartProfile() {
     if (form.english) entries.push({ topic: "english_level", value: form.english });
     if (!entries.length) return toast("Preencha ao menos uma preferência.");
     action.mutate({ path: "/answer-memory", method: "PUT", body: { confirmation: true, entries } },
-      { onSuccess: (r: any) => toast(r?.released ? `Preferências salvas. ${r.released} candidatura(s) destravadas.` : "Preferências salvas.") });
+      { onSuccess: (r: any) => { setEditingEssentials(false); toast(r?.released ? `Preferências salvas. ${r.released} candidatura(s) destravadas.` : "Preferências salvas."); } });
   };
   const remove = (entry: AnswerMemoryEntry) =>
     action.mutate({ path: `/answer-memory/${encodeURIComponent(entry.id)}`, method: "DELETE" }, { onSuccess: () => toast("Resposta excluída.") });
@@ -174,6 +179,16 @@ export default function SmartProfile() {
       <PendingCard groups={pending} />
       <section className="sp-card">
         <header><h2>Preferências essenciais</h2><p>Responda uma vez. Usamos estas respostas em qualquer pergunta equivalente, em português ou inglês.</p></header>
+        {!editingEssentials ? (
+          <>
+            <dl className="sp-summary">
+              {essentialTopics.map((t) => { const e = find(t); return (
+                <div key={t} className="sp-summary-item"><dt>{topicLabels[t]}</dt><dd className={e ? "" : "muted"}>{e ? describe(e) : "Não informado"}</dd></div>
+              ); })}
+            </dl>
+            <div className="sp-actions"><span className="sp-saved"><Check size={16} aria-hidden="true" /> Preferências salvas</span><Button onClick={() => { setForm(initial()); setEditingEssentials(true); }}><Pencil size={15} aria-hidden="true" /> Editar preferências</Button></div>
+          </>
+        ) : (<>
         <div className="sp-grid">
           <fieldset className="sp-field wide">
             <legend>Mudança de cidade</legend>
@@ -224,13 +239,14 @@ export default function SmartProfile() {
             </select>
           </label>
         </div>
-        <div className="sp-actions"><Button className="primary" disabled={action.isPending} onClick={save}>{action.isPending ? "Salvando…" : "Salvar preferências"}</Button></div>
+        <div className="sp-actions">{hasEssentials && <Button onClick={cancelEssentials} disabled={action.isPending}>Cancelar</Button>}<Button className="primary" disabled={action.isPending} onClick={save}>{action.isPending ? "Salvando…" : "Salvar preferências"}</Button></div>
+        </>)}
       </section>
       <section className="sp-card">
-        <header><h2>Respostas automáticas</h2><p>O que reutilizamos por assunto. Você pode corrigir ou excluir a qualquer momento.</p></header>
-        {memory.length ? (
+        <header><h2>Outras respostas aprendidas</h2><p>Respostas que você deu a perguntas novas das vagas, além das preferências acima. Você pode corrigir ou excluir a qualquer momento.</p></header>
+        {learned.length ? (
           <ul className="sp-memory">
-            {memory.map((entry) => (
+            {learned.map((entry) => (
               <li key={entry.id}>
                 <div className="sp-memory-main">
                   <strong>{topicLabels[entry.topic]}{entry.params?.technology ? `: ${entry.params.technology}` : ""}</strong>
@@ -256,7 +272,7 @@ export default function SmartProfile() {
             ))}
           </ul>
         ) : (
-          <p className="sp-empty"><BrainCircuit size={18} /> Nenhuma resposta salva ainda.</p>
+          <p className="sp-empty"><BrainCircuit size={18} /> Quando você responder uma pergunta nova de uma vaga, ela aparece aqui para ser reutilizada.</p>
         )}
       </section>
     </div>
