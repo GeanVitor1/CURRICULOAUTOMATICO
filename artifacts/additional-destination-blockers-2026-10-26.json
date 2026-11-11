@@ -1,0 +1,21 @@
+{
+  "day":"2026-10-26",
+  "readOnly":true,
+  "employerWrites":0,
+  "newSourcesEnabled":0,
+  "scope":"bounded examination of individual leads; no bulk catalog expansion",
+  "verifiedOfficialLeads":[
+    {"company":"MAMBA TREINAMENTOS","url":"https://jobs.quickin.io/mambagrowth/jobs/6a8df2c5499f8d00135b66c4","title":"Desenvolvedor(a) de Software Júnior","block":"Requires Software Engineering from fifth semester and Flutter/React Native/mobile knowledge. Current confirmed education is ADS in progress; these qualifications are not confirmed."},
+    {"company":"add","url":"https://somosadd.abler.com.br/","title":"Desenvolvedor FullStack Jr (.NET / Angular)","publishedAt":"2026-09-25","block":"Official board publication is outside the 14-day window. No source was enabled or application transmitted."},
+    {"company":"Ampara DHO","url":"https://candidatos.abler.com.br/vagas/desenvolvedor-c-pleno-205177","title":"Desenvolvedor C# Pleno","publishedAt":"2026-03-06","block":"Onsite Blumenau; outside publication window; minimum two years C# against one year confirmed. Public email does not make the opportunity eligible."}
+  ],
+  "previouslyVerifiedAlternatives":[
+    {"company":"Stone","evidence":"new-authorized-opportunities-2026-10-26.json","block":"Two junior .NET opportunities scored 67, below preserved minimum 70."},
+    {"company":"Jobgether / original ABC Fitness employer","evidence":"jobgether-form-readonly-2026-10-26.json","block":"Lever form has human verification; original Workday channel is assisted-only; completed degree requirement conflicts with current ongoing degree."}
+  ],
+  "unverifiedLeadsNotImported":[
+    {"company":"TownSq","reason":"No fresh eligible official posting established; lead redirects to Inhire, without an enabled executor. No application or source enabled."},
+    {"company":"Localiza","reason":"Aggregator relative dates conflict with dated listing; no fresh official non-Gupy submission route established. No application or source enabled."}
+  ],
+  "conclusion":"No newly examined opportunity met both confirmed candidate requirements and an enabled official submission channel. This is a bounded finding, not a claim that no compatible vacancy exists anywhere."
+}

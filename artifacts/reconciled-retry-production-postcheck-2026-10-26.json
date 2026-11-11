@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-26T18:12:08.641Z",
+  "deploymentId": "dpl_FH5GdAzgtoRUzipPdaBzQBrKa9je",
+  "applicationId": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+  "productionReview": {
+    "via": "authenticated product UI; backend public posting revalidation",
+    "score": 49,
+    "minimum": 70,
+    "ready": false,
+    "blockers": [
+      "Senioridade exigida ainda não confirmada no perfil.",
+      "Compatibilidade 49; mínimo 70."
+    ],
+    "authorizationOffered": false
+  },
+  "persistedAttemptFieldsUnchanged": true,
+  "reconciliationUnchanged": true,
+  "filtersUnchanged": true,
+  "childCandidacies": 0,
+  "status": "Falha no envio",
+  "receiptSha256": null,
+  "counts": {
+    "jobs": 478,
+    "confirmedRetained": 1,
+    "confirmedAutomaticToday": 0,
+    "quotaReservations": 0,
+    "historicalAttempts": 0,
+    "effectiveUsage": 0,
+    "attemptsToday": 0
+  },
+  "panelConsistent": true,
+  "submission": {
+    "sending": false,
+    "next": null,
+    "attempts": 0,
+    "day": "2026-10-26"
+  }
+}

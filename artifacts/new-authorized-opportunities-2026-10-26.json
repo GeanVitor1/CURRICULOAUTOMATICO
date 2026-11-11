@@ -1,0 +1,273 @@
+{
+  "at": "2026-10-26T15:01:39.394Z",
+  "readOnly": true,
+  "employerWrites": 0,
+  "results": [
+    {
+      "source": {
+        "id": "catalog:greenhouse:stone",
+        "type": "greenhouse",
+        "company": "Stone",
+        "board": "stone",
+        "enabled": true,
+        "discovery": true,
+        "application": false,
+        "status": ""
+      },
+      "examined": 371,
+      "relevant": [
+        {
+          "id": "4aabe983-29bc-4506-8539-8be6847b660b",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/7999476003",
+          "title": "[Aquisição Digital] Software Engineer III - Mobile",
+          "publishedAt": "2026-09-29T18:24:12.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 29,
+          "blockers": [
+            "Publicação fora do período configurado."
+          ],
+          "objective": false,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "9d9873a4-3b77-4d8d-bb72-2eae489cbdc8",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/7999469003",
+          "title": "[Banking/Boletos] Sênior Software Engineer - Golang",
+          "publishedAt": "2026-09-25T11:54:40.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 49,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil.",
+            "Publicação fora do período configurado."
+          ],
+          "objective": false,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "a2a8f5c0-6be1-44b8-85f7-af61e646ca11",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8039208003",
+          "title": "[Banking/Boletos] Software Engineering Manager I",
+          "publishedAt": "2026-10-23T13:08:38.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 49,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil."
+          ],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "6bddcf9d-2c92-4a76-a7ee-f562febbfb5f",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/7999468003",
+          "title": "[Banking/Gerir] Sênior Software Engineer - Golang",
+          "publishedAt": "2026-10-21T20:04:52.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 33,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil."
+          ],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "ec12a419-2947-41fd-9ee1-f3de25a1bd74",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8013628003",
+          "title": "[Enabling] Sênior Software Engineer - Mobile",
+          "publishedAt": "2026-10-14T14:38:07.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 38,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil."
+          ],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "bf55eef6-8d0a-4452-828e-7d85c805c270",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8007017003",
+          "title": "[ENGENHARIA] SENIOR SOFTWARE ENGINEER .NET",
+          "publishedAt": "2026-10-15T19:18:23.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 49,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil."
+          ],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "ea5f9361-5083-4194-aa41-3dfb4d0288e2",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/7984857003",
+          "title": "[GenAI] Sênior Software Engineer - híbrido Florianópolis",
+          "publishedAt": "2026-09-18T18:26:33.000Z",
+          "modality": "Híbrido",
+          "location": "Florianopolis, Santa Catarina, Brasil",
+          "score": 37,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil.",
+            "Modalidade fora das suas preferências.",
+            "Localização fora das suas preferências; revise restrições geográficas.",
+            "Publicação fora do período configurado."
+          ],
+          "objective": false,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "02156e38-0839-46dd-9af9-5b8148ed499a",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/7973191003",
+          "title": "Senior Software Engineer GO",
+          "publishedAt": "2026-09-01T20:32:34.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 33,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil.",
+            "Publicação fora do período configurado."
+          ],
+          "objective": false,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "06e291d8-70c5-477b-9ab7-7fa85fb9d0c6",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8043837003",
+          "title": "SENIOR SOFTWARE ENGINEER - GOLANG",
+          "publishedAt": "2026-10-24T18:16:22.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 47,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil."
+          ],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "751bf879-b2f7-48b4-baa4-85c719cf9fe1",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8007016003",
+          "title": "SENIOR SOFTWARE ENGINEER .NET",
+          "publishedAt": "2026-09-30T12:47:28.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 49,
+          "blockers": [
+            "Senioridade exigida ainda não confirmada no perfil.",
+            "Publicação fora do período configurado."
+          ],
+          "objective": false,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "7a1bd5ad-7ee3-447c-bf5f-3b52e2e00e46",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8043839003",
+          "title": "SOFTWARE ENGINEER GO PL",
+          "publishedAt": "2026-10-24T18:20:48.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 29,
+          "blockers": [],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "0fa92ed9-16a6-4ae7-9110-59922f56d29b",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/7981452003",
+          "title": "SOFTWARE ENGINEER GO PL",
+          "publishedAt": "2026-09-08T12:47:19.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 33,
+          "blockers": [
+            "Publicação fora do período configurado."
+          ],
+          "objective": false,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "f6ce6d2c-4cbf-4338-82c0-4f79cc1e7b19",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8041720003",
+          "title": "SOFTWARE ENGINEER GO PLENO",
+          "publishedAt": "2026-10-24T18:23:24.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 29,
+          "blockers": [],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "474bc8b2-cb4a-427d-92eb-d769e3cd515c",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8013267003",
+          "title": "SOFTWARE ENGINEER GO PLENO",
+          "publishedAt": "2026-10-08T17:01:11.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 29,
+          "blockers": [
+            "Publicação fora do período configurado."
+          ],
+          "objective": false,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "edb6a5b8-60ec-41b0-bc25-b4f56c24f462",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8043838003",
+          "title": "SOFTWARE ENGINEER III (Pleno) - GOLANG",
+          "publishedAt": "2026-10-24T18:19:35.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 33,
+          "blockers": [],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "4bf4794e-ce76-44ac-99f4-89ab3c4c804c",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8036131003",
+          "title": "SOFTWARE ENGINEER I .NET",
+          "publishedAt": "2026-10-22T13:57:02.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 67,
+          "blockers": [],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        },
+        {
+          "id": "e7dd0ff5-fd20-415e-9199-461e319d846d",
+          "url": "https://job-boards.greenhouse.io/stone/jobs/8036128003",
+          "title": "SOFTWARE ENGINEER .NET II (Junior)",
+          "publishedAt": "2026-10-22T13:57:14.000Z",
+          "modality": "Remoto",
+          "location": "Remoto",
+          "score": 67,
+          "blockers": [],
+          "objective": true,
+          "existing": false,
+          "eligible": false
+        }
+      ]
+    }
+  ]
+}

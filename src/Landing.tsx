@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import {
   AnimatePresence,
   motion,
@@ -14,8 +14,6 @@ import {
   ArrowUpRight,
   Check,
   ChevronDown,
-  FileText,
-  Search,
   BriefcaseBusiness,
   MapPin,
   ShieldCheck,
@@ -34,7 +32,6 @@ import {
   Play,
   Clock3,
   ChartNoAxesColumnIncreasing,
-  ListChecks,
   CircleDollarSign,
   Info,
 } from "lucide-react";
@@ -44,6 +41,9 @@ import "./demo.css";
 import "./landing-hero.css";
 import "./landing-preferences.css";
 import "./landing-theme.css";
+import "./landing-v2.css";
+import { BlurText, FallingPetals, SplitText } from "./motion";
+import { FeatureBento, FocusPhrase, LandingFooter, StepPath } from "./LandingSections";
 import WorkflowDemo, { demoStages } from "./WorkflowDemo";
 import OrganizationDemo from "./OrganizationDemo";
 import Pricing from "./Pricing";
@@ -273,28 +273,28 @@ export default function Landing() {
       </header>
       <main id="conteudo" tabIndex={-1}>
         <section className="hero landing-width">
-          <motion.div
-            className="hero-copy"
-            initial={reduced ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: reduced ? 0 : 0.6 }}
-          >
-            <div className="landing-kicker">
+          <FallingPetals />
+          <div className="hero-copy">
+            <div className="landing-kicker fx-stagger" style={{ "--fx-delay": "0ms" } as CSSProperties}>
               <span /> O SEU PRÓXIMO PASSO COMEÇA AQUI
             </div>
             <h1>
-              <span className="hero-heading-main">
-                Encontrar um emprego já dá trabalho.
-              </span>{" "}
-              <span className="hero-heading-accent">
-                Procurar não deveria dar tanto.
-              </span>
+              <SplitText
+                className="hero-heading-main"
+                text="Encontrar um emprego já dá trabalho."
+                delay={80}
+              />{" "}
+              <SplitText
+                className="hero-heading-accent"
+                text="Procurar não deveria dar tanto."
+                delay={480}
+              />
             </h1>
-            <p>
+            <BlurText delay={850}>
               Conte sobre você, escolha o que procura e descubra oportunidades
               que combinam com seu perfil. Tudo em um só lugar.
-            </p>
-            <div className="hero-actions">
+            </BlurText>
+            <div className="hero-actions fx-stagger-group">
               <a href="/register" className="landing-button primary">
                 Encontrar meu próximo emprego <ArrowUpRight size={19} />
               </a>
@@ -305,10 +305,10 @@ export default function Landing() {
                 Veja como funciona
               </a>
             </div>
-            <div className="hero-note">
+            <div className="hero-note fx-stagger" style={{ "--fx-delay": "1350ms" } as CSSProperties}>
               <ShieldCheck size={15} /> Você decide onde e quando se candidatar.
             </div>
-          </motion.div>
+          </div>
           <motion.div
             className="hero-visual hero-visual-native"
             onPointerMove={(e) => {
@@ -398,40 +398,9 @@ export default function Landing() {
             </motion.div>
           </motion.div>
         </section>
-        <div className="flow-strip landing-width">
-          {[
-            "Seu currículo",
-            "Vagas compatíveis",
-            "Candidaturas organizadas",
-          ].map((label, i) => {
-            const Icon = [FileText, Search, ListChecks][i];
-            return (
-              <motion.span
-                key={label}
-                initial={{ opacity: reduced ? 1 : 0, x: reduced ? 0 : -12 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: reduced ? 0 : 0.4,
-                  delay: reduced ? 0 : i * 0.15,
-                }}
-              >
-                <i>0{i + 1}</i>
-                <Icon className="flow-icon" size={21} aria-hidden="true" />
-                {label}
-                <ArrowRight
-                  className="flow-arrow"
-                  size={18}
-                  aria-hidden="true"
-                />
-              </motion.span>
-            );
-          })}
-          <span className="flow-end">
-            <span className="flow-dot" aria-hidden="true" />
-            MENOS ABAS. MAIS DIREÇÃO.
-          </span>
-        </div>
+        <StepPath />
+        <FeatureBento />
+        <FocusPhrase text="Você decide onde e quando se candidatar. A gente organiza o caminho." />
 
         <section id="como-funciona" className="how-section landing-width">
           <motion.div {...reveal} className="section-intro">
@@ -858,19 +827,7 @@ export default function Landing() {
           <Mascot className="cta-mascot" variant="idea" />
         </section>
       </main>
-      <footer className="landing-footer landing-width">
-        <a href="/" className="landing-brand">
-          <Logo small />
-          <span>empregatos.</span>
-        </a>
-        <p>Suas oportunidades. Seu ritmo.</p>
-        <div>
-          <a href="/login">Entrar</a>
-          <a href="/register">Criar conta</a>
-          <a href="/privacy">Privacidade</a>
-        </div>
-        <span>FEITO PARA O SEU PRÓXIMO PASSO.</span>
-      </footer>
+      <LandingFooter />
     </div>
   );
 }

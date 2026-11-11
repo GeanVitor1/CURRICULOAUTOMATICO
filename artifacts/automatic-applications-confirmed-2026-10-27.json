@@ -1,0 +1,51 @@
+{
+    "at":  "2026-10-27T13:29:12.872Z",
+    "deployment":  "dpl_C3MEJTXy2HwZTaVgKaZ154nViSnp",
+    "portalRuntimeVersion":  17,
+    "automaticConfirmedToday":  3,
+    "dailyQuotaUsed":  5,
+    "routineEnabled":  true,
+    "nextScheduledSearch":  "2026-10-28T11:00:00.000Z",
+    "fullSuitePassed":  760,
+    "fullSuiteSkipped":  11,
+    "finalGupyRegressionTestsPassed":  19,
+    "twentyLiveUsersValidated":  false,
+    "applications":  [
+                         {
+                             "applicationId":  "63852bad-646e-4cdc-9a58-4aac4348409d",
+                             "title":  "Desenvolvedor(a) Full Stack (com Ãªnfase em Frontend)",
+                             "company":  "VÃ­ssimo",
+                             "executor":  "browser",
+                             "origin":  "scheduled_automation",
+                             "runId":  "404c0639-53b6-41f2-9291-2924d59380f0",
+                             "attemptId":  "759cfde2-7064-47e5-8d23-0556e8e04c39",
+                             "confirmedAt":  "2026-10-27T11:59:59.756Z",
+                             "nativeApplicationUrl":  "https://vissimo.gupy.io/candidates/applications/770355364",
+                             "receipt":  "https://vissimo.gupy.io/job/eyJqb2JJZCI6MTI3MjIxOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal Â· Candidatura finalizada! Â· https://vissimo.gupy.io/candidates/applications/770355364/steps/4346499509/curriculum Â· 2026-10-27T11:59:20.112Z"
+                         },
+                         {
+                             "applicationId":  "b60573ee-f8a5-43bf-be69-dab838f8307a",
+                             "title":  "Analista Desenvolvedor(a) C#/.NET Pleno",
+                             "company":  "Vem Pra Pixeon",
+                             "executor":  "browser",
+                             "origin":  "scheduled_automation",
+                             "runId":  "404c0639-53b6-41f2-9291-2924d59380f0",
+                             "attemptId":  "74be94fb-4d8d-4de3-9c7a-403fdd6b26bb",
+                             "confirmedAt":  "2026-10-27T13:27:59.106Z",
+                             "nativeApplicationUrl":  "https://vemprapixeon.gupy.io/candidates/applications/770357461",
+                             "receipt":  "https://vemprapixeon.gupy.io/job/eyJqb2JJZCI6MTI3MjUxMzksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal Â· Candidatura finalizada! Â· https://vemprapixeon.gupy.io/candidates/applications/770357461/steps/4346513928/curriculum Â· 2026-10-27T13:27:31.225Z"
+                         },
+                         {
+                             "applicationId":  "98854615-b017-427a-a3dc-aca43d402970",
+                             "title":  "Desenvolvedor Back .NET ESPECIALISTA",
+                             "company":  "VENHA SER #SANGUELARANJA ðŸ§¡ðŸš€",
+                             "executor":  "browser",
+                             "origin":  "scheduled_automation",
+                             "runId":  "404c0639-53b6-41f2-9291-2924d59380f0",
+                             "attemptId":  "f60dd0d8-64d5-42cc-9d0b-88bfff06ae97",
+                             "confirmedAt":  "2026-10-27T11:45:58.788Z",
+                             "nativeApplicationUrl":  "https://fcamara.gupy.io/candidates/applications/770357842",
+                             "receipt":  "https://fcamara.gupy.io/job/eyJqb2JJZCI6MTI3ODI0MjMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal Â· Candidatura finalizada! Â· https://fcamara.gupy.io/candidates/applications/770357842/steps/4346516539/curriculum Â· 2026-10-27T11:45:31.779Z"
+                         }
+                     ]
+}

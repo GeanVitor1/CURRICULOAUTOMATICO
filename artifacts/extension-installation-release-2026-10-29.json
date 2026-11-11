@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-29T13:31:30.278Z",
+  "deployment": "dpl_3zUzLNqUAWPTirQ5g1o3VbBYXKr8",
+  "installationGuidePublished": true,
+  "extensionVersion": "2.0.7",
+  "publicFilesMatch": true,
+  "unitTestsPassed": 45,
+  "cloudVisualChecksPassed": true,
+  "cloudTestVmStoppedAndDeleted": true,
+  "storePublished": false,
+  "developerRegistered": false,
+  "storeMaterialsFolder": "artifacts/chrome-web-store",
+  "realUserChromeControlled": false
+}

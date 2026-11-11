@@ -1,0 +1,89 @@
+{
+  "at": "2026-10-27T14:22:53.987Z",
+  "extensionVersion": "2.0.0",
+  "deploymentId": "dpl_DqeKmUTE73TBjoZt6pFhQoBDSUKx",
+  "url": "https://curriculoautomatico.vercel.app",
+  "package": {
+    "at": "2026-10-27T14:11:43.738Z",
+    "download": "https://curriculoautomatico.vercel.app/downloads/empregatos-conexoes-chrome.zip",
+    "version": "2.0.0",
+    "sha256": "17d92685b1837365c615c5c062caff4041136be3bef06918f55ddf3185380cdd",
+    "portals": [
+      "gupy",
+      "infojobs",
+      "glassdoor",
+      "linkedin"
+    ],
+    "requiredHosts": [
+      "https://curriculoautomatico.vercel.app/*"
+    ],
+    "optionalHosts": [
+      "https://*.gupy.io/*",
+      "https://*.infojobs.com.br/*",
+      "https://*.glassdoor.com/*",
+      "https://*.glassdoor.com.br/*",
+      "https://*.linkedin.com/*"
+    ],
+    "packageMatchesSource": true,
+    "legacyDownloadUpdated": true,
+    "health": 200
+  },
+  "accountChecks": [
+    {
+      "portal": "gupy",
+      "available": true,
+      "sameAuthenticatedAccount": true
+    },
+    {
+      "portal": "infojobs",
+      "available": true,
+      "sameAuthenticatedAccount": true
+    },
+    {
+      "portal": "glassdoor",
+      "available": true,
+      "sameAuthenticatedAccount": true
+    },
+    {
+      "portal": "linkedin",
+      "available": true,
+      "sameAuthenticatedAccount": true
+    }
+  ],
+  "tests": {
+    "focusedCases": 63,
+    "realChromePortals": 4,
+    "syntheticSessions": true,
+    "generalInitialPassed": 764,
+    "preparationTimeoutSuites": 3,
+    "retryPassed": 17,
+    "totalUniquePassed": 781,
+    "intentionallySkipped": 11,
+    "assertionsChangedForRetry": false
+  },
+  "actualConnections": {
+    "gupy": {
+      "connected": true,
+      "automatic": true
+    },
+    "infojobs": {
+      "connected": false,
+      "connectable": true
+    },
+    "glassdoor": {
+      "connected": false,
+      "connectable": true
+    },
+    "linkedin": {
+      "connected": false,
+      "connectable": true,
+      "automatic": false
+    }
+  },
+  "installation": {
+    "existingFolder": "browser-extension/gupy-session",
+    "userMustReloadExtension": true,
+    "projectTabsMustReload": true
+  },
+  "screenshot": "artifacts/browser-connectors-production-2026-10-27.png"
+}

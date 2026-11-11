@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-27T12:15:08.631Z",
+  "entryPoint": "/api/routine/process",
+  "executor": "project production worker",
+  "jobId": "bb0770a9-fdaf-48ad-877e-aede1553b921",
+  "result": {
+    "ok": true,
+    "queued": 0
+  }
+}

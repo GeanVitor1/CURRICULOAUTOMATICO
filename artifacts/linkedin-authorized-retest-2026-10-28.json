@@ -1,0 +1,70 @@
+{
+  "at": "2026-10-28T12:13:12.950Z",
+  "change": "Authorized account-scoped LinkedIn retest replaces the unconditional client-side block",
+  "accountsAllowed": 1,
+  "authorizationSource": "existing operator identity, explicitly requested by user",
+  "httpParametersCannotGrantRetest": true,
+  "defaultForOtherAccounts": "suspended",
+  "extensionVersion": "2.0.5",
+  "olderExtensionCompatible": "2.0.4 after reopening",
+  "knownLocalFoldersUpdated": true,
+  "remoteRuntimeVersion": 21,
+  "previousSaveDoesNotCountAsNewConfirmation": true,
+  "linkedInAutomaticApplications": false,
+  "originalSignoutCauseResolved": false,
+  "validation": {
+    "apiAndFocusedTestsPassed": 71,
+    "browserScenariosPassed": 6,
+    "buildPassed": true
+  },
+  "publication": {
+    "ready": true,
+    "deploymentId": "dpl_GhVocsxuLf5vt5szdkQturQ7Ud4u",
+    "productionChecks": [
+      {
+        "at": "2026-10-28T12:14:42.813Z",
+        "checks": [
+          {
+            "portal": "gupy",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "infojobs",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "glassdoor",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "linkedin",
+            "available": true,
+            "sameAuthenticatedAccount": true,
+            "sessionRetest": true,
+            "noticePresent": true
+          }
+        ]
+      },
+      {
+        "at": "2026-10-28T12:14:44.694Z",
+        "portal": "linkedin",
+        "retestReachesNormalValidation": true,
+        "emptyStateRejected": true,
+        "portalCredentialsSent": false
+      },
+      {
+        "at": "2026-10-28T12:14:56.529Z",
+        "privateBrowserRetestAllowed": true,
+        "hasActiveViewer": false,
+        "portalCredentialsSent": false,
+        "providerNavigationPerformed": false
+      }
+    ],
+    "publicPackageVerified": true
+  },
+  "screenshot": "artifacts/linkedin-retest-enabled-2026-10-28.png",
+  "realUserRetestResult": "awaiting user result"
+}

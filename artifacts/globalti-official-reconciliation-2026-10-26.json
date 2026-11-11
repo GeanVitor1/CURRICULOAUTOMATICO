@@ -1,0 +1,34 @@
+{
+  "observedAt": "2026-10-26T10:10:34.724Z",
+  "classification": "Confirmadamente não recebida",
+  "scope": {
+    "company": "Global TI",
+    "jobCode": "IMW7499",
+    "jobTitle": "Desenvolvedor Full Stack - PL/SR",
+    "applicationId": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+    "attemptId": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808"
+  },
+  "evidence": {
+    "source": "official_employer_reply_in_authorized_reconciliation_thread",
+    "threadId": "1a16937d1e63856d",
+    "messageId": "1a16a33ce23f137c",
+    "sentAt": "2026-10-23T19:18:57.000Z",
+    "senderDomain": "globalti.com.br",
+    "senderRole": "Head de Hunting",
+    "replySubject": "RES: Confirmação de recebimento de candidatura — IMW7499",
+    "quote": "realmente sua candidatura não entrou.",
+    "sameThreadIdentifiesCandidateAndJob": true,
+    "authentication": {
+      "dkim": true,
+      "spf": true,
+      "dmarc": true
+    },
+    "employerOfferedReapplicationOrDirectResume": true
+  },
+  "doesNotAuthorizeAutomaticEligibilityOverride": true,
+  "databaseStatusChanged": false,
+  "quotaReleased": false,
+  "newTransmission": false,
+  "newEmailSent": false,
+  "diagnosticLimit": "Reconciles non-receipt of the 23/10 attempt. The discarded original HTTP status and body remain unrecovered."
+}

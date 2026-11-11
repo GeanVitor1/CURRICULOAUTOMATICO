@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-28T11:20:39.280Z",
+  "savedConnection": {
+    "connected": true,
+    "sessionState": "verified",
+    "sessionSaved": true,
+    "connectedAt": "2026-10-28T11:08:56.942Z",
+    "verifiedAt": "2026-10-28T11:12:14.302Z",
+    "automatic": false
+  },
+  "confirmedSaveResponses": 2,
+  "ui": {
+    "savingSpinner": true,
+    "delayedNoticeAfterSeconds": 12,
+    "duplicateSaveGuard": true,
+    "neutralBackgroundAfterAuthentication": true,
+    "successRemainsVisibleUntilUserConcludes": true
+  },
+  "validation": {
+    "browserScenariosPassed": 4,
+    "buildPassed": true,
+    "accountsAndSessionsInBrowserTests": "synthetic only"
+  },
+  "screenshots": [
+    "artifacts/linkedin-saving-desktop-2026-10-28.png",
+    "artifacts/linkedin-saving-mobile-2026-10-28.png",
+    "artifacts/linkedin-saved-mobile-2026-10-28.png"
+  ],
+  "publication": {
+    "ready": true,
+    "deploymentId": "dpl_7rqT65v66n5LEFmJUN2nf5PYTkPu",
+    "chunk": "assets/RemotePortalLogin-IB9brz0T.js",
+    "publicUiBundleVerified": true,
+    "health": 200
+  },
+  "reportedSignout": {
+    "reported": true,
+    "cause": "not established; remote session reuse remains a hypothesis",
+    "browserLocation": "original www.linkedin.com tab, confirmed by user",
+    "liveSessionReusedDuringInvestigation": false
+  }
+}

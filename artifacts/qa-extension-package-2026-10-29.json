@@ -1,0 +1,15 @@
+{
+  "version": "2.0.9",
+  "channel": "development",
+  "directoriesUpdated": [
+    "C:\\Users\\geand\\OneDrive\\Documentos\\CurriculoAutomatico\\browser-extension\\gupy-session",
+    "C:/Users/geand/Downloads/Extensao/empregatos-conexoes-chrome"
+  ],
+  "filesPerDirectory": 12,
+  "sha256": "bc9946afbf574280fd516ea5f4996282bc2daf224a31e8480a883260aaef4aea",
+  "storeChannel": "store",
+  "storeAlarmsPermission": false,
+  "browserRestarted": false,
+  "browserSessionRead": false,
+  "chromeRuntimeVersionChecked": false
+}

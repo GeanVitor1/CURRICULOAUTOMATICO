@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-29T18:23:53.416Z",
+  "origin": "https://curriculoautomatico.vercel.app",
+  "deploymentId": "dpl_GqYQKrknN55X21qaWgbiqZEGieB6",
+  "ready": true,
+  "registrationHttp": 200,
+  "updatedUiPublished": true,
+  "healthHttp": 200,
+  "controlledBrowserQaPassed": true,
+  "unitTestsPassed": 19,
+  "realAccountsUsed": false,
+  "productionApiMutations": 0
+}

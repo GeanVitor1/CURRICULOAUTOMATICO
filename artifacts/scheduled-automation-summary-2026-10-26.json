@@ -1,0 +1,412 @@
+{
+  "at": "2026-10-26T10:12:10.896Z",
+  "readOnly": true,
+  "backendMutations": 0,
+  "manualTriggers": 0,
+  "newEmailsSent": 0,
+  "dayWindowObserved": "2026-10-24 (and persisted 2026-10-25 execution)",
+  "evidenceLevel": "Persisted scheduled origin, source productivity, completed discovery and resolution tasks; historical HTTP invocation and queue message records could not be recovered within current plan retention.",
+  "scheduledRouteBySource": "/api/daily-routine",
+  "httpInvocationVerified": false,
+  "queueMessageIdsVerified": false,
+  "queueDeliveryCountsVerified": false,
+  "submissionEndToEndVerified": false,
+  "runs": [
+    {
+      "id": "c6598802-170c-4d6e-bcd1-96680af1055e",
+      "at": "2026-10-25T11:09:14.020Z",
+      "origin": "scheduled_automation",
+      "status": "partial",
+      "discovered": 0,
+      "processed": 0,
+      "errors": [
+        "LinkedIn: A busca Antigravity não retornou fontes verificáveis. Use a busca no portal ou tente novamente."
+      ],
+      "message": "0 novas oportunidades, sem duplicações. 479 registros publicados consultados; 13 preservados após filtros antecipados.",
+      "examined": 479,
+      "retained": 13,
+      "compatible": 3,
+      "sources": [
+        {
+          "company": "Páginas de carreira das empresas",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Vagas com candidatura por e-mail",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Abler · candidaturas por e-mail da vaga",
+          "examined": 5,
+          "retained": 1,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Global TI",
+          "examined": 8,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "AllEasy",
+          "examined": 10,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "CI&T",
+          "examined": 178,
+          "retained": 3,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Wellhub",
+          "examined": 87,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Zup Innovation",
+          "examined": 4,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "CodeRoad",
+          "examined": 30,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Gupy",
+          "examined": 157,
+          "retained": 9,
+          "compatible": 3,
+          "channelVerified": 0
+        },
+        {
+          "company": "Glassdoor",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "InfoJobs",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        }
+      ],
+      "discoveryTask": {
+        "id": "c6598802-170c-4d6e-bcd1-96680af1055e",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-25T11:09:06.274Z",
+        "updatedAt": "2026-10-25T11:13:04.070Z",
+        "lastError": "LinkedIn: A busca Antigravity não retornou fontes verificáveis. Use a busca no portal ou tente novamente."
+      },
+      "resolutionTasks": [
+        {
+          "id": "b9c3d66e-6a39-43ff-80d3-be6d690855d9",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:13:04.842Z",
+          "updatedAt": "2026-10-25T11:14:37.183Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "ad7fd85a-2409-402f-b091-466439ba7ea4",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:14:46.018Z",
+          "updatedAt": "2026-10-25T11:16:45.985Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "4d35f43b-9526-453b-844f-6e0b322d1b5a",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:16:56.754Z",
+          "updatedAt": "2026-10-25T11:18:32.399Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "6422de05-0266-45f7-b679-819d2e92731d",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:18:47.190Z",
+          "updatedAt": "2026-10-25T11:19:52.956Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "2388d827-29e1-4024-9a40-506600da30d2",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:20:08.178Z",
+          "updatedAt": "2026-10-25T11:21:09.325Z",
+          "lastError": null,
+          "requestedJobIds": []
+        }
+      ]
+    },
+    {
+      "id": "8642e770-0aa0-4df8-9210-81fbefcd18fe",
+      "at": "2026-10-24T11:09:31.194Z",
+      "origin": "scheduled_automation",
+      "status": "completed",
+      "discovered": 2,
+      "processed": 0,
+      "errors": [],
+      "message": "2 novas oportunidades, sem duplicações. 480 registros publicados consultados; 13 preservados após filtros antecipados.",
+      "examined": 480,
+      "retained": 13,
+      "compatible": 3,
+      "sources": [
+        {
+          "company": "Páginas de carreira das empresas",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Vagas com candidatura por e-mail",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Abler · candidaturas por e-mail da vaga",
+          "examined": 5,
+          "retained": 1,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Global TI",
+          "examined": 8,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "AllEasy",
+          "examined": 10,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "CI&T",
+          "examined": 177,
+          "retained": 3,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Wellhub",
+          "examined": 87,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Zup Innovation",
+          "examined": 4,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "CodeRoad",
+          "examined": 30,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Gupy",
+          "examined": 159,
+          "retained": 9,
+          "compatible": 3,
+          "channelVerified": 0
+        },
+        {
+          "company": "LinkedIn",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "Glassdoor",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        },
+        {
+          "company": "InfoJobs",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0
+        }
+      ],
+      "discoveryTask": {
+        "id": "8642e770-0aa0-4df8-9210-81fbefcd18fe",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-24T11:09:06.926Z",
+        "updatedAt": "2026-10-24T11:13:02.857Z",
+        "lastError": null
+      },
+      "resolutionTasks": [
+        {
+          "id": "ee7ae724-0461-406f-be4e-c4105f308a21",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:13:03.646Z",
+          "updatedAt": "2026-10-24T11:14:43.202Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "90992d0e-6454-41f9-b962-c5f451b84c26",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:14:52.201Z",
+          "updatedAt": "2026-10-24T11:16:48.102Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "f137b98e-1fd3-46ec-aef4-93be699825bd",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:16:59.057Z",
+          "updatedAt": "2026-10-24T11:18:27.736Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "4458d857-5576-4025-9033-6d9c953681c9",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:18:42.846Z",
+          "updatedAt": "2026-10-24T11:19:41.794Z",
+          "lastError": null,
+          "requestedJobIds": []
+        }
+      ]
+    }
+  ],
+  "days": [
+    {
+      "day": "2026-10-24",
+      "quotaUsed": 0,
+      "confirmedAutomatic": 0,
+      "attempts": 0
+    },
+    {
+      "day": "2026-10-25",
+      "quotaUsed": 0,
+      "confirmedAutomatic": 0,
+      "attempts": 0
+    },
+    {
+      "day": "2026-10-26",
+      "quotaUsed": 0,
+      "confirmedAutomatic": 0,
+      "attempts": 0
+    }
+  ],
+  "filtersUnchanged": true,
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "globalTiDatabase": {
+    "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+    "status": "Resultado desconhecido",
+    "attemptId": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+    "outcome": "unknown",
+    "receipt": null,
+    "submittedAt": null,
+    "attemptCount": 1
+  },
+  "reconciliationArtifact": "globalti-official-reconciliation-2026-10-26.json",
+  "logs": [
+    {
+      "query": "heartbeat-cron-requests-2026-10-26",
+      "errors": [
+        {
+          "reason": "plan_upgrade_required",
+          "message": "CDN request logs require Observability Plus, a Priority project, or the Enterprise Agents & Apps entitlement.",
+          "httpStatus": 402,
+          "serverMessage": "Observability Plus is required for CDN requests older than 12 hours.",
+          "code": "payment_required"
+        }
+      ],
+      "recordCount": 0
+    },
+    {
+      "query": "heartbeat-cron-runtime-24-2026-10-26",
+      "errors": [
+        {
+          "reason": "invalid_arguments",
+          "message": "The requested time range is outside the available retention.",
+          "httpStatus": 400,
+          "serverMessage": "The hobby plan does not retain runtime logs for the requested time range.",
+          "code": "bad_request"
+        }
+      ],
+      "recordCount": 0
+    },
+    {
+      "query": "heartbeat-cron-runtime-25-2026-10-26",
+      "errors": [
+        {
+          "reason": "invalid_arguments",
+          "message": "The requested time range is outside the available retention.",
+          "httpStatus": 400,
+          "serverMessage": "The hobby plan does not retain runtime logs for the requested time range.",
+          "code": "bad_request"
+        }
+      ],
+      "recordCount": 0
+    }
+  ],
+  "routine": {
+    "enabled": true,
+    "nextRun": "2026-10-26T11:00:00.000Z",
+    "lastRun": "2026-10-25T11:12:51.785Z",
+    "progress": {
+      "day": "2026-10-25",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 0,
+      "remaining": 5,
+      "state": "waiting",
+      "message": "1 tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente. 5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-25T11:21:51.506Z"
+    }
+  }
+}

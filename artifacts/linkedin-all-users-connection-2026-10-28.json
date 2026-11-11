@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-28T12:39:43.233Z",
+  "requestedScope": "all authenticated users connecting their own LinkedIn account",
+  "personalIdAllowlistRemoved": true,
+  "projectFeatureFlag": "LINKEDIN_SESSION_RETEST_ENABLED",
+  "ownerRestrictionBypassedOnlyForLinkedIn": true,
+  "sessionOwnerFromAuthentication": true,
+  "crossAccountDestinationRejected": true,
+  "differentSandboxPerAccount": true,
+  "newSandboxPrivateFilesInitializedEmpty": true,
+  "existingSessionsPreservedOnResume": true,
+  "failedNewSandboxRemoved": true,
+  "validation": {
+    "apiAndPolicyTestsPassed": 47,
+    "storageLifecycleTestsPassed": 2,
+    "buildPassed": true,
+    "browserScenariosPassed": 6,
+    "smallViewportLoadingControlsReachable": true
+  },
+  "extensionVersion": "2.0.5",
+  "extensionReinstallRequired": false,
+  "linkedinSignoutCauseResolved": false,
+  "linkedinAutomaticApplicationsEnabled": false,
+  "publication": {
+    "backendReady": true,
+    "backendDeploymentId": "dpl_7As6yXyTqNtKWGtLWjARFK3UaJdv",
+    "productionChecks": [
+      {
+        "at": "2026-10-28T12:40:22.642Z",
+        "checks": [
+          {
+            "portal": "gupy",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "infojobs",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "glassdoor",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "linkedin",
+            "available": true,
+            "sameAuthenticatedAccount": true,
+            "sessionRetest": true,
+            "noticePresent": true
+          }
+        ]
+      },
+      {
+        "at": "2026-10-28T12:40:24.559Z",
+        "portal": "linkedin",
+        "retestReachesNormalValidation": true,
+        "emptyStateRejected": true,
+        "portalCredentialsSent": false
+      },
+      {
+        "at": "2026-10-28T12:40:40.506Z",
+        "privateBrowserRetestAllowed": true,
+        "hasActiveViewer": false,
+        "portalCredentialsSent": false,
+        "providerNavigationPerformed": false
+      }
+    ],
+    "finalUiCopy": "ready",
+    "finalDeploymentId": "dpl_6hatyJJ7Zz92YcSLiMGDKjgDspDk",
+    "finalContext": {
+      "at": "2026-10-28T12:52:18.711Z",
+      "checks": [
+        {
+          "portal": "gupy",
+          "available": true,
+          "sameAuthenticatedAccount": true
+        },
+        {
+          "portal": "infojobs",
+          "available": true,
+          "sameAuthenticatedAccount": true
+        },
+        {
+          "portal": "glassdoor",
+          "available": true,
+          "sameAuthenticatedAccount": true
+        },
+        {
+          "portal": "linkedin",
+          "available": true,
+          "sameAuthenticatedAccount": true,
+          "sessionRetest": true,
+          "noticePresent": true,
+          "projectWideConnectionFeature": true
+        }
+      ]
+    },
+    "publicUiBundleVerified": true,
+    "extensionPackageVerified": true
+  },
+  "screenshots": [
+    "artifacts/linkedin-retest-enabled-2026-10-28.png",
+    "artifacts/linkedin-general-connection-loading-2026-10-28.png"
+  ],
+  "realLinkedInSessionStillRequiresUserTest": true
+}

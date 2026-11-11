@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-26T14:58:17.753Z",
+  "applied": true,
+  "changed": true,
+  "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+  "evidence": {
+    "applicationId": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+    "attemptId": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+    "startedAt": "2026-10-23T13:52:21.765Z",
+    "publicationUrl": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+    "candidateEmailSha256": "cad07613122d97be8995ff0c2ddb4bc625fb0d0dd96be83a1ca27b48ff321f24",
+    "threadId": "1a16937d1e63856d",
+    "messageId": "1a16a33ce23f137c",
+    "replyAt": "2026-10-23T19:18:57.000Z",
+    "evidenceSha256": "d71178cea67a071fc9e1a03bf246db8bc08cda631665bef923fa6deda9b991d8"
+  },
+  "originalAttemptSha256": "9bbd00cf914c07ae70be5b4e148b027bf89c95985c017f5eaab1a22fd40aec94",
+  "originalStatus": "Resultado desconhecido",
+  "resultingStatus": "Falha no envio",
+  "reconciliation": {
+    "id": "employer:1a16a33ce23f137c:a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+    "at": "2026-10-26T14:58:17.753Z",
+    "attemptId": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+    "outcome": "not_received",
+    "source": "official_employer_reply",
+    "threadId": "1a16937d1e63856d",
+    "messageId": "1a16a33ce23f137c",
+    "replyAt": "2026-10-23T19:18:57.000Z",
+    "evidenceSha256": "d71178cea67a071fc9e1a03bf246db8bc08cda631665bef923fa6deda9b991d8",
+    "quotaDisposition": "retained_post_submit_attempt",
+    "retryAuthorized": false
+  },
+  "quota": {
+    "records": 1,
+    "days": [
+      "2026-10-23"
+    ],
+    "disposition": "retained_post_submit_attempt",
+    "newReservations": 0
+  },
+  "originalAttemptPreserved": true,
+  "originalHistoryPreserved": true,
+  "retryAuthorized": false,
+  "newTransmissions": 0,
+  "receipt": null
+}

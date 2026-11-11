@@ -1,0 +1,18 @@
+{
+  "name": "EmpreGatos — conexões de portais",
+  "version": "2.0.8",
+  "publicResponsible": "Gean Vitor Estevs Dantas",
+  "supportEmail": "geandk36@gmail.com",
+  "homepage": "https://curriculoautomatico.vercel.app",
+  "privacyPolicy": "https://curriculoautomatico.vercel.app/privacy",
+  "package": "empregatos-2.0.8.zip",
+  "icon": "icon-128.png",
+  "screenshot": "screenshot-1280x800.png",
+  "storePublished": false,
+  "summary": "Conecte seus portais de vagas ao EmpreGatos. Verifique o LinkedIn no Chrome e autorize cada conexão separadamente.",
+  "extensionId": "nhagdilhhobieffanmbonknpmmocpodl",
+  "status": "draft",
+  "draftStatusSource": "reported by publisher",
+  "uploadedVersionVerified": false,
+  "formAnswers": "preenchimento-loja.md"
+}

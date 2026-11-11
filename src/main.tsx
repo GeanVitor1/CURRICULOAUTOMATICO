@@ -17,6 +17,7 @@ import "./pricing.css";
 import "./workspace-design.css";
 import "./onboarding.css";
 import "./app-polish.css";
+import "./tokens.css";
 const client = new QueryClient({
   defaultOptions: {
     queries: { retry: false, staleTime: 30000, refetchOnWindowFocus: false },

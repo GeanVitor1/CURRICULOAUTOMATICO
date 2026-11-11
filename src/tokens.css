@@ -1,0 +1,365 @@
+/* ==========================================================================
+   EmpreGatos — Fundação de design (v2)
+   Tokens centralizados + sistema único de controles. Importado por último em
+   main.tsx: refina os estilos legados sem reescrever a lógica das telas.
+   ========================================================================== */
+
+:root {
+  /* Escala tipográfica */
+  --eg-font-display: "Manrope", "Inter", system-ui, sans-serif;
+  --eg-font-body: "Inter", system-ui, sans-serif;
+  --eg-text-xs: 0.75rem;
+  --eg-text-sm: 0.875rem;
+  --eg-text-md: 1rem;
+  --eg-text-lg: 1.125rem;
+  --eg-text-xl: 1.375rem;
+  --eg-text-2xl: clamp(1.6rem, 1.2rem + 1.6vw, 2.25rem);
+  --eg-text-3xl: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  --eg-text-display: clamp(2.5rem, 1.5rem + 4.4vw, 5rem);
+
+  /* Espaçamento (base 4px) */
+  --eg-space-1: 4px;
+  --eg-space-2: 8px;
+  --eg-space-3: 12px;
+  --eg-space-4: 16px;
+  --eg-space-5: 24px;
+  --eg-space-6: 32px;
+  --eg-space-7: 48px;
+  --eg-space-8: 72px;
+  --eg-space-9: 112px;
+
+  /* Raios moderados (sem pílula) */
+  --eg-radius-sm: 8px;
+  --eg-radius-md: 12px;
+  --eg-radius-lg: 18px;
+  --eg-radius-xl: 26px;
+
+  /* Motion */
+  --dur-micro: 160ms;
+  --dur-hover: 220ms;
+  --dur-state: 280ms;
+  --dur-section: 600ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Cores — tema escuro (padrão do app) */
+  --eg-bg: #101512;
+  --eg-surface: #18211c;
+  --eg-surface-2: #1f2b24;
+  --eg-text: #f2f7f3;
+  --eg-text-2: #a9b8ad;
+  --eg-border: rgba(190, 224, 198, 0.12);
+  --eg-green: #6fc596;
+  --eg-green-strong: #8fd6ae;
+  --eg-green-soft: rgba(111, 197, 150, 0.13);
+  --eg-green-deep: #d7f0e1;
+  --eg-on-green: #0d2419;
+  --eg-amber: #e5b54f;
+  --eg-amber-soft: rgba(229, 181, 79, 0.13);
+  --eg-red: #f08a8a;
+  --eg-red-soft: rgba(240, 138, 138, 0.13);
+  --eg-blue: #8fb6db;
+  --eg-blue-soft: rgba(143, 182, 219, 0.13);
+  --eg-focus: 0 0 0 3px rgba(111, 197, 150, 0.45);
+  --eg-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --eg-shadow-md: 0 12px 30px -14px rgba(0, 0, 0, 0.55);
+  --eg-shadow-lg: 0 28px 60px -24px rgba(0, 0, 0, 0.6);
+}
+
+:root[data-theme="light"],
+[data-theme="light"] {
+  --eg-bg: #f7f9f6;
+  --eg-surface: #ffffff;
+  --eg-surface-2: #f0f4ef;
+  --eg-text: #19241d;
+  --eg-text-2: #68746c;
+  --eg-border: #e2e9e2;
+  --eg-green: #31875c;
+  --eg-green-strong: #276f4b;
+  --eg-green-soft: #e8f3ec;
+  --eg-green-deep: #174c35;
+  --eg-on-green: #ffffff;
+  --eg-amber: #94600c;
+  --eg-amber-soft: #fbf1df;
+  --eg-red: #b23a3a;
+  --eg-red-soft: #fbeaea;
+  --eg-blue: #2f6597;
+  --eg-blue-soft: #e8f0f8;
+  --eg-focus: 0 0 0 3px rgba(49, 135, 92, 0.32);
+  --eg-shadow-sm: 0 1px 2px rgba(25, 36, 29, 0.05);
+  --eg-shadow-md: 0 1px 2px rgba(25, 36, 29, 0.04), 0 12px 28px -14px rgba(25, 36, 29, 0.14);
+  --eg-shadow-lg: 0 2px 4px rgba(25, 36, 29, 0.04), 0 30px 60px -28px rgba(23, 76, 53, 0.22);
+
+  /* Alinha os tokens legados à paleta da marca */
+  --bg: #f7f9f6;
+  --bg-0: #f7f9f6;
+  --surface: #ffffff;
+  --text: #19241d;
+  --text-0: #19241d;
+  --muted: #5c6a61;
+  --accent: #31875c;
+  --primary: #31875c;
+  --accent-strong: #276f4b;
+  --accent-soft: #e8f3ec;
+  --accent-border: rgba(49, 135, 92, 0.3);
+  --emerald: #31875c;
+  --green: #31875c;
+  --card-shadow: var(--eg-shadow-md);
+}
+
+/* ---------- Base ---------- */
+.fx-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--eg-green);
+  outline-offset: 2px;
+}
+
+img[data-mascot],
+.pixelated,
+.empty-mascot img,
+.mascot img {
+  image-rendering: pixelated;
+}
+
+/* ---------- Botões: um único sistema ---------- */
+.button {
+  border-radius: var(--eg-radius-md);
+  font-weight: 600;
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
+}
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.button:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+  transition-duration: 80ms;
+}
+.button:focus-visible {
+  outline: none;
+  box-shadow: var(--eg-focus);
+}
+.button:disabled,
+.button[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+.button[aria-busy="true"],
+.button.loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+.button[aria-busy="true"]::after,
+.button.loading::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid currentColor;
+  border-color: var(--eg-text-2) transparent var(--eg-text-2) transparent;
+  border-radius: 50%;
+  animation: eg-spin 0.8s linear infinite;
+}
+[data-theme="light"] .button.primary {
+  background: var(--eg-green);
+  border-color: var(--eg-green);
+  color: var(--eg-on-green);
+}
+[data-theme="light"] .button.primary:hover:not(:disabled) {
+  background: var(--eg-green-strong);
+  border-color: var(--eg-green-strong);
+}
+
+/* ---------- Campos ---------- */
+.field input,
+.field select,
+.field textarea {
+  border-radius: var(--eg-radius-sm);
+  transition:
+    border-color var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+}
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: none;
+  border-color: var(--eg-green);
+  box-shadow: var(--eg-focus);
+}
+.field input:disabled,
+.field select:disabled,
+.field textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- Cards / painéis ---------- */
+.panel,
+.job-card {
+  border-radius: var(--eg-radius-lg);
+  transition:
+    border-color var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out);
+}
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--eg-shadow-md);
+}
+
+/* ---------- Badges de status ---------- */
+.badge {
+  border-radius: var(--eg-radius-sm);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+[data-theme="light"] .badge.green { background: var(--eg-green-soft); color: var(--eg-green-deep); }
+[data-theme="light"] .badge.amber { background: var(--eg-amber-soft); color: var(--eg-amber); }
+[data-theme="light"] .badge.red { background: var(--eg-red-soft); color: var(--eg-red); }
+[data-theme="light"] .badge.blue { background: var(--eg-blue-soft); color: var(--eg-blue); }
+
+/* ---------- Modais (fade + translate leve) ---------- */
+.modal-overlay[data-state="open"] {
+  animation: eg-fade-in var(--dur-state) var(--ease-out);
+}
+.modal[data-state="open"] {
+  animation: eg-modal-in var(--dur-state) var(--ease-out);
+}
+.modal {
+  border-radius: var(--eg-radius-xl);
+}
+
+/* ---------- Skeleton ---------- */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--eg-radius-sm);
+  background: var(--eg-surface-2);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  animation: eg-shimmer 1.4s var(--ease-in-out) infinite;
+}
+
+/* ---------- Estado vazio ---------- */
+.empty {
+  animation: eg-rise var(--dur-section) var(--ease-out) both;
+}
+.empty-mascot {
+  animation: eg-breathe 4.2s var(--ease-in-out) infinite;
+  transform-origin: 50% 90%;
+}
+
+/* ---------- Stepper (onboarding) ---------- */
+.eg-stepper {
+  display: flex;
+  gap: var(--eg-space-2);
+  margin: 0 0 var(--eg-space-5);
+  padding: 0;
+  list-style: none;
+}
+.eg-stepper li {
+  flex: 1;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--eg-border);
+  overflow: hidden;
+}
+.eg-stepper li::before {
+  content: "";
+  display: block;
+  height: 100%;
+  background: var(--eg-green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-state) var(--ease-out);
+}
+.eg-stepper li.done::before,
+.eg-stepper li.current::before {
+  transform: scaleX(1);
+}
+.eg-stepper li.current::before {
+  opacity: 0.6;
+}
+
+/* ---------- Primitivas de motion (src/motion.tsx) ---------- */
+.fx-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity var(--dur-section) var(--ease-out) var(--fx-delay, 0ms),
+    transform var(--dur-section) var(--ease-out) var(--fx-delay, 0ms);
+}
+.fx-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+.fx-word {
+  display: inline-block;
+  white-space: pre;
+  opacity: 0;
+  transform: translateY(0.45em);
+  animation: eg-word-in 720ms var(--ease-out) var(--fx-delay, 0ms) forwards;
+}
+.fx-blur {
+  opacity: 0;
+  filter: blur(8px);
+  animation: eg-blur-in 900ms var(--ease-out) var(--fx-delay, 0ms) forwards;
+}
+.fx-count {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes eg-spin { to { transform: rotate(360deg); } }
+@keyframes eg-fade-in { from { opacity: 0; } }
+@keyframes eg-modal-in { from { opacity: 0; transform: translate(-50%, calc(-50% + 10px)); } }
+@keyframes eg-shimmer { to { transform: translateX(100%); } }
+@keyframes eg-rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes eg-breathe { 50% { transform: translateY(-3px) scale(1.012); } }
+@keyframes eg-word-in { to { opacity: 1; transform: none; } }
+@keyframes eg-blur-in { to { opacity: 1; filter: blur(0); } }
+
+/* ---------- Movimento reduzido: global ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fx-reveal,
+  .fx-word,
+  .fx-blur {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+.flow-stepper { flex: 1; margin: 0; }
+.quiet-metrics strong { font-variant-numeric: tabular-nums; }
+

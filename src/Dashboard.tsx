@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CountUp } from "./motion";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
@@ -289,7 +290,7 @@ export default function Dashboard() {
                 <div key={s.label}>
                   <s.icon size={16} />
                   <span>{s.label}</span>
-                  <strong>{s.value}</strong>
+                  <strong><CountUp value={s.value} /></strong>
                 </div>
               ))}
             </div>

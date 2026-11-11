@@ -1,0 +1,39 @@
+﻿{
+    "at":  "2026-10-28T18:12:04.3864748Z",
+    "deployment":  "dpl_DUbURyxTqmEyWG3ppqQh3ftNDZox",
+    "production":  "https://curriculoautomatico.vercel.app",
+    "extensionVersion":  "2.0.6",
+    "runtimeVersion":  22,
+    "publicDownloadVerified":  true,
+    "installedFolderFilesMatch":  true,
+    "linkedIn":  {
+                     "mode":  "local-browser",
+                     "allAuthenticatedAccounts":  true,
+                     "legacyTransferBlockedInProduction":  true,
+                     "realUserLocalVerificationCompleted":  false,
+                     "automaticApplicationsImplemented":  false,
+                     "browserAccessHost":  "unavailable",
+                     "syntheticExtensionProfilePreservedCookie":  true
+                 },
+    "validation":  {
+                       "typecheck":  "passed",
+                       "build":  "passed",
+                       "apiRegression":  41,
+                       "localApi":  4,
+                       "extensionAndServiceUnit":  32,
+                       "isolatedExtensionBrowser":  7,
+                       "browserUI":  6,
+                       "total":  90
+                   },
+    "resources":  {
+                      "testsSerialized":  true,
+                      "maxNodeHeapMB":  1024,
+                      "nativeComputerControlRestarted":  false,
+                      "gameTerminated":  false
+                  },
+    "limitations":  [
+                        "Os testes do navegador usam perfis temporários e páginas controladas.",
+                        "A conta real ainda não concluiu a nova verificação local.",
+                        "A causa específica das invalidações anteriores pelo LinkedIn não foi comprovada."
+                    ]
+}

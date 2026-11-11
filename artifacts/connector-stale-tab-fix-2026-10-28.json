@@ -1,0 +1,31 @@
+{
+  "at": "2026-10-28T10:26:15.456Z",
+  "version": "2.0.4",
+  "reportedError": "No tab with id: 1007628461.",
+  "correction": [
+    "Rediscover the project tab after permission is granted",
+    "Verify the displayed project account before reading credentials and before transfer",
+    "Recover once after a definitive missing-tab pre-delivery failure",
+    "Skip disappeared portal tabs",
+    "Do not replay transfers after uncertain delivery"
+  ],
+  "tests": {
+    "passed": 38,
+    "files": 4,
+    "isolatedChromeScenarios": 7,
+    "closedDestinationChromeScenarioPassed": true
+  },
+  "build": "passed",
+  "localFoldersUpdated": [
+    "browser-extension/gupy-session",
+    "C:/Users/geand/Downloads/Extensao/empregatos-conexoes-chrome"
+  ],
+  "copiedFilesMatchSource": true,
+  "realLinkedInConnectionAtLastCheck": false,
+  "actualUserBrowser": "Browser access host unavailable",
+  "deploymentId": "dpl_FspMddZ4cJ73WTU1EMjrgQgLVQ5s",
+  "publication": "ready and public ZIP verified byte-for-byte against tested source",
+  "userRetryPending": true,
+  "publicZipSha256": "ad3ca118b57100874fc1733b114e8e4738d5177ea767d13da2c85b5f848cd86b",
+  "publicHealth": 200
+}

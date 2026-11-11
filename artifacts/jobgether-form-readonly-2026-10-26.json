@@ -1,0 +1,48 @@
+{
+  "at": "2026-10-26T15:09:21.734Z",
+  "readOnly": true,
+  "employerWrites": 0,
+  "writesBlocked": 12,
+  "status": 200,
+  "url": "https://jobs.lever.co/jobgether/15733132-4fc7-40d0-b611-6f2c5ee7fc84/apply",
+  "title": "Jobgether - Desenvolvedor Backend Jr",
+  "humanVerificationElements": 3,
+  "fields": [
+    {
+      "name": "resume",
+      "type": "file",
+      "label": "Resume/CV ✱ATTACH RESUME/CVCouldn't auto-read resume.Analyzing resume...Success!",
+      "required": false
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "label": "Full name✱",
+      "required": true
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email✱",
+      "required": true
+    },
+    {
+      "name": "phone",
+      "type": "text",
+      "label": "Phone",
+      "required": false
+    },
+    {
+      "name": "location",
+      "type": "text",
+      "label": "Current location No location found. Try entering a different locationLoading",
+      "required": false
+    },
+    {
+      "name": "org",
+      "type": "text",
+      "label": "Current company",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-27T18:03:18.913Z",
+  "portal": "linkedin",
+  "connectionBeforeFix": {
+    "connected": false,
+    "sessionSaved": false,
+    "sessionState": "disconnected"
+  },
+  "observedBrowser": {
+    "loggedIn": true,
+    "legacyAuthenticationSignals": 0,
+    "currentAvatarMenuSignals": 1
+  },
+  "cause": "Current LinkedIn feed lacks the legacy global-nav classes used by the connector.",
+  "fix": {
+    "extensionVersion": "2.0.1",
+    "runtimeVersion": 19,
+    "deployment": "dpl_28cbH7YNuJfhHmB6TiVwi1WkPEcM",
+    "publishedPackageMatchesSource": true
+  },
+  "verification": {
+    "buildPassed": true,
+    "focusedTestsPassed": 31,
+    "includesCurrentFeedAndLegacyAndUnauthenticatedCases": true
+  },
+  "requiresUserExtensionReloadAndSessionConfirmation": true,
+  "actualSessionConnectionAfterFix": "awaiting user retry",
+  "screenshot": "artifacts/linkedin-connector-2.0.1-production-2026-10-27.png"
+}

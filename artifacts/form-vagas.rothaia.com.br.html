@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vaga Dev Full Stack Júnior | Rotha IA</title>
+<meta name="description" content="Rotha IA contrata Desenvolvedor(a) Full Stack Júnior: React, TypeScript e Supabase. PJ, R$ 5.000 por mês, 100% remoto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0B0D16;
+    --surface: #14182A;
+    --surface-2: #1B2038;
+    --accent: #6366F1;
+    --accent-2: #818CF8;
+    --text: #F4F5FB;
+    --muted: #9AA0BC;
+    --line: rgba(255,255,255,.08);
+    --ok: #34D399;
+    --bad: #F87171;
+    --font-body: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: Georgia, 'Times New Roman', serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background:
+      radial-gradient(900px 500px at 85% -10%, rgba(99,102,241,.18), transparent 60%),
+      radial-gradient(700px 400px at -10% 10%, rgba(99,102,241,.08), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.65;
+    padding-inline: 20px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding-block: 40px 72px; display: flex; flex-direction: column; gap: 56px; }
+  header.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .logo { font-family: var(--font-display); font-style: italic; font-weight: 700; font-size: 22px; letter-spacing: .02em; }
+  .logo span { color: var(--accent-2); }
+  .pill { display: inline-block; background: rgba(99,102,241,.16); color: var(--accent-2); border-radius: 999px; padding: 4px 14px; font-size: 13px; font-weight: 500; letter-spacing: .02em; }
+  h1, h2 { font-family: var(--font-display); font-style: italic; font-weight: 700; text-wrap: balance; margin: 0; line-height: 1.15; }
+  h1 { font-size: clamp(34px, 6vw, 52px); }
+  h1 em { font-style: italic; color: var(--accent-2); }
+  h2 { font-size: clamp(24px, 4vw, 30px); }
+  p { margin: 0; max-width: 65ch; }
+  .lead { color: var(--muted); font-size: 19px; }
+  .hero { display: flex; flex-direction: column; gap: 22px; }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: var(--surface); }
+  .facts div { padding: 16px 18px; display: flex; flex-direction: column; gap: 2px; border-right: 1px solid var(--line); }
+  .facts div:last-child { border-right: 0; }
+  .facts small { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  .facts strong { font-weight: 600; font-size: 17px; font-variant-numeric: tabular-nums; }
+  section { display: flex; flex-direction: column; gap: 18px; }
+  ul.list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  ul.list li { padding-left: 22px; position: relative; max-width: 65ch; }
+  ul.list li::before { content: ""; position: absolute; left: 0; top: .72em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px rgba(99,102,241,.7); }
+  ul.list.soft li::before { background: transparent; border: 1.5px solid var(--accent-2); box-shadow: none; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .box { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .box h3 { margin: 0; font-size: 16px; font-weight: 600; }
+  .box.hl { border-color: rgba(99,102,241,.45); }
+  .plano { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .plano .box { gap: 8px; }
+  .plano small { color: var(--accent-2); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+  .plano p { font-size: 15px; color: var(--muted); }
+  .steps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; border-left: 1px solid var(--line); margin-left: 12px; counter-reset: s; }
+  .steps li { position: relative; padding: 0 0 20px 26px; }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps li b { display: block; font-weight: 600; }
+  .steps li span { color: var(--muted); font-size: 15px; }
+  .steps li::before { counter-increment: s; content: counter(s); position: absolute; left: -13px; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--surface-2); border: 1px solid rgba(99,102,241,.5); color: var(--accent-2); font-size: 13px; display: grid; place-items: center; font-weight: 600; }
+  form { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; }
+  label .hint { color: var(--muted); font-weight: 400; font-size: 13px; }
+  input, textarea, select { background: var(--bg); color: var(--text); border: 1px solid rgba(255,255,255,.14); border-radius: 12px; padding: 11px 14px; font: inherit; font-size: 15px; width: 100%; }
+  textarea { min-height: 110px; resize: vertical; }
+  input:focus, textarea:focus, select:focus, button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+  .check { flex-direction: row; align-items: flex-start; gap: 10px; font-weight: 400; }
+  .check input { width: 18px; height: 18px; margin-top: 3px; flex: none; accent-color: var(--accent); }
+  button { background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 14px 30px; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer; box-shadow: 0 0 32px rgba(99,102,241,.45); align-self: flex-start; }
+  button:hover { background: #5458e6; }
+  a.cta { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; border-radius: 999px; padding: 14px 30px; font-weight: 600; font-size: 16px; box-shadow: 0 0 32px rgba(99,102,241,.45); align-self: flex-start; }
+  a.cta:hover { background: #5458e6; }
+  a.cta:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+  .msg { border-radius: 12px; padding: 12px 14px; font-size: 15px; }
+  .msg.ok { background: rgba(52,211,153,.12); color: var(--ok); }
+  .msg.bad { background: rgba(248,113,113,.12); color: var(--bad); }
+  footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 22px; display: flex; flex-direction: column; gap: 4px; }
+  @media (max-width: 700px) {
+    .plano { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 16px; padding-inline: 16px; }
+    .facts { grid-template-columns: 1fr 1fr; }
+    .facts div:nth-child(2) { border-right: 0; }
+    .facts div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .two, .grid2 { grid-template-columns: 1fr; }
+    button { align-self: stretch; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="logo">ROTHA <span>IA</span></div>
+    <span class="pill">Vaga aberta</span>
+  </header>
+
+  <div class="hero">
+    <h1>Desenvolvedor(a) Full Stack Júnior: <em>React, TypeScript e Supabase</em></h1>
+    <p class="lead">Buscamos um perfil júnior avançado: profissional responsável pelo desenvolvimento, manutenção e evolução de sistemas de gestão web (CRMs e ERPs) dos nossos clientes, atuando no front-end, no back-end e no banco de dados. Você vai construir funcionalidades novas, corrigir problemas reportados pelos clientes, integrar os sistemas com serviços externos e cuidar da publicação e da sustentação dos sistemas em produção.</p>
+    <div class="facts">
+      <div><small>Contrato</small><strong>PJ</strong></div>
+      <div><small>Valor</small><strong>R$ 5.000/mês</strong></div>
+      <div><small>Local</small><strong>100% remoto</strong></div>
+      <div><small>Início</small><strong>A combinar</strong></div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Quem somos</h2>
+    <p>A Rotha IA cria sistemas de gestão sob medida para empresas de diferentes setores.</p>
+  </section>
+
+  <section>
+    <h2>Atividades</h2>
+    <ul class="list">
+      <li>Desenvolver e manter aplicações web com React e TypeScript.</li>
+      <li>Implementar regras de negócio, funções e serviços no Supabase (PostgreSQL e Edge Functions).</li>
+      <li>Criar e consumir APIs REST e integrar os sistemas com serviços externos, como nota fiscal, WhatsApp, pagamentos e automações.</li>
+      <li>Modelar tabelas, escrever consultas e cuidar da integridade dos dados.</li>
+      <li>Corrigir bugs reportados pelos clientes, investigando a causa do problema da tela até o banco de dados.</li>
+      <li>Realizar testes e validações das funcionalidades antes de cada entrega.</li>
+      <li>Publicar novas versões e aplicar mudanças de banco em produção, seguindo o checklist da empresa.</li>
+      <li>Propor opções de tela seguindo o design system de cada sistema.</li>
+      <li>Participar de revisão de código e programar em dupla com o fundador.</li>
+      <li>Apoiar a análise de requisitos e a estimativa de tarefas.</li>
+      <li>Documentar funcionalidades e escrever manuais para as equipes dos clientes.</li>
+      <li>Usar Git para controle de versão e o nosso sistema interno de tarefas.</li>
+    </ul>
+  </section>
+
+  <section class="two">
+    <div class="box hl">
+      <h3>Requisitos</h3>
+      <ul class="list">
+        <li>Ensino superior completo ou em andamento em Ciência da Computação, Sistemas de Informação, Engenharia de Software, Análise e Desenvolvimento de Sistemas ou área relacionada.</li>
+        <li>Experiência de pelo menos 1 ano com React e TypeScript, em emprego, freela ou projetos próprios publicados.</li>
+        <li>Conhecimento em banco de dados relacional e SQL (PostgreSQL ou Supabase).</li>
+        <li>Experiência com integração de APIs REST.</li>
+        <li>Git no dia a dia.</li>
+        <li><b>Autonomia e IA:</b> saber gerenciar o estado da aplicação, fazer requisições HTTP e implementar autenticação, e usar ferramentas de IA (Claude Code, Cursor ou similar) para ganhar produtividade sem ficar dependente delas, sabendo explicar o código que entregou.</li>
+        <li>Capacidade de investigar um problema de ponta a ponta e explicar com clareza o que encontrou.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Diferenciais</h3>
+      <ul class="list soft">
+        <li><b>Next.js</b>, além de React e TypeScript.</li>
+        <li><b>Integração com APIs fiscais</b> (NF-e, NFC-e, NFS-e), por exemplo Brasil NFe ou Focus NFe.</li>
+        <li>Meta for Developers e API oficial do WhatsApp.</li>
+        <li>Segurança de dados e LGPD.</li>
+        <li>Edge Functions e políticas de acesso (RLS) no Supabase.</li>
+        <li>Testes automatizados.</li>
+        <li>Experiência com sistema em produção e contato direto com cliente.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Condições</h2>
+    <ul class="list">
+      <li>Contrato PJ de R$ 5.000 por mês.</li>
+      <li>100% remoto, com um horário fixo por dia em que trabalhamos juntos online para programar em dupla.</li>
+      <li>Início a combinar, com 90 dias de experiência e uma avaliação no fim desse período.</li>
+      <li>Contrato com cláusula de sigilo e de proteção de dados (LGPD), porque você vai trabalhar com dados reais de clientes.</li>    </ul>
+  </section>
+
+  <section id="candidatura">
+    <h2>Candidate-se</h2>
+    <div class="box hl">
+      <p>A candidatura é pelo formulário, com 2 perguntas curtas sobre a sua experiência. Leva uns 10 minutos.</p>
+      <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdMr0CKzvQ2CN7hbaCC8ZVy4mKN-xhCCckw11pLjexaFyOsIQ/viewform" target="_blank" rel="noopener">Candidatar-se</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>Rotha IA · rothaia.com.br</span>
+    <span>Dúvidas sobre a vaga: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3a5955544e5b4e557a48554e525b535b14595557145848">[email&#160;protected]</a></span>
+    <span>Seus dados são usados só para este processo seletivo e são apagados depois dele, conforme a LGPD.</span>
+  </footer>
+</div>
+
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></html>

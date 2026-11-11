@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-26T15:08:02.868Z",
+  "readOnly": true,
+  "employerWrites": 0,
+  "scope": "one official posting; existing parser; no wider catalog scan",
+  "company": "Jobgether",
+  "title": "Desenvolvedor Backend Jr",
+  "url": "https://jobs.lever.co/jobgether/15733132-4fc7-40d0-b611-6f2c5ee7fc84",
+  "publishedAt": "2026-10-22T01:51:17.353Z",
+  "score": 87,
+  "blockers": [],
+  "gaps": [
+    "Salário não divulgado.",
+    "Regime de contratação não informado no anúncio."
+  ],
+  "objective": true,
+  "eligible": true,
+  "requirements": [
+    {
+      "heading": "Accountabilities",
+      "text": "<div>\n<ul data-spread=\"false\" data-pm-slice=\"3 3 []\">\n<li>\n<p>Participate in project planning and contribute to the design, development, and optimization of new software features.</p>\n</li>\n<li>\n<p>Apply programming logic and backend development principles to build and maintain reliable software solutions.</p>\n</li>\n<li>\n<p>Develop backend functionalities using C# and related technologies within the .NET ecosystem.</p>\n</li>\n<li>\n<p>Analyze requirements with internal clients and stakeholders to understand business needs and define appropriate technical solutions.</p>\n</li>\n<li>\n<p>Collect, organize, analyze, and monitor information required to support software development and business processes.</p>\n</li>\n<li>\n<p>Understand user and client needs and recommend relevant technical approaches, data views, and analyses.</p>\n</li>\n<li>\n<p>Develop and maintain APIs and backend services, including WebAPI-based solutions.</p>\n</li>\n<li>\n<p>Work with SQL databases to support data access, organization, and processing.</p>\n</li>\n<li>\n<p>Use Git and version control practices to manage code changes and collaborate with other developers.</p>\n</li>\n<li>\n<p>Contribute to software quality by following development standards, identifying issues, and supporting debugging and optimization activities.</p>\n</li>\n<li>\n<p>Collaborate with team members to improve existing functionality and deliver solutions aligned with business requirements.</p>\n</li>\n\n<h3>Requirements:</h3>\n<ul data-spread=\"false\">\n<li>\n<p>Approximately 6 months to 1 year of experience in backend development or related technical activities.</p>\n</li>\n<li>\n<p>Foundational experience with backend technologies, .NET, C#, SQL, programming logic, Angular, WebAPI, and Git.</p>\n</li>\n<li>\n<p>Understanding of software development principles and the ability to contribute to application development and maintenance.</p>\n</li>\n<li>\n<p>Familiarity with databases, APIs, version control, and software quality practices.</p>\n</li>\n<li>\n<p>Ability to analyze requirements, understand business needs, and translate them into practical technical solutions.</p>\n</li>\n<li>\n<p>Strong analytical and problem-solving skills, attention to detail, and willingness to learn.</p>\n</li>\n<li>\n<p>Good communication and collaboration skills, with the ability to work with internal stakeholders and development teams.</p>\n</li>\n<li>\n<p>A completed bachelor's degree in Business Administration, Information Systems, Economics, or a related field.</p>\n</li>\n<li>\n<p>Fluency in English or Spanish is considered an advantage.</p>\n</li>\n\n<h3>Benefits:</h3>\n<ul data-spread=\"false\">\n<li>\n<p>Fully remote work arrangement within Brazil.</p>\n</li>\n<li>\n<p>Full-time employment opportunity.</p>\n</li>\n<li>\n<p>Health, dental, and life insurance plans.</p>\n</li>\n<li>\n<p>Meal allowance for use at supermarkets and restaurants.</p>\n</li>\n<li>\n<p>Home office allowance to help cover remote work expenses, including internet costs.</p>\n</li>\n<li>\n<p>Access to a gym membership subscription app.</p>\n</li>\n<li>\n<p>Educational partnerships offering discounts at universities, English schools, and other learning providers.</p>\n</li>\n<li>\n<p>Four collective days off per year, with a shared break once per quarter.</p>\n</li>\n<li>\n<p>Employee Assistance Program (EAP) providing psychological, legal, and financial support.</p>\n</li>\n<li>\n<p>Payroll-deducted loan option.</p>\n</li>\n<li>\n<p>Discounts with partner brands, including Dell and Microsoft.</p>\n</li>\n<li>\n<p>Ongoing learning, training, mentorship, and professional development opportunities.</p>\n</li>\n<li>\n<p>An inclusive, collaborative workplace that encourages new ideas, personal growth, and teamwork.</p>\n</li>\n\n</ul></ul></ul></div>"
+    }
+  ],
+  "qualificationLimit": "Employer named only as partner by the recruiter; original ABC Fitness posting identified separately in Workday, which is assisted-only."
+}

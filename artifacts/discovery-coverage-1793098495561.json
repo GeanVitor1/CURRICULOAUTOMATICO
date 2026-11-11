@@ -1,0 +1,91 @@
+{
+  "at": "2026-10-27T10:54:55.561Z",
+  "readOnly": true,
+  "employerWrites": 0,
+  "results": [
+    {
+      "source": {
+        "id": "quickin-board:cadmus",
+        "type": "manual",
+        "board": "cadmus",
+        "company": "Cadmus",
+        "enabled": true,
+        "discovery": true,
+        "application": false,
+        "status": ""
+      },
+      "examined": 56,
+      "checkpoint": {
+        "cursor": "{\"page\":1,\"offset\":0}",
+        "pending": false
+      },
+      "jobs": []
+    },
+    {
+      "source": {
+        "id": "quickin-board:sinqia",
+        "type": "manual",
+        "board": "sinqia",
+        "company": "Evertec Brasil",
+        "enabled": true,
+        "discovery": true,
+        "application": false,
+        "status": ""
+      },
+      "examined": 59,
+      "checkpoint": {
+        "cursor": "{\"page\":1,\"offset\":0}",
+        "pending": false
+      },
+      "jobs": []
+    },
+    {
+      "source": {
+        "id": "quickin-board:rptalentos",
+        "type": "manual",
+        "board": "rptalentos",
+        "company": "RP Talentos e Estágios",
+        "enabled": true,
+        "discovery": true,
+        "application": false,
+        "status": ""
+      },
+      "examined": 31,
+      "checkpoint": {
+        "cursor": "{\"page\":1,\"offset\":0}",
+        "pending": false
+      },
+      "jobs": []
+    },
+    {
+      "source": {
+        "id": "quickin-board:domvsit",
+        "type": "manual",
+        "board": "domvsit",
+        "company": "Domvs IT",
+        "enabled": true,
+        "discovery": true,
+        "application": false,
+        "status": ""
+      },
+      "examined": 25,
+      "checkpoint": {
+        "cursor": "{\"page\":1,\"offset\":0}",
+        "pending": false
+      },
+      "jobs": []
+    },
+    {
+      "board": "add",
+      "error": "Company not confirmed"
+    },
+    {
+      "board": "mamba",
+      "error": "Company not confirmed"
+    },
+    {
+      "search": "official",
+      "error": "Antigravity respondeu fora do formato esperado. Nenhuma vaga foi confirmada nesta consulta."
+    }
+  ]
+}

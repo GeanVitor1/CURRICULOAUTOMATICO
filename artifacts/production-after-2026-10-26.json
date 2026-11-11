@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-26T15:11:00.063Z",
+  "readOnly": true,
+  "deploymentId": "dpl_DyxxXJuxr6tSkWwyhZVt58DARXrM",
+  "readyState": "READY",
+  "health": {
+    "httpStatus": 200,
+    "status": "ok",
+    "database": "Cloud Firestore",
+    "revision": "76068be062f97de3591fd5a41be2ae9a1a451199988727c1edc710ccc6533990"
+  },
+  "cron": {
+    "project": {
+      "enabledAt": 1791892914669,
+      "disabledAt": null,
+      "updatedAt": 1793027450135,
+      "deploymentId": "dpl_DyxxXJuxr6tSkWwyhZVt58DARXrM",
+      "definitions": [
+        {
+          "host": "curriculoautomatico-ny155ojgg-geans-projects-da7db03c.vercel.app",
+          "path": "/api/daily-routine",
+          "schedule": "0 11 * * *"
+        }
+      ]
+    },
+    "deployment": [
+      {
+        "path": "/api/daily-routine",
+        "schedule": "0 11 * * *"
+      }
+    ]
+  },
+  "deploymentPerformed": false,
+  "cronTriggered": false
+}

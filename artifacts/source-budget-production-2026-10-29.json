@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-29T16:16:15.445Z",
+  "origin": "https://curriculoautomatico.vercel.app",
+  "removedSourceRejected": true,
+  "status": 400,
+  "plan": "free",
+  "dailyLimit": 5,
+  "usedToday": 0,
+  "remainingToday": 5,
+  "discoveryStarted": false,
+  "employerRequests": 0,
+  "portalCredentialsTransferred": false,
+  "deploymentId": "dpl_FufzewLTD5bZJabcU7RCPzP6eZhm",
+  "deploymentReady": true,
+  "distinctRegressionTestsPassed": 136,
+  "fiveSlotsDiscoveryDailyMaximum": 15,
+  "fiveSlotsDestinationResearchDailyMaximum": 15,
+  "maximumCandidatesPerBatch": 30,
+  "maximumSourcesPerBatch": 6,
+  "browserTestsRunLocally": false,
+  "newApplicationsConfirmed": 0
+}

@@ -239,9 +239,11 @@ export default function Onboarding({ onComplete }: { onComplete?: () => void }) 
         <button type="button" className="flow-back" onClick={back} disabled={step === 0} aria-label="Voltar">
           <ArrowLeft size={18} />
         </button>
-        <div className="flow-progress" aria-label={`Etapa ${step + 1} de ${flow.length}`}>
-          <span style={{ width: ((step + 1) / flow.length) * 100 + "%" }} />
-        </div>
+        <ol className="eg-stepper flow-stepper" aria-label={`Etapa ${step + 1} de ${flow.length}`}>
+          {flow.map((_, i) => (
+            <li key={i} className={i < step ? "done" : i === step ? "current" : ""} aria-current={i === step ? "step" : undefined} />
+          ))}
+        </ol>
       </header>
       <form className="flow-body" onSubmit={(e) => { e.preventDefault(); next(); }} key={id}>
         <h1>{TITLES[id]}</h1>

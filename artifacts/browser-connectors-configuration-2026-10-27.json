@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-27T14:06:53.040Z",
+  "portals": [
+    "gupy",
+    "infojobs",
+    "glassdoor",
+    "linkedin"
+  ],
+  "extensionVersion": "2.0.0",
+  "linkedInAutomaticSubmission": false,
+  "requiresDeployment": true
+}

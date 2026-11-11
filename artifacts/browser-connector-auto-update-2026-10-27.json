@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-27T18:28:07.117Z",
+  "version": "2.0.2",
+  "deployment": "dpl_5H1nsNgHtgF2cp6MaizQieRqkmaM",
+  "publishedPackageMatchesSource": true,
+  "localDevelopmentUpdate": {
+    "folder": "browser-extension/gupy-session",
+    "bootstrapManualReloadRequired": true,
+    "downloadsRemoteCode": false,
+    "requiresNewerVersionInSameFolder": true,
+    "checksLocalMetadataOnly": true,
+    "defersWhileConnectorOpen": true
+  },
+  "verification": {
+    "focusedTestsPassed": 27,
+    "buildPassed": true,
+    "realChromeLocalMetadataAndRuntimeReloadVerified": true,
+    "headlessWorkerUnloadVerified": true,
+    "automaticWorkerRestartInHeadlessVerified": false
+  },
+  "distribution": {
+    "storePackagePrepared": true,
+    "storePublished": false,
+    "internetUpdatesForOtherInstallationsRequireStorePublication": true
+  },
+  "connectionChanges": {
+    "automaticallyTransfersSessions": false,
+    "automaticallyApprovesConnections": false
+  }
+}

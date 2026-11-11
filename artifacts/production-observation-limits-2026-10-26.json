@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-26T15:22:30.928Z",
+  "oldMorningRuntimeLogQuery": {
+    "httpStatus": 400,
+    "reason": "Outside available runtime log retention; not an invocation result"
+  },
+  "localCredentialRefreshSucceeded": true,
+  "productionBackendHealth": 200,
+  "observedFailedTasks": 0,
+  "observedStaleLeases": 0
+}

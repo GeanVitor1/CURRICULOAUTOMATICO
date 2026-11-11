@@ -1,0 +1,2129 @@
+{
+  "at": "2026-10-26T10:09:02.184Z",
+  "readOnly": true,
+  "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+  "workspaceWrites": 0,
+  "employerWrites": 0,
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "filtersUnchanged": true,
+  "routine": {
+    "enabled": true,
+    "mode": "automatic",
+    "time": "08:00",
+    "dailyLimit": 5,
+    "minScore": 70,
+    "lastRun": "2026-10-25T11:12:51.785Z",
+    "nextRun": "2026-10-26T11:00:00.000Z",
+    "destinationPolicy": "official",
+    "progress": {
+      "day": "2026-10-25",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 0,
+      "remaining": 5,
+      "state": "waiting",
+      "message": "1 tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente. 5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-25T11:21:51.506Z"
+    },
+    "discoveryCheckpoints": {
+      "official-abler-email": {
+        "cursor": "d2432f591f5f3a42:0",
+        "pending": false
+      },
+      "company-board:alleasy.com.br": {
+        "cursor": "{\"url\":\"https://alleasy.com.br/jobs/\",\"offset\":0}",
+        "pending": false
+      }
+    },
+    "researchBudget": {
+      "day": "2026-10-25",
+      "used": 15
+    },
+    "discoveryProductivity": {
+      "official-careers": {
+        "sourceId": "official-careers",
+        "company": "Páginas de carreira das empresas",
+        "checkedAt": "2026-10-25T11:09:44.061Z",
+        "examined": 0,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {},
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "corporate-email-careers": {
+        "sourceId": "corporate-email-careers",
+        "company": "Vagas com candidatura por e-mail",
+        "checkedAt": "2026-10-25T11:09:58.318Z",
+        "examined": 0,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {},
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "official-abler-email": {
+        "sourceId": "official-abler-email",
+        "company": "Abler · candidaturas por e-mail da vaga",
+        "checkedAt": "2026-10-25T11:10:05.547Z",
+        "examined": 5,
+        "retained": 1,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {
+          "existing_or_uncertain_application": 1,
+          "Modalidade fora das suas preferências.": 2,
+          "Localização fora das suas preferências; revise restrições geográficas.": 1
+        },
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "quickin-board:globalti": {
+        "sourceId": "quickin-board:globalti",
+        "company": "Global TI",
+        "checkedAt": "2026-10-25T11:10:09.043Z",
+        "examined": 8,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {},
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "company-board:alleasy.com.br": {
+        "sourceId": "company-board:alleasy.com.br",
+        "company": "AllEasy",
+        "checkedAt": "2026-10-25T11:10:17.436Z",
+        "examined": 10,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {
+          "Modalidade fora das suas preferências.": 6,
+          "excluded_by_user": 1,
+          "objective_preferences": 1,
+          "Publicação fora do período configurado.": 2
+        },
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "catalog:lever:ciandt": {
+        "sourceId": "catalog:lever:ciandt",
+        "company": "CI&T",
+        "checkedAt": "2026-10-25T11:10:56.719Z",
+        "examined": 178,
+        "retained": 3,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {
+          "Localização fora das suas preferências; revise restrições geográficas.": 19,
+          "objective_preferences": 52,
+          "Publicação fora do período configurado.": 83,
+          "Modalidade fora das suas preferências.": 18,
+          "excluded_by_user": 3
+        },
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "catalog:greenhouse:gympass": {
+        "sourceId": "catalog:greenhouse:gympass",
+        "company": "Wellhub",
+        "checkedAt": "2026-10-25T11:11:15.459Z",
+        "examined": 87,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {
+          "Modalidade fora das suas preferências.": 87
+        },
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "catalog:greenhouse:zupinnovation": {
+        "sourceId": "catalog:greenhouse:zupinnovation",
+        "company": "Zup Innovation",
+        "checkedAt": "2026-10-25T11:11:22.367Z",
+        "examined": 4,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {
+          "objective_preferences": 1,
+          "Modalidade fora das suas preferências.": 2,
+          "Publicação fora do período configurado.": 1
+        },
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "catalog:greenhouse:coderoad": {
+        "sourceId": "catalog:greenhouse:coderoad",
+        "company": "CodeRoad",
+        "checkedAt": "2026-10-25T11:11:26.744Z",
+        "examined": 30,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {
+          "Localização fora das suas preferências; revise restrições geográficas.": 28,
+          "Modalidade fora das suas preferências.": 2
+        },
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "142900d6-dd22-4bd2-b5a5-d2b98dee9f70": {
+        "sourceId": "142900d6-dd22-4bd2-b5a5-d2b98dee9f70",
+        "company": "LinkedIn",
+        "checkedAt": "2026-10-24T11:12:12.287Z",
+        "examined": 0,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {},
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-25T11:00:00.000Z"
+      },
+      "44bcd73e-c989-41f1-a973-6ff418d35e29": {
+        "sourceId": "44bcd73e-c989-41f1-a973-6ff418d35e29",
+        "company": "Gupy",
+        "checkedAt": "2026-10-25T11:11:46.386Z",
+        "examined": 157,
+        "retained": 9,
+        "compatible": 3,
+        "channelVerified": 0,
+        "excluded": {
+          "Localização fora das suas preferências; revise restrições geográficas.": 110,
+          "objective_preferences": 6,
+          "Publicação fora do período configurado.": 29,
+          "Contratação fora das suas preferências.": 2,
+          "excluded_by_user": 1
+        },
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d"
+      },
+      "1c389c71-c43d-48f2-9d52-7fae4714e346": {
+        "sourceId": "1c389c71-c43d-48f2-9d52-7fae4714e346",
+        "company": "Glassdoor",
+        "checkedAt": "2026-10-25T11:12:28.463Z",
+        "examined": 0,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {},
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      },
+      "d3f3a3a0-3093-46ad-ab81-472d76b198de": {
+        "sourceId": "d3f3a3a0-3093-46ad-ab81-472d76b198de",
+        "company": "InfoJobs",
+        "checkedAt": "2026-10-25T11:12:40.685Z",
+        "examined": 0,
+        "retained": 0,
+        "compatible": 0,
+        "channelVerified": 0,
+        "excluded": {},
+        "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+        "nextCheckAt": "2026-10-26T11:00:00.000Z"
+      }
+    }
+  },
+  "runs": [
+    {
+      "origin": "scheduled_automation",
+      "continuation": false,
+      "id": "c6598802-170c-4d6e-bcd1-96680af1055e",
+      "at": "2026-10-25T11:09:14.020Z",
+      "status": "partial",
+      "discovered": 0,
+      "processed": 0,
+      "errors": [
+        "LinkedIn: A busca Antigravity não retornou fontes verificáveis. Use a busca no portal ou tente novamente."
+      ],
+      "message": "0 novas oportunidades, sem duplicações. 479 registros publicados consultados; 13 preservados após filtros antecipados.",
+      "searchSuggestions": [],
+      "sourceProductivity": [
+        {
+          "sourceId": "official-careers",
+          "company": "Páginas de carreira das empresas",
+          "checkedAt": "2026-10-25T11:09:44.061Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "corporate-email-careers",
+          "company": "Vagas com candidatura por e-mail",
+          "checkedAt": "2026-10-25T11:09:58.318Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "official-abler-email",
+          "company": "Abler · candidaturas por e-mail da vaga",
+          "checkedAt": "2026-10-25T11:10:05.547Z",
+          "examined": 5,
+          "retained": 1,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "existing_or_uncertain_application": 1,
+            "Modalidade fora das suas preferências.": 2,
+            "Localização fora das suas preferências; revise restrições geográficas.": 1
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "quickin-board:globalti",
+          "company": "Global TI",
+          "checkedAt": "2026-10-25T11:10:09.043Z",
+          "examined": 8,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "company-board:alleasy.com.br",
+          "company": "AllEasy",
+          "checkedAt": "2026-10-25T11:10:17.436Z",
+          "examined": 10,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Modalidade fora das suas preferências.": 6,
+            "excluded_by_user": 1,
+            "objective_preferences": 1,
+            "Publicação fora do período configurado.": 2
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:lever:ciandt",
+          "company": "CI&T",
+          "checkedAt": "2026-10-25T11:10:56.719Z",
+          "examined": 178,
+          "retained": 3,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 19,
+            "objective_preferences": 52,
+            "Publicação fora do período configurado.": 83,
+            "Modalidade fora das suas preferências.": 18,
+            "excluded_by_user": 3
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:gympass",
+          "company": "Wellhub",
+          "checkedAt": "2026-10-25T11:11:15.459Z",
+          "examined": 87,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Modalidade fora das suas preferências.": 87
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:zupinnovation",
+          "company": "Zup Innovation",
+          "checkedAt": "2026-10-25T11:11:22.367Z",
+          "examined": 4,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "objective_preferences": 1,
+            "Modalidade fora das suas preferências.": 2,
+            "Publicação fora do período configurado.": 1
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:coderoad",
+          "company": "CodeRoad",
+          "checkedAt": "2026-10-25T11:11:26.744Z",
+          "examined": 30,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 28,
+            "Modalidade fora das suas preferências.": 2
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "44bcd73e-c989-41f1-a973-6ff418d35e29",
+          "company": "Gupy",
+          "checkedAt": "2026-10-25T11:11:46.386Z",
+          "examined": 157,
+          "retained": 9,
+          "compatible": 3,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 110,
+            "objective_preferences": 6,
+            "Publicação fora do período configurado.": 29,
+            "Contratação fora das suas preferências.": 2,
+            "excluded_by_user": 1
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d"
+        },
+        {
+          "sourceId": "1c389c71-c43d-48f2-9d52-7fae4714e346",
+          "company": "Glassdoor",
+          "checkedAt": "2026-10-25T11:12:28.463Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        },
+        {
+          "sourceId": "d3f3a3a0-3093-46ad-ab81-472d76b198de",
+          "company": "InfoJobs",
+          "checkedAt": "2026-10-25T11:12:40.685Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-26T11:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "origin": "scheduled_automation",
+      "continuation": false,
+      "id": "8642e770-0aa0-4df8-9210-81fbefcd18fe",
+      "at": "2026-10-24T11:09:31.194Z",
+      "status": "completed",
+      "discovered": 2,
+      "processed": 0,
+      "errors": [],
+      "message": "2 novas oportunidades, sem duplicações. 480 registros publicados consultados; 13 preservados após filtros antecipados.",
+      "searchSuggestions": [],
+      "sourceProductivity": [
+        {
+          "sourceId": "official-careers",
+          "company": "Páginas de carreira das empresas",
+          "checkedAt": "2026-10-24T11:09:52.893Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "corporate-email-careers",
+          "company": "Vagas com candidatura por e-mail",
+          "checkedAt": "2026-10-24T11:10:08.573Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "official-abler-email",
+          "company": "Abler · candidaturas por e-mail da vaga",
+          "checkedAt": "2026-10-24T11:10:16.049Z",
+          "examined": 5,
+          "retained": 1,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "existing_or_uncertain_application": 1,
+            "Modalidade fora das suas preferências.": 2,
+            "Localização fora das suas preferências; revise restrições geográficas.": 1
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "quickin-board:globalti",
+          "company": "Global TI",
+          "checkedAt": "2026-10-24T11:10:19.486Z",
+          "examined": 8,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "company-board:alleasy.com.br",
+          "company": "AllEasy",
+          "checkedAt": "2026-10-24T11:10:29.427Z",
+          "examined": 10,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Modalidade fora das suas preferências.": 6,
+            "excluded_by_user": 1,
+            "objective_preferences": 1,
+            "Publicação fora do período configurado.": 2
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:lever:ciandt",
+          "company": "CI&T",
+          "checkedAt": "2026-10-24T11:10:58.786Z",
+          "examined": 177,
+          "retained": 3,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 19,
+            "objective_preferences": 51,
+            "Publicação fora do período configurado.": 83,
+            "Modalidade fora das suas preferências.": 18,
+            "excluded_by_user": 3
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:gympass",
+          "company": "Wellhub",
+          "checkedAt": "2026-10-24T11:11:17.901Z",
+          "examined": 87,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Modalidade fora das suas preferências.": 87
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:zupinnovation",
+          "company": "Zup Innovation",
+          "checkedAt": "2026-10-24T11:11:24.827Z",
+          "examined": 4,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "objective_preferences": 1,
+            "Modalidade fora das suas preferências.": 2,
+            "Publicação fora do período configurado.": 1
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:coderoad",
+          "company": "CodeRoad",
+          "checkedAt": "2026-10-24T11:11:29.319Z",
+          "examined": 30,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 28,
+            "Modalidade fora das suas preferências.": 2
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "44bcd73e-c989-41f1-a973-6ff418d35e29",
+          "company": "Gupy",
+          "checkedAt": "2026-10-24T11:11:49.189Z",
+          "examined": 159,
+          "retained": 9,
+          "compatible": 3,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 111,
+            "objective_preferences": 6,
+            "Publicação fora do período configurado.": 30,
+            "Contratação fora das suas preferências.": 2,
+            "excluded_by_user": 1
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d"
+        },
+        {
+          "sourceId": "142900d6-dd22-4bd2-b5a5-d2b98dee9f70",
+          "company": "LinkedIn",
+          "checkedAt": "2026-10-24T11:12:12.287Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "1c389c71-c43d-48f2-9d52-7fae4714e346",
+          "company": "Glassdoor",
+          "checkedAt": "2026-10-24T11:12:28.496Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        },
+        {
+          "sourceId": "d3f3a3a0-3093-46ad-ab81-472d76b198de",
+          "company": "InfoJobs",
+          "checkedAt": "2026-10-24T11:12:42.315Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-25T11:00:00.000Z"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "table": "discoveryTasks",
+      "items": [
+        {
+          "id": "8642e770-0aa0-4df8-9210-81fbefcd18fe",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:09:06.926Z",
+          "updatedAt": "2026-10-24T11:13:02.857Z",
+          "lastError": null
+        },
+        {
+          "id": "c6598802-170c-4d6e-bcd1-96680af1055e",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:09:06.274Z",
+          "updatedAt": "2026-10-25T11:13:04.070Z",
+          "lastError": "LinkedIn: A busca Antigravity não retornou fontes verificáveis. Use a busca no portal ou tente novamente."
+        }
+      ]
+    },
+    {
+      "table": "resolutionTasks",
+      "items": [
+        {
+          "id": "ee7ae724-0461-406f-be4e-c4105f308a21",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:13:03.646Z",
+          "updatedAt": "2026-10-24T11:14:43.202Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "90992d0e-6454-41f9-b962-c5f451b84c26",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:14:52.201Z",
+          "updatedAt": "2026-10-24T11:16:48.102Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "f137b98e-1fd3-46ec-aef4-93be699825bd",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:16:59.057Z",
+          "updatedAt": "2026-10-24T11:18:27.736Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "4458d857-5576-4025-9033-6d9c953681c9",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-24T11:18:42.846Z",
+          "updatedAt": "2026-10-24T11:19:41.794Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "b9c3d66e-6a39-43ff-80d3-be6d690855d9",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:13:04.842Z",
+          "updatedAt": "2026-10-25T11:14:37.183Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "ad7fd85a-2409-402f-b091-466439ba7ea4",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:14:46.018Z",
+          "updatedAt": "2026-10-25T11:16:45.985Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "4d35f43b-9526-453b-844f-6e0b322d1b5a",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:16:56.754Z",
+          "updatedAt": "2026-10-25T11:18:32.399Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "6422de05-0266-45f7-b679-819d2e92731d",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:18:47.190Z",
+          "updatedAt": "2026-10-25T11:19:52.956Z",
+          "lastError": null,
+          "requestedJobIds": []
+        },
+        {
+          "id": "2388d827-29e1-4024-9a40-506600da30d2",
+          "status": "completed",
+          "attempts": 1,
+          "createdAt": "2026-10-25T11:20:08.178Z",
+          "updatedAt": "2026-10-25T11:21:09.325Z",
+          "lastError": null,
+          "requestedJobIds": []
+        }
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "6be60812-8c1d-4397-88bb-e72433e5ced1",
+      "title": "Desenvolvedor Full Stack Java/React - Pleno",
+      "company": "VENHA SER #SANGUELARANJA 🧡🚀",
+      "url": "https://fcamara.gupy.io/job/eyJqb2JJZCI6MTI3NzE2NDgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-23T17:48:12.266Z",
+      "discoveredAt": "2026-10-24T11:11:33.124Z",
+      "score": 42,
+      "blockers": [],
+      "automation": {
+        "correlationId": "6c1b454f-974c-4af3-b466-ffd52cd397f7",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-24T11:12:42.872Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:44.348Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:15:47.489Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-24T11:16:29.626Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:12:42.125Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:42.339Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:16:15.624Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:16:27.230Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "partial",
+        "message": "Busca cruzada parcial. Há fontes pendentes; a oportunidade será reavaliada.",
+        "checkedAt": "2026-10-25T11:16:01.952Z"
+      },
+      "destinations": [],
+      "applicationIds": []
+    },
+    {
+      "id": "13cfa92e-4600-4d9f-97c6-4d38e0bdc477",
+      "title": "[Job-32416] Node.js Full Stack Developer , Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/e4cc61aa-b181-485d-a610-5912eb0f1167",
+      "publishedAt": "2026-10-23T20:39:04.436Z",
+      "discoveredAt": "2026-10-24T11:10:39.760Z",
+      "score": 39,
+      "blockers": [],
+      "automation": {
+        "correlationId": "0f91a184-bb07-4935-84ad-12aaf923722c",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-24T11:12:42.872Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:44.371Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:13:33.714Z",
+            "stage": "destination",
+            "code": "public_form_verified"
+          },
+          {
+            "at": "2026-10-24T11:14:24.765Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:12:41.724Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:42.360Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:15:23.742Z",
+            "stage": "destination",
+            "code": "public_form_verified"
+          },
+          {
+            "at": "2026-10-25T11:16:27.264Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "verified",
+        "message": "Destino independente identificado; envio depende do formulário e das permissões.",
+        "checkedAt": "2026-10-25T11:15:22.530Z"
+      },
+      "destinations": [
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": true
+        },
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false
+        }
+      ],
+      "applicationIds": []
+    },
+    {
+      "id": "06c71f53-5d17-4975-84b4-9fcc7c0ebfa4",
+      "title": "Analista Desenvolvedor(a) C#/.NET Pleno",
+      "company": "Vem Pra Pixeon",
+      "url": "https://vemprapixeon.gupy.io/job/eyJqb2JJZCI6MTI3MjUxMzksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-22T19:35:14.118Z",
+      "discoveredAt": "2026-10-23T11:11:36.135Z",
+      "score": 92,
+      "blockers": [],
+      "automation": {
+        "correlationId": "6ca9f15a-38ca-4544-b089-4972c74bd062",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:50.623Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:50.881Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T15:27:20.431Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:21.544Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T16:15:07.591Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:08.414Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T16:24:37.722Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:38.625Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-24T11:12:44.328Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:45.206Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-25T11:12:42.317Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:43.211Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-25T11:13:52.584Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:14:19.600Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "partial",
+        "message": "Busca cruzada parcial. Há fontes pendentes; a oportunidade será reavaliada.",
+        "checkedAt": "2026-10-25T11:13:29.703Z"
+      },
+      "destinations": [],
+      "applicationIds": []
+    },
+    {
+      "id": "441f62a1-cbf4-49f6-bf4c-2d4b2d138e27",
+      "title": "DESENVOLVEDOR FULL STACK | NODE.JS | REACT",
+      "company": "La Moda",
+      "url": "https://lamoda.gupy.io/job/eyJqb2JJZCI6MTI2OTExMDMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-13T16:44:22.797Z",
+      "discoveredAt": "2026-10-22T15:49:16.947Z",
+      "score": 46,
+      "blockers": [],
+      "automation": {
+        "correlationId": "7e6e0384-1e6f-421c-818f-fb1371260bbd",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:49.524Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:51.809Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T15:27:18.848Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:22.474Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:15:07.488Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:09.412Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:24:37.608Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:39.733Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:12:44.308Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:46.243Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:14:20.490Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-24T11:14:26.724Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:12:42.296Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:44.258Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:16:22.815Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:16:29.250Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "verified",
+        "message": "Destino independente identificado; envio depende do formulário e das permissões.",
+        "checkedAt": "2026-10-25T11:16:00.396Z"
+      },
+      "destinations": [
+        {
+          "platform": "gupy",
+          "state": "verified",
+          "formFound": false
+        }
+      ],
+      "applicationIds": []
+    },
+    {
+      "id": "bb0770a9-fdaf-48ad-877e-aede1553b921",
+      "title": "Desenvolvedor(a) Full Stack (com ênfase em Frontend)",
+      "company": "Víssimo",
+      "url": "https://vissimo.gupy.io/job/eyJqb2JJZCI6MTI3MjIxOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-14T13:32:16.200Z",
+      "discoveredAt": "2026-10-22T15:49:16.944Z",
+      "score": 70,
+      "blockers": [],
+      "automation": {
+        "correlationId": "8a91e594-9d97-4c74-9535-29c9912b2581",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:49.489Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:51.839Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T15:27:18.797Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:22.504Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T16:15:07.428Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:09.449Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T16:24:37.550Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:39.774Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-24T11:12:44.252Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:46.282Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-25T11:12:42.235Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:44.298Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-25T11:14:14.320Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:14:20.697Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "verified",
+        "message": "Destino independente identificado; envio depende do formulário e das permissões.",
+        "checkedAt": "2026-10-25T11:13:57.547Z"
+      },
+      "destinations": [
+        {
+          "platform": "gupy",
+          "state": "verified",
+          "formFound": false
+        }
+      ],
+      "applicationIds": []
+    },
+    {
+      "id": "c1526c31-2a60-4ada-abcb-661d730d5931",
+      "title": "Desenvolvedor Full Stack Java (Pleno) - Shop",
+      "company": "Alterdata Software",
+      "url": "https://alterdata.gupy.io/job/eyJqb2JJZCI6MTI3Mjk0NDIsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-16T17:49:43.035Z",
+      "discoveredAt": "2026-10-22T15:49:16.938Z",
+      "score": 37,
+      "blockers": [],
+      "automation": {
+        "correlationId": "d0f8287e-4071-4f33-a505-435f86c2e668",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:49.449Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:51.853Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T15:27:18.735Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:22.518Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:15:07.357Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:09.469Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:24:37.481Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:39.792Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:12:44.186Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:46.300Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:17:58.596Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-24T11:18:11.295Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:12:42.168Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:44.316Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:17:35.478Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:18:15.704Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "partial",
+        "message": "Busca cruzada parcial. Há fontes pendentes; a oportunidade será reavaliada.",
+        "checkedAt": "2026-10-25T11:17:21.291Z"
+      },
+      "destinations": [],
+      "applicationIds": []
+    },
+    {
+      "id": "0db3bdc1-db2e-49c6-95b3-8f46bfb6e09a",
+      "title": "ANALISTA DE DESENVOLVIMENTO DE SISTEMAS",
+      "company": "Oportunidades",
+      "url": "https://bancorbras.gupy.io/job/eyJqb2JJZCI6MTI3MjM4NTYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-14T16:44:53.129Z",
+      "discoveredAt": "2026-10-22T15:49:16.585Z",
+      "score": 78,
+      "blockers": [],
+      "automation": {
+        "correlationId": "a4b2ac30-eef2-4f9f-aea3-f8623545a6d9",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:45.944Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:52.775Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T15:27:14.028Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:23.442Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T16:15:07.324Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:10.539Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-23T16:24:37.437Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:40.998Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-24T11:12:43.951Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:47.470Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-25T11:12:42.123Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:45.494Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          },
+          {
+            "at": "2026-10-25T11:13:45.353Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:14:21.891Z",
+            "stage": "compatibility",
+            "code": "compatible"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "verified",
+        "message": "Destino independente identificado; envio depende do formulário e das permissões.",
+        "checkedAt": "2026-10-25T11:13:31.400Z"
+      },
+      "destinations": [
+        {
+          "platform": "gupy",
+          "state": "verified",
+          "formFound": false
+        }
+      ],
+      "applicationIds": []
+    },
+    {
+      "id": "6e9e7c06-c32e-4232-9f34-e7ede6dd62b0",
+      "title": "Analista de Sistemas | SISTEMAS 6 | Cresol Confederação",
+      "company": "Cresol Oficial",
+      "url": "https://cresolcarreiras.gupy.io/job/eyJqb2JJZCI6MTI3NDg3MDYsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-19T20:14:50.009Z",
+      "discoveredAt": "2026-10-22T15:49:16.534Z",
+      "score": 55,
+      "blockers": [],
+      "automation": {
+        "correlationId": "03dba1f8-1b0f-4e33-95eb-4e042d99ca2f",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:45.145Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:52.983Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T13:32:38.163Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-23T13:32:57.025Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T15:27:13.025Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:23.654Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T15:28:18.270Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-23T15:28:31.696Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:15:07.130Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:10.772Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:24:37.343Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:41.239Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:12:43.861Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:47.704Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:14:10.532Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-24T11:14:28.212Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:12:42.031Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:45.730Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:14:07.085Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:14:22.126Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "partial",
+        "message": "Busca cruzada parcial. Há fontes pendentes; a oportunidade será reavaliada.",
+        "checkedAt": "2026-10-25T11:13:59.580Z"
+      },
+      "destinations": [],
+      "applicationIds": []
+    },
+    {
+      "id": "715ad172-9164-4b64-9abe-f7cebade45fd",
+      "title": "PESSOA ANALISTA DE SISTEMAS – SAP FI/CO",
+      "company": "YDUQS - Vagas Tech",
+      "url": "https://yduqstech.gupy.io/job/eyJqb2JJZCI6MTI3NDk0MDEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-19T20:55:06.739Z",
+      "discoveredAt": "2026-10-22T15:49:16.529Z",
+      "score": 0,
+      "blockers": [],
+      "automation": {
+        "correlationId": "aca95e0d-7ec4-4893-b6f6-b2b4be405c89",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:45.054Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:53.001Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T15:27:12.913Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:23.672Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T16:15:06.990Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:10.795Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T16:24:37.208Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:41.263Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-24T11:12:43.741Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:47.727Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-24T11:15:37.816Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-24T11:16:33.057Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-25T11:12:41.911Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:45.754Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-25T11:17:31.330Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:18:17.162Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "verified",
+        "message": "Destino independente identificado; envio depende do formulário e das permissões.",
+        "checkedAt": "2026-10-25T11:17:22.998Z"
+      },
+      "destinations": [
+        {
+          "platform": "gupy",
+          "state": "verified",
+          "formFound": false
+        }
+      ],
+      "applicationIds": []
+    },
+    {
+      "id": "e8322725-446a-404f-a6e6-955afc240c14",
+      "title": "Analista de Sistemas PL - Serviços Financeiros",
+      "company": "Omie",
+      "url": "https://carreirasomie.gupy.io/job/eyJqb2JJZCI6MTI3NDc1NzgsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+      "publishedAt": "2026-10-20T13:25:57.954Z",
+      "discoveredAt": "2026-10-22T15:49:16.514Z",
+      "score": 0,
+      "blockers": [],
+      "automation": {
+        "correlationId": "95a554ba-676d-450d-91eb-2e1c1e357205",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:44.842Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:53.032Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T15:27:12.651Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:23.704Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T16:15:06.869Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:10.836Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T16:24:37.088Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:41.306Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-24T11:12:43.628Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:47.770Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-24T11:16:25.499Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-24T11:16:33.100Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-25T11:12:41.797Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:45.797Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-25T11:18:09.373Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:18:17.206Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "verified",
+        "message": "Destino independente identificado; envio depende do formulário e das permissões.",
+        "checkedAt": "2026-10-25T11:17:40.769Z"
+      },
+      "destinations": [
+        {
+          "platform": "gupy",
+          "state": "verified",
+          "formFound": false
+        }
+      ],
+      "applicationIds": []
+    },
+    {
+      "id": "ed7a96fe-a991-4b8f-a4be-ce45a9e8c525",
+      "title": "[Job-32319] Mid Level Cobol Developer, Brazil",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/27a89e03-8e96-4b3b-a5dc-7067578537c4",
+      "publishedAt": "2026-10-19T20:23:50.437Z",
+      "discoveredAt": "2026-10-22T15:48:23.757Z",
+      "score": 0,
+      "blockers": [],
+      "automation": {
+        "correlationId": "4039a4b1-17ff-403e-8272-746a1bcf0273",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:29.286Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:55.396Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T15:26:49.515Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:26.081Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T16:15:06.665Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:13.639Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-23T16:24:37.009Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:44.187Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-24T11:12:43.356Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:50.593Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-24T11:18:05.050Z",
+            "stage": "destination",
+            "code": "public_form_verified"
+          },
+          {
+            "at": "2026-10-24T11:18:15.584Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-25T11:12:41.721Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:48.666Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          },
+          {
+            "at": "2026-10-25T11:19:30.281Z",
+            "stage": "destination",
+            "code": "public_form_verified"
+          },
+          {
+            "at": "2026-10-25T11:19:40.865Z",
+            "stage": "compatibility",
+            "code": "insufficient_evidence"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "verified",
+        "message": "Destino independente identificado; envio depende do formulário e das permissões.",
+        "checkedAt": "2026-10-25T11:19:23.941Z"
+      },
+      "destinations": [
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": true
+        },
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false
+        }
+      ],
+      "applicationIds": []
+    },
+    {
+      "id": "379e45e2-1ea0-4f8f-bf64-fdf2c165b2ea",
+      "title": "[Job-32142] Developer Fullstack Jr ( Java + Angular )",
+      "company": "CI&T",
+      "url": "https://jobs.lever.co/ciandt/72c027a0-4ea6-426d-9ea6-22d3df661e93",
+      "publishedAt": "2026-10-21T14:32:43.141Z",
+      "discoveredAt": "2026-10-22T15:48:23.619Z",
+      "score": 48,
+      "blockers": [],
+      "automation": {
+        "correlationId": "17e0ad95-be24-40ef-9ee6-04252bca7480",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:26.080Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:56.075Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T15:26:45.949Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:26.746Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:15:06.294Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:14.212Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:24:36.841Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:44.769Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:12:43.190Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:51.166Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:19:19.414Z",
+            "stage": "destination",
+            "code": "public_form_verified"
+          },
+          {
+            "at": "2026-10-24T11:19:30.388Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:12:41.559Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:49.247Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:20:46.487Z",
+            "stage": "destination",
+            "code": "public_form_verified"
+          },
+          {
+            "at": "2026-10-25T11:20:57.739Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "verified",
+        "message": "Destino independente identificado; envio depende do formulário e das permissões.",
+        "checkedAt": "2026-10-25T11:20:42.857Z"
+      },
+      "destinations": [
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": true
+        },
+        {
+          "platform": "lever",
+          "state": "verified",
+          "formFound": false
+        }
+      ],
+      "applicationIds": []
+    },
+    {
+      "id": "42afa402-87bb-4e26-815d-5ae71f107713",
+      "title": "Desenvolvedor Full Stack Python Pleno",
+      "company": "Global Tech",
+      "url": "https://candidatos.abler.com.br/vagas/desenvolvedor-phyton-919950",
+      "publishedAt": "2026-10-21T21:37:40.871Z",
+      "discoveredAt": "2026-10-22T15:47:15.220Z",
+      "score": 57,
+      "blockers": [],
+      "automation": {
+        "correlationId": "7238f2aa-bd5a-40cb-abed-571b413e3a33",
+        "origin": "scheduled_automation",
+        "events": [
+          {
+            "at": "2026-10-23T13:31:02.847Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T13:31:58.277Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T15:26:22.760Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T15:27:28.933Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:15:05.605Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:15:16.593Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-23T16:24:36.365Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-23T16:24:47.300Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:12:43.052Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-24T11:12:53.668Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-24T11:13:55.608Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-24T11:14:34.266Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:12:41.417Z",
+            "stage": "discovery",
+            "code": "publication_observed"
+          },
+          {
+            "at": "2026-10-25T11:12:51.779Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          },
+          {
+            "at": "2026-10-25T11:15:55.093Z",
+            "stage": "destination",
+            "code": "supported_form_not_found"
+          },
+          {
+            "at": "2026-10-25T11:16:36.872Z",
+            "stage": "compatibility",
+            "code": "below_minimum_score"
+          }
+        ],
+        "runId": "c6598802-170c-4d6e-bcd1-96680af1055e"
+      },
+      "resolution": {
+        "state": "no_destination",
+        "message": "Nenhum destino automatizável identificado nas fontes consultadas. Outros destinos podem existir.",
+        "checkedAt": "2026-10-25T11:15:20.160Z"
+      },
+      "destinations": [],
+      "applicationIds": []
+    }
+  ],
+  "applications": [
+    {
+      "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "company": "Global TI",
+      "status": "Resultado desconhecido",
+      "createdAt": "2026-10-23T13:51:53.116Z",
+      "submittedAt": null,
+      "receipt": null,
+      "execution": {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "attempts": [
+        {
+          "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+          "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+          "origin": "user_triggered_automation",
+          "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T13:52:21.765Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T13:52:39.795Z"
+        }
+      ],
+      "missingQuestionCount": 0,
+      "history": [
+        {
+          "at": "2026-10-23T13:51:53.129Z",
+          "message": "Candidatura preparada. O envio ainda não foi confirmado."
+        },
+        {
+          "at": "2026-10-23T13:51:53.129Z",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-23T13:52:21.765Z",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-23T13:52:39.796Z",
+          "message": "A Quickin não confirmou o recebimento. Confira o resultado antes de repetir."
+        }
+      ]
+    }
+  ],
+  "days": [
+    {
+      "day": "2026-10-24",
+      "quotaUsed": 0,
+      "confirmedAutomatic": 0,
+      "attempts": 0
+    },
+    {
+      "day": "2026-10-25",
+      "quotaUsed": 0,
+      "confirmedAutomatic": 0,
+      "attempts": 0
+    },
+    {
+      "day": "2026-10-26",
+      "quotaUsed": 0,
+      "confirmedAutomatic": 0,
+      "attempts": 0
+    }
+  ],
+  "priorLatestRun": {
+    "id": "c6598802-170c-4d6e-bcd1-96680af1055e",
+    "origin": "scheduled_automation",
+    "at": "2026-10-25T11:09:14.020Z",
+    "status": "partial"
+  }
+}

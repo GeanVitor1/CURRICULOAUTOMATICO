@@ -1,0 +1,32 @@
+## Texto da página da loja
+
+**Nome:** EmpreGatos — conexões de portais
+
+**Resumo:** Conecte seus portais de vagas ao EmpreGatos. Verifique o LinkedIn no Chrome e autorize cada conexão separadamente.
+
+**Descrição detalhada:**
+
+Conecte os portais que você usa para buscar emprego ao EmpreGatos pelo seu Chrome. Uma única extensão atende Gupy, InfoJobs, Glassdoor e LinkedIn, com autorização separada para cada portal.
+
+- Confira a conta de destino no EmpreGatos antes de conectar.
+- Abra o portal e faça login normalmente no seu navegador.
+- Autorize somente o portal escolhido e acompanhe o resultado da conexão.
+- No LinkedIn, o login é reconhecido localmente no Chrome: cookies e tokens não são transferidos. Essa verificação não habilita candidaturas automáticas pelo LinkedIn.
+- Em Gupy, InfoJobs e Glassdoor, a sessão autorizada é enviada à sua conta do EmpreGatos para verificação e só é salva de forma cifrada após sua confirmação.
+
+A extensão não lê senhas nem a sessão do Google. Ela não coleta sessões em segundo plano. A conexão de um portal e a autorização de candidaturas são etapas diferentes; as opções de envio dependem das integrações disponíveis e das preferências aprovadas na sua conta.
+
+Requer uma conta no EmpreGatos e o Chrome no computador. Não é uma extensão oficial dos portais de vagas e não possui vínculo com LinkedIn, Gupy, InfoJobs ou Glassdoor.
+
+**Idioma:** português (Brasil)
+
+**Site:** https://curriculoautomatico.vercel.app
+
+**Política de privacidade:** https://curriculoautomatico.vercel.app/privacy
+
+**E-mail público de suporte:** geandk36@gmail.com
+
+**Responsável:** Gean Vitor Estevs Dantas
+
+**Captura:** `artifacts/chrome-web-store/screenshot-1280x800.png`, quando produzida pelo teste controlado. Mostra a extensão real com uma conta de demonstração, sem dados de uma pessoa real. Conferir o arquivo antes do envio. Não usar a prévia do botão da loja como se a publicação já existisse.
+

@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-29T13:50:08.482Z",
+  "readOnly": true,
+  "database": {
+    "status": 200,
+    "pointInTimeRecovery": "POINT_IN_TIME_RECOVERY_DISABLED",
+    "versionRetentionPeriod": "3600s"
+  },
+  "backupSchedules": {
+    "status": 200,
+    "count": 0
+  }
+}

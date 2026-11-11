@@ -1,0 +1,98 @@
+{
+  "at": "2026-10-26T18:44:07.161Z",
+  "readOnly": true,
+  "deploymentId": "dpl_FH5GdAzgtoRUzipPdaBzQBrKa9je",
+  "readyState": "READY",
+  "results": [
+    {
+      "path": "server/application-reconciliation.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "e80a80bcdb19881914d40db63a56034d7ff316555ac356dca28c30ed9ce962fc"
+    },
+    {
+      "path": "server/reconciled-retry.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "b91dfd2c4cd1464b9c66e150adb8e54d1bfbea7206a4c79ead6e99cad615c760"
+    },
+    {
+      "path": "server/app.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "cef5eb937f474a62b1318dc3faddef4212cadc39c23ac0a46c9b35fc54ef4557"
+    },
+    {
+      "path": "server/operations.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "aff0bbb49445f8cd00d4d561acff7218b8b51f496e828266ece8f9acd37a1a28"
+    },
+    {
+      "path": "server/quickin-form.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "2c8ec8edfd0013d34a17ad2acb5bc454bd3fa126527f65594f88f3c261baffb9"
+    },
+    {
+      "path": "server/ats-execution.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "9afea91977c9ed5e6634437f804782a07b35186e24b82d4fe5b382814c080993"
+    },
+    {
+      "path": "server/application-verification.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "d1fbdc30e2b9c54571a3f838687c25b5c9a383c0ad49a17c3aef928aeeb32a6c"
+    },
+    {
+      "path": "server/submission-routing.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "2bed276d5d652a855c53e11857a77faa881331ce9fc7258a43f5c34d0c84ea3c"
+    },
+    {
+      "path": "server/submission-dispatch.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "bb40882d9880bc38bd20129a14ae0646bad447dab0ce8f1b478a5282be1c4616"
+    },
+    {
+      "path": "server/automatic-cycle.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "0650042206081b801400b5c8a23b843ac876f29d5878b0106574b07b957b2799"
+    },
+    {
+      "path": "server/vercel-submission-worker.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "561ebd2df3d13282affcb597225027a0c6c921f96fc94385b08ddf48b7308f2a"
+    },
+    {
+      "path": "server/automation-diagnostics.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "343a182a215396e7443a71e58e8c217236784105f5128a3e09ac9fe4c2329ce4"
+    },
+    {
+      "path": "shared/types.ts",
+      "found": true,
+      "identical": true,
+      "sha256": "bcf6748e16aee402f77531531eef1b59f74e95d45cf2232d0b40747cd4f9c9aa"
+    },
+    {
+      "path": "src/ReconciledRetry.tsx",
+      "found": true,
+      "identical": true,
+      "sha256": "5011e0f2e88981e4d6da95d504d2bb8ff548132f51ba05477fac2d8499e9f8a8"
+    },
+    {
+      "path": "src/CareerInterview.tsx",
+      "found": true,
+      "identical": true,
+      "sha256": "782b95f8e5df3ee5096921c7827c9181785251743e7d270dfc7ec61c9c3b8f05"
+    }
+  ]
+}

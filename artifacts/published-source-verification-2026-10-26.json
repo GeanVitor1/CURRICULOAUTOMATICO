@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-26T15:15:08.557Z",
+  "deploymentId": "dpl_DyxxXJuxr6tSkWwyhZVt58DARXrM",
+  "readOnly": true,
+  "results": [
+    {
+      "path": "server/quickin-form.ts",
+      "found": false
+    },
+    {
+      "path": "server/application-reconciliation.ts",
+      "found": false
+    },
+    {
+      "path": "server/automation-diagnostics.ts",
+      "found": false
+    },
+    {
+      "path": "server/worker-observation.ts",
+      "found": false
+    },
+    {
+      "path": "server/vercel-submission-worker.ts",
+      "found": false
+    },
+    {
+      "path": "server/vercel-worker.ts",
+      "found": false
+    },
+    {
+      "path": "server/vercel-resolution-worker.ts",
+      "found": false
+    },
+    {
+      "path": "server/engine.ts",
+      "found": false
+    },
+    {
+      "path": "server/connectors.ts",
+      "found": false
+    }
+  ]
+}

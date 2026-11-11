@@ -1,0 +1,277 @@
+{
+  "at": "2026-10-27T12:14:03.997Z",
+  "routine": {
+    "enabled": true,
+    "mode": "automatic",
+    "destinationPolicy": "any",
+    "progress": {
+      "day": "2026-10-27",
+      "target": 5,
+      "sent": 2,
+      "usedToday": 4,
+      "remaining": 1,
+      "state": "waiting",
+      "message": "1 tentativa(s) confirmada(s) pelo empregador como não recebida(s); nova tentativa exige revalidação. 2 tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente. 5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-27T12:13:43.351Z"
+    }
+  },
+  "applications": [
+    {
+      "id": "63852bad-646e-4cdc-9a58-4aac4348409d",
+      "title": "Desenvolvedor(a) Full Stack (com ênfase em Frontend)",
+      "company": "Víssimo",
+      "status": "Enviada",
+      "questionOptions": {
+        "Qual sua pretensão salarial?": [
+          "De R$ 2.000 a R$3.000",
+          "De R$3.000 a R$4.000",
+          "De R$4.000 a R$5.000",
+          "De R$5.000 a R$6.000",
+          "De R$6.000 a R$7.000",
+          "De R$7.000 a R$8.000",
+          "De R$8.000 a R$9.000",
+          "De R$9.000 a R$10.000",
+          "De R$10.000 a R$11.000",
+          "De R$11.000 a R$12.000",
+          "De R$12.000 a R$13.000",
+          "De R$13.000 a R$14.000",
+          "De R$14.000 a R$15.000",
+          "Acima de R$15.000"
+        ]
+      },
+      "last": [
+        {
+          "at": "2026-10-27T11:58:41.032Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-27T11:58:55.131Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-27T11:59:59.756Z",
+          "actor": "Sistema",
+          "message": "Envio confirmado pela integração. Recibo: https://vissimo.gupy.io/job/eyJqb2JJZCI6MTI3MjIxOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal · Candidatura finalizada! · https://vissimo.gupy.io/candidates/applications/770355364/steps/4346499509/curriculum · 2026-10-27T11:59:20.112Z"
+        }
+      ],
+      "attempts": [
+        {
+          "correlationId": "8a91e594-9d97-4c74-9535-29c9912b2581",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "61557591-2fb8-412e-be76-baf1a2ab5f03",
+          "executor": "browser",
+          "startedAt": "2026-10-27T11:36:42.296Z",
+          "outcome": "pre_submit_blocked",
+          "finishedAt": "2026-10-27T11:37:36.870Z"
+        },
+        {
+          "correlationId": "8a91e594-9d97-4c74-9535-29c9912b2581",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "759cfde2-7064-47e5-8d23-0556e8e04c39",
+          "executor": "browser",
+          "startedAt": "2026-10-27T11:58:55.130Z",
+          "outcome": "confirmed",
+          "finishedAt": "2026-10-27T11:59:59.756Z",
+          "receipt": "https://vissimo.gupy.io/job/eyJqb2JJZCI6MTI3MjIxOTEsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal · Candidatura finalizada! · https://vissimo.gupy.io/candidates/applications/770355364/steps/4346499509/curriculum · 2026-10-27T11:59:20.112Z"
+        }
+      ],
+      "receiptPresent": true
+    },
+    {
+      "id": "68e7c49d-3ae6-442b-9c48-ccd4519a2a2d",
+      "title": "ANALISTA DE DESENVOLVIMENTO DE SISTEMAS",
+      "company": "Oportunidades",
+      "status": "Resultado desconhecido",
+      "questionOptions": {},
+      "last": [
+        {
+          "at": "2026-10-27T12:07:59.819Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-27T12:08:55.202Z",
+          "actor": "IA",
+          "message": "Respondeu automaticamente 1 perguntas do formulário com currículo, preferências e regra para dados ausentes."
+        },
+        {
+          "at": "2026-10-27T12:09:44.041Z",
+          "actor": "Sistema",
+          "message": "A Gupy não confirmou o resultado após finalizar. Confira a candidatura; o sistema não repetirá esse envio automaticamente."
+        }
+      ],
+      "attempts": [
+        {
+          "correlationId": "a4b2ac30-eef2-4f9f-aea3-f8623545a6d9",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "40f990b5-d147-42dd-9bac-f903402f8768",
+          "executor": "browser",
+          "startedAt": "2026-10-27T11:38:07.607Z",
+          "outcome": "pre_submit_blocked",
+          "finishedAt": "2026-10-27T11:40:33.040Z"
+        },
+        {
+          "correlationId": "a4b2ac30-eef2-4f9f-aea3-f8623545a6d9",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "898a7c21-9590-4da1-96ca-94598f18915d",
+          "executor": "browser",
+          "startedAt": "2026-10-27T12:07:59.818Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-27T12:09:44.040Z"
+        }
+      ],
+      "receiptPresent": false
+    },
+    {
+      "id": "4fb621ca-b7b8-4d25-a7a5-dc21da99d73b",
+      "title": "Analista de Sistemas de Automação - Servidores de Aplicação",
+      "company": "Lanlink Informática",
+      "status": "Resultado desconhecido",
+      "questionOptions": {
+        "Você possui superior completo na área de Tecnologia da Informação (TI)?": [
+          "Sim",
+          "Não"
+        ],
+        "Possui experiência registrada nas atividades citadas?": [
+          "Sim",
+          "Não"
+        ]
+      },
+      "last": [
+        {
+          "at": "2026-10-27T12:10:11.397Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-27T12:10:57.000Z",
+          "actor": "IA",
+          "message": "Respondeu automaticamente 1 perguntas do formulário com currículo, preferências e regra para dados ausentes."
+        },
+        {
+          "at": "2026-10-27T12:11:52.399Z",
+          "actor": "Sistema",
+          "message": "A Gupy não confirmou o resultado após finalizar. Confira a candidatura; o sistema não repetirá esse envio automaticamente."
+        }
+      ],
+      "attempts": [
+        {
+          "correlationId": "adb575d5-db01-43b0-896b-ac6ac25c321f",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "9374b9c4-55e1-4239-82c6-e4cbf5b8d42a",
+          "executor": "browser",
+          "startedAt": "2026-10-27T11:40:45.421Z",
+          "outcome": "pre_submit_blocked",
+          "finishedAt": "2026-10-27T11:43:22.426Z"
+        },
+        {
+          "correlationId": "adb575d5-db01-43b0-896b-ac6ac25c321f",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "5dc74d41-1e65-4942-8c9e-46bea957b32f",
+          "executor": "browser",
+          "startedAt": "2026-10-27T12:10:11.397Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-27T12:11:52.398Z"
+        }
+      ],
+      "receiptPresent": false
+    },
+    {
+      "id": "b60573ee-f8a5-43bf-be69-dab838f8307a",
+      "title": "Analista Desenvolvedor(a) C#/.NET Pleno",
+      "company": "Vem Pra Pixeon",
+      "status": "Requer ação manual",
+      "last": [
+        {
+          "at": "2026-10-27T12:07:42.057Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-27T12:12:03.450Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-27T12:12:58.302Z",
+          "actor": "Sistema",
+          "message": "Esta etapa da Gupy precisa de revisão. Nenhum botão de finalização foi acionado."
+        }
+      ],
+      "resumeState": {
+        "resumeId": "3bfe4222-9c84-4008-b793-65e631eeffd8",
+        "destinationUrl": "https://vemprapixeon.gupy.io/job/eyJqb2JJZCI6MTI3MjUxMzksInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal",
+        "recordedAt": "2026-10-27T12:12:57.211Z",
+        "portalRuntimeVersion": 11
+      },
+      "attempts": [
+        {
+          "correlationId": "6ca9f15a-38ca-4544-b089-4972c74bd062",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "ed3f972e-297c-496a-a7ef-a65ffb1943ea",
+          "executor": "browser",
+          "startedAt": "2026-10-27T11:43:55.066Z",
+          "outcome": "pre_submit_blocked",
+          "finishedAt": "2026-10-27T11:44:42.230Z"
+        },
+        {
+          "correlationId": "6ca9f15a-38ca-4544-b089-4972c74bd062",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "461386f8-1a1b-429c-ab6c-902f2dca0add",
+          "executor": "browser",
+          "startedAt": "2026-10-27T12:12:03.449Z",
+          "outcome": "pre_submit_blocked",
+          "finishedAt": "2026-10-27T12:12:57.211Z"
+        }
+      ],
+      "receiptPresent": false
+    },
+    {
+      "id": "98854615-b017-427a-a3dc-aca43d402970",
+      "title": "Desenvolvedor Back .NET ESPECIALISTA",
+      "company": "VENHA SER #SANGUELARANJA 🧡🚀",
+      "status": "Enviada",
+      "last": [
+        {
+          "at": "2026-10-27T11:36:29.393Z",
+          "actor": "Sistema",
+          "message": "Vaga compatível com destino verificado adicionada à fila automática, sem aguardar outra busca."
+        },
+        {
+          "at": "2026-10-27T11:45:11.765Z",
+          "actor": "Sistema",
+          "message": "Envio iniciado. Aguardando recibo verificável da integração."
+        },
+        {
+          "at": "2026-10-27T11:45:58.804Z",
+          "actor": "Sistema",
+          "message": "Envio confirmado pela integração. Recibo: https://fcamara.gupy.io/job/eyJqb2JJZCI6MTI3ODI0MjMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal · Candidatura finalizada! · https://fcamara.gupy.io/candidates/applications/770357842/steps/4346516539/curriculum · 2026-10-27T11:45:31.779Z"
+        }
+      ],
+      "attempts": [
+        {
+          "correlationId": "95cc4bc2-2721-47d0-9acc-f966f2744ddd",
+          "runId": "404c0639-53b6-41f2-9291-2924d59380f0",
+          "origin": "scheduled_automation",
+          "id": "f60dd0d8-64d5-42cc-9d0b-88bfff06ae97",
+          "executor": "browser",
+          "startedAt": "2026-10-27T11:45:11.764Z",
+          "outcome": "confirmed",
+          "finishedAt": "2026-10-27T11:45:58.788Z",
+          "receipt": "https://fcamara.gupy.io/job/eyJqb2JJZCI6MTI3ODI0MjMsInNvdXJjZSI6Imd1cHlfcG9ydGFsIn0=?jobBoardSource=gupy_portal · Candidatura finalizada! · https://fcamara.gupy.io/candidates/applications/770357842/steps/4346516539/curriculum · 2026-10-27T11:45:31.779Z"
+        }
+      ],
+      "receiptPresent": true
+    }
+  ]
+}

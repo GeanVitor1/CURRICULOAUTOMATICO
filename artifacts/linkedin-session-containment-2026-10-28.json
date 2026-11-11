@@ -1,0 +1,83 @@
+{
+  "at": "2026-10-28T11:41:34.583Z",
+  "incident": {
+    "originalBrowserSignedOut": true,
+    "userRecoveredNormalLogin": true,
+    "exactProviderCauseEstablished": false
+  },
+  "containment": {
+    "linkedinSessionTransferSuspended": true,
+    "serverRejectsOlderClients": true,
+    "blocksRemoteOpenAndConfirm": true,
+    "existingMetadataMarkedSuspended": true,
+    "localChromeSessionModified": false,
+    "existingRecordDeleted": false,
+    "otherProviders": [
+      "gupy",
+      "infojobs",
+      "glassdoor"
+    ]
+  },
+  "validation": {
+    "apiTestsPassed": 41,
+    "focusedTestsPassed": 26,
+    "browserTestsPassed": 5,
+    "firstCombinedApiRun": "30-second setup timeout; all 41 API tests passed on isolated rerun",
+    "build": "passed"
+  },
+  "extensionVersion": "2.0.4",
+  "extensionReinstallRequired": false,
+  "browserRuntimeVersion": 20,
+  "stableLinkedInIntegrationComplete": false,
+  "publication": {
+    "ready": true,
+    "deploymentId": "dpl_2vW14AgY77a5qjduLTgBjmRtewga",
+    "checks": [
+      {
+        "at": "2026-10-28T11:43:08.444Z",
+        "checks": [
+          {
+            "portal": "gupy",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "infojobs",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "glassdoor",
+            "available": true,
+            "sameAuthenticatedAccount": true
+          },
+          {
+            "portal": "linkedin",
+            "available": false,
+            "sameAuthenticatedAccount": true,
+            "suspensionExplained": true
+          }
+        ]
+      },
+      {
+        "at": "2026-10-28T11:43:09.197Z",
+        "portal": "linkedin",
+        "transferBlocked": true,
+        "status": 400,
+        "portalCredentialsSent": false
+      }
+    ],
+    "uiBundleVerified": true,
+    "extensionPackageMatchesSource": true
+  },
+  "screenshot": "artifacts/linkedin-transfer-suspended-mobile-2026-10-28.png",
+  "productionLinkedInStatus": {
+    "connected": false,
+    "sessionState": "suspended",
+    "sessionSaved": true,
+    "connectable": false,
+    "automatic": false
+  },
+  "officialIdentityConfigured": false,
+  "officialIdentityWouldNotGrantApplicationIntegration": true
+}

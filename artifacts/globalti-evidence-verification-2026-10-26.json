@@ -1,0 +1,21 @@
+{
+  "applicationId": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+  "attemptId": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+  "startedAt": "2026-10-23T13:52:21.765Z",
+  "publicationUrl": "https://jobs.quickin.io/globalti/jobs/6ad64c6582963200138f28c0",
+  "candidateEmailSha256": "cad07613122d97be8995ff0c2ddb4bc625fb0d0dd96be83a1ca27b48ff321f24",
+  "threadId": "1a16937d1e63856d",
+  "messageId": "1a16a33ce23f137c",
+  "replyAt": "2026-10-23T19:18:57.000Z",
+  "verifiedVia": "gmail_read_email_thread",
+  "officialDomain": "globalti.com.br",
+  "jobCode": "IMW7499",
+  "originalRequestMentionsExactCandidateJobAndTime": true,
+  "replyQuotesOriginalRequest": true,
+  "dkimPass": true,
+  "spfPass": true,
+  "dmarcPass": true,
+  "decision": "not_received",
+  "evidenceSha256": "d71178cea67a071fc9e1a03bf246db8bc08cda631665bef923fa6deda9b991d8",
+  "verifiedAt": "2026-10-26T14:57:05.015Z"
+}

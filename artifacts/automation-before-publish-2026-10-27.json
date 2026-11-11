@@ -1,0 +1,188 @@
+{
+  "at": "2026-10-27T11:09:16.272Z",
+  "day": "2026-10-27",
+  "readOnly": true,
+  "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+  "workspaceRevision": "2026-10-27T11:09:06.925Z",
+  "deployment": "dpl_FH5GdAzgtoRUzipPdaBzQBrKa9je",
+  "revision": "6d6544293f16735493fabb8c3d58d2fffed5f9e1e19ad7831538c0cbe2ee1e0f",
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "schedule": {
+    "enabled": true,
+    "mode": "automatic",
+    "lastRun": "2026-10-26T11:13:23.472Z",
+    "nextRun": "2026-10-27T11:00:00.000Z"
+  },
+  "counts": {
+    "jobs": 478,
+    "confirmedRetained": 1,
+    "confirmedAutomaticToday": 0,
+    "quotaReservations": 0,
+    "historicalAttempts": 0,
+    "effectiveUsage": 0,
+    "attemptsToday": 0
+  },
+  "panel": {
+    "confirmedIds": [
+      "384344bb-69b6-4924-8d97-b56508379df4"
+    ],
+    "collected": 434,
+    "filtered": 49,
+    "progress": {
+      "day": "2026-10-26",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 0,
+      "remaining": 5,
+      "state": "waiting",
+      "message": "1 tentativa(s) confirmada(s) pelo empregador como não recebida(s); nova tentativa exige revalidação. 5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-26T15:19:41.896Z"
+    },
+    "progressConsistent": null
+  },
+  "runs": [
+    {
+      "origin": "scheduled_automation",
+      "continuation": false,
+      "id": "404c0639-53b6-41f2-9291-2924d59380f0",
+      "at": "2026-10-27T11:09:06.925Z",
+      "status": "queued",
+      "discovered": 0,
+      "processed": 0,
+      "errors": [],
+      "message": "Busca na fila. Os resultados serão atualizados automaticamente."
+    }
+  ],
+  "tasks": {
+    "discovery": [
+      {
+        "id": "404c0639-53b6-41f2-9291-2924d59380f0",
+        "status": "queued",
+        "attempts": 0,
+        "createdAt": "2026-10-27T11:09:06.925Z",
+        "updatedAt": "2026-10-27T11:09:06.925Z",
+        "leaseUntil": null,
+        "errorPresent": false,
+        "staleLease": false
+      }
+    ],
+    "resolution": []
+  },
+  "submission": {
+    "sending": false,
+    "next": null,
+    "attempts": 0,
+    "day": "2026-10-27"
+  },
+  "quota": [],
+  "applications": [
+    {
+      "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "status": "Falha no envio",
+      "execution": {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false,
+      "reconciliations": [
+        {
+          "id": "employer:1a16a33ce23f137c:a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "at": "2026-10-26T14:58:17.753Z",
+          "attemptId": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "outcome": "not_received",
+          "source": "official_employer_reply",
+          "threadId": "1a16937d1e63856d",
+          "messageId": "1a16a33ce23f137c",
+          "replyAt": "2026-10-23T19:18:57.000Z",
+          "evidenceSha256": "d71178cea67a071fc9e1a03bf246db8bc08cda631665bef923fa6deda9b991d8",
+          "quotaDisposition": "retained_post_submit_attempt",
+          "retryAuthorized": false
+        }
+      ],
+      "attempts": [
+        {
+          "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+          "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+          "origin": "user_triggered_automation",
+          "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T13:52:21.765Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T13:52:39.795Z",
+          "receiptSha256": null
+        }
+      ]
+    },
+    {
+      "id": "e5352b83-22cb-4d61-898d-a93469f69792",
+      "jobId": "3429e934-7e20-48f2-b258-0ab6b48e97ec",
+      "status": "Requer ação manual",
+      "execution": {
+        "correlationId": "e7f242c4-6ce8-469f-bbaa-e8b37fd16a88",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "5d28259a-7ce5-45b7-ac01-44e3be3e0f07",
+      "jobId": "951291ed-95ea-4c49-adcc-7550ae30d7d9",
+      "status": "Requer ação manual",
+      "execution": {
+        "correlationId": "dcef7714-07b4-439a-8fed-796a189b8477",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "e0004acd-37b0-4929-9812-6adf488cbb22",
+      "jobId": "77d512b1-3ecb-4be4-b54c-70df9e46fc9f",
+      "status": "Requer ação manual",
+      "execution": {
+        "correlationId": "eb09317b-1fdc-463c-8d16-046c55729785",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "2e01b5ce-3a63-48cd-b9a2-510077c6be6c",
+      "jobId": "c66e5504-bc62-4973-b5af-deffc4d630b9",
+      "status": "Requer ação manual",
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "be38f1c8-6659-44db-9457-5215aea3340f",
+      "jobId": "7e98745c-6905-4b61-98f5-4d64869b9088",
+      "status": "Requer ação manual",
+      "execution": {
+        "correlationId": "4fbc7e40-1305-4a58-a61e-b7b17e99e171",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "384344bb-69b6-4924-8d97-b56508379df4",
+      "jobId": "28160d40-6851-4de6-9dbf-6f730aa8e1de",
+      "status": "Enviada",
+      "submittedAt": "2026-10-22T15:51:15.245Z",
+      "receiptSha256": "55ac268778228b71b8473c1934ffe5bb3f96890b1f5c2be6a8bc1884b182ca21",
+      "confirmed": true
+    }
+  ],
+  "workerEvents": [],
+  "limitations": [
+    "Task attempts are not queue delivery counts.",
+    "Worker events begin with the instrumented deployment; earlier messages require platform logs."
+  ]
+}

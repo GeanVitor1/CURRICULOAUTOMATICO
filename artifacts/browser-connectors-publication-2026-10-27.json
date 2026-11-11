@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-28T12:51:15.004Z",
+  "download": "https://curriculoautomatico.vercel.app/downloads/empregatos-conexoes-chrome.zip",
+  "version": "2.0.5",
+  "sha256": "aa55ca57b1862601232cdc62f5a03c50547629a0d651322265034c2d01366f6b",
+  "portals": [
+    "gupy",
+    "infojobs",
+    "glassdoor",
+    "linkedin"
+  ],
+  "requiredHosts": [
+    "https://curriculoautomatico.vercel.app/*"
+  ],
+  "optionalHosts": [
+    "https://*.gupy.io/*",
+    "https://*.infojobs.com.br/*",
+    "https://*.glassdoor.com/*",
+    "https://*.glassdoor.com.br/*",
+    "https://*.linkedin.com/*"
+  ],
+  "packageMatchesSource": true,
+  "legacyDownloadUpdated": true,
+  "health": 200,
+  "localDevelopmentUpdates": true,
+  "storePackagePrepared": true,
+  "storePublished": false,
+  "persistentConnectorTab": true,
+  "projectBridgeRepair": true
+}

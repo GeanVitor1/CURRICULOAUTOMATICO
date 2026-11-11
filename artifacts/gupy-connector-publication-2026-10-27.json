@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-27T11:31:01.957Z",
+  "connectorVersion": "1.0.1",
+  "scopedHosts": [
+    "https://*.gupy.io/*",
+    "https://curriculoautomatico.vercel.app/*"
+  ],
+  "currentRouteSupported": true,
+  "userMenuSupported": true,
+  "passwordAccessRequested": false
+}

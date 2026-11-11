@@ -1,0 +1,26 @@
+{
+  "extensionId": "nhagdilhhobieffanmbonknpmmocpodl",
+  "preparedVersion": "2.0.8",
+  "uploadedVersionVerified": false,
+  "storePublished": false,
+  "description": "Conecte seus portais de vagas ao EmpreGatos pelo Chrome, com autorização separada para cada portal.\n\nO conector oferece os fluxos de Gupy, InfoJobs, Glassdoor e LinkedIn, conforme as integrações disponíveis no EmpreGatos.\n\nCOMO FUNCIONA\n1. Entre na sua conta do EmpreGatos e abra a extensão.\n2. Escolha o portal e confira a conta de destino.\n3. Abra o portal e faça login normalmente no Chrome.\n4. Volte à extensão, autorize a conexão e acompanhe o resultado.\n\nLINKEDIN\nO login é reconhecido localmente no Chrome. Cookies, tokens e armazenamento de autenticação do LinkedIn não são transferidos. O EmpreGatos registra somente o resultado da verificação, que não habilita candidaturas automáticas pelo LinkedIn.\n\nGUPY, INFOJOBS E GLASSDOOR\nApós sua autorização, cookies seguros e dados de armazenamento relacionados à autenticação do portal escolhido são enviados por HTTPS à sua conta do EmpreGatos para verificação. O salvamento cifrado da conexão exige confirmação no site.\n\nCONTROLE DOS DADOS\nA extensão não solicita sua senha, não acessa a sessão do Google e não coleta sessões em segundo plano. O acesso aos portais é solicitado separadamente. Ela usa as URLs das abas dos portais e os sinais de login necessários para realizar a conexão.\n\nConectar um portal e autorizar candidaturas são etapas separadas. As opções de envio dependem das integrações disponíveis e das preferências aprovadas na sua conta.\n\nRequer uma conta no EmpreGatos e o Chrome no computador. A extensão é gratuita para instalar; o serviço EmpreGatos oferece plano gratuito e assinaturas opcionais.\n\nEsta extensão não é oficial dos portais de vagas e não possui vínculo com LinkedIn, Gupy, InfoJobs ou Glassdoor.\n\nSuporte: geandk36@gmail.com\nSite: https://curriculoautomatico.vercel.app\nPrivacidade: https://curriculoautomatico.vercel.app/privacy",
+  "singlePurpose": "Conectar, com autorização explícita, o portal de vagas selecionado à conta autenticada do usuário no EmpreGatos. A extensão identifica a conta de destino e conduz a conexão autorizada de Gupy, InfoJobs ou Glassdoor. No LinkedIn, apenas reconhece o login local no Chrome e registra o resultado, sem transferir a sessão nem habilitar candidaturas automáticas.",
+  "permissions": {
+    "cookies": "Ler os cookies seguros de Gupy, InfoJobs ou Glassdoor somente quando o usuário escolhe o portal e autoriza a conexão. Esses dados são enviados por HTTPS à conta autenticada do usuário no EmpreGatos para verificar a sessão e permitir seu salvamento cifrado após confirmação. A permissão não é usada para ler cookies do LinkedIn, do Google ou de outros sites.",
+    "scripting": "Executar os scripts empacotados para reconhecer o login na aba do portal autorizado e comunicar o conector com a página do EmpreGatos. Nos portais com transferência, também ler entradas de armazenamento relacionadas à autenticação. No LinkedIn, retornar somente o reconhecimento local do login, sem ler cookies ou armazenamento de autenticação. A execução fica restrita aos domínios declarados e ao portal escolhido.",
+    "storage": "Guardar no Chrome o portal selecionado e o estado de abertura do login, permitindo retomar o fluxo do conector. Cookies, tokens e senhas não são guardados no armazenamento da extensão.",
+    "host": "O acesso a https://curriculoautomatico.vercel.app permite conferir a conta de destino, comunicar o conector com o site e enviar a conexão autorizada ao próprio EmpreGatos. O acesso aos domínios de Gupy, InfoJobs, Glassdoor e LinkedIn é opcional e solicitado separadamente no clique do usuário para localizar a aba e verificar o login do portal escolhido. Não há acesso irrestrito a todos os sites."
+  },
+  "remoteCode": false,
+  "remoteCodeExplanation": "Todo o JavaScript executado pela extensão está incluído no pacote. As requisições ao EmpreGatos trocam dados pela API e não baixam nem executam código remoto. A versão da loja utiliza o mecanismo de atualização do Chrome.",
+  "dataTypes": [
+    "Informações de identificação pessoal",
+    "Informações de autenticação",
+    "Histórico da Web",
+    "Conteúdo do site"
+  ],
+  "testInstructions": "Acesse https://curriculoautomatico.vercel.app/register e crie uma conta gratuita; mantenha o site aberto. Abra a extensão, escolha um portal e confira o destino. Entre em uma conta de teste do portal, volte à extensão e autorize. No LinkedIn, clique em “Verificar LinkedIn no meu Chrome”: só o resultado local é registrado. Nos demais portais, confirme o salvamento no EmpreGatos. Conectar não envia candidaturas.",
+  "testUsername": null,
+  "testPassword": null
+}
+

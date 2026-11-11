@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-27T13:13:43.596Z",
+  "applicationId": "b60573ee-f8a5-43bf-be69-dab838f8307a",
+  "entryPoint": "project read-only verification queue",
+  "result": {
+    "ok": true,
+    "queued": true,
+    "readOnlyVerification": true
+  }
+}

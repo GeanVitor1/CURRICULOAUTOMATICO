@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-26T15:21:18.506Z",
+  "readOnly": true,
+  "status": "Falha no envio",
+  "originalAttemptsIdentical": true,
+  "originalHistoryPrefixIdentical": true,
+  "attemptSha256": "9bbd00cf914c07ae70be5b4e148b027bf89c95985c017f5eaab1a22fd40aec94",
+  "attemptCount": 1,
+  "receipt": null,
+  "submittedAt": null,
+  "reconciliationCount": 1,
+  "resumeStatePresent": false,
+  "quotaDays": [
+    "2026-10-23"
+  ],
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "researchBudget": {
+    "day": "2026-10-26",
+    "used": 24
+  },
+  "remainingResearchCandidates": 463
+}

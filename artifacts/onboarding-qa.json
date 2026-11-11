@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "at": "2026-10-29T18:15:48.051Z",
+  "registrationToWelcome": true,
+  "resumeAccessibleBeforeDataForm": true,
+  "resumeImportToRequiredDetails": true,
+  "detailsToPreferences": true,
+  "savedProgressResumes": true,
+  "completedAccountsDoNotRestartWelcome": true,
+  "helpOpensAndClosesByKeyboard": true,
+  "mobileNoOverflow": true,
+  "desktopNoOverflow": true,
+  "runtimeErrors": [],
+  "automaticSearchesStarted": 0,
+  "realAccountsUsed": false,
+  "productionApiRequests": 0,
+  "externalRequestsBlocked": 0
+}

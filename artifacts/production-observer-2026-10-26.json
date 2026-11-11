@@ -1,0 +1,425 @@
+{
+  "at": "2026-10-26T15:11:15.778Z",
+  "day": "2026-10-26",
+  "readOnly": true,
+  "workspaceId": "4fd7837c-2823-4155-a1ab-1b7a48abb867:live",
+  "workspaceRevision": "2026-10-26T14:58:17.753Z",
+  "deployment": "dpl_DyxxXJuxr6tSkWwyhZVt58DARXrM",
+  "revision": "76068be062f97de3591fd5a41be2ae9a1a451199988727c1edc710ccc6533990",
+  "filtersSha256": "22807533ea2c589be194da590b5752ea5c029335fea356ac84c2ccd70ea1bde4",
+  "schedule": {
+    "enabled": true,
+    "mode": "automatic",
+    "lastRun": "2026-10-26T11:13:23.472Z",
+    "nextRun": "2026-10-27T11:00:00.000Z"
+  },
+  "counts": {
+    "jobs": 478,
+    "confirmedRetained": 1,
+    "confirmedAutomaticToday": 0,
+    "quotaReservations": 0,
+    "historicalAttempts": 0,
+    "effectiveUsage": 0,
+    "attemptsToday": 0
+  },
+  "panel": {
+    "confirmedIds": [
+      "384344bb-69b6-4924-8d97-b56508379df4"
+    ],
+    "collected": 434,
+    "filtered": 49,
+    "progress": {
+      "day": "2026-10-26",
+      "target": 5,
+      "sent": 0,
+      "usedToday": 0,
+      "remaining": 5,
+      "state": "waiting",
+      "message": "1 tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente. 5 candidatura(s) bloqueada(s) por verificação humana no formulário. Nenhum desses bloqueios confirma envio. Os destinos disponíveis foram verificados; ainda há saldo diário.",
+      "updatedAt": "2026-10-26T11:23:14.777Z"
+    },
+    "progressConsistent": true
+  },
+  "runs": [
+    {
+      "origin": "scheduled_automation",
+      "continuation": false,
+      "id": "a1168f29-ce35-4b73-9c04-a261bd226872",
+      "at": "2026-10-26T11:09:13.597Z",
+      "status": "partial",
+      "discovered": 0,
+      "processed": 0,
+      "errors": [
+        "InfoJobs: Antigravity não concluiu esta consulta no tempo disponível. Nenhuma falta de cota foi confirmada."
+      ],
+      "message": "0 novas oportunidades, sem duplicações. 482 registros publicados consultados; 13 preservados após filtros antecipados.",
+      "sourceProductivity": [
+        {
+          "sourceId": "official-careers",
+          "company": "Páginas de carreira das empresas",
+          "checkedAt": "2026-10-26T11:09:46.986Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "corporate-email-careers",
+          "company": "Vagas com candidatura por e-mail",
+          "checkedAt": "2026-10-26T11:10:01.193Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "official-abler-email",
+          "company": "Abler · candidaturas por e-mail da vaga",
+          "checkedAt": "2026-10-26T11:10:08.608Z",
+          "examined": 5,
+          "retained": 1,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "existing_or_uncertain_application": 1,
+            "Modalidade fora das suas preferências.": 2,
+            "Localização fora das suas preferências; revise restrições geográficas.": 1
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "quickin-board:globalti",
+          "company": "Global TI",
+          "checkedAt": "2026-10-26T11:10:11.911Z",
+          "examined": 8,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "company-board:alleasy.com.br",
+          "company": "AllEasy",
+          "checkedAt": "2026-10-26T11:10:24.651Z",
+          "examined": 10,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Modalidade fora das suas preferências.": 6,
+            "excluded_by_user": 1,
+            "objective_preferences": 1,
+            "Publicação fora do período configurado.": 2
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:lever:ciandt",
+          "company": "CI&T",
+          "checkedAt": "2026-10-26T11:10:52.400Z",
+          "examined": 180,
+          "retained": 3,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 19,
+            "objective_preferences": 54,
+            "Publicação fora do período configurado.": 83,
+            "Modalidade fora das suas preferências.": 18,
+            "excluded_by_user": 3
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:gympass",
+          "company": "Wellhub",
+          "checkedAt": "2026-10-26T11:11:11.673Z",
+          "examined": 87,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Modalidade fora das suas preferências.": 87
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:zupinnovation",
+          "company": "Zup Innovation",
+          "checkedAt": "2026-10-26T11:11:18.716Z",
+          "examined": 4,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "objective_preferences": 1,
+            "Modalidade fora das suas preferências.": 2,
+            "Publicação fora do período configurado.": 1
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "catalog:greenhouse:coderoad",
+          "company": "CodeRoad",
+          "checkedAt": "2026-10-26T11:11:23.226Z",
+          "examined": 30,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 28,
+            "Modalidade fora das suas preferências.": 2
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "44bcd73e-c989-41f1-a973-6ff418d35e29",
+          "company": "Gupy",
+          "checkedAt": "2026-10-26T11:11:42.897Z",
+          "examined": 158,
+          "retained": 9,
+          "compatible": 3,
+          "channelVerified": 0,
+          "excluded": {
+            "Localização fora das suas preferências; revise restrições geográficas.": 111,
+            "objective_preferences": 6,
+            "Publicação fora do período configurado.": 30,
+            "Contratação fora das suas preferências.": 2
+          },
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d"
+        },
+        {
+          "sourceId": "142900d6-dd22-4bd2-b5a5-d2b98dee9f70",
+          "company": "LinkedIn",
+          "checkedAt": "2026-10-26T11:12:45.752Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        },
+        {
+          "sourceId": "1c389c71-c43d-48f2-9d52-7fae4714e346",
+          "company": "Glassdoor",
+          "checkedAt": "2026-10-26T11:13:06.302Z",
+          "examined": 0,
+          "retained": 0,
+          "compatible": 0,
+          "channelVerified": 0,
+          "excluded": {},
+          "querySignature": "5178c6aad337dd94c67167893dec8c36c4a4fd9807d150630a3f16fd849b2a2d",
+          "nextCheckAt": "2026-10-27T11:00:00.000Z"
+        }
+      ]
+    }
+  ],
+  "tasks": {
+    "discovery": [
+      {
+        "id": "a1168f29-ce35-4b73-9c04-a261bd226872",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-26T11:09:06.533Z",
+        "updatedAt": "2026-10-26T11:13:35.545Z",
+        "leaseUntil": null,
+        "errorPresent": true,
+        "staleLease": false
+      }
+    ],
+    "resolution": [
+      {
+        "id": "3e7863cd-dcc1-47b1-b0b7-9e5c61b74417",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-26T11:20:26.275Z",
+        "updatedAt": "2026-10-26T11:21:18.453Z",
+        "leaseUntil": null,
+        "errorPresent": false,
+        "staleLease": false
+      },
+      {
+        "id": "0fb0d650-c44e-471b-a76b-11a8c4cfbf2e",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-26T11:21:33.446Z",
+        "updatedAt": "2026-10-26T11:22:32.605Z",
+        "leaseUntil": null,
+        "errorPresent": false,
+        "staleLease": false
+      },
+      {
+        "id": "5a878ae5-cdc1-4994-a755-156186b59626",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-26T11:18:39.864Z",
+        "updatedAt": "2026-10-26T11:20:11.292Z",
+        "leaseUntil": null,
+        "errorPresent": false,
+        "staleLease": false
+      },
+      {
+        "id": "2d1aa83e-5e71-4653-a0da-c839d7d18ca2",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-26T11:15:14.814Z",
+        "updatedAt": "2026-10-26T11:17:07.227Z",
+        "leaseUntil": null,
+        "errorPresent": false,
+        "staleLease": false
+      },
+      {
+        "id": "2aa891fb-8b6f-4307-b4bf-1bcba6e630e3",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-26T11:17:18.347Z",
+        "updatedAt": "2026-10-26T11:18:26.981Z",
+        "leaseUntil": null,
+        "errorPresent": false,
+        "staleLease": false
+      },
+      {
+        "id": "545f7f46-59a1-47e7-9085-88977f70db93",
+        "status": "completed",
+        "attempts": 1,
+        "createdAt": "2026-10-26T11:13:36.314Z",
+        "updatedAt": "2026-10-26T11:15:05.879Z",
+        "leaseUntil": null,
+        "errorPresent": false,
+        "staleLease": false
+      }
+    ]
+  },
+  "submission": {
+    "sending": false,
+    "next": null,
+    "attempts": 0,
+    "day": "2026-10-26"
+  },
+  "quota": [],
+  "applications": [
+    {
+      "id": "69692d0e-e9ba-448b-bb78-0140f31dc5f5",
+      "jobId": "9a7b92d7-12b2-4fc5-942d-0cf3e4e6a071",
+      "status": "Falha no envio",
+      "execution": {
+        "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false,
+      "reconciliations": [
+        {
+          "id": "employer:1a16a33ce23f137c:a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "at": "2026-10-26T14:58:17.753Z",
+          "attemptId": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "outcome": "not_received",
+          "source": "official_employer_reply",
+          "threadId": "1a16937d1e63856d",
+          "messageId": "1a16a33ce23f137c",
+          "replyAt": "2026-10-23T19:18:57.000Z",
+          "evidenceSha256": "d71178cea67a071fc9e1a03bf246db8bc08cda631665bef923fa6deda9b991d8",
+          "quotaDisposition": "retained_post_submit_attempt",
+          "retryAuthorized": false
+        }
+      ],
+      "attempts": [
+        {
+          "correlationId": "be02a2b0-92d8-4bcb-ab1f-71b822e00da6",
+          "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+          "origin": "user_triggered_automation",
+          "id": "a8f0e151-72bb-43d2-b9b6-99bd7ce0a808",
+          "executor": "ats_browser",
+          "startedAt": "2026-10-23T13:52:21.765Z",
+          "outcome": "unknown",
+          "finishedAt": "2026-10-23T13:52:39.795Z",
+          "receiptSha256": null
+        }
+      ]
+    },
+    {
+      "id": "e5352b83-22cb-4d61-898d-a93469f69792",
+      "jobId": "3429e934-7e20-48f2-b258-0ab6b48e97ec",
+      "status": "Requer ação manual",
+      "execution": {
+        "correlationId": "e7f242c4-6ce8-469f-bbaa-e8b37fd16a88",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "5d28259a-7ce5-45b7-ac01-44e3be3e0f07",
+      "jobId": "951291ed-95ea-4c49-adcc-7550ae30d7d9",
+      "status": "Requer ação manual",
+      "execution": {
+        "correlationId": "dcef7714-07b4-439a-8fed-796a189b8477",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "e0004acd-37b0-4929-9812-6adf488cbb22",
+      "jobId": "77d512b1-3ecb-4be4-b54c-70df9e46fc9f",
+      "status": "Requer ação manual",
+      "execution": {
+        "correlationId": "eb09317b-1fdc-463c-8d16-046c55729785",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "2e01b5ce-3a63-48cd-b9a2-510077c6be6c",
+      "jobId": "c66e5504-bc62-4973-b5af-deffc4d630b9",
+      "status": "Requer ação manual",
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "be38f1c8-6659-44db-9457-5215aea3340f",
+      "jobId": "7e98745c-6905-4b61-98f5-4d64869b9088",
+      "status": "Requer ação manual",
+      "execution": {
+        "correlationId": "4fbc7e40-1305-4a58-a61e-b7b17e99e171",
+        "runId": "a1198849-24d0-46d6-9158-e3021c4bc43a",
+        "origin": "user_triggered_automation"
+      },
+      "receiptSha256": null,
+      "confirmed": false
+    },
+    {
+      "id": "384344bb-69b6-4924-8d97-b56508379df4",
+      "jobId": "28160d40-6851-4de6-9dbf-6f730aa8e1de",
+      "status": "Enviada",
+      "submittedAt": "2026-10-22T15:51:15.245Z",
+      "receiptSha256": "55ac268778228b71b8473c1934ffe5bb3f96890b1f5c2be6a8bc1884b182ca21",
+      "confirmed": true
+    }
+  ],
+  "workerEvents": [],
+  "limitations": [
+    "Task attempts are not queue delivery counts.",
+    "Worker events begin with the instrumented deployment; earlier messages require platform logs."
+  ]
+}

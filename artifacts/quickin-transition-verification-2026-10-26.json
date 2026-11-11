@@ -1,0 +1,19 @@
+{
+  "day": "2026-10-26",
+  "kind": "code trace with separately identified production and controlled evidence",
+  "realSubmissionsInThisCorrection": 0,
+  "stages": [
+    {"file":"server/automatic-cycle.ts","input":"persisted workspace, approved resume, account quota","output":"eligible prepared applications or waiting blockers","observed":"scheduled discovery completed; no eligible new submission on 26/10"},
+    {"file":"server/submission-routing.ts","input":"verified official destination and enabled executor","output":"ats_browser for authorized Quickin destination","block":"unsupported executor, stale destination, CAPTCHA or missing authorization"},
+    {"file":"server/submission-dispatch.ts","input":"next approved application UUID","output":"empregatos-submissions Queue message with application history/day idempotency key","observed":"no new message needed while Global TI review is ineligible"},
+    {"file":"server/vercel-submission-worker.ts","input":"workspaceId, applicationId and delivery metadata","output":"automaticSend then continuation of other opportunities","block":"wrong next ID, active transmission, expired authorization, quota or eligibility"},
+    {"file":"server/operations.ts","input":"fresh posting, approved original resume and scoped answers","output":"new quota reservation and own attempt UUID; retry links previousAttemptId/reconciliationId","controlledEvidence":"tests/automatic-submission.test.ts: confirmed and unknown linked recovery; original attempt/quota preserved; repeated call blocked"},
+    {"file":"server/ats-execution.ts","input":"authorized destination, candidate answers and approved file","output":"isolated Vercel Sandbox production runner using executeAtsApplication","controlledEvidence":"quickin-cloud-controlled-2026-10-26.json: production snapshot, same executor; fictional data; all employer writes intercepted"},
+    {"file":"server/quickin-form.ts","input":"public careersite/schema, exact job identity and real public form","output":"UI upload, validated media reference, required controls, UI POST /apply","controlledEvidence":"quickin-payload-reviewed-2026-10-26.json: numeric salary; confirmed E164 phone array; scoped CPF; matching uploaded media; correct job_id/origin"},
+    {"file":"server/quickin-form.ts","input":"HTTP response plus visible confirmation after POST","output":"sent only with accepted HTTP and new visible success; upload refusal pauses before POST; application refusal or missing confirmation stays unknown","controlledEvidence":"HTTP 413 upload; HTTP 400 ValidationError sanitized with field names/hash; HTTP 200 plus visible success; HTTP 200 without success remains unknown"},
+    {"file":"server/operations.ts","input":"executor result and optional verified receipt","output":"transaction persists attempt diagnostic/outcome, receipt, verification and submittedAt only on receipt; otherwise no success counted","productionEvidence":"Global TI historical unknown attempt retained, authoritative not_received reconciliation retained, no new receipt"},
+    {"file":"server/reconciled-retry.ts","input":"official nonreceipt reconciliation linked to last original attempt","output":"fresh eligible review and explicit one-job authorization create one child candidacy","block":"score below 70, missing requirements, changed job/profile/resume/answers, another receipt/unknown attempt or consumed authorization"}
+  ],
+  "historicalFailureLimit":"The old Quickin POST response details were discarded. Its precise HTTP code and cause cannot be recovered from retained evidence.",
+  "acceptanceCriterionMet":false
+}

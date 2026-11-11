@@ -24,3 +24,6 @@ artifacts/product-test-results/
 artifacts/product-workflow-results/
 artifacts/product-motion-results/
 output/
+
+.vercel
+.env*

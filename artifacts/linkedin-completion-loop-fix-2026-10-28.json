@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-28T18:49:14.091Z",
+  "deployment": "dpl_6BxpNQprZvUkVn5n9rF2gaABuFLU",
+  "production": "https://curriculoautomatico.vercel.app",
+  "checks": {
+    "completionAction": true,
+    "completionHeading": true,
+    "dashboardResultAction": true
+  },
+  "regressionTestsPassed": 6,
+  "browserRegressionTestUpdated": true,
+  "browserRegressionExecutedThisTurn": false,
+  "extensionUpgradeRequired": false
+}

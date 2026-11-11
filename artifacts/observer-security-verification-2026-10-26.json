@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-26T15:18:36.900Z",
+  "observerSecretFoundInFrontend": false,
+  "localCredentialPathIgnored": true,
+  "productionEndpointWithoutKey": 401,
+  "productionEndpointWithWrongKey": 401,
+  "iamGrantsAdded": 0,
+  "scope": "read-only; one workspace; no profile, contact, resume originals, OAuth credentials or receipt plaintext"
+}

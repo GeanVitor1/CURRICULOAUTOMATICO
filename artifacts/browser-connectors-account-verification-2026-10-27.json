@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-28T18:10:50.433Z",
+  "checks": [
+    {
+      "portal": "gupy",
+      "available": true,
+      "sameAuthenticatedAccount": true
+    },
+    {
+      "portal": "infojobs",
+      "available": true,
+      "sameAuthenticatedAccount": true
+    },
+    {
+      "portal": "glassdoor",
+      "available": true,
+      "sameAuthenticatedAccount": true
+    },
+    {
+      "portal": "linkedin",
+      "available": true,
+      "sameAuthenticatedAccount": true,
+      "mode": "local-browser",
+      "noticePresent": true
+    }
+  ]
+}

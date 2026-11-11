@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-27T19:45:01.497Z",
+  "version": "2.0.3",
+  "deployment": "dpl_WRSSZVEpGEvxEciSZNxDmUZdSHQU",
+  "publishedPackageMatchesSource": true,
+  "changes": [
+    "persistent connector tab",
+    "repair and idempotent reinjection of project bridge",
+    "version, progress and errors visible in project",
+    "activate project confirmation after verified session"
+  ],
+  "verification": {
+    "focusedTestsPassed": 31,
+    "realChromeScenarios": 6,
+    "includesLoginTabFocusChange": true,
+    "includesMissingReceiverAfterUpdate": true,
+    "includesServerRejectionVisibleInProject": true,
+    "oneSessionImportPerAttempt": true,
+    "buildPassed": true
+  },
+  "actualLinkedInConnection": "not yet verified after user retry",
+  "privacy": {
+    "noBackgroundSessionCollection": true,
+    "explicitTransferConsentRequired": true,
+    "finalProjectConfirmationRequired": true
+  },
+  "observedProductionUi": {
+    "at": "2026-10-27T19:49:04.842Z",
+    "extensionVersionDetected": false,
+    "status": "Aguardando o conector do Chrome",
+    "linkedinConnectedAtLastServerCheck": false,
+    "userInputRequired": "Does clicking the EmpreGatos icon open a 2.0.3 connector tab or the previous popup?"
+  },
+  "screenshot": "artifacts/connector-v203-awaiting-browser-2026-10-27.png"
+}

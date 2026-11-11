@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "at": "2026-10-29T18:54:01.974Z",
+  "registrationToWelcome": true,
+  "resumeAccessibleBeforeDataForm": true,
+  "resumeImportToRequiredDetails": true,
+  "detailsToPreferences": true,
+  "savedProgressResumes": true,
+  "completedAccountsDoNotRestartWelcome": true,
+  "helpOpensAndClosesByKeyboard": true,
+  "portalPreservedAfterLogin": [
+    "gupy",
+    "infojobs",
+    "glassdoor",
+    "linkedin"
+  ],
+  "portalPreservedAfterOAuthCallback": true,
+  "blockedBrowserStorageWorks": true,
+  "accountSwitchDiscardsPreviousWorkspace": true,
+  "authServiceErrorRecovers": true,
+  "connector": {
+    "passed": true,
+    "version": "2.0.9",
+    "portals": [
+      "linkedin",
+      "gupy",
+      "infojobs",
+      "glassdoor"
+    ],
+    "loginRecovery": true,
+    "busyStateVisible": true,
+    "explicitConsent": true,
+    "linkedInCookieReads": 0,
+    "chromeApis": "synthetic",
+    "runtimeErrors": []
+  },
+  "mobileNoOverflow": true,
+  "desktopNoOverflow": true,
+  "runtimeErrors": [],
+  "automaticSearchesStarted": 0,
+  "realAccountsUsed": false,
+  "productionApiRequests": 0,
+  "externalRequestsBlocked": 0
+}

@@ -1,0 +1,97 @@
+{
+  "at": "2026-10-26T15:15:36.516Z",
+  "deploymentId": "dpl_DyxxXJuxr6tSkWwyhZVt58DARXrM",
+  "readOnly": true,
+  "results": [
+    {
+      "path": "server/quickin-form.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "2c8ec8edfd0013d34a17ad2acb5bc454bd3fa126527f65594f88f3c261baffb9",
+      "localSha256": "2c8ec8edfd0013d34a17ad2acb5bc454bd3fa126527f65594f88f3c261baffb9"
+    },
+    {
+      "path": "server/application-reconciliation.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "e80a80bcdb19881914d40db63a56034d7ff316555ac356dca28c30ed9ce962fc",
+      "localSha256": "e80a80bcdb19881914d40db63a56034d7ff316555ac356dca28c30ed9ce962fc"
+    },
+    {
+      "path": "server/automation-diagnostics.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "b0779f258997bcd9da57872529bd31ec3413c841f20866e738920f71fd545133",
+      "localSha256": "b0779f258997bcd9da57872529bd31ec3413c841f20866e738920f71fd545133"
+    },
+    {
+      "path": "server/worker-observation.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "2a448c095bfa5494e86d0efd6c4c96993e4120c8a1627fbc43ad6bef5d622544",
+      "localSha256": "2a448c095bfa5494e86d0efd6c4c96993e4120c8a1627fbc43ad6bef5d622544"
+    },
+    {
+      "path": "server/vercel-submission-worker.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "561ebd2df3d13282affcb597225027a0c6c921f96fc94385b08ddf48b7308f2a",
+      "localSha256": "561ebd2df3d13282affcb597225027a0c6c921f96fc94385b08ddf48b7308f2a"
+    },
+    {
+      "path": "server/vercel-worker.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "2f5c0fb8aefded6a15d08a3de3eaf26e9a32f2610e6fa0962da3cb7a32174686",
+      "localSha256": "2f5c0fb8aefded6a15d08a3de3eaf26e9a32f2610e6fa0962da3cb7a32174686"
+    },
+    {
+      "path": "server/vercel-resolution-worker.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "06e82f0579e454808508858a621cb42725fd4939ca21176e77318c1ecff4d270",
+      "localSha256": "06e82f0579e454808508858a621cb42725fd4939ca21176e77318c1ecff4d270"
+    },
+    {
+      "path": "server/engine.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "17fae718f416aafaa6ffb4e03d0be8286aa3a93bb96abb21e56b1fcee18ebde9",
+      "localSha256": "17fae718f416aafaa6ffb4e03d0be8286aa3a93bb96abb21e56b1fcee18ebde9"
+    },
+    {
+      "path": "server/connectors.ts",
+      "found": true,
+      "responseKeys": [
+        "data"
+      ],
+      "identical": true,
+      "remoteSha256": "34641c217703051d86fe436cf0bba9e4c2b4a7523989b3ee283b41baa301c8fe",
+      "localSha256": "34641c217703051d86fe436cf0bba9e4c2b4a7523989b3ee283b41baa301c8fe"
+    }
+  ]
+}
