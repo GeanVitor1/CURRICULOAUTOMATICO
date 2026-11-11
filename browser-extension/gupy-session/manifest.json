@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "EmpreGatos — conexões de portais",
-  "version": "2.0.10",
+  "version": "2.1.0",
   "minimum_chrome_version": "120",
   "background": { "service_worker": "background.js" },
   "description": "Conecte seus portais de vagas ao EmpreGatos. Verifique o LinkedIn no Chrome e autorize cada conexão separadamente.",

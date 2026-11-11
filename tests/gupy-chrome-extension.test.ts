@@ -8,7 +8,7 @@ const base='https://curriculoautomatico.vercel.app',owner='11111111-1111-4111-81
 const scenarios=[...(Object.keys(browserConnectors) as BrowserSessionPortal[]).map(portal=>({portal,repair:false,reject:false,replaceApp:false})),{portal:'linkedin' as const,repair:true,reject:false,replaceApp:false},{portal:'linkedin' as const,repair:false,reject:true,replaceApp:false},{portal:'linkedin' as const,repair:false,reject:false,replaceApp:true}];
 it.each(scenarios)('real Chrome extension handles $portal (repair stale bridge: $repair; server rejects: $reject; closed destination: $replaceApp)',async({portal,repair,reject,replaceApp})=>{
  const directory=await mkdtemp(join(tmpdir(),'portal-extension-test-')),extension=join(directory,'extension'),provider=browserConnectors[portal];
- const local=portal==='linkedin',connectLabel=local?'2. Verificar LinkedIn no meu Chrome':'2. Conectar sessão';
+ const local=portal==='linkedin',connectLabel=local?'Verificar LinkedIn':'Conectar conta';
  await cp(resolve('browser-extension/gupy-session'),extension,{recursive:true});
  const manifest=JSON.parse(await readFile(join(extension,'manifest.json'),'utf8'));
  // Isolated fixture simulates the user granting only the selected optional
@@ -53,33 +53,28 @@ it.each(scenarios)('real Chrome extension handles $portal (repair stale bridge: 
   const opening=context.waitForEvent('page');
   await worker.evaluate('openConnector('+JSON.stringify(portal)+')');
   const popup=await opening;await popup.waitForURL(`chrome-extension://${id}/popup.html?portal=${portal}`);
-  // Exercise the user's portal selector instead of pre-setting browser storage.
-  await popup.locator('#portal').selectOption(portal);
+  // Exercise the user's portal selector instead of pre-setting browser storage.  await popup.locator('#portal').selectOption(portal);
   await popup.locator('#account').filter({hasText:'qa@example.test'}).waitFor();
   // Login opens a different tab and closes a real popup. Reopening must retain
   // the chosen portal while requiring fresh consent.
   await popup.reload();
   await popup.locator('#account').filter({hasText:'qa@example.test'}).waitFor();
   expect(await popup.locator('#portal').inputValue()).toBe(portal);
-  expect(await popup.locator('#consent-label').innerText()).toContain(provider.name);
-  expect(await popup.getByRole('button',{name:connectLabel}).isDisabled()).toBe(true);expect(received).toBeUndefined();
+  expect(await popup.locator('#consent-label').innerText()).toContain(provider.name);  // Nothing is read or sent before the single explicit click.
+  expect(await popup.getByRole('button',{name:connectLabel}).isEnabled()).toBe(true);expect(received).toBeUndefined();
   if(replaceApp){
    // Exact user failure: the popup holds a tab ID that no longer exists when
    // consent is granted. The replacement must be discovered and owner checked.
    await app.close();app=await context.newPage();await app.goto(base+'/app?portal='+portal);
   }
-  if(portal==='linkedin'&&!repair&&!reject){
-   const loginOpened=context.waitForEvent('page');
-   await popup.getByRole('button',{name:'1. Abrir login do portal'}).click();
-   const loginTab=await loginOpened;
-   // Chrome API-created tabs can start their initial request before Playwright
-   // attaches routing. The proxy blocks external traffic; now attach the fixture.
+  if(portal==='linkedin'&&!repair&&!reject){   // The user is already signed in to the portal in another tab: the single
+   // click must recognize it without opening a new login tab.
+   const loginTab=await context.newPage();
    await loginTab.goto(provider.accountUrl);
    expect(popup.isClosed()).toBe(false);
    expect(popup.url()).toContain('/popup.html');expect(received).toBeUndefined();
   }
-  const pagesBefore=context.pages().length;
-  await popup.getByRole('checkbox').check();await popup.getByRole('button',{name:connectLabel}).click();
+  const pagesBefore=context.pages().length;  await popup.getByRole('button',{name:connectLabel}).click();
   if(reject){
    await expect.poll(()=>popup.getByRole('status').innerText(),{timeout:10000}).toContain('não foi aceito');
    expect(await app.locator('#extension-status').innerText()).toContain('não foi aceito');
