@@ -54,7 +54,7 @@ export default function PerfectResume(){
   const blob=await response.blob(),link=URL.createObjectURL(blob),a=document.createElement('a');a.href=link;a.download=`${kind==='letter'?'carta-apresentacao':'curriculo-perfeito'}.${format}`;a.click();setTimeout(()=>URL.revokeObjectURL(link),1000);
  });
  return <div className="perfect-page">
-  <header className="perfect-hero"><div><span className="perfect-eyebrow"><Sparkles size={14}/> SEU PRÓXIMO PASSO</span><h1>Currículo <em>Perfeito</em></h1><p>Sua experiência, apresentada para a oportunidade que você quer.</p></div><div className="perfect-hero-note"><FileText size={23}/><span>Feito com a sua história.<br/><strong>Pronto para o próximo capítulo.</strong></span></div></header>
+  <header className="perfect-hero"><div><span className="perfect-eyebrow"><Sparkles size={14}/> SEU PRÓXIMO PASSO</span><h1>Currículo Perfeito</h1><p>Sua experiência, apresentada para a oportunidade que você quer.</p></div><div className="perfect-hero-note"><FileText size={23}/><span>Feito com a sua história.<br/><strong>Pronto para o próximo capítulo.</strong></span></div></header>
   <div className="perfect-steps" aria-label="Etapas do Currículo Perfeito">{['Escolha seu currículo','Adicione a vaga','Dê seu toque final'].map((step,i)=><span className={(i===0&&source)||(i===1&&job)||(i===2&&draft)?'complete':''} key={step}><i>{((i===0&&source)||(i===1&&job)||(i===2&&draft))?<Check size={13}/>:i+1}</i>{step}</span>)}</div>
   {error&&<div className="perfect-error" role="alert">{error}</div>}
   {library.isError&&<div className="perfect-error" role="alert">Não foi possível carregar suas versões salvas. <Button onClick={()=>void library.refetch()}>Tentar novamente</Button></div>}

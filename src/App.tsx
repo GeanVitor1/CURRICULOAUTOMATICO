@@ -29,6 +29,7 @@ import {
   HelpCircle,
   Link2,
   Sparkles,
+  Search,
 } from "lucide-react";
 import {SetupProgress,ProductHelp} from './GettingStarted';
 import {needsCandidateDetailsPage} from '../shared/getting-started';
@@ -64,6 +65,7 @@ const nav = [
   { id: "curriculo-perfeito", label: "Currículo Perfeito", icon: Sparkles },
   { id: "preferencias", label: "Preferências", icon: Settings2 },
   { id: "conexoes", label: "Conexões", icon: Link2 },
+  { id: "vagas", label: "Vagas compatíveis", icon: Search },
   { id: "candidaturas", label: "Candidaturas", icon: BriefcaseBusiness },
 ];
 const canonicalPage = (page: string) =>
@@ -123,12 +125,12 @@ function Privacy() {
       <p>A extensão guarda no Chrome apenas o portal selecionado e o estado de abertura do login. Ela não guarda credenciais no armazenamento da extensão nem coleta sessões em segundo plano. As URLs das abas dos portais selecionados são usadas para localizar o login. Na área de conexões, você pode remover a conexão do projeto; na conta, pode solicitar a exclusão dos dados associados.</p>
       <h2>Assinaturas e pagamentos</h2>
       <p>
-        Os planos pagos são assinaturas mensais com renovação automática. O
-        Stripe processa o cartão em sua própria página de pagamento; a
-        EmpreGatos não armazena o número do cartão. Dados de identificação e o
-        estado da assinatura são utilizados para gerenciar a cobrança. Em Minha
-        conta, você pode gerenciar o pagamento e cancelar a renovação. Ao
-        excluir a conta, o sistema cancela as assinaturas ativas; registros
+        Os planos pagos valem por 30 dias, sem renovação automática. A
+        InfinitePay processa o cartão ou Pix em sua própria página de pagamento; a
+        EmpreGatos não recebe nem armazena dados do cartão. Dados de identificação e o
+        estado da assinatura são utilizados para gerenciar a cobrança. Como não há
+        renovação automática, não existe cobrança futura para cancelar. Ao
+        excluir a conta, links de pagamento pendentes são descartados; registros
         financeiros podem ser mantidos pelo processador conforme suas
         obrigações.
       </p>

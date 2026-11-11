@@ -794,8 +794,8 @@ export default function Landing() {
           </p>
           <Pricing />
           <p className="pricing-note">
-            Planos pagos por mês, com renovação automática e cancelamento em
-            Minha conta. O envio depende de vagas compatíveis, currículo
+            Planos pagos por 30 dias, via Pix ou cartão, sem renovação
+            automática. O envio depende de vagas compatíveis, currículo
             aprovado e integração de envio disponível. Vagas que exigem
             respostas ou verificações ficam pendentes. Limites não utilizados
             não acumulam; o dia segue o horário de Brasília.

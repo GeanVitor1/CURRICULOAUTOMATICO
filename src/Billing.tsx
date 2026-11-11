@@ -163,8 +163,8 @@ export default function Billing() {
               onChoose={(plan) => void go(plan)}
             />
             <p className="pricing-note">
-              Assinaturas mensais com renovação automática. Gerencie seu
-              pagamento e cancelamento pelo botão acima. O envio depende de
+              Pagamento único por 30 dias, por Pix ou cartão, sem renovação
+              automática. Para continuar depois, pague um novo período. O envio depende de
               vagas compatíveis, currículo aprovado e conexão de envio
               disponível. Tentativas com resultado incerto contam na cota para
               evitar duplicações. Limites não utilizados não acumulam.
