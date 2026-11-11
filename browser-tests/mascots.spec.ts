@@ -222,7 +222,7 @@ test("mascote acompanha o envio e a criacao de curriculo", async ({
 }, testInfo) => {
   await account(page, workspace());
   await page.setViewportSize({ width: 375, height: 900 });
-  await page.goto("/app");
+  await page.goto("/app#preferencias");
   await loaded(page.locator('.journey-mascot[data-mascot="handing-resume"]'));
   await page
     .getByRole("button", { name: "Enviar curr\u00edculo", exact: true })
@@ -239,7 +239,9 @@ test("mascote acompanha o envio e a criacao de curriculo", async ({
   await page.screenshot({ path: testInfo.outputPath("curriculo-celular.png") });
 });
 
-test("mascote empregado celebra apenas uma contratação registrada", async ({
+// A comemoração (.hired-mascot) foi removida da tela de candidaturas em 17acba2.
+// Reativar este teste se a comemoração voltar.
+test.fixme("mascote empregado celebra apenas uma contratação registrada", async ({
   page,
 }, testInfo) => {
   const w = workspace();
@@ -287,7 +289,8 @@ test("mascote empregado celebra apenas uma contratação registrada", async ({
       createdAt: at,
       updatedAt: at,
       resumeId: null,
-      receipt: null,
+      receipt: "QA-RECIBO-1",
+      submittedAt: at,
       note: "",
       history: [],
       mode: "manual",
@@ -332,6 +335,7 @@ test("busca em segundo plano troca o GIF pela pose do resultado", async ({
   await expect(status.locator("img")).toHaveAttribute("src", /\.gif$/);
   w.runs[0].status = "completed";
   w.runs[0].message = "Consulta terminou sem novos resultados.";
+  await page.reload();
   await expect(
     status.getByText("Busca concluída", { exact: true }),
   ).toBeVisible();
@@ -355,7 +359,7 @@ test("próxima ação mantém o mascote visível no celular", async ({
   w.filters.titles = ["Atendimento"];
   await account(page, w);
   await page.setViewportSize({ width: 375, height: 900 });
-  await page.goto("/app");
+  await page.goto("/app#preferencias");
   await loaded(page.locator('.journey-mascot[data-mascot="handing-resume"]'));
   await expect(
     page.getByRole("button", { name: "Enviar currículo", exact: true }),

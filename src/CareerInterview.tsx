@@ -130,7 +130,10 @@ export default function CareerInterview() {
   }, [step]);
   const capabilities = useQuery({
     queryKey: ["automation-sites"],
-    queryFn: () => api<SiteCapability[]>("/automation/sites"),
+    queryFn: async () => {
+      const data = await api<SiteCapability[]>("/automation/sites");
+      return Array.isArray(data) ? data : [];
+    },
   });
   useEffect(() => {
     if (billing.data)

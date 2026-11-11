@@ -9,12 +9,8 @@ const existing = parse(await readFile(destination, "utf8").catch(() => ""));
 const names = [
   "DATABASE_URL",
   "GOOGLE_CLIENT_ID",
-  "GOOGLE_CLIENT_SECRET",
-  "STRIPE_SECRET_KEY",
-  "STRIPE_WEBHOOK_SECRET",
-  "STRIPE_PRICE_PLUS",
-  "STRIPE_PRICE_PRO",
-  "STRIPE_PORTAL_CONFIGURATION",
+  "GOOGLE_CLIENT_SECRET",  "INFINITEPAY_HANDLE",
+  "INFINITEPAY_API_KEY",
   "GEMINI_API_KEY",
   "GEMINI_MODEL",
   "APPLICATION_WEBHOOK_URL",
@@ -78,12 +74,7 @@ console.log(
     googleConfigured: !!(
       values.GOOGLE_CLIENT_ID && values.GOOGLE_CLIENT_SECRET
     ),
-    stripeConfigured: !!(
-      values.STRIPE_SECRET_KEY &&
-      values.STRIPE_WEBHOOK_SECRET &&
-      values.STRIPE_PRICE_PLUS &&
-      values.STRIPE_PRICE_PRO
-    ),
+    paymentsConfigured: !!values.INFINITEPAY_HANDLE,
     destination: ".env.production.local",
   }),
 );

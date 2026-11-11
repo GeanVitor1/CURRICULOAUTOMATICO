@@ -16,7 +16,6 @@
     "db:migrate": "node scripts/secure-node.mjs tsx server/migrate.ts",
     "typecheck": "node scripts/secure-node.mjs tsc --noEmit",
     "configure:google": "node scripts/secure-node.mjs scripts/configure-google.mjs",
-    "configure:stripe": "node scripts/secure-node.mjs scripts/configure-stripe.mjs",
     "configure:vm": "node scripts/secure-node.mjs scripts/configure-vm.mjs",
     "test:browser": "node scripts/secure-node.mjs playwright test",
     "audit:production": "node scripts/secure-node.mjs scripts/audit-production.mjs",
@@ -65,7 +64,6 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.63.0",
-    "stripe": "^23.0.0",
     "ws": "^8.22.0",
     "zod": "^4.6.7"
   },

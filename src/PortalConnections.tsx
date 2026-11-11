@@ -52,7 +52,10 @@ export default function PortalConnections({
   const client = useQueryClient();
   const sites = useQuery({
     queryKey: ["automation-sites"],
-    queryFn: () => api<SiteCapability[]>("/automation/sites"),
+    queryFn: async () => {
+      const data = await api<SiteCapability[]>("/automation/sites");
+      return Array.isArray(data) ? data : [];
+    },
     staleTime: 60000,
     refetchOnWindowFocus: true,
   });
