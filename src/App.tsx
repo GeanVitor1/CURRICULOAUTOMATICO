@@ -884,7 +884,7 @@ export default function App() {
                         <div className="app-loading">Carregando...</div>
                       }
                     >
-                      {page === "onboarding" || (!w.onboarding?.completed && !w.interview?.completed && !w.resumes.length) ? (
+                      {page === "onboarding" || (page === "automacao" && !w.onboarding?.completed && !w.interview?.completed && !w.resumes.length) ? (
                         <pages.onboarding />
                         ) : needsCandidateDetailsPage(w,page) ? (
                         <CandidateDetails />

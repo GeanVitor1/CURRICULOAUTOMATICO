@@ -20,7 +20,10 @@ export default function SimpleAutomation() {
   const conversion=useQuery({queryKey:['automation-conversion'],queryFn:()=>api<AutomationConversion>('/automation/conversion'),enabled:showConversion,refetchInterval:showConversion?30000:false});
   const sites = useQuery({
     queryKey: ["automation-sites"],
-    queryFn: () => api<SiteCapability[]>("/automation/sites"),
+    queryFn: async () => {
+      const data = await api<SiteCapability[]>("/automation/sites");
+      return Array.isArray(data) ? data : [];
+    },
   });
   const ready = gettingStarted(w).configured;
   const officialAvailable =
