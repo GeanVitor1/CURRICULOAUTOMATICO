@@ -88,3 +88,13 @@ describe("releasePending", () => {
       ["Aceita realocação?", "Sim", "https://ats.test/a1"], ["Are you willing to relocate?", "Yes", "https://ats.test/a2"]]);
   });
 });
+
+import { classifyQuestion as cq, resolveMemoryAnswer as rma } from "../shared/answer-topics";
+import { it as it2, expect as ex2 } from "vitest";
+it2("usa a faixa salarial escolhida quando ela é uma das opções", () => {
+  const q = "Qual a sua expectativa salarial (valor bruto CLT)?";
+  const opts = ["Até 3.000,00", "Entre 3.001,00 e 4.000,00", "Entre 4.001,00 e 5.000,00", "Acima de 5.000,00"];
+  const entry = { id: "s", topic: "salary_expectation", value: "Entre 4.001,00 e 5.000,00", source: "user", confirmedAt: "2026-11-11T00:00:00Z", examples: [q] } as any;
+  ex2(rma(q, cq(q)!, [entry], {}, opts)?.value).toBe("Entre 4.001,00 e 5.000,00");
+  ex2(rma(q, cq(q)!, [{ ...entry, value: "R$ 8.000,00" }], {}, undefined)?.value).toBe("8000");
+});

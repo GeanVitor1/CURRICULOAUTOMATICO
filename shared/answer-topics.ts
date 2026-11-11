@@ -200,6 +200,9 @@ export function resolveMemoryAnswer(
   if (!entry) return undefined;
   const value = normalizedText(entry.value);
   const done = (v?: string) => (v ? { value: v, entry } : undefined);
+  // A resposta do usuário pode ser literalmente uma das opções do formulário (ex.: faixa salarial).
+  const exactOption = options?.find((o) => normalizedText(o) === value);
+  if (exactOption && !yesNoTopics.has(match.topic)) return done(exactOption);
   if (yesNoTopics.has(match.topic)) {
     if (value === "yes") return done(yesNo(true, question, options));
     if (value === "no") return done(yesNo(false, question, options));
@@ -220,7 +223,11 @@ export function resolveMemoryAnswer(
     return undefined;
   }
   if (match.topic === "salary_expectation" || match.topic === "tech_experience_years") {
-    const amount = Number(entry.value.replace(/[^\d.]/g, ""));
+    // Aceita "8000", "8.000", "R$ 8.000,00" e faixas como "Entre 4.001,00 e 5.000,00" (usa o maior valor).
+    const numbers = (entry.value.match(/\d[\d.]*(?:,\d+)?/g) || [])
+      .map((n) => Number(n.replace(/\.(?=\d{3}(\D|$))/g, "").replace(",", ".")))
+      .filter((n) => Number.isFinite(n) && n > 0);
+    const amount = numbers.length ? Math.max(...numbers) : NaN;
     if (!Number.isFinite(amount) || amount <= 0) return undefined;
     if (!options?.length) return done(String(amount));
     if (match.topic === "salary_expectation") return done(salaryOption?.(question, amount, options));

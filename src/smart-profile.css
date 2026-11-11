@@ -64,3 +64,4 @@
 .sp-summary dd.muted { font-weight: 400; color: var(--eg-text-2); font-style: italic; }
 .sp-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
 .sp-saved { margin-right: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--eg-green); font-weight: 600; }
+.sp-note { margin: 10px 0 0; font-size: 13px; color: var(--eg-amber, #94600c); }

@@ -61,6 +61,8 @@ function PendingCard({ groups }: { groups: PendingGroup[] }) {
   const { toast } = useApp();
   const action = useAction();
   const [values, setValues] = useState<Record<string, string>>({});
+  const [sending, setSending] = useState<string | null>(null);
+  const [notes, setNotes] = useState<Record<string, string>>({});
   if (!groups.length)
     return (
       <section className="sp-card sp-pending done">
@@ -72,9 +74,19 @@ function PendingCard({ groups }: { groups: PendingGroup[] }) {
   const send = (group: PendingGroup) => {
     const value = values[group.key]?.trim();
     if (!value) return;
+    setSending(group.key);
+    setNotes((n) => ({ ...n, [group.key]: "" }));
     action.mutate(
       { path: "/pending-questions/answer", method: "POST", body: { confirmation: true, key: group.key, question: group.questions[0], value, reuse: true } },
-      { onSuccess: (r: any) => toast(r?.released ? `Resposta salva. ${r.released} candidatura(s) voltaram para a fila.` : "Resposta salva no seu Perfil inteligente.") },
+      { onSuccess: (r: any) => {
+          const msg = r?.released
+            ? `Resposta salva. ${r.released} candidatura(s) voltaram para a fila de envio.`
+            : "Resposta salva, mas ela não corresponde a nenhuma opção desta vaga. Escolha outra opção ou edite em Outras respostas aprendidas.";
+          toast(msg);
+          setNotes((n) => ({ ...n, [group.key]: r?.released ? "" : msg }));
+        },
+        onError: (e: any) => setNotes((n) => ({ ...n, [group.key]: e?.message || "Não foi possível salvar. Tente novamente." })),
+        onSettled: () => setSending(null) },
     );
   };
   return (
@@ -109,8 +121,9 @@ function PendingCard({ groups }: { groups: PendingGroup[] }) {
                 ) : (
                   <input aria-label={group.label} value={current} placeholder="Sua resposta" onChange={(e) => set(e.target.value)} />
                 )}
-                <Button className="primary" disabled={!current.trim() || action.isPending} onClick={() => send(group)}>Salvar</Button>
+                <Button className="primary" aria-busy={sending === group.key} disabled={!current.trim() || action.isPending} onClick={() => send(group)}>{sending === group.key ? "Salvando…" : "Salvar resposta"}</Button>
               </div>
+              {notes[group.key] && <p className="sp-note" role="status">{notes[group.key]}</p>}
             </li>
           );
         })}
