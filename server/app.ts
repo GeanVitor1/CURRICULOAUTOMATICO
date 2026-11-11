@@ -169,8 +169,7 @@ import {
   cancelAccountSubscription,
   createBillingPortal,
   createCheckout,
-  processBillingEvent,
-  verifyBillingEvent,
+  confirmPayment,
 } from "./billing";
 import { plans } from "../shared/plans";
 import {
@@ -464,20 +463,28 @@ export async function buildApp({ serveStatic = true } = {}) {
     { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } },
     async (req) => createBillingPortal((await identity(req)).id),
   );
-  await app.register(async (webhooks) => {
-    webhooks.removeContentTypeParser("application/json");
-    webhooks.addContentTypeParser(
-      "application/json",
-      { parseAs: "buffer" },
-      (_request, body, done) => done(null, body),
-    );
-    webhooks.post("/api/billing/webhook", async (req) => {
-      const signature = req.headers["stripe-signature"];
-      if (typeof signature !== "string" || !Buffer.isBuffer(req.body))
-        throw new RequestError("Webhook inválido.");
-      return processBillingEvent(verifyBillingEvent(req.body, signature));
-    });
-  });
+  // InfinitePay não assina o webhook: confirmPayment revalida em /payment_check.
+  app.post(
+    "/api/billing/webhook",
+    { config: { rateLimit: { max: 60, timeWindow: "1 minute" } } },
+    async (req) => confirmPayment((req.body || {}) as Record<string, unknown>),
+  );
+  // Retorno do checkout (redirect_url) confirma mesmo se o webhook atrasar.
+  app.post(
+    "/api/billing/confirm",
+    { config: { rateLimit: { max: 10, timeWindow: "1 minute" } } },
+    async (req) => {
+      await identity(req);
+      const body = z
+        .object({
+          order_nsu: z.string().max(120),
+          transaction_nsu: z.string().max(120),
+          slug: z.string().max(120),
+        })
+        .parse(req.body);
+      return confirmPayment(body);
+    },
+  );
   async function startGoogle(
     req: FastifyRequest,
     reply: FastifyReply,

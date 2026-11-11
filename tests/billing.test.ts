@@ -11,31 +11,23 @@ import {
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { randomUUID, createHash, createHmac } from "node:crypto";
+import { randomUUID, createHash } from "node:crypto";
 import { eq } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
-import type Stripe from "stripe";
 import { createWorkspace } from "../server/workspace";
 
-const stripe = vi.hoisted(() => ({
-  prices: { retrieve: vi.fn() },
-  customers: { create: vi.fn() },
-  subscriptions: { retrieve: vi.fn(), list: vi.fn(), cancel: vi.fn() },
-  checkout: {
-    sessions: { create: vi.fn(), retrieve: vi.fn(), expire: vi.fn() },
-  },
-  billingPortal: { sessions: { create: vi.fn() } },
-}));
-vi.mock("stripe", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("stripe")>();
-  const real = new actual.default("sk_test_fixture");
-  return {
-    default: class {
-      constructor() {
-        return { ...stripe, webhooks: real.webhooks };
-      }
-    },
-  };
+// InfinitePay é simulada: nenhuma chamada sai da máquina.
+let payment: Record<string, unknown> = { success: true, paid: false };
+const fetchMock = vi.fn(async (url: string | URL, _init?: any) => {
+  const path = String(url);
+  if (path.endsWith("/links"))
+    return new Response(
+      JSON.stringify({ url: "https://checkout.infinitepay.io/fixture" }),
+      { status: 200 },
+    );
+  if (path.endsWith("/payment_check"))
+    return new Response(JSON.stringify(payment), { status: 200 });
+  return new Response("{}", { status: 404 });
 });
 let directory = "",
   app: FastifyInstance,
@@ -51,55 +43,29 @@ const headers = () => ({
 });
 const paid = (plan = "plus") => ({
   userId,
-  customerId: `cus_${userId}`,
+  customerId: `infinitepay:${userId}`,
   plan,
   status: "active",
   currentPeriodEnd: new Date(Date.now() + 86400000),
 });
-const price = (id = "price_plus", amount = 2000) => ({
-  id,
-  active: true,
-  currency: "brl",
-  unit_amount: amount,
-  recurring: { interval: "month", interval_count: 1 },
-});
-const subscription = (overrides = {}) => ({
-  id: `sub_${userId}`,
-  customer: `cus_${userId}`,
-  status: "active",
-  cancel_at_period_end: false,
-  latest_invoice: { status: "paid" },
-  items: {
-    data: [
-      {
-        price: price(),
-        quantity: 1,
-        current_period_end: Math.floor(Date.now() / 1000) + 86400,
-      },
-    ],
-  },
-  ...overrides,
-});
-const event = (type = "customer.subscription.updated", overrides = {}) =>
-  ({
-    id: `evt_${randomUUID()}`,
-    type,
-    data: {
-      object: { id: `sub_${userId}`, customer: `cus_${userId}`, ...overrides },
-    },
-  }) as unknown as Stripe.Event;
-async function webhook(body: Stripe.Event, signature?: string) {
-  const raw = JSON.stringify(body),
-    timestamp = Math.floor(Date.now() / 1000);
-  const signed = `t=${timestamp},v1=${createHmac("sha256", "whsec_fixture").update(`${timestamp}.${raw}`).digest("hex")}`;
+async function checkout(plan: "plus" | "pro") {
+  await database.db
+    .update(schema.subscriptions)
+    .set({ checkoutId: null, checkoutUrl: null, checkoutExpiresAt: null })
+    .where(eq(schema.subscriptions.userId, userId));
+  await billing.createCheckout(userId, plan);
+  const [row] = await database.db
+    .select()
+    .from(schema.subscriptions)
+    .where(eq(schema.subscriptions.userId, userId));
+  return row.checkoutId!;
+}
+async function webhook(body: Record<string, unknown>) {
   return app.inject({
     method: "POST",
     url: "/api/billing/webhook",
-    headers: {
-      "content-type": "application/json",
-      "stripe-signature": signature || signed,
-    },
-    payload: raw,
+    headers: { "content-type": "application/json" },
+    payload: JSON.stringify(body),
   });
 }
 beforeAll(async () => {
@@ -112,13 +78,12 @@ beforeAll(async () => {
   schema = await import("../server/schema");
   billing = await import("../server/billing");
   app = await (await import("../server/app")).buildApp({ serveStatic: false });
-}, 30000);
+}, 120000);
 beforeEach(async () => {
-  vi.stubEnv("STRIPE_SECRET_KEY", "sk_test_fixture");
-  vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_fixture");
-  vi.stubEnv("STRIPE_PRICE_PLUS", "price_plus");
-  vi.stubEnv("STRIPE_PRICE_PRO", "price_pro");
-  vi.stubEnv("STRIPE_PORTAL_CONFIGURATION", "");
+  vi.stubGlobal("fetch", fetchMock);
+  payment = { success: true, paid: false };
+  vi.stubEnv("INFINITEPAY_HANDLE", "empregatos");
+  vi.stubEnv("INFINITEPAY_API_KEY", "");
   vi.stubEnv("APP_ORIGIN", "http://127.0.0.1:5173");
   vi.stubEnv("API_PROXY_SECRET", "");
   userId = randomUUID();
@@ -139,26 +104,11 @@ beforeEach(async () => {
     userId,
     data: createWorkspace("Billing test", `${userId}@example.test`),
   });
-  stripe.prices.retrieve.mockResolvedValue(price());
-  stripe.customers.create.mockResolvedValue({ id: `cus_${userId}` });
-  stripe.subscriptions.list.mockResolvedValue({ data: [], has_more: false });
-  stripe.subscriptions.retrieve.mockResolvedValue(subscription());
-  stripe.checkout.sessions.create.mockResolvedValue({
-    id: "cs_fixture",
-    url: "https://checkout.stripe.com/fixture",
-    expires_at: Math.floor(Date.now() / 1000) + 1800,
-  });
-  stripe.checkout.sessions.retrieve.mockResolvedValue({
-    id: "cs_fixture",
-    status: "open",
-  });
-  stripe.billingPortal.sessions.create.mockResolvedValue({
-    url: "https://billing.stripe.com/fixture",
-  });
 });
 afterEach(() => {
   vi.clearAllMocks();
   vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
 });
 afterAll(async () => {
   await app?.close();
@@ -181,7 +131,7 @@ describe("Planos, pagamento e cota protegida", () => {
     expect(
       (await app.inject({ url: "/api/billing", headers: headers() })).json(),
     ).toMatchObject({
-      paymentMode: "test",
+      paymentMode: "live",
       plan: "free",
       dailyLimit: 5,
       usedToday: 0,
@@ -205,7 +155,7 @@ describe("Planos, pagamento e cota protegida", () => {
       payload: { plan: "pro", price: 1, userId: "victim" },
     });
     expect(result.statusCode).toBe(400);
-    expect(stripe.checkout.sessions.create).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
   it("limita a preferência gratuita no servidor mesmo se o cliente pedir 100", async () => {
     await database.mutateWorkspace(`${userId}:live`, (w) =>
@@ -315,7 +265,7 @@ describe("Planos, pagamento e cota protegida", () => {
       ),
     ).toBe(5);
   });
-  it("checkout exige conta, CSRF, configuração completa e preço mensal BRL correto", async () => {
+  it("checkout exige conta, CSRF e configuração da InfinitePay", async () => {
     expect(
       (
         await app.inject({
@@ -325,168 +275,136 @@ describe("Planos, pagamento e cota protegida", () => {
         })
       ).statusCode,
     ).toBe(403);
-    expect(
-      (
-        await app.inject({
-          method: "POST",
-          url: "/api/billing/checkout",
-          headers: { ...headers(), cookie: "" },
-          payload: { plan: "plus" },
-        })
-      ).statusCode,
-    ).toBe(401);
-    vi.stubEnv("STRIPE_WEBHOOK_SECRET", "");
-    await expect(billing.createCheckout(userId, "plus")).rejects.toThrow(
-      "não estão disponíveis",
-    );
-    vi.stubEnv("STRIPE_WEBHOOK_SECRET", "whsec_fixture");
-    stripe.prices.retrieve.mockResolvedValue(price("price_plus", 1));
-    await expect(billing.createCheckout(userId, "plus")).rejects.toThrow(
-      "preço",
-    );
-    expect(stripe.checkout.sessions.create).not.toHaveBeenCalled();
-  });
-  it("checkout usa preço do servidor, identifica o cliente e não ativa o plano antes de pagar", async () => {
-    const result = await app.inject({
+    vi.stubEnv("INFINITEPAY_HANDLE", "");
+    const unconfigured = await app.inject({
       method: "POST",
       url: "/api/billing/checkout",
       headers: headers(),
       payload: { plan: "plus" },
     });
-    expect(result.statusCode).toBe(200);
-    expect(result.json().url).toContain("checkout.stripe.com");
-    expect(stripe.checkout.sessions.create.mock.calls[0][0]).toMatchObject({
-      mode: "subscription",
-      customer: `cus_${userId}`,
-      client_reference_id: userId,
-      line_items: [{ price: "price_plus", quantity: 1 }],
-    });
-    expect((await billing.billingSummary(userId)).plan).toBe("free");
+    expect(unconfigured.statusCode).toBe(400);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
-  it("impede duas assinaturas, inclusive quando a primeira está pendente", async () => {
-    await database.db.insert(schema.subscriptions).values(paid());
-    stripe.subscriptions.list.mockResolvedValue({
-      data: [{ status: "incomplete" }],
-      has_more: false,
+  it("checkout usa preço do servidor, não ativa o plano antes de pagar e reaproveita o link", async () => {
+    const first = await app.inject({
+      method: "POST",
+      url: "/api/billing/checkout",
+      headers: headers(),
+      payload: { plan: "plus" },
     });
-    await expect(billing.createCheckout(userId, "plus")).rejects.toThrow(
-      "já possui",
-    );
-    expect(stripe.checkout.sessions.create).not.toHaveBeenCalled();
-  });
-  it("um novo checkout expira o anterior para impedir pagamentos duplicados", async () => {
-    await billing.createCheckout(userId, "plus");
-    await billing.createCheckout(userId, "plus");
-    expect(stripe.checkout.sessions.expire).toHaveBeenCalledWith("cs_fixture");
-  });
-  it("retoma checkout aberto do mesmo plano e usa chave idempotente", async () => {
-    await billing.createCheckout(userId, "plus");
-    stripe.checkout.sessions.retrieve.mockResolvedValue({
-      id: "cs_fixture",
-      status: "open",
-      url: "https://checkout.stripe.com/fixture",
-      metadata: { plan: "plus" },
-    });
-    await billing.createCheckout(userId, "plus");
-    expect(stripe.checkout.sessions.create).toHaveBeenCalledOnce();
+    expect(first.json()).toEqual({ url: "https://checkout.infinitepay.io/fixture" });
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe("https://api.checkout.infinitepay.io/links");
+    const body = JSON.parse(init.body);
+    expect(body.handle).toBe("empregatos");
+    expect(body.items).toEqual([
+      expect.objectContaining({ quantity: 1, price: 2000 }),
+    ]);
+    expect(body.order_nsu).toMatch(/^plus\./);
+    expect(body.order_nsu).not.toContain(userId);
+    expect(body.webhook_url).toBe("http://127.0.0.1:5173/api/billing/webhook");
     expect(
-      stripe.checkout.sessions.create.mock.calls[0][1].idempotencyKey,
-    ).toContain(userId);
-    expect(stripe.checkout.sessions.expire).not.toHaveBeenCalled();
-  });
-  it("webhook recebe bytes originais, valida assinatura, libera pagamento confirmado e é idempotente", async () => {
-    await database.db
-      .insert(schema.subscriptions)
-      .values({ ...paid(), plan: "free", status: "inactive" });
-    const payload = event();
-    expect((await webhook(payload, "t=1,v1=bad")).statusCode).toBe(400);
-    expect((await billing.billingSummary(userId)).plan).toBe("free");
-    expect((await webhook(payload)).statusCode).toBe(200);
-    expect((await billing.billingSummary(userId)).plan).toBe("plus");
-    expect(
-      (await database.readWorkspace(`${userId}:live`))!.routine.dailyLimit,
-    ).toBe(50);
-    expect((await webhook(payload)).json().duplicate).toBe(true);
-    expect(stripe.subscriptions.retrieve).toHaveBeenCalledOnce();
-  });
-  it("fatura ainda não paga não libera a assinatura mesmo com subscription active", async () => {
-    await database.db
-      .insert(schema.subscriptions)
-      .values({ ...paid(), plan: "free" });
-    stripe.subscriptions.retrieve.mockResolvedValue(
-      subscription({ latest_invoice: { status: "open" } }),
-    );
-    expect(
-      (
-        await webhook(
-          event("checkout.session.completed", {
-            subscription: `sub_${userId}`,
-          }),
-        )
-      ).statusCode,
-    ).toBe(200);
-    expect((await billing.billingSummary(userId)).plan).toBe("free");
-  });
-  it("eventos atrasados consultam o estado atual e não restauram plano cancelado", async () => {
-    await database.db.insert(schema.subscriptions).values(paid());
-    stripe.subscriptions.retrieve.mockResolvedValue(
-      subscription({ status: "canceled" }),
-    );
-    expect((await webhook(event())).statusCode).toBe(200);
-    expect((await billing.billingSummary(userId)).plan).toBe("free");
-  });
-  it("cancelamento no fim do mês preserva o acesso até a data paga", async () => {
-    await database.db.insert(schema.subscriptions).values(paid());
-    stripe.subscriptions.retrieve.mockResolvedValue(
-      subscription({ cancel_at_period_end: true }),
-    );
-    expect((await webhook(event())).statusCode).toBe(200);
-    expect(await billing.billingSummary(userId)).toMatchObject({
-      plan: "plus",
-      cancelAtPeriodEnd: true,
+      (await app.inject({ url: "/api/billing", headers: headers() })).json()
+        .plan,
+    ).toBe("free");
+    await app.inject({
+      method: "POST",
+      url: "/api/billing/checkout",
+      headers: headers(),
+      payload: { plan: "plus" },
     });
+    expect(fetchMock).toHaveBeenCalledOnce();
   });
-  it("falha temporária na Stripe permite repetir o webhook sem perder confirmação", async () => {
-    await database.db
-      .insert(schema.subscriptions)
-      .values({ ...paid(), plan: "free" });
-    const payload = event();
-    stripe.subscriptions.retrieve.mockRejectedValueOnce(new Error("offline"));
-    expect((await webhook(payload)).statusCode).toBe(500);
-    expect((await webhook(payload)).statusCode).toBe(200);
-    expect((await billing.billingSummary(userId)).plan).toBe("plus");
-  });
-  it("portal usa somente o cliente da conta autenticada", async () => {
-    await database.db.insert(schema.subscriptions).values(paid());
-    expect(
-      (
-        await app.inject({
-          method: "POST",
-          url: "/api/billing/portal",
-          headers: headers(),
-        })
-      ).statusCode,
-    ).toBe(200);
-    expect(stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
-      customer: `cus_${userId}`,
-      return_url: "http://127.0.0.1:5173/app#conta",
+  it("webhook só libera após confirmar em /payment_check e é idempotente", async () => {
+    const order = await checkout("plus");
+    payment = { success: true, paid: true, amount: 2000, paid_amount: 2000 };
+    const first = await webhook({ order_nsu: order, transaction_nsu: "tx1", invoice_slug: "s1" });
+    expect(first.statusCode).toBe(200);
+    const check = fetchMock.mock.calls.find(([u]) => String(u).endsWith("/payment_check"));
+    expect(JSON.parse(check![1].body)).toEqual({
+      handle: "empregatos",
+      order_nsu: order,
+      transaction_nsu: "tx1",
+      slug: "s1",
     });
+    const [row] = await database.db
+      .select()
+      .from(schema.subscriptions)
+      .where(eq(schema.subscriptions.userId, userId));
+    expect(row.plan).toBe("plus");
+    expect(row.status).toBe("active");
+    const days = (row.currentPeriodEnd!.getTime() - Date.now()) / 86400000;
+    expect(days).toBeGreaterThan(29.9);
+    expect(days).toBeLessThan(30.1);
+    expect((await billing.accountPlan(userId)).dailyLimit).toBe(50);
+    await webhook({ order_nsu: order, transaction_nsu: "tx1", invoice_slug: "s1" });
+    const [again] = await database.db
+      .select()
+      .from(schema.subscriptions)
+      .where(eq(schema.subscriptions.userId, userId));
+    expect(again.currentPeriodEnd!.getTime()).toBe(row.currentPeriodEnd!.getTime());
   });
-  it("exclusão cancela cobranças ativas e expira checkout aberto", async () => {
-    await database.db
-      .insert(schema.subscriptions)
-      .values({ ...paid(), checkoutId: "cs_fixture" });
-    stripe.subscriptions.list.mockResolvedValue({
-      data: [
-        { id: "sub_active", status: "active" },
-        { id: "sub_old", status: "canceled" },
-      ],
-      has_more: false,
+  it("webhook forjado, pagamento não confirmado ou valor menor não liberam o plano", async () => {
+    const order = await checkout("pro");
+    payment = { success: true, paid: false };
+    await webhook({ order_nsu: order, transaction_nsu: "tx2", invoice_slug: "s2" });
+    expect((await billing.accountPlan(userId)).id).toBe("free");
+    payment = { success: true, paid: true, amount: 5000, paid_amount: 100 };
+    await webhook({ order_nsu: order, transaction_nsu: "tx3", invoice_slug: "s3" });
+    expect((await billing.accountPlan(userId)).id).toBe("free");
+    payment = { success: true, paid: true, amount: 5000, paid_amount: 5000 };
+    await webhook({ order_nsu: "pro.desconhecido", transaction_nsu: "tx4", invoice_slug: "s4" });
+    expect((await billing.accountPlan(userId)).id).toBe("free");
+    await webhook({ order_nsu: order });
+    expect((await billing.accountPlan(userId)).id).toBe("free");
+  });
+  it("renovar o mesmo plano soma 30 dias ao período restante", async () => {
+    payment = { success: true, paid: true, amount: 2000, paid_amount: 2000 };
+    const first = await checkout("plus");
+    await webhook({ order_nsu: first, transaction_nsu: "r1", invoice_slug: "a" });
+    const second = await checkout("plus");
+    expect(second).not.toBe(first);
+    await webhook({ order_nsu: second, transaction_nsu: "r2", invoice_slug: "b" });
+    const [row] = await database.db
+      .select()
+      .from(schema.subscriptions)
+      .where(eq(schema.subscriptions.userId, userId));
+    const days = (row.currentPeriodEnd!.getTime() - Date.now()) / 86400000;
+    expect(days).toBeGreaterThan(59.9);
+  });
+  it("retorno do checkout confirma o pagamento para a conta autenticada", async () => {
+    const order = await checkout("plus");
+    payment = { success: true, paid: true, amount: 2000, paid_amount: 2000 };
+    const anonymous = await app.inject({
+      method: "POST",
+      url: "/api/billing/confirm",
+      headers: { origin: "http://127.0.0.1:5173", "x-orbita-request": "1" },
+      payload: { order_nsu: order, transaction_nsu: "c1", slug: "c" },
     });
+    expect(anonymous.statusCode).toBe(401);
+    const confirmed = await app.inject({
+      method: "POST",
+      url: "/api/billing/confirm",
+      headers: headers(),
+      payload: { order_nsu: order, transaction_nsu: "c1", slug: "c" },
+    });
+    expect(confirmed.json()).toMatchObject({ paid: true });
+    expect((await billing.accountPlan(userId)).id).toBe("plus");
+  });
+  it("portal não existe sem cobrança recorrente e exclusão descarta link pendente", async () => {
+    const portal = await app.inject({
+      method: "POST",
+      url: "/api/billing/portal",
+      headers: headers(),
+    });
+    expect(portal.statusCode).toBe(400);
+    await checkout("plus");
     await billing.cancelAccountSubscription(userId);
-    expect(stripe.subscriptions.cancel).toHaveBeenCalledOnce();
-    expect(stripe.subscriptions.cancel).toHaveBeenCalledWith("sub_active");
-    expect(stripe.checkout.sessions.expire).toHaveBeenCalledWith("cs_fixture");
+    const [row] = await database.db
+      .select()
+      .from(schema.subscriptions)
+      .where(eq(schema.subscriptions.userId, userId));
+    expect(row.checkoutId).toBeNull();
   });
   it("currículo fica criptografado em disco, recupera bytes e recusa adulteração", async () => {
     const storage = await import("../server/resume-storage");

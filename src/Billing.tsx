@@ -26,7 +26,16 @@ export default function Billing() {
   const [outcome] = useState(() =>
     new URLSearchParams(location.search).get("billing"),
   );
-  const billing = useBilling(outcome === "success");
+  const billing = useBilling(outcome === "return" || outcome === "success");
+  // Retorno da InfinitePay: confirma o pagamento com os dados do redirect.
+  useEffect(() => {
+    const q = new URLSearchParams(location.search);
+    const order_nsu = q.get("order_nsu"), transaction_nsu = q.get("transaction_nsu"), slug = q.get("slug");
+    if (!order_nsu || !transaction_nsu || !slug) return;
+    void api("/billing/confirm", { method: "POST", body: JSON.stringify({ order_nsu, transaction_nsu, slug }) })
+      .then(() => billing.refetch())
+      .catch(() => undefined);
+  }, []);
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
   const [error, setError] = useState("");
@@ -34,7 +43,7 @@ export default function Billing() {
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     if (query.has("billing")) {
-      query.delete("billing");
+      for (const k of ["billing", "order_nsu", "transaction_nsu", "slug", "receipt_url", "capture_method"]) query.delete(k);
       history.replaceState(
         {},
         "",
@@ -100,7 +109,7 @@ export default function Billing() {
               {billing.data.remainingToday} disponível(is). A cota renova à
               meia-noite, no horário de Brasília.
             </p>
-            {outcome === "success" && (
+            {(outcome === "success" || outcome === "return") && (
               <p className="billing-status" role="status">
                 Pagamento recebido para confirmação. Seu plano será atualizado
                 aqui após a confirmação da cobrança.
@@ -114,20 +123,19 @@ export default function Billing() {
             {billing.data.cancelAtPeriodEnd &&
               billing.data.currentPeriodEnd && (
                 <p>
-                  Assinatura cancelada para a próxima renovação. Acesso pago até{" "}
+                  Plano pago por 30 dias, sem renovação automática. Acesso até{" "}
                   {new Date(billing.data.currentPeriodEnd).toLocaleDateString(
                     "pt-BR",
                     { timeZone: "America/Sao_Paulo" },
                   )}
-                  .
+                  . Para continuar depois disso, pague um novo período.
                 </p>
               )}
             {["past_due", "unpaid", "incomplete"].includes(
               billing.data.status,
             ) && (
               <p className="billing-status">
-                Seu pagamento precisa de atenção. Use Gerenciar assinatura para
-                atualizar a forma de pagamento.
+                Seu pagamento precisa de atenção. Escolha o plano novamente para gerar um novo pagamento.
               </p>
             )}
             {intended && billing.data.plan === "free" && (

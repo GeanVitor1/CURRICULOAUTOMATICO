@@ -1,5 +1,5 @@
+import { randomUUID } from "node:crypto";
 import type { Store } from "./storage-types";
-import Stripe from "stripe";
 import { and, eq, asc } from "./storage-types";
 import { store } from "./db";
 import type { subscriptions } from "./schema";
@@ -17,32 +17,8 @@ export async function releasePausedReservations(tx: Transaction, userId: string,
   await tx.select("users",{where:eq("id",userId),columns:["id"],lock:true});
   for(const a of paused) await tx.delete("applicationUsage",and(eq("applicationId",a.id),eq("userId",userId)));
 }
-const priceId = (plan: string) =>
-  plan === "plus"
-    ? process.env.STRIPE_PRICE_PLUS
-    : plan === "pro"
-      ? process.env.STRIPE_PRICE_PRO
-      : undefined;
-export const billingConfigured = () =>
-  !!(
-    process.env.STRIPE_SECRET_KEY &&
-    process.env.STRIPE_WEBHOOK_SECRET &&
-    priceId("plus") &&
-    priceId("pro") &&
-    appOrigins().length
-  );
 export const billingDay = (date = new Date()) =>
   date.toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" });
-const stripeClient = () => {
-  if (!process.env.STRIPE_SECRET_KEY)
-    throw new RequestError(
-      "O pagamento ainda não foi configurado. O plano gratuito continua disponível.",
-    );
-  return new Stripe(process.env.STRIPE_SECRET_KEY, {
-    timeout: 10000,
-    maxNetworkRetries: 1,
-  });
-};
 export function effectivePlan(
   subscription?: Subscription | null,
   time = Date.now(),
@@ -77,11 +53,7 @@ export async function billingSummary(userId: string): Promise<BillingSummary> {
   const historical = await store.historicalAttempts(userId, billingDay());
   const usedToday = Math.max(used, historical);
   return {
-    paymentMode: process.env.STRIPE_SECRET_KEY?.startsWith("sk_test_")
-      ? "test"
-      : process.env.STRIPE_SECRET_KEY?.startsWith("sk_live_")
-        ? "live"
-        : "unconfigured",
+    paymentMode: billingConfigured() ? "live" : "unconfigured",
     plan: plan.id,
     name: plan.name,
     dailyLimit: plan.dailyLimit,
@@ -91,7 +63,7 @@ export async function billingSummary(userId: string): Promise<BillingSummary> {
     currentPeriodEnd: subscription?.currentPeriodEnd?.toISOString() || null,
     cancelAtPeriodEnd: subscription?.cancelAtPeriodEnd || false,
     checkoutAvailable: billingConfigured(),
-    portalAvailable: !!(subscription && process.env.STRIPE_SECRET_KEY),
+    portalAvailable: false,
   };
 }
 export async function workspaceDailyLimit(
@@ -136,162 +108,154 @@ export async function reserveApplication(
       "Esta candidatura já teve uma tentativa de envio. Confira o resultado no portal.",
     );
 }
-function requirePrice(
-  price: Stripe.Price,
-  plan: PlanId,
-  requireActive = false,
-) {
-  const expected = plans.find((p) => p.id === plan)!;
-  if (
-    (requireActive && !price.active) ||
-    price.currency !== "brl" ||
-    price.unit_amount !== expected.price * 100 ||
-    price.recurring?.interval !== "month" ||
-    price.recurring.interval_count !== 1
-  )
+
+// ---- InfinitePay (Checkout Integrado): pagamentos avulsos de 30 dias. ----
+// A API não tem assinatura recorrente nem assinatura de webhook: todo evento é
+// confirmado em /payment_check antes de liberar o plano.
+const INFINITEPAY_API = "https://api.checkout.infinitepay.io";
+const PERIOD_DAYS = 30;
+const handle = () => process.env.INFINITEPAY_HANDLE?.trim().replace(/^\$/, "");
+export const billingConfigured = () => !!(handle() && appOrigins().length);
+const paidPlan = (plan: string) =>
+  plans.find((p) => p.id === plan && p.id !== "free");
+async function infinitePay<T>(path: string, body: unknown): Promise<T> {
+  const key = process.env.INFINITEPAY_API_KEY?.trim();
+  const response = await fetch(INFINITEPAY_API + path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(key ? { "X-Api-Key": key } : {}),
+    },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(10000),
+  });
+  const data = (await response.json().catch(() => null)) as any;
+  if (!response.ok)
     throw new RequestError(
-      "O preço da assinatura precisa corresponder ao plano mensal em reais. Confira a configuração de cobrança.",
+      "Não foi possível falar com a InfinitePay agora. Tente novamente em instantes.",
     );
+  return data as T;
 }
+// order_nsu = "<plano>.<id aleatório>": identifica o pedido sem expor dados pessoais.
+const orderPlan = (orderNsu: string) => paidPlan(orderNsu.split(".", 1)[0]);
+
 export async function createCheckout(userId: string, plan: "plus" | "pro") {
   if (!billingConfigured())
     throw new RequestError(
-      "As assinaturas ainda não estão disponíveis. Você pode começar pelo plano gratuito.",
+      "Os planos pagos ainda não estão disponíveis. Você pode começar pelo plano gratuito.",
     );
-  const stripe = stripeClient();
-  const price = await stripe.prices.retrieve(priceId(plan)!);
-  requirePrice(price, plan, true);
-  const checkoutEpoch = Math.floor(Date.now() / 1800000);
-  return store.transaction(async (tx) => {
-    const [user] = await tx.select("users", {
-      where: eq("id", userId),
-      lock: true,
-    });
-    if (!user) throw new RequestError("Conta não encontrada.");
-    let [billing] = await tx.select("subscriptions", {
-      where: eq("userId", userId),
-    });
-    if (!billing) {
-      const customer = await stripe.customers.create(
-        { email: user.email, name: user.name, metadata: { userId } },
-        { idempotencyKey: `empregatos-customer-${userId}` },
-      );
-      [billing] = await tx.insert(
-        "subscriptions",
-        { userId, customerId: customer.id },
-        { returning: true },
-      );
-    }
-    // Block a second subscription, including payment retries and cancellation at period end.
-    const existing = await stripe.subscriptions.list({
-      customer: billing.customerId,
-      status: "all",
-      limit: 100,
-    });
-    if (
-      existing.has_more ||
-      existing.data.some(
-        (s) => !["canceled", "incomplete_expired"].includes(s.status),
-      )
-    )
-      throw new RequestError(
-        "Você já possui uma assinatura ou pagamento pendente. Use Gerenciar assinatura para alterar o plano.",
-      );
-    if (
-      billing.checkoutId &&
-      billing.checkoutExpiresAt &&
-      billing.checkoutExpiresAt > new Date()
-    ) {
-      const pending = await stripe.checkout.sessions.retrieve(
-        billing.checkoutId,
-      );
-      if (pending.status === "complete")
-        throw new RequestError(
-          "Seu pagamento está em confirmação. Aguarde a atualização do plano.",
-        );
-      if (pending.status === "open") {
-        if (pending.metadata?.plan === plan && pending.url)
-          return { url: pending.url };
-        await stripe.checkout.sessions.expire(pending.id);
-      }
-    }
-    const origin = appOrigins()[0];
-    const session = await stripe.checkout.sessions.create(
-      {
-        mode: "subscription",
-        customer: billing.customerId,
-        client_reference_id: userId,
-        metadata: { plan },
-        line_items: [{ price: price.id, quantity: 1 }],
-        subscription_data: { metadata: { userId } },
-        allowed_payment_method_types: ["card"],
-        locale: "pt-BR",
-        success_url: `${origin}/app?billing=success#conta`,
-        cancel_url: `${origin}/app?billing=canceled#conta`,
-      },
-      {
-        idempotencyKey: `empregatos-checkout-${userId}-${plan}-${billing.checkoutId || "initial"}-${checkoutEpoch}`,
-      },
-    );
-    if (!session.url) throw new Error("Checkout unavailable");
-    await tx.update(
-      "subscriptions",
-      {
-        checkoutId: session.id,
-        checkoutUrl: session.url,
-        checkoutExpiresAt: new Date(session.expires_at * 1000),
-        updatedAt: new Date(),
-      },
-      eq("userId", userId),
-    );
-    return { url: session.url };
-  });
-}
-export async function createBillingPortal(userId: string) {
-  const [billing] = await store.select("subscriptions", {
+  const selected = paidPlan(plan)!;
+  const [user] = await store.select("users", { where: eq("id", userId) });
+  if (!user) throw new RequestError("Conta não encontrada.");
+  let [billing] = await store.select("subscriptions", {
     where: eq("userId", userId),
   });
-  if (!billing) throw new RequestError("Você ainda não possui uma assinatura.");
-  const session = await stripeClient().billingPortal.sessions.create({
-    customer: billing.customerId,
-    ...(process.env.STRIPE_PORTAL_CONFIGURATION
-      ? { configuration: process.env.STRIPE_PORTAL_CONFIGURATION }
+  if (
+    billing?.checkoutId?.startsWith(plan + ".") &&
+    billing.checkoutUrl &&
+    billing.checkoutExpiresAt &&
+    billing.checkoutExpiresAt > new Date()
+  )
+    return { url: billing.checkoutUrl };
+  const orderNsu = `${plan}.${randomUUID()}`;
+  const origin = appOrigins()[0];
+  const key = process.env.INFINITEPAY_API_KEY?.trim();
+  const link = await infinitePay<{ url?: string; link?: string }>("/links", {
+    handle: handle(),
+    order_nsu: orderNsu,
+    items: [
+      {
+        quantity: 1,
+        price: selected.price * 100,
+        description: `EmpreGatos ${selected.name} - ${PERIOD_DAYS} dias`,
+      },
+    ],
+    redirect_url: `${origin}/app?billing=return#conta`,
+    webhook_url: `${origin}/api/billing/webhook`,
+    customer: { name: user.name, email: user.email },
+    ...(key
+      ? {
+          options: {
+            single_payment: true,
+            payment_methods_enabled: ["credit_card", "pix"],
+          },
+        }
       : {}),
-    return_url: `${appOrigins()[0]}/app#conta`,
   });
-  return { url: session.url };
+  const url = link?.url || link?.link;
+  if (!url) throw new Error("InfinitePay checkout unavailable");
+  const pending = {
+    checkoutId: orderNsu,
+    checkoutUrl: url,
+    checkoutExpiresAt: new Date(Date.now() + 24 * 3600000),
+    updatedAt: new Date(),
+  };
+  if (billing)
+    await store.update("subscriptions", pending, eq("userId", userId));
+  else
+    await store.insert("subscriptions", {
+      userId,
+      customerId: `infinitepay:${userId}`,
+      ...pending,
+    });
+  return { url };
 }
-const objectId = (value: string | { id: string } | null | undefined) =>
-  typeof value === "string" ? value : value?.id;
-export async function processBillingEvent(
-  event: Stripe.Event,
-  stripe = stripeClient(),
-) {
+
+export async function createBillingPortal(_userId: string) {
+  throw new RequestError(
+    "Os planos são pagos por período de 30 dias, sem renovação automática. Para renovar, escolha o plano novamente quando quiser.",
+  );
+}
+
+type PaymentCheck = {
+  success?: boolean;
+  paid?: boolean;
+  amount?: number;
+  paid_amount?: number;
+};
+/** Confirma um pagamento na InfinitePay e libera 30 dias do plano. Idempotente por transaction_nsu. */
+export async function confirmPayment(input: {
+  order_nsu?: unknown;
+  transaction_nsu?: unknown;
+  slug?: unknown;
+  invoice_slug?: unknown;
+}) {
+  const orderNsu = typeof input.order_nsu === "string" ? input.order_nsu : "";
+  const transactionNsu =
+    typeof input.transaction_nsu === "string" ? input.transaction_nsu : "";
+  const slug =
+    typeof input.slug === "string"
+      ? input.slug
+      : typeof input.invoice_slug === "string"
+        ? input.invoice_slug
+        : "";
+  const plan = orderPlan(orderNsu);
+  if (!plan || !transactionNsu || !slug || !handle())
+    return { received: true, paid: false };
+  const check = await infinitePay<PaymentCheck>("/payment_check", {
+    handle: handle(),
+    order_nsu: orderNsu,
+    transaction_nsu: transactionNsu,
+    slug,
+  });
+  const expected = plan.price * 100;
+  if (
+    !check?.success ||
+    !check.paid ||
+    Number(check.paid_amount ?? check.amount) < expected
+  )
+    return { received: true, paid: false };
   return store.transaction(async (tx) => {
+    const [billing] = await tx.select("subscriptions", {
+      where: eq("checkoutId", orderNsu),
+    });
+    if (!billing) return { received: true, paid: false };
     const inserted = await tx.insert(
       "billingEvents",
-      { id: event.id },
+      { id: `infinitepay:${transactionNsu}` },
       { conflict: "ignore", returning: true },
     );
-    if (!inserted.length) return { received: true, duplicate: true };
-    const object = event.data.object as any;
-    const relevant = [
-      "checkout.session.completed",
-      "checkout.session.async_payment_succeeded",
-      "customer.subscription.created",
-      "customer.subscription.updated",
-      "customer.subscription.deleted",
-      "invoice.paid",
-      "invoice.payment_failed",
-      "invoice.payment_action_required",
-    ].includes(event.type);
-    if (!relevant) return { received: true };
-    const customer = objectId(object.customer);
-    if (!customer) return { received: true };
-    const [billing] = await tx.select("subscriptions", {
-      where: eq("customerId", customer),
-    });
-    if (!billing) return { received: true };
+    if (!inserted.length) return { received: true, paid: true, duplicate: true };
     const accountWorkspaces = await tx.select("workspaces", {
       where: eq("userId", billing.userId),
       orderBy: [asc("id")],
@@ -302,45 +266,21 @@ export async function processBillingEvent(
       columns: ["id"],
       lock: true,
     });
-    const subscriptionId = event.type.startsWith("customer.subscription.")
-      ? object.id
-      : objectId(object.subscription) ||
-        objectId(object.parent?.subscription_details?.subscription);
-    if (!subscriptionId) return { received: true };
-    // Retrieve live state under the account lock: delayed events cannot restore expired access.
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
-      expand: ["latest_invoice"],
-    });
-    if (objectId(subscription.customer) !== billing.customerId)
-      throw new Error("Customer mismatch");
-    const item = subscription.items.data[0];
-    const plan = plans.find(
-      (p) => p.id !== "free" && item?.price.id === priceId(p.id),
-    );
-    let eligible = false;
-    if (plan && subscription.items.data.length === 1 && item.quantity === 1) {
-      requirePrice(item.price, plan.id);
-      const invoice = subscription.latest_invoice;
-      eligible =
-        subscription.status === "active" &&
-        !!invoice &&
-        typeof invoice !== "string" &&
-        invoice.status === "paid";
-    }
-    const periodEnd = item?.current_period_end
-      ? new Date(item.current_period_end * 1000)
-      : null;
-    const previousLimit = effectivePlan(billing).dailyLimit;
-    const nextLimit =
-      eligible && periodEnd && periodEnd > new Date()
-        ? plan!.dailyLimit
-        : plans[0].dailyLimit;
+    const now = Date.now();
+    const current = effectivePlan(billing);
+    // Renovar o mesmo plano soma 30 dias ao período restante; trocar de plano começa agora.
+    const start =
+      current.id === plan.id && billing.currentPeriodEnd
+        ? Math.max(now, billing.currentPeriodEnd.getTime())
+        : now;
+    const periodEnd = new Date(start + PERIOD_DAYS * 86400000);
+    const previousLimit = current.dailyLimit;
     for (const row of accountWorkspaces) {
       const preferred = row.data.routine.dailyLimit;
       row.data.routine.dailyLimit =
         preferred === previousLimit
-          ? nextLimit
-          : Math.min(preferred, nextLimit);
+          ? plan.dailyLimit
+          : Math.min(preferred, plan.dailyLimit);
       if (row.data.interview)
         row.data.interview.answers.dailyLimit = row.data.routine.dailyLimit;
       await tx.update(
@@ -352,11 +292,11 @@ export async function processBillingEvent(
     await tx.update(
       "subscriptions",
       {
-        subscriptionId: subscription.id,
-        plan: eligible ? plan!.id : "free",
-        status: subscription.status,
+        subscriptionId: `infinitepay:${transactionNsu}`,
+        plan: plan.id,
+        status: "active",
         currentPeriodEnd: periodEnd,
-        cancelAtPeriodEnd: subscription.cancel_at_period_end,
+        cancelAtPeriodEnd: true,
         checkoutId: null,
         checkoutUrl: null,
         checkoutExpiresAt: null,
@@ -364,46 +304,18 @@ export async function processBillingEvent(
       },
       eq("userId", billing.userId),
     );
-    return { received: true };
+    return { received: true, paid: true };
   });
 }
-export function verifyBillingEvent(raw: Buffer, signature: string) {
-  if (!process.env.STRIPE_WEBHOOK_SECRET)
-    throw Object.assign(new Error("Billing unavailable"), { statusCode: 503 });
-  try {
-    return stripeClient().webhooks.constructEvent(
-      raw,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET,
-    );
-  } catch {
-    throw new RequestError("Assinatura do webhook inválida.");
-  }
-}
+
 export async function cancelAccountSubscription(
   userId: string,
   connection: Transaction | Store = store,
 ) {
-  const [billing] = await connection.select("subscriptions", {
-    where: eq("userId", userId),
-  });
-  if (!billing) return;
-  const stripe = stripeClient();
-  if (billing.checkoutId) {
-    const session = await stripe.checkout.sessions.retrieve(billing.checkoutId);
-    if (session.status === "open")
-      await stripe.checkout.sessions.expire(session.id);
-  }
-  const existing = await stripe.subscriptions.list({
-    customer: billing.customerId,
-    status: "all",
-    limit: 100,
-  });
-  if (existing.has_more)
-    throw new RequestError(
-      "Gerencie suas assinaturas antes de excluir a conta.",
-    );
-  for (const subscription of existing.data)
-    if (!["canceled", "incomplete_expired"].includes(subscription.status))
-      await stripe.subscriptions.cancel(subscription.id);
+  // Sem cobrança recorrente: só descarta o link pendente.
+  await connection.update(
+    "subscriptions",
+    { checkoutId: null, checkoutUrl: null, checkoutExpiresAt: null },
+    eq("userId", userId),
+  );
 }
