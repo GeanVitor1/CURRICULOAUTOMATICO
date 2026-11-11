@@ -424,3 +424,49 @@ describe("Planos, pagamento e cota protegida", () => {
     expect(await storage.readPrivateResume(legacy)).toEqual(bytes);
   });
 });
+
+describe("Segurança do pagamento InfinitePay", () => {
+  it("só redireciona para páginas HTTPS da InfinitePay", () => {
+    expect(billing.safeCheckoutUrl("https://checkout.infinitepay.io/x")).toBe(
+      "https://checkout.infinitepay.io/x",
+    );
+    for (const bad of [
+      "http://checkout.infinitepay.io/x",
+      "https://infinitepay.io.evil.com/x",
+      "https://evilinfinitepay.io/x",
+      "https://user:pass@checkout.infinitepay.io/x",
+      "javascript:alert(1)",
+      42,
+    ])
+      expect(billing.safeCheckoutUrl(bad)).toBeNull();
+  });
+  it("recusa checkout se a API devolver um link de outro domínio", async () => {
+    fetchMock.mockImplementationOnce(
+      async () =>
+        new Response(JSON.stringify({ url: "https://phishing.example/pay" }), {
+          status: 200,
+        }),
+    );
+    await expect(billing.createCheckout(userId, "plus")).rejects.toThrow();
+    const rows = await database.db
+      .select()
+      .from(schema.subscriptions)
+      .where(eq(schema.subscriptions.userId, userId));
+    expect(rows[0]?.checkoutUrl ?? null).toBeNull();
+  });
+  it("ignora webhook com identificadores malformados sem consultar a API", async () => {
+    const order = await checkout("plus");
+    fetchMock.mockClear();
+    payment = { success: true, paid: true, amount: 2000, paid_amount: 2000 };
+    for (const body of [
+      { order_nsu: order, transaction_nsu: "x\ny", invoice_slug: "s" },
+      { order_nsu: order, transaction_nsu: "a".repeat(500), invoice_slug: "s" },
+      { order_nsu: { $ne: null }, transaction_nsu: "t", invoice_slug: "s" },
+    ]) {
+      const result = await webhook(body as any);
+      expect(result.statusCode).toBe(200);
+    }
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect((await billing.accountPlan(userId)).id).toBe("free");
+  });
+});

@@ -136,6 +136,27 @@ async function infinitePay<T>(path: string, body: unknown): Promise<T> {
     );
   return data as T;
 }
+// Só redireciona o cliente para páginas HTTPS da própria InfinitePay.
+export function safeCheckoutUrl(value: unknown) {
+  if (typeof value !== "string") return null;
+  try {
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+    return url.protocol === "https:" &&
+      !url.username &&
+      !url.password &&
+      (host === "infinitepay.io" || host.endsWith(".infinitepay.io"))
+      ? url.href
+      : null;
+  } catch {
+    return null;
+  }
+}
+// Identificadores aceitos do webhook: curtos e sem caracteres de controle.
+const safeId = (value: unknown) =>
+  typeof value === "string" && /^[A-Za-z0-9._:-]{1,120}$/.test(value)
+    ? value
+    : "";
 // order_nsu = "<plano>.<id aleatório>": identifica o pedido sem expor dados pessoais.
 const orderPlan = (orderNsu: string) => paidPlan(orderNsu.split(".", 1)[0]);
 
@@ -182,7 +203,7 @@ export async function createCheckout(userId: string, plan: "plus" | "pro") {
         }
       : {}),
   });
-  const url = link?.url || link?.link;
+  const url = safeCheckoutUrl(link?.url || link?.link);
   if (!url) throw new Error("InfinitePay checkout unavailable");
   const pending = {
     checkoutId: orderNsu,
@@ -220,15 +241,9 @@ export async function confirmPayment(input: {
   slug?: unknown;
   invoice_slug?: unknown;
 }) {
-  const orderNsu = typeof input.order_nsu === "string" ? input.order_nsu : "";
-  const transactionNsu =
-    typeof input.transaction_nsu === "string" ? input.transaction_nsu : "";
-  const slug =
-    typeof input.slug === "string"
-      ? input.slug
-      : typeof input.invoice_slug === "string"
-        ? input.invoice_slug
-        : "";
+  const orderNsu = safeId(input.order_nsu);
+  const transactionNsu = safeId(input.transaction_nsu);
+  const slug = safeId(input.slug) || safeId(input.invoice_slug);
   const plan = orderPlan(orderNsu);
   if (!plan || !transactionNsu || !slug || !handle())
     return { received: true, paid: false };
