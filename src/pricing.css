@@ -289,3 +289,39 @@
     min-height: 0;
   }
 }
+
+/* Paleta própria do card: legível em qualquer tema da página */
+.pricing-grid .pricing-card {
+  --pc-ink: #19241d;
+  --pc-muted: #5c6a61;
+  --pc-accent: #2b7a52;
+  --pc-soft: #e8f3ec;
+  --muted: var(--pc-muted);
+  --quiet: var(--pc-muted);
+  --accent: var(--pc-accent);
+  background: #ffffff;
+  color: var(--pc-ink);
+  border-color: #e2e9e2;
+  box-shadow: 0 1px 2px rgba(25, 36, 29, 0.06), 0 12px 32px -18px rgba(25, 36, 29, 0.25);
+}
+.pricing-grid .pricing-card :is(h3, strong, li, p, span) { color: inherit; }
+.pricing-grid .pricing-card :is(.pricing-audience, .pricing-capacity > span, .pricing-price > span,
+  .pricing-capacity-note, li) { color: var(--pc-muted); }
+.pricing-grid .pricing-card :is(.pricing-card-top > span, .pricing-comparison-label, li svg) { color: var(--pc-accent); }
+.pricing-grid .pricing-card .pricing-capacity > strong,
+.pricing-grid .pricing-card .pricing-price strong,
+.pricing-grid .pricing-card .pricing-card-top h3 { color: var(--pc-ink); }
+.pricing-grid .pricing-free .pricing-capacity > strong { color: var(--pc-muted); }
+.pricing-grid .pricing-pro { background: linear-gradient(140deg, var(--pc-soft), #fff 70%); }
+.pricing-grid .pricing-pro .pricing-capacity > strong { color: var(--pc-accent); }
+.pricing-grid .pricing-pro .pricing-card-top > span { background: var(--pc-soft); border-radius: 8px; }
+.pricing-grid .pricing-featured { border-color: var(--pc-accent); box-shadow: 0 0 0 1px var(--pc-accent), 0 16px 40px -20px rgba(23, 76, 53, 0.45); }
+.pricing-grid .pricing-card :is(a, button) {
+  color: var(--pc-ink);
+  background: #fff;
+  border: 1px solid #cfdad2;
+  border-radius: 10px;
+}
+.pricing-grid .pricing-card :is(a, button):hover { border-color: var(--pc-accent); color: var(--pc-accent); }
+.pricing-grid .pricing-featured :is(a, button) { background: var(--pc-accent); color: #fff; border-color: var(--pc-accent); }
+.pricing-grid .pricing-featured :is(a, button):hover { background: #174c35; color: #fff; }
