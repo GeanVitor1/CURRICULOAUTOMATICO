@@ -72,10 +72,6 @@
   outline-offset: 2px;
 }
 
-/* Conteúdo com largura de leitura confortável em telas grandes. */
-#main-content > * {
-  max-width: 1180px;
-}
 
 @media (max-width: 700px) {
   #main-content .page-head h1,
@@ -85,5 +81,158 @@
   }
   #main-content .connections-heading .connections-eyebrow {
     font-size: 9px;
+  }
+}
+
+/* ===== Largura: todas as páginas ocupam a área útil de forma igual ===== */
+#main-content > * {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+}
+#main-content > * > .career-flow,
+#main-content .career-flow,
+#main-content .jobs-page,
+#main-content .perfect-page,
+#main-content .connections-page {
+  max-width: none;
+  width: 100%;
+}
+
+/* ===== Vagas: filtros numa linha que se adapta ===== */
+#main-content .simple-job-filters {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  align-items: end;
+}
+#main-content .simple-job-filters > form,
+#main-content .simple-job-filters > .salary-filter {
+  min-width: 0;
+}
+#main-content .jobs-page .page-head {
+  flex-wrap: nowrap;
+}
+
+/* ===== Currículo: nota ao lado da análise ===== */
+.resume-insights {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.resume-insights-score {
+  position: sticky;
+  top: 16px;
+}
+.resume-insights-score .score-card {
+  padding: 22px 20px;
+}
+.resume-insights > .resume-review {
+  margin: 0;
+}
+
+/* ===== Plano: resumo e uso lado a lado ===== */
+.billing-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+.billing-overview > .billing-summary,
+.billing-overview > .billing-usage {
+  margin: 0;
+}
+.billing-overview > .billing-usage {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-2, var(--raised));
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ===== Currículo Perfeito: prévia muda com o modelo escolhido ===== */
+.perfect-intro-paper {
+  transition: border-color 0.25s, background 0.25s;
+}
+.perfect-intro-paper.template-essencial {
+  border-top: 6px solid #202b36;
+}
+.perfect-intro-paper.template-essencial .perfect-mini-header {
+  color: #202b36;
+  border-bottom-color: #202b36;
+}
+.perfect-intro-paper.template-essencial .perfect-mini-header svg,
+.perfect-intro-paper.template-essencial .perfect-eyebrow,
+.perfect-intro-paper.template-essencial .perfect-preview-seal {
+  color: #202b36;
+}
+.perfect-intro-paper.template-essencial .perfect-skeleton b {
+  background: #c9ced3;
+}
+.perfect-intro-paper.template-moderno {
+  border-left: 8px solid #34724c;
+}
+.perfect-intro-paper.template-moderno .perfect-skeleton b {
+  background: #9fcfaf;
+}
+.perfect-intro-paper.template-executivo {
+  padding-top: 0;
+  overflow: hidden;
+}
+.perfect-intro-paper.template-executivo .perfect-eyebrow {
+  display: block;
+  margin: 0 -34px;
+  padding: 14px 34px 0;
+  background: #243d61;
+  color: #c9d6ea;
+}
+.perfect-intro-paper.template-executivo .perfect-mini-header {
+  margin: 0 -34px 27px;
+  padding: 18px 34px 22px;
+  background: #243d61;
+  color: #fff;
+  border-bottom: 0;
+  justify-content: center;
+  text-align: center;
+}
+.perfect-intro-paper.template-executivo .perfect-mini-header p {
+  color: #c9d6ea;
+}
+.perfect-intro-paper.template-executivo .perfect-skeleton b {
+  background: #b9c7dc;
+}
+.perfect-intro-paper.template-executivo .perfect-preview-seal {
+  color: #243d61;
+}
+
+/* ===== Tema claro mais suave (sem branco puro ofuscante) ===== */
+:root[data-theme="light"] .app-shell {
+  --bg-0: #e8ece4;
+  --bg: #e8ece4;
+  --bg-1: #f3f5ef;
+  --bg-2: #e6eae0;
+  --surface: #f3f5ef;
+  --surface-2: #e9ede4;
+  --surface-elevated: #f6f8f2;
+  --raised: #eaeee5;
+  --hover: #e0e6da;
+  --sidebar: #e1e6dc;
+  --border: rgba(24, 42, 30, 0.14);
+  --border-strong: rgba(24, 42, 30, 0.24);
+  background: #e8ece4;
+}
+:root[data-theme="light"] .app-shell :is(input, select, textarea) {
+  background-color: #f8f9f5;
+}
+
+@media (max-width: 900px) {
+  .resume-insights,
+  .billing-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .resume-insights-score {
+    position: static;
   }
 }

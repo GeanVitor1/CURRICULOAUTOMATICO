@@ -90,7 +90,7 @@ export default function Billing() {
                 Pagamento em modo de teste. Nenhuma cobrança real será feita; as
                 assinaturas aqui servem para validar o funcionamento.
               </p>
-            )}
+            )}            <div className="billing-overview">
             <div className="billing-summary">
               <div>
                 <h3>{billing.data.name}</h3>
@@ -105,10 +105,10 @@ export default function Billing() {
               )}
             </div>
             <p className="billing-usage">
-              {billing.data.usedToday} tentativa(s) de envio hoje ·{" "}
-              {billing.data.remainingToday} disponível(is). A cota renova à
+              {billing.data.usedToday} tentativa(s) de envio hoje ·{" "}              {billing.data.remainingToday} disponível(is). A cota renova à
               meia-noite, no horário de Brasília.
             </p>
+            </div>
             {(outcome === "success" || outcome === "return") && (
               <p className="billing-status" role="status">
                 Pagamento recebido para confirmação. Seu plano será atualizado

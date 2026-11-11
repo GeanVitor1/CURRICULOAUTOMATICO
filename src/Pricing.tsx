@@ -87,7 +87,7 @@ export default function Pricing({
               <strong>
                 {plan.price === 0 ? "Grátis" : `R$ ${plan.price}`}
               </strong>
-              {plan.price > 0 && <span>/mês</span>}
+              {plan.price > 0 && <span>/30 dias</span>}
             </p>
             {!compact && (
               <ul>

@@ -186,9 +186,12 @@ export default function SimpleResume() {
             {a.isPending ? "Atualizando a análise…" : "Analisar novamente"}
           </Button>
         )}
-      </section>
-      {resume?.review && <div style={{maxWidth:460,margin:"0 auto 20px"}}><ResumeScore resume={resume} /></div>}
-      {resume && <ResumeReviewPanel resume={resume} showTargets />}
+      </section>      {resume && (
+        <div className={resume.review ? "resume-insights" : undefined}>
+          {resume.review && <div className="resume-insights-score"><ResumeScore resume={resume} /></div>}
+          <ResumeReviewPanel resume={resume} showTargets />
+        </div>
+      )}
     </div>
   );
 }
