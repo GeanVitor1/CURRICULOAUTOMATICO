@@ -63,16 +63,18 @@ it("prefers nondisclosure for unknown personal information and never overrides c
   const result = await prepareAutomaticAnswers({profile:w.profile,resume,job,destinationUrl,
     questions:[question,"Qual sua raça?","Possui certificação?"],
     options:{[question]:["Feminino","Masculino","Não","Prefiro não informar"]}});
-  expect(result.map(answer=>answer.value)).toEqual(["Prefiro não informar","Prefiro não informar","Não"]);
+  // Only the explicit decline option is chosen; free-text race and an unknown certification stay pending.
+  expect(result.map(answer=>[answer.question,answer.value,answer.source])).toEqual([[question,"Prefiro não informar","decline_option"]]);
   w.profile.approvedAnswers=[{id:"known",question,aliases:[],value:"Feminino",confirmedAt:new Date().toISOString(),destinationUrl}];
   const known=await prepareAutomaticAnswers({profile:w.profile,resume,job,destinationUrl,questions:[question],options:{[question]:["Feminino","Prefiro não informar"]}});
   expect(known[0]).toMatchObject({value:"Feminino",source:"profile"});
 });
-it("answers relatives and accessibility negatively with exact choices and provenance", async () => {
+it("never answers relatives or accessibility negatively without information", async () => {
   const w = workspace();
   const questions = [
     "Possui algum familiar na empresa?",
     "Você precisa de acessibilidade?",
+    "Você é PcD?",
   ];
   const result = await prepareAutomaticAnswers({
     profile: w.profile,
@@ -83,17 +85,11 @@ it("answers relatives and accessibility negatively with exact choices and proven
     options: {
       [questions[0]]: ["Sim", "Não"],
       [questions[1]]: ["Preciso de rampa", "Não necessito de acessibilidade"],
+      [questions[2]]: ["Sim", "Não", "Prefiro não informar"],
     },
   });
-  expect(result.map((a) => a.value)).toEqual([
-    "Não",
-    "Não necessito de acessibilidade",
-  ]);
-  expect(
-    result.every(
-      (a) => a.source === "default_no" && a.reason.includes("regra autorizada"),
-    ),
-  ).toBe(true);
+  expect(result.map((a) => [a.question, a.value, a.source])).toEqual([[questions[2], "Prefiro não informar", "decline_option"]]);
+  expect(result.some((a) => a.source === "default_no")).toBe(false);
 });
 it("uses source and confirmed information without accepting terms", async () => {
   const w = workspace();
@@ -151,8 +147,8 @@ it("uses evidenced AI answers and handles quota without choosing positive defaul
     options: { "Nível técnico": ["Avançado", "Especialista"] },
     model: "gemini-test",
   });
-  expect(answers).toHaveLength(1);
-  expect(answers[0].source).toBe("default_no");
+  // Unknown facts stay pending: no "Não", "Nenhum" or "0".
+  expect(answers).toEqual([]);
 });
 it("scopes answers to the exact CV, destination and active authorization", async () => {
   const w = workspace();
@@ -162,6 +158,7 @@ it("scopes answers to the exact CV, destination and active authorization", async
     job,
     destinationUrl,
     questions: ["Possui familiar?"],
+    options: { "Possui familiar?": ["Sim", "Não", "Prefiro não responder"] },
   });
   const application = {
     resumeId: resume.id,

@@ -11,6 +11,7 @@ import {
 import {
   BriefcaseBusiness,
   Zap,
+  BrainCircuit,
   FileText,
   UserRound,
   Settings2,
@@ -31,6 +32,8 @@ import {
   Sparkles,
   Search,
 } from "lucide-react";
+import "./smart-profile.css";
+import { attentionApplications } from "../shared/confirmed-applications";
 import {SetupProgress,ProductHelp} from './GettingStarted';
 import {needsCandidateDetailsPage} from '../shared/getting-started';
 import {authEntryPath,clearAppReturn,pendingAppReturn,rememberAppReturn,safeAppReturn,saveTheme,storedTheme} from '../shared/browser-navigation';
@@ -55,6 +58,7 @@ const pages = {
   curriculo: lazy(() => import("./SimpleResume")),
   'curriculo-perfeito': lazy(() => import('./PerfectResume')),
   preferencias: lazy(() => import("./CareerInterview")),
+  "perfil-inteligente": lazy(() => import("./SmartProfile")),
   conta: lazy(() => import("./SimpleAccount")),
   conexoes: lazy(() => import("./pages/Connections")),
   onboarding: lazy(() => import("./Onboarding")),
@@ -64,6 +68,7 @@ const nav = [
   { id: "curriculo", label: "Currículo", icon: FileText },
   { id: "curriculo-perfeito", label: "Currículo Perfeito", icon: Sparkles },
   { id: "preferencias", label: "Preferências", icon: Settings2 },
+  { id: "perfil-inteligente", label: "Perfil inteligente", icon: BrainCircuit },
   { id: "conexoes", label: "Conexões", icon: Link2 },
   { id: "vagas", label: "Vagas compatíveis", icon: Search },
   { id: "candidaturas", label: "Candidaturas", icon: BriefcaseBusiness },
@@ -648,6 +653,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [toastMessage]);
   const w = workspace.data;
+  const attentionCount = w ? attentionApplications(w.applications).length : 0;
   const displayPage=w&&needsCandidateDetailsPage(w,page)?'dados':page;
   const remotePortal = new URLSearchParams(location.search).get("portal");
   const Page = pages[page as keyof typeof pages] || pages.automacao;
@@ -785,6 +791,7 @@ export default function App() {
                 >
                   <item.icon size={18} />
                   <span>{item.label}</span>
+                  {item.id === "candidaturas" && !!attentionCount && <span className="nav-count" aria-label={`${attentionCount} precisam de você`}>{attentionCount}</span>}
                 </button>
               ))}
             </nav>

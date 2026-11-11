@@ -14,12 +14,27 @@ import {
   Score,
 } from "../components";
 import { date, useApp } from "../lib";
-import { confirmedApplication } from "../../shared/confirmed-applications";
+import { confirmedApplication, inProgressApplications } from "../../shared/confirmed-applications";
+import type { Application } from "../../shared/types";
+
+function pendingReason(app: Application) {
+  if (app.status === "Requer ação manual" && app.missingQuestions?.length)
+    return `Precisa de você: ${app.missingQuestions.length} pergunta${app.missingQuestions.length > 1 ? "s" : ""} sem resposta (${app.missingQuestions.slice(0, 2).join(" · ")}${app.missingQuestions.length > 2 ? "…" : ""})`;
+  if (app.status === "Requer ação manual") return app.history.at(-1)?.message || "Precisa de uma ação sua.";
+  if (app.status === "Aguardando aprovação") return "Na fila: o formulário será conferido antes do envio.";
+  if (app.status === "Enviando") return "Envio em andamento.";
+  if (app.status === "Resultado desconhecido") return "Aguardando confirmação do portal. Não reenviamos automaticamente.";
+  if (app.status === "Falha no envio") return app.history.at(-1)?.message || "O envio falhou.";
+  return "Sem comprovante de envio ainda.";
+}
 
 export default function Applications() {
   const { w, navigate } = useApp();
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [tab, setTab] = useState<"sent" | "pending">("sent");
+  const inProgress = inProgressApplications(w.applications).sort((a, b) =>
+    Number(b.status === "Requer ação manual") - Number(a.status === "Requer ação manual"));
   const applications = w.applications.filter(confirmedApplication);
   const apps = applications.filter((app) => {
     const job = w.jobs.find((job) => job.id === app.jobId);
@@ -42,6 +57,31 @@ export default function Applications() {
           Ver automação
         </Button>
       </PageHead>
+      <div className="app-tabs" role="tablist" aria-label="Tipo de candidatura">
+        <button role="tab" aria-selected={tab === "sent"} className={tab === "sent" ? "active" : ""} onClick={() => setTab("sent")}>Enviadas ({applications.length})</button>
+        <button role="tab" aria-selected={tab === "pending"} className={tab === "pending" ? "active" : ""} onClick={() => setTab("pending")}>Precisa de você / Em andamento ({inProgress.length})</button>
+      </div>
+      {tab === "pending" ? (
+        inProgress.length ? (
+          <>
+            {inProgress.some((a) => a.missingQuestions?.length) && (
+              <Button className="primary" onClick={() => navigate("perfil-inteligente")}>Responder pendências no Perfil inteligente</Button>
+            )}
+            <ul className="pending-apps">
+              {inProgress.map((app) => {
+                const vacancy = w.jobs.find((item) => item.id === app.jobId);
+                return (
+                  <li key={app.id}>
+                    <strong>{vacancy ? `${vacancy.title} · ${vacancy.company}` : "Vaga"}</strong>
+                    <span className={`badge ${app.status === "Requer ação manual" ? "amber" : "blue"}`}>{app.status}</span>
+                    <small>{pendingReason(app)}</small>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        ) : <div className="panel"><Empty title="Nada pendente" icon={<CheckCircle2 size={28} />} description="Nenhuma candidatura aguarda você." /></div>
+      ) : <>
       <div className="toolbar">
         <div className="search-input">
           <Search size={16} />
@@ -126,6 +166,7 @@ export default function Applications() {
           />
         </div>
       )}
+      </>}
       <Modal
         title={job?.title || "Candidatura enviada"}
         description={job?.company || ""}
@@ -167,7 +208,11 @@ export default function Applications() {
                       {answer.source === "ai"
                         ? "Preparada pela IA com base no currículo"
                         : answer.source === "default_no"
-                          ? "Regra para informações ausentes"
+                          ? "Regra antiga para informações ausentes"
+                          : answer.source === "decline_option"
+                          ? "Opção “prefiro não informar” do formulário"
+                          : answer.source === "memory"
+                          ? "Sua resposta no Perfil inteligente"
                           : answer.source === "job_source"
                             ? "Origem do anúncio"
                             : "Dados confirmados"}

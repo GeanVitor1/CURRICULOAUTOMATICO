@@ -12,6 +12,9 @@ import { automaticFallback } from "./automatic-answer-fallback";
 import { evidencedTechnologyYears, experienceYearsQuestion } from "./answer-evidence";
 import { extractSkills } from "./engine";
 import {salaryOption} from './salary-options';
+import { classifyQuestion } from "../shared/answer-topics";
+import { memoryAnswer } from "./answer-topics";
+import { personalQuestion } from "./automatic-answer-fallback";
 
 export const automaticAnswersEnabled = (profile: Profile) =>
   !!(
@@ -88,7 +91,7 @@ export async function prepareAutomaticAnswers(input: {
       question,
       value,
       source,
-      confidence: source === "profile" || source === "job_source" ? "confirmed" : source === "ai" ? "evidenced" : "policy",
+      confidence: source === "profile" || source === "job_source" || source === "memory" ? "confirmed" : source === "ai" ? "evidenced" : "policy",
       fillable: true,
       reason,
       at,
@@ -135,6 +138,11 @@ export async function prepareAutomaticAnswers(input: {
     }
     if (saved) {
       incompatibleKnown.add(question);
+      continue;
+    }
+    const remembered = memoryAnswer(question, input.profile, input.job, choices);
+    if (remembered) {
+      put(question, remembered.value, "memory", `Resposta definida por você para o assunto (${remembered.entry.topic}).`);
       continue;
     }
     const experienceEvidence=[input.resume.text,input.profile.experience].join("\n");
@@ -185,8 +193,13 @@ export async function prepareAutomaticAnswers(input: {
       }
     }
   }
+  // Personal facts and preferences are defined only by the user: never drafted by AI.
+  const userOnly = (q: string) => {
+    const topic = classifyQuestion(q, input.options?.[q])?.topic;
+    return personalQuestion(q) || sensitiveQuestion(q) || (!!topic && topic !== "tech_experience_years");
+  };
   const remaining = eligible.filter(
-    (q) => !answers.some((a) => a.question === q) && !incompatibleKnown.has(q),
+    (q) => !answers.some((a) => a.question === q) && !incompatibleKnown.has(q) && !userOnly(q),
   );
   if (input.model && remaining.length) {
     try {
@@ -213,20 +226,22 @@ export async function prepareAutomaticAnswers(input: {
         put(draft.question, draft.answer, "ai", draft.evidence.join("\n"));
     } catch (error) {
       console.error(JSON.stringify({event:"automatic_answers_provider_failed",type:error instanceof Error ? error.name : "UnknownError"}));
-      /* The user-authorized negative fallback does not require an available model. */
+      /* Unanswered questions stay pending; nothing is presumed. */
     }
   }
-  for (const question of remaining.filter(
-    (q) => !answers.some((a) => a.question === q),
+  for (const question of eligible.filter(
+    (q) => !answers.some((a) => a.question === q) && !incompatibleKnown.has(q),
   )) {
     const value = automaticFallback(question, input.options?.[question]);
     if (value)
       put(
         question,
         value,
-        "default_no",
-        "Sem informação suficiente. Resposta negativa ou preferência por não informar conforme regra autorizada pelo usuário; não é uma conclusão extraída do currículo.",
+        "decline_option",
+        "Pergunta pessoal sem informação confirmada: escolhida a opção do formulário de não informar. Nenhum fato foi presumido.",
       );
   }
+  // Everything else stays unanswered: optional fields are left blank and required
+  // ones pause only this application as pending for the user.
   return answers;
 }

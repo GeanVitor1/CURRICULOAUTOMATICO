@@ -253,7 +253,7 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
     expect(send).toHaveBeenCalledTimes(3);
     expect(send.mock.calls[2][0].profile.approvedAnswers).toEqual(expect.arrayContaining([expect.objectContaining({value:"Prefiro não informar",destinationUrl:vacancy.destinations[0].url})]));
     expect(result).toMatchObject({status:"Enviada",receipt:"dynamic-receipt"});
-    expect(result.answersUsed?.[0]).toMatchObject({source:"default_no",value:"Prefiro não informar"});
+    expect(result.answersUsed?.[0]).toMatchObject({source:"decline_option",value:"Prefiro não informar"});
   });
   it("não recria candidatura enviada após apagar o histórico",async()=>{
     const {clearApplicationHistory}=await import("../server/clear-application-history");
@@ -268,7 +268,7 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
       expect(operations.queuePreparedApplications(w,[])).toBe(0);
     });
   });
-  it("prepares, sends and records negative answers without per-vacancy confirmation under the user's policy",async()=>{
+  it("never presumes negative answers: unknown required questions pause only this application",async()=>{
     vi.stubEnv("APPLICATION_WEBHOOK_AUTHORIZED","false");
     vi.stubEnv("PORTAL_CLOUD_SNAPSHOT_ID","controlled-snapshot");
     vi.stubEnv("ATS_BROWSER_AUTHORIZED","lever:empresa");
@@ -278,18 +278,16 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
     vacancy.destinations=[{id:"auto-destination",platform:"lever",company:vacancy.company,url:"https://jobs.lever.co/empresa/96ec1808-6b61-4fda-832b-58d7c104edd9/apply",publicationUrl:vacancy.url,state:"verified",method:"browser",formFound:true,confidence:100,verifiedAt:new Date().toISOString(),expiresAt:new Date(Date.now()+60000).toISOString(),evidence:["Fixture"]}];
     await database.mutateWorkspace(workspaceId,w=>{w.profile.answerPolicy={enabled:true,missing:"no",confirmedAt:new Date().toISOString()};});
     const [id]=await prepare([vacancy]);
-    const send=vi.spyOn(ats,"sendAtsApplication").mockResolvedValueOnce({status:"action_required",retryable:true,message:"Perguntas",missingQuestions:questions,questionOptions:{[questions[0]]:["LinkedIn","Outro"],[questions[1]]:["Sim","Não"],[questions[2]]:["Sim","Não"]}})
-      .mockResolvedValueOnce({status:"action_required",preflightReady:true,message:"Pronto"})
-      .mockResolvedValueOnce({status:"sent",receipt:"controlled-automatic-policy-receipt",message:"Recebido",answersUsed:questions.map((question,i)=>({question,value:i===0?"LinkedIn":"Não"}))});
+    const options={[questions[0]]:["LinkedIn","Outro"],[questions[1]]:["Sim","Não"],[questions[2]]:["Sim","Não"]};
+    const send=vi.spyOn(ats,"sendAtsApplication").mockResolvedValueOnce({status:"action_required",retryable:true,message:"Perguntas",missingQuestions:questions,questionOptions:options})
+      .mockResolvedValueOnce({status:"action_required",retryable:true,message:"Perguntas obrigatórias",missingQuestions:questions.slice(1),questionOptions:options});
     const result=await operations.automaticSend(workspaceId,id);
-    expect(send).toHaveBeenCalledTimes(3);
-    expect(send.mock.calls[1][0].inspectOnly).toBe(true);
-    expect(send.mock.calls[1][0].profile.approvedAnswers?.map(a=>a.value)).toEqual(["LinkedIn","Não","Não"]);
-    expect(send.mock.calls[2][0].resume.file).toBeDefined();
-    expect(result.status).toBe("Enviada");
-    expect(result.automaticAnswers?.map(a=>a.source)).toEqual(["job_source","default_no","default_no"]);
-    expect(result.answersUsed?.map(a=>[a.question,a.value,a.source])).toEqual(questions.map((q,i)=>[q,i===0?"LinkedIn":"Não",i===0?"job_source":"default_no"]));
-    expect((await database.readWorkspace(workspaceId))!.profile.approvedAnswers).toBeUndefined();
+    expect(send).toHaveBeenCalledTimes(2);
+    expect(send.mock.calls[1][0].profile.approvedAnswers?.map(a=>a.value)).toEqual(["LinkedIn"]);
+    expect(result.status).toBe("Requer ação manual");
+    expect(result.receipt).toBeFalsy();
+    expect(result.missingQuestions).toEqual(questions.slice(1));
+    expect(result.automaticAnswers?.map(a=>a.source)).toEqual(["job_source"]);
   });
   it("prepara perguntas antes de reservar cota ou iniciar envio e não reencaminha pendências", async () => {
     vi.stubEnv("APPLICATION_WEBHOOK_AUTHORIZED", "false");

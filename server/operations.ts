@@ -1072,7 +1072,7 @@ export async function automaticSend(
         if (!current || current.status !== "Enviando" || !automaticAnswersEnabled(w.profile) || current.resumeId !== resume.id)
           throw new RequestError("A autorização da candidatura mudou.");
         current.automaticAnswers = [...(current.automaticAnswers || []).filter(item => !answers.some(answer => answer.question === item.question)), ...answers];
-        current.history.push({at:now(),actor:"IA",message:`Respondeu automaticamente ${answers.length} perguntas do formulário com currículo, preferências e regra para dados ausentes.`});
+        current.history.push({at:now(),actor:"IA",message:`Respondeu automaticamente ${answers.length} perguntas do formulário com currículo, preferências e Perfil inteligente.`});
         return applicationAnswerProfile(w.profile,current,payload.job.url);
       });
     }

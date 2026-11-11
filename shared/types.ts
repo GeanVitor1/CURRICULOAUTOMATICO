@@ -39,7 +39,9 @@ export const transitions: Record<Status, Status[]> = {
   "Resultado desconhecido": ["Enviada", "Falha no envio"],
 };
 export type Profile = {
+  /** `missing: "no"` is a legacy name; unknown answers now stay pending (never "No"). */
   answerPolicy?: { enabled: boolean; missing: "no"; confirmedAt: string };
+  answerMemory?: import("./answer-topics").AnswerMemoryEntry[];
   applicationPreferences?: import("./application-preferences").ApplicationPreferences;
   candidateDetailsConfirmedAt?: string;
   acceptsPj?: boolean;
@@ -323,7 +325,8 @@ export type AutomaticAnswer = {
   fillable?: boolean;
   question: string;
   value: string;
-  source: "profile" | "ai" | "default_no" | "job_source";
+  /** "default_no" is legacy (older records only). */
+  source: "profile" | "ai" | "default_no" | "job_source" | "memory" | "decline_option";
   reason: string;
   at: string;
   resumeId: string;

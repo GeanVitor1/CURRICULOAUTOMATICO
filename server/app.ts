@@ -814,6 +814,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       const previous = w.profile;
       w.profile = {
         ...p, approvedAnswers: previous.approvedAnswers,
+        answerMemory: previous.answerMemory,
         applicationPreferences: previous.applicationPreferences,
         answerPolicy: previous.answerPolicy,
         acceptsPj: previous.acceptsPj,
@@ -876,7 +877,7 @@ export async function buildApp({ serveStatic = true } = {}) {
           if (a.resumeState?.kind==="ats" || !a.history.some(event=>event.message.startsWith("Envio iniciado."))) {
             a.status="Aguardando aprovação";
             a.updatedAt=new Date().toISOString();
-            a.history.push({at:a.updatedAt,actor:"Usuário",message:"Autorizou respostas automáticas com resposta negativa na ausência de informação. Retomar preparação antes do envio."});
+            a.history.push({at:a.updatedAt,actor:"Usuário",message:"Autorizou respostas automáticas (sem presumir respostas ausentes). Retomar preparação antes do envio."});
           }
         }
       }
@@ -896,6 +897,79 @@ export async function buildApp({ serveStatic = true } = {}) {
       w.profile.applicationPreferences = { ...answers, confirmedAt: new Date().toISOString() };
     });
     return { ok: true };
+  });
+  const memoryTopic = z.enum(["relocation_willingness","travel_availability","weekend_availability","contract_type","salary_expectation","start_availability","work_modality","english_level","spanish_level","tech_experience_years","driver_license","own_vehicle","night_shift","current_employment","work_authorization"]);
+  const memoryBody = z.object({
+    topic: memoryTopic,
+    params: z.object({ technology: z.string().trim().min(1).max(60) }).partial().optional(),
+    value: z.string().trim().min(1).max(500),
+    conditions: z.object({
+      cities: z.array(z.string().trim().min(2).max(80)).max(30).optional(),
+      modalities: z.array(z.enum(["remoto","hibrido","presencial"])).max(3).optional(),
+      minSalary: z.number().nonnegative().max(10_000_000).optional(),
+    }).optional(),
+    reuse: z.boolean().default(true),
+    examples: z.array(z.string().trim().min(3).max(500)).max(10).optional(),
+  });
+  const releaseAndDispatch = async (id: string, released: string[]) => {
+    if (!released.length) return;
+    const { enqueueResolution } = await import("./resolution-queue");
+    await enqueueResolution(id);
+    await dispatchNextApplication(id);
+  };
+  app.get("/api/answer-memory", async (req) => {
+    const { id } = await scope(req);
+    const w = (await readWorkspace(id))!;
+    const { effectiveAnswerMemory, groupPendingQuestions, pendingDigest } = await import("../shared/answer-topics");
+    const pending = groupPendingQuestions(w.applications);
+    return { memory: effectiveAnswerMemory(w.profile), pending, digest: pendingDigest(pending) };
+  });
+  app.put("/api/answer-memory", async (req) => {
+    const { id, demo } = await scope(req);
+    if (demo) throw new RequestError("Salve suas respostas na sua conta real.");
+    const body = z.object({ confirmation: z.literal(true), entries: z.array(memoryBody).min(1).max(20) }).parse(req.body);
+    const { upsertMemory, releasePending } = await import("./answer-memory");
+    const released = await mutateWorkspace(id, (w) => {
+      for (const entry of body.entries) upsertMemory(w, entry);
+      return releasePending(w);
+    });
+    await releaseAndDispatch(id, released);
+    return { ok: true, released: released.length };
+  });
+  app.delete("/api/answer-memory/:entryId", async (req) => {
+    const { id, demo } = await scope(req);
+    if (demo) throw new RequestError("Use sua conta real.");
+    const entryId = z.string().min(1).max(80).parse((req.params as any).entryId);
+    await mutateWorkspace(id, (w) => {
+      w.profile.answerMemory = w.profile.answerMemory?.filter((entry) => entry.id !== entryId);
+    });
+    return { ok: true };
+  });
+  app.post("/api/pending-questions/answer", async (req) => {
+    const { id, demo } = await scope(req);
+    if (demo) throw new RequestError("Salve suas respostas na sua conta real.");
+    const body = z.object({
+      confirmation: z.literal(true),
+      key: z.string().trim().min(3).max(4100),
+      question: z.string().trim().min(3).max(4000),
+      value: z.string().trim().min(1).max(3000),
+      conditions: memoryBody.shape.conditions,
+      reuse: z.boolean().default(true),
+    }).parse(req.body);
+    const { classifyQuestion, topicKey } = await import("../shared/answer-topics");
+    const { upsertMemory, releasePending } = await import("./answer-memory");
+    const match = classifyQuestion(body.question);
+    if (topicKey(match, body.question) !== body.key) throw new RequestError("Pergunta pendente não reconhecida.");
+    const released = await mutateWorkspace(id, (w) => {
+      if (match) {
+        upsertMemory(w, { topic: match.topic, params: match.params?.technology ? { technology: match.params.technology } : undefined,
+          value: body.value, conditions: body.conditions, reuse: body.reuse, examples: [body.question] });
+        return releasePending(w);
+      }
+      return releasePending(w, { key: body.key, value: body.value });
+    });
+    await releaseAndDispatch(id, released);
+    return { ok: true, released: released.length };
   });
   app.put("/api/candidate-details", async (req) => {
     const { id, demo } = await scope(req);

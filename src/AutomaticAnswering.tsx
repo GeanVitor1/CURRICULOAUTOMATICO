@@ -28,10 +28,13 @@ export default function AutomaticAnswering() {
       </div>
       <div className="question-review-body">
         <p className="question-review-help">
-          Usamos suas informações reais. Quando não houver informação
-          suficiente, respondemos “não” ou “prefiro não informar”, conforme
-          as opções do formulário. Informações pessoais conhecidas são preservadas. Para “como soube da vaga”, usamos a origem do anúncio.
-          As respostas e a regra usada ficam no histórico.
+          Usamos suas informações reais: currículo, preferências e o seu
+          Perfil inteligente. Sem informação, nunca respondemos “não”: campos
+          opcionais ficam em branco e, se a pergunta for obrigatória, só aquela
+          candidatura fica aguardando você — as demais continuam. Perguntas
+          pessoais usam “prefiro não informar” apenas quando o formulário
+          oferece essa opção. Para “como soube da vaga”, usamos a origem do
+          anúncio. Tudo fica no histórico.
         </p>
         <p className="question-review-help">
           Aceites de termos e consentimentos jurídicos exigem uma autorização

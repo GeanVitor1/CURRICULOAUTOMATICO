@@ -121,12 +121,15 @@ describe("Submissão HTTP controlada com Chromium real", () => {
     const context=await browser.newContext();
     const data=input("/question");
     data.profile.answerPolicy={enabled:true,missing:"no",confirmedAt:new Date().toISOString()};
+    const unknown=await prepareAutomaticAnswers({profile:data.profile,resume:{id:"resume",text:"Desenvolvimento de software"} as Resume,job:{title:data.job.title,source:"Site de Carreiras"} as Job,destinationUrl:data.destination.url,questions:["Quantos anos de experiência em React?"]});
+    expect(unknown).toEqual([]); // no evidence: never "0"
+    data.profile.answerMemory=[{id:"m",topic:"tech_experience_years",params:{technology:"react"},value:"3",source:"user",confirmedAt:new Date().toISOString(),examples:[]}];
     const answers=await prepareAutomaticAnswers({profile:data.profile,resume:{id:"resume",text:"Desenvolvimento de software"} as Resume,job:{title:data.job.title,source:"Site de Carreiras"} as Job,destinationUrl:data.destination.url,questions:["Quantos anos de experiência em React?"]});
     data.profile=applicationAnswerProfile(data.profile,{resumeId:"resume",automaticAnswers:answers} as Application,data.destination.url);
     try {
       const result=await executeAtsApplication(await context.newPage(),data);
       expect(result.status).toBe("sent");
-      expect(result.answersUsed).toContainEqual({question:"Quantos anos de experiência em React?",value:"0"});
+      expect(result.answersUsed).toContainEqual({question:"Quantos anos de experiência em React?",value:"3"});
     } finally {await context.close();}
   });
   it("prepara perguntas antes de preencher dados ou anexar o PDF", async () => {
