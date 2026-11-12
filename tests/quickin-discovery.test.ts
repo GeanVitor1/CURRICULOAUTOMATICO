@@ -24,7 +24,7 @@ function workspace(title:string) {
 afterEach(()=>vi.unstubAllEnvs());
 describe('Quickin discovery for every candidate profession',()=>{
  it('preserves the next offset when the global candidate budget interrupts a catalog page',async()=>{
-  const title='Vendedor',w=workspace(title),read=vi.fn(async(url:string)=>url.includes('api.quickin.io')?listing(url,[entry(1,title),entry(2,title),entry(3,title)]):publication(Number.parseInt(url.split('/').at(-1)!,16),title));
+  const title='Desenvolvedor Java',w=workspace(title),read=vi.fn(async(url:string)=>url.includes('api.quickin.io')?listing(url,[entry(1,title),entry(2,title),entry(3,title)]):publication(Number.parseInt(url.split('/').at(-1)!,16),title));
   const first=await withDiscoveryCandidates(2,()=>discoverQuickinBoard(source,w,read));
   expect(first.examined).toBe(2);expect(first.value.jobs).toHaveLength(2);
   expect(JSON.parse(first.value.checkpoint.cursor)).toMatchObject({page:1,offset:2});
@@ -37,8 +37,8 @@ describe('Quickin discovery for every candidate profession',()=>{
   vi.stubEnv('DISCOVERY_QUICKIN_ADDITIONAL_BOARDS',JSON.stringify([{board:'retail',company:'Comércio'},{board:'employer',company:'Duplicada'}]));
   expect(configuredQuickinBoards().map(s=>s.board)).toEqual(['employer','retail']);
  });
- it.each(['Auxiliar administrativo','Vendedor','Auxiliar de logística','Recepcionista','Técnico de enfermagem','Desenvolvedor .NET'])(
-  'retains the actual publication for %s without an IT-only gate',async title=>{
+ it.each(['Analista de Dados','Desenvolvedor Java','Analista de Suporte','Engenheiro de Software','QA Analyst','Desenvolvedor .NET'])(
+  'retains the actual publication for %s',async title=>{
    const read=vi.fn(async(url:string)=>url.includes('api.quickin.io')?listing(url,[entry(1,title)]):publication(1,title));
    const result=await discoverQuickinBoard(source,workspace(title),read);
    expect(result.jobs.map(j=>j.title)).toEqual([title]);
@@ -46,7 +46,7 @@ describe('Quickin discovery for every candidate profession',()=>{
    expect(read).toHaveBeenCalledTimes(2);
   });
  it('uses the publisher pages metadata even when the API caps the requested page size',async()=>{
-  const title='Auxiliar administrativo',read=vi.fn(async(url:string)=>{
+  const title='Analista de Dados',read=vi.fn(async(url:string)=>{
    if(!url.includes('api.quickin.io'))return publication(2,title);
    return new URL(url).searchParams.get('page')==='1'?listing(url,[entry(1,'Engenheiro de software')],1,2):listing(url,[entry(2,title)],2,2);
   });
@@ -57,7 +57,7 @@ describe('Quickin discovery for every candidate profession',()=>{
  });
  it('resumes after the exact last inspected publication instead of repeating page one',async()=>{
   vi.stubEnv('QUICKIN_DISCOVERY_BATCH_SIZE','1');
-  const title='Vendedor',w=workspace(title),read=vi.fn(async(url:string)=>url.includes('api.quickin.io')?listing(url,[entry(1,title),entry(2,title)]):publication(Number.parseInt(url.split('/').at(-1)!,16),title));
+  const title='Desenvolvedor Java',w=workspace(title),read=vi.fn(async(url:string)=>url.includes('api.quickin.io')?listing(url,[entry(1,title),entry(2,title)]):publication(Number.parseInt(url.split('/').at(-1)!,16),title));
   const first=await discoverQuickinBoard(source,w,read);
   expect(first.jobs[0].url).toBe(posting(1));expect(first.checkpoint.pending).toBe(true);
   w.routine.discoveryCheckpoints={[source.id]:first.checkpoint};
@@ -65,8 +65,8 @@ describe('Quickin discovery for every candidate profession',()=>{
   expect(second.jobs[0].url).toBe(posting(2));expect(second.checkpoint.pending).toBe(false);
  });
  it('keeps accounts with different professions separate and leaves their preferences intact',async()=>{
-  const read=async(url:string)=>url.includes('api.quickin.io')?listing(url,[entry(1,'Vendedor'),entry(2,'Auxiliar administrativo')]):publication(url===posting(1)?1:2,url===posting(1)?'Vendedor':'Auxiliar administrativo');
-  const accounts=Array.from({length:20},(_,i)=>workspace(i%2?'Vendedor':'Auxiliar administrativo'));
+  const read=async(url:string)=>url.includes('api.quickin.io')?listing(url,[entry(1,'Desenvolvedor Java'),entry(2,'Analista de Dados')]):publication(url===posting(1)?1:2,url===posting(1)?'Desenvolvedor Java':'Analista de Dados');
+  const accounts=Array.from({length:20},(_,i)=>workspace(i%2?'Desenvolvedor Java':'Analista de Dados'));
   const before=JSON.stringify(accounts);
   const results=await Promise.all(accounts.map(w=>discoverQuickinBoard(source,w,read)));
   results.forEach((r,i)=>expect(r.jobs.map(j=>j.title)).toEqual(accounts[i].filters.titles));

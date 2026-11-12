@@ -120,7 +120,64 @@ const vocabulary: Record<string, RegExp> = {
   AWS: /\baws\b|amazon web services/i,
   HTML: /\bhtml5?\b/i,
   CSS: /\bcss3?\b/i,
+  PHP: /\bphp\b/i,
+  Laravel: /\blaravel\b/i,
+  MySQL: /\bmysql\b|\bmariadb\b/i,
+  MongoDB: /\bmongo(?:db)?\b/i,
+  Oracle: /\boracle\b/i,
+  SQL: /(?<![\/-])\bsql\b(?! server)/i,
+  Spring: /\bspring(?: boot)?\b/i,
+  Kafka: /\bkafka\b/i,
+  RabbitMQ: /\brabbit\s?mq\b/i,
+  GraphQL: /\bgraphql\b/i,
+  Express: /\bexpress(?:\.js|js)\b/i,
+  Django: /\bdjango\b/i,
+  Flask: /\bflask\b/i,
+  FastAPI: /\bfast\s?api\b/i,
+  Ruby: /\bruby\b/i,
+  Rails: /\brails\b/i,
+  Go: /\bgolang\b|\bgo lang\b/i,
+  Rust: /\brust\b/i,
+  Scala: /\bscala\b/i,
+  Flutter: /\bflutter\b/i,
+  Dart: /\bdart\b/i,
+  "React Native": /\breact native\b/i,
+  "Power BI": /\bpower ?bi\b/i,
+  DAX: /\bdax\b/i,
+  Tableau: /\btableau\b/i,
+  Airflow: /\bairflow\b/i,
+  Pandas: /\bpandas\b/i,
+  "Machine Learning": /machine learning|aprendizado de maquina/i,
+  Terraform: /\bterraform\b/i,
+  Ansible: /\bansible\b/i,
+  "CI/CD": /\bci\s?\/\s?cd\b|github actions|gitlab ci|jenkins|azure devops/i,
+  Linux: /\blinux\b/i,
+  "Windows Server": /\bwindows server\b/i,
+  "Active Directory": /active directory/i,
+  Redes: /\bredes\b|networking|\btcp\/ip\b/i,
+  VMware: /\bvmware\b/i,
+  Firewall: /\bfirewall\b/i,
+  Cypress: /\bcypress\b/i,
+  Selenium: /\bselenium\b/i,
+  Postman: /\bpostman\b/i,
+  Jest: /\bjest\b/i,
+  "Testes automatizados": /testes? automatizad|automacao de testes|test automation/i,
+  Figma: /\bfigma\b/i,
+  Salesforce: /\bsalesforce\b/i,
+  SAP: /\bsap\b/i,
+  ABAP: /\babap\b/i,
+  Protheus: /\bprotheus\b|\btotvs\b/i,
+  Tailwind: /\btailwind\b/i,
+  Bootstrap: /\bbootstrap\b/i,
+  jQuery: /\bjquery\b/i,
+  Elasticsearch: /\belastic\s?search\b/i,
 };
+const nonTechSkills = new Set(["Enfermagem", "Cuidados com pacientes", "Educação", "Eletricidade", "Mecânica", "Condução de veículos", "Limpeza", "Cozinha"]);
+/** Technical skills the job asks for, excluding generic basics that every developer lists. */
+const genericTech = new Set(["Git", "APIs REST", "HTML", "CSS", "Excel", "SQL", "Linux", "CI/CD", "Docker", "Bootstrap", "jQuery", "Figma", "Postman"]);
+export function coreTechSkills(text: string): string[] {
+  return extractSkills(text).filter((s) => !genericTech.has(s) && !nonTechSkills.has(s) && Object.keys(vocabulary).indexOf(s) > Object.keys(vocabulary).indexOf("Excel"));
+}
 function includesTerm(text: string, term: string): boolean {
   const normalized = normalize(term);
   if (!normalized) return false;
@@ -136,36 +193,7 @@ export function extractSkills(text: string, custom: string[] = []): string[] {
     .filter((line) => !line.domainOnly)
     .map((line) => line.text)
     .join("\n");
-  const technical = new Set([
-    "C#",
-    ".NET",
-    "ASP.NET Core",
-    "Angular",
-    "Next.js", "NestJS", "Vue.js", "VB.NET", "DynamoDB", "Kubernetes", "GCP",
-    "Clipper", "PL/SQL", "Delphi", "Dapper", "Redis",
-    "React",
-    "SQL Server",
-    "PostgreSQL",
-    "Entity Framework",
-    "APIs REST",
-    "TypeScript",
-    "JavaScript",
-    "Node.js",
-    "Python",
-    "Java",
-    "Swift",
-    "Kotlin",
-    "iOS",
-    "Android",
-    "Databricks",
-    "Spark",
-    "Docker",
-    "Git",
-    "Azure",
-    "AWS",
-    "HTML",
-    "CSS",
-  ]);
+  const technical = new Set(Object.keys(vocabulary).slice(Object.keys(vocabulary).indexOf("Excel") + 1).filter((k) => !nonTechSkills.has(k)));
   return [
     ...new Set([
       ...Object.entries(vocabulary)
@@ -526,7 +554,7 @@ const titleStacks: [string, string[]][] = [
   ["Flutter", ["Flutter", "Dart"]],
   ["Swift", ["Swift", "iOS"]],
   ["iOS", ["iOS", "Swift"]],
-  ["Android", ["Android", "Kotlin", "Java"]],
+  ["Android", ["Android", "Kotlin"]],
   ["Delphi", ["Delphi"]],
   ["COBOL", ["COBOL"]],
   ["ABAP", ["ABAP", "SAP"]],
@@ -536,6 +564,13 @@ const titleStacks: [string, string[]][] = [
   ["Rust", ["Rust"]],
   ["Oracle", ["Oracle", "PL/SQL"]],
 ];
+const techRoleTitle =
+  /\b(?:desenvolv\w*|developer|dev|programador\w*|software|engenheir\w* (?:de )?(?:software|dados|data|computacao|machine learning|ml|devops|cloud|sistemas|qa|testes|plataforma|confiabilidade|seguranca)|engineer|analista (?:de )?(?:sistemas|desenvolvimento|dados|bi|qa|testes|infraestrutura|infra|suporte|seguranca|redes|ti|devops|cloud|governanca de ti|banco de dados)|arquitet\w* (?:de )?(?:software|solucoes|sistemas|cloud|dados)|back.?end|front.?end|full.?stack|mobile|android|ios|devops|sre|cloud|qa|quality assurance|tester|testes|dados|data|bi|business intelligence|machine learning|inteligencia artificial|\bia\b|\bai\b|cientista de dados|dba|banco de dados|infraestrutura|infra|redes|suporte (?:tecnico|de ti|n[1-3])|help ?desk|service desk|tecnico de (?:informatica|ti|suporte)|seguranca da informacao|ciberseguranca|cybersecurity|\bti\b|\bit\b|tecnologia|sistemas|scrum master|product owner|tech lead|ux|ui|salesforce|sap|abap|erp|protheus|power bi|java|python|php|react|angular|node|golang|kotlin|flutter)\b/;
+/** The product only serves technology careers; non-IT postings are never recommended. */
+export function isTechJob(title: string): boolean {
+  const t = normalize(title);
+  return techRoleTitle.test(t) || /(?:^|[^a-z0-9])(?:\.net|c#)(?=$|[^a-z0-9])/.test(t);
+}
 /** True when every technology named in the title is backed by the candidate's own skills or experience. */
 export function titleStackCompatible(title: string, profile: Pick<Profile, "skills" | "experience" | "headline">): boolean {
   const own = [...(profile.skills || []), profile.experience || "", profile.headline || ""].join(" \n ");
@@ -545,12 +580,24 @@ export function titleStackCompatible(title: string, profile: Pick<Profile, "skil
     .filter(([term]) => includesTerm(title, term))
     .every(([, accepted]) => accepted.some((skill) => includesTerm(own, skill)));
 }
+/** Languages, frameworks and platforms that define what a role actually builds with. */
+const primaryStack = new Set(["C#", ".NET", "ASP.NET Core", "VB.NET", "Java", "Spring", "Kotlin", "Python", "Django", "Flask", "FastAPI", "PHP", "Laravel", "Ruby", "Rails", "Go", "Rust", "Scala", "Node.js", "NestJS", "Express", "React", "React Native", "Next.js", "Angular", "Vue.js", "Flutter", "Dart", "Swift", "iOS", "Android", "Delphi", "Clipper", "Power BI", "Tableau", "Spark", "Databricks", "Airflow", "Salesforce", "SAP", "ABAP", "Protheus", "Cypress", "Selenium", "Terraform", "Kubernetes", "Windows Server", "Active Directory", "VMware"]);
+const equivalent: Record<string, string[]> = { ".NET": ["C#", "ASP.NET Core"], "C#": [".NET"], "ASP.NET Core": ["C#", ".NET"], "Spring": ["Java"], "Next.js": ["React"], "React Native": ["React"], "Dart": ["Flutter"], "Flutter": ["Dart"] };
+/** A job is incompatible when it names a primary stack and the candidate has none of it. */
+export function stackCoverageCompatible(job: Pick<Job, "title" | "description">, profile: Pick<Profile, "skills" | "experience" | "headline">): boolean {
+  const own = new Set(coreTechSkills([...(profile.skills || []), profile.experience || "", profile.headline || ""].join("\n")));
+  if (!own.size) return true; // resume not read yet: do not guess
+  const wanted = coreTechSkills(job.title + "\n" + job.description).filter((s) => primaryStack.has(s));
+  if (!wanted.length) return true;
+  return wanted.some((s) => own.has(s) || (equivalent[s] || []).some((e) => own.has(e)));
+}
 export function matchesObjectiveFilters(
   job: Job,
   profile: Profile,
   filters: Filters,
 ): boolean {
   if (job.availability === "closed") return false;
+  if (!isTechJob(job.title)) return false;
   if (
     profile.acceptsPj === false &&
     /\bpj\b|pessoa juridica/.test(normalize(job.contract))
@@ -629,6 +676,7 @@ export function matchesObjectiveFilters(
   // A stack named in the job title (e.g. "Analista de Sistemas Java") is the core of the
   // role: a generic title match must not recommend it to someone without that stack.
   if (!titleStackCompatible(job.title, profile)) return false;
+  if (!stackCoverageCompatible(job, profile)) return false;
   const assessment = analyze(job, profile, filters);
   return !assessment.blockers.some((s) =>
     /fora das suas preferencias|fora das suas preferências|fora do periodo|fora do período|abaixo do minimo|abaixo do mínimo|acima do maximo|acima do máximo|empresa bloqueada|termo excluido|termo excluído|seu filtro|seu limite|vaga nao cita|vaga não cita/.test(
@@ -804,6 +852,8 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     blockers.push("Confirme seu perfil antes de preparar uma candidatura.");
   if (/s[eê]nior|tech lead|lideran[cç]a/i.test(job.level) && /^(?:n[aã]o|unknown|unspecified)/i.test(profile.level))
     blockers.push('Senioridade exigida ainda não confirmada no perfil.');
+  if (/pleno|s[eê]nior|especialista/i.test(job.level) && /est[aá]gi|aprendiz|primeiro emprego|trainee/i.test(profile.level || ''))
+    blockers.push('Senioridade exigida acima do seu nível atual.');
   if (!profile.skills.length)
     gaps.push("Confira suas competências e os requisitos publicados.");
   if (!job.skills.length)

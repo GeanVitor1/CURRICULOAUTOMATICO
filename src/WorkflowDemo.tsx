@@ -42,9 +42,9 @@ export const demoStages = [
   },
 ];
 const names = [
-  "Assistente administrativo",
-  "Analista de atendimento",
-  "Auxiliar de operações",
+  "Desenvolvedor .NET Pleno",
+  "Desenvolvedor Front-end React",
+  "Analista de Dados Júnior",
 ];
 export default function WorkflowDemo({
   stage,

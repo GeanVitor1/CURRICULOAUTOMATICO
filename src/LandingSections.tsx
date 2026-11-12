@@ -23,9 +23,9 @@ import { Reveal, spotlightHandler, useInViewport, useLoopStep, useScrollProgress
 
 /* ---------- Step Path: linha pontilhada desenhada conforme o scroll ---------- */
 const pathSteps = [
-  { icon: UserRound, title: "Conte sobre você", text: "Perfil e currículo em etapas curtas, com PDF ao final." },
-  { icon: SlidersHorizontal, title: "Defina a direção", text: "Cidade, modalidade, salário e tipo de contratação." },
-  { icon: Search, title: "Revise as vagas", text: "Oportunidades com a fonte e o link do anúncio original." },
+  { icon: UserRound, title: "Envie seu currículo", text: "Lemos seu stack, sua senioridade e seus projetos." },
+  { icon: SlidersHorizontal, title: "Defina a direção", text: "Cargos de TI, remoto ou presencial, salário e CLT ou PJ." },
+  { icon: Search, title: "Vagas do seu stack", text: "Só vagas de TI que pedem as tecnologias que você tem." },
   { icon: ListChecks, title: "Acompanhe tudo", text: "Cada candidatura com o status real e o próximo passo." },
 ];
 
@@ -137,7 +137,7 @@ const features = [
     size: "tall",
     icon: Scale,
     title: "Compatibilidade explicada",
-    text: "Veja os requisitos em comum e o que conferir. A comparação não prevê uma contratação.",
+    text: "Veja quais tecnologias da vaga você domina e o que falta. A comparação não prevê uma contratação.",
   },
   {
     size: "",

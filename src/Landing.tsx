@@ -22,13 +22,15 @@ import {
   Menu,
   X,
   Plus,
-  HeartPulse,
-  Truck,
-  GraduationCap,
-  ShoppingBag,
-  Monitor,
+  Server,
+  Code2,
+  Layers,
+  Smartphone,
+  Database,
+  Bug,
+  Cloud,
+  Headset,
   Building2,
-  Users,
   Play,
   Clock3,
   ChartNoAxesColumnIncreasing,
@@ -49,20 +51,20 @@ import OrganizationDemo from "./OrganizationDemo";
 import Pricing from "./Pricing";
 
 const professions = [
-  ["Primeiro emprego", Users],
-  ["Atendimento", ShoppingBag],
-  ["Administrativo", Building2],
-  ["Vendas", BriefcaseBusiness],
-  ["Logística", Truck],
-  ["Saúde", HeartPulse],
-  ["Educação", GraduationCap],
-  ["Tecnologia", Monitor],
+  ["Back-end", Server],
+  ["Front-end", Code2],
+  ["Full stack", Layers],
+  ["Mobile", Smartphone],
+  ["Dados e BI", Database],
+  ["QA e testes", Bug],
+  ["DevOps e cloud", Cloud],
+  ["Suporte e infraestrutura", Headset],
 ] as const;
 const steps = demoStages;
 const faqs = [
   [
     "Preciso ter experiência?",
-    "Não. Você pode começar pelo primeiro emprego, por uma vaga de aprendiz ou estágio. Experiências informais, estudos e habilidades também podem compor seu perfil.",
+    "Não. Há vagas de estágio e júnior em TI. Projetos pessoais, GitHub, cursos e faculdade em andamento também contam no seu perfil.",
   ],
   [
     "E se eu ainda não tiver currículo?",
@@ -74,7 +76,7 @@ const faqs = [
   ],
   [
     "Preciso conectar meu LinkedIn?",
-    "Não. LinkedIn, GitHub e portfólio não são requisitos para usar a plataforma. Inclua apenas o que fizer sentido para sua profissão.",
+    "Não é obrigatório, mas em TI ajuda: LinkedIn, GitHub e portfólio entram no cabeçalho do currículo quando você informa.",
   ],
   [
     "Como sei de onde vem uma vaga?",
@@ -86,7 +88,7 @@ const faqs = [
   ],
   [
     "Funciona para qualquer profissão?",
-    "Você pode informar qualquer profissão e suas preferências. As oportunidades dependem das empresas e regiões cobertas pelas fontes cadastradas. Se não houver cobertura ou resultados, a plataforma informa isso.",
+    "Não. A EmpreGatos é feita só para tecnologia: desenvolvimento, dados, QA, DevOps, suporte e infraestrutura. Focar em TI permite ler seu stack com precisão e recomendar apenas vagas que pedem o que você realmente sabe.",
   ],
 ];
 
@@ -294,27 +296,27 @@ export default function Landing() {
           <FallingPetals />
           <div className="hero-copy">
             <div className="landing-kicker fx-stagger" style={{ "--fx-delay": "0ms" } as CSSProperties}>
-              <span /> O SEU PRÓXIMO PASSO COMEÇA AQUI
+              <span /> CANDIDATURAS AUTOMÁTICAS PARA TI
             </div>
             <h1>
               <SplitText
                 className="hero-heading-main"
-                text="Encontrar um emprego já dá trabalho."
+                text="Você programa o dia inteiro."
                 delay={80}
               />{" "}
               <SplitText
                 className="hero-heading-accent"
-                text="Procurar não deveria dar tanto."
+                text="Deixe a busca por vaga no automático."
                 delay={480}
               />
             </h1>
             <BlurText delay={850}>
-              Conte sobre você, escolha o que procura e descubra oportunidades
-              que combinam com seu perfil. Tudo em um só lugar.
+              Envie seu currículo, a gente lê seu stack e se candidata às vagas
+              de tecnologia que pedem o que você sabe: .NET, Java, React, dados, QA e mais.
             </BlurText>
             <div className="hero-actions fx-stagger-group">
               <a href="/register" className="landing-button primary">
-                Encontrar meu próximo emprego <ArrowUpRight size={19} />
+                Automatizar minhas candidaturas <ArrowUpRight size={19} />
               </a>
               <a href="#como-funciona" className="landing-button plain">
                 <span className="hero-play-icon">
@@ -374,9 +376,9 @@ export default function Landing() {
                 <ChartNoAxesColumnIncreasing size={25} aria-hidden="true" />
               </span>
               <p>
-                Vagas que
+                Vagas do
                 <br />
-                combinam com você
+                seu stack
               </p>
               <strong>Seu perfil</strong>
               <svg
@@ -425,8 +427,8 @@ export default function Landing() {
               </h2>
             </div>
             <p>
-              Sem precisar entender de tecnologia. Sem se perder entre sites,
-              arquivos e anotações.
+              Sem abrir dez abas de portal, sem preencher o mesmo formulário de novo
+              e sem receber vaga Java quando você trabalha com .NET.
             </p>
           </motion.div>
           <motion.div {...reveal} className="how-grid">
@@ -538,18 +540,18 @@ export default function Landing() {
           <motion.div {...reveal} className="landing-width profession-grid">
             <div>
               <div className="landing-kicker">
-                TODAS AS TRAJETÓRIAS TÊM LUGAR
+                FEITO SÓ PARA TECNOLOGIA
               </div>
               <h2>
-                O próximo passo
-                <br />é <em>para você.</em>
+                Do estágio ao sênior,
+                <br /><em>só vagas de TI.</em>
               </h2>
               <p>
-                Para quem está começando. Para quem quer mudar de área. Para
-                quem sabe bem o que procura.
+                Focamos em uma área para acertar no que importa: entender seu stack
+                e recomendar vagas que pedem exatamente o que você domina.
               </p>
               <a href="/register" className="landing-text-link">
-                Conte o que você procura <ArrowUpRight size={18} />
+                Enviar meu currículo <ArrowUpRight size={18} />
               </a>
             </div>
             <div className="profession-list" {...reveal}>
@@ -576,7 +578,7 @@ export default function Landing() {
               </span>
               SUAS PREFERÊNCIAS
             </div>
-            <h3>Trabalho bom é o que cabe na sua vida.</h3>
+            <h3>A vaga certa para o seu stack e a sua rotina.</h3>
             <div className="preference-field">
               <span>Como você quer trabalhar?</span>
               <motion.div ref={modalityControl} layout className="morph-select">
@@ -659,8 +661,8 @@ export default function Landing() {
               não são um detalhe.
             </h2>
             <p>
-              Localização, salário, horário, experiência e contratação. Defina o
-              que importa para você e ajuste quando sua vida mudar.
+              Remoto ou presencial, CLT ou PJ, faixa salarial e senioridade. Defina
+              uma vez e ajuste quando quiser.
             </p>
             <div className="preference-principle">
               <span className="preference-shield">
@@ -669,7 +671,7 @@ export default function Landing() {
               <div>
                 <strong>Compatibilidade com explicação.</strong>
                 <p>
-                  Veja os pontos em comum e o que precisa conferir. A pontuação
+                  Veja quais tecnologias da vaga você tem e o que falta. A pontuação
                   compara requisitos; ela não prevê uma contratação.
                 </p>
               </div>
@@ -828,9 +830,9 @@ export default function Landing() {
               <br />
               esse caminho sozinho.
             </h2>
-            <p>Um currículo. Suas preferências. Um passo de cada vez.</p>
+            <p>Seu currículo. Seu stack. Vagas de TI que fazem sentido.</p>
             <a href="/register" className="landing-button primary">
-              Vamos encontrar seu próximo emprego <ArrowUpRight size={18} />
+              Automatizar minhas candidaturas em TI <ArrowUpRight size={18} />
             </a>
           </motion.div>
           <Mascot className="cta-mascot" variant="idea" />

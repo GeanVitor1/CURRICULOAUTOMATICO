@@ -58,7 +58,7 @@ describe("Compatibilidade para diferentes profissões", () => {
         ...defaultFilters,
         skills: ["Atendimento ao público"],
       }),
-    ).toBe(true);
+    ).toBe(false); // produto focado em TI: vaga de varejo nunca é recomendada
     expect(
       matchesObjectiveFilters(
         { ...job, description: "Uma paisagem especial", skills: [] },
@@ -140,7 +140,7 @@ describe("Compatibilidade para diferentes profissões", () => {
         ...defaultFilters,
         titles: ["Primeiro emprego"],
       }),
-    ).toBe(true);
+    ).toBe(false); // produto focado em TI: vaga de varejo nunca é recomendada
   });
   it("interpreta currículo simples e experiência informal sem inventar tempo", () => {
     const parsed = parseResume(
@@ -295,7 +295,7 @@ describe("Compatibilidade para diferentes profissões", () => {
         ...defaultFilters,
         titles: ["Atendente"],
       }),
-    ).toBe(true);
+    ).toBe(false); // produto focado em TI: vaga de varejo nunca é recomendada
     expect(
       matchesObjectiveFilters(job, profile, {
         ...defaultFilters,
