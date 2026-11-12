@@ -16,7 +16,6 @@ import { PdfReaderUnavailableError } from "./pdf-text";
 import { parseResumeDocument } from "./document-processing";
 import { claimResumeProcessing, releaseResumeProcessing, ProcessingBudgetError, type ResumeProcessingAction } from "./processing-budget";
 import { createResumePdf, createResumeTextPdf, resumeText } from "./resume-pdf";
-import {registerPerfectResumeRoutes} from './perfect-resume-routes';
 import {
   store,
   dataDir,
@@ -744,7 +743,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       );
       w.applications.forEach((a) => previewIds.add(a.jobId));
       w.jobs = w.jobs.filter((j) => previewIds.has(j.id));
-      // The editor loads private document versions on demand, outside the dashboard poll.
+      // Legacy Currículo Perfeito data may still be stored; never send it to the client.
       delete w.perfectResumes;
     }
     return publicWorkspace(w);
@@ -2210,7 +2209,6 @@ export async function buildApp({ serveStatic = true } = {}) {
       return a;
     });
   });
-  registerPerfectResumeRoutes(app,scope,()=>resumeProcessing('analysis'));
   app.put("/api/resumes/draft", async (req) => {
     const { id } = await scope(req);
     const draft = z

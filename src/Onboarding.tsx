@@ -394,7 +394,7 @@ export default function Onboarding({ onComplete }: { onComplete?: () => void }) 
         {id === "score" && (w.resumes[0] ? <ResumeScore resume={w.resumes[0]} /> : <p className="flow-muted">Calculando…</p>)}
         {id === "score" && (
           <p className="flow-muted center">
-            Depois do cadastro, abra <b>Currículo Perfeito</b> para corrigir cada ponto e subir sua nota.
+            Depois do cadastro, abra <b>Currículo</b> para corrigir cada ponto e subir sua nota.
           </p>
         )}
 

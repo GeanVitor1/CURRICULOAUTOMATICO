@@ -597,7 +597,6 @@ export function JobDetail({
             </div>
           )}
           <div className="detail-actions">
-            {!demo&&<a className="button" href={`/app?vaga=${encodeURIComponent(job.url)}#curriculo-perfeito`}>Criar Currículo Perfeito</a>}
             {(!application || (application.resumeState?.kind === "ats" && application.status === "Requer ação manual" && !application.missingQuestions?.length)) && !demo && w.routine.enabled && w.routine.mode === "automatic" && (
               <Button disabled={a.isPending || job.match.blockers.length > 0}
                 onClick={() => a.mutate({path:"/routine/process",body:{jobId:job.id}}, {onSuccess: result => {toast(result.queued ? "Esta vaga entrou na fila automática." : "Esta vaga ainda não tem destino disponível ou a cota está ocupada."); if(result.queued){close();navigate("candidaturas");}}})}>

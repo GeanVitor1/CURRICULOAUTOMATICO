@@ -56,7 +56,6 @@ export default function SimpleResume() {
         title="Seu currículo"
         description="Envie um PDF ou DOCX, ou crie seu primeiro currículo com nossa ajuda. Adicionar o documento não inicia candidaturas."
       />
-      {resume&&<section className="interview-card"><h2>Currículo Perfeito</h2><p>Crie uma nova versão a partir do link de uma vaga, revise no editor e baixe o PDF.</p><Button onClick={()=>navigate('curriculo-perfeito')}>Criar uma versão para outra oportunidade<ArrowRight size={16}/></Button></section>}
       <section className="interview-card">
         <Mascot
           className="journey-mascot"

@@ -457,7 +457,8 @@ export type SubmissionAttempt = {
   diagnostic?: SubmissionDiagnostic;
 };
 export type Workspace = {
-  perfectResumes?: import('./perfect-resume').PerfectResume[];
+  /** Legacy data from the removed Currículo Perfeito feature. */
+  perfectResumes?: unknown[];
   /** Server-only atomic abuse budget and lease; stripped from API/export. */
   processingSecurity?: {
     buckets: Partial<Record<"upload" | "build" | "analysis", number[]>>;

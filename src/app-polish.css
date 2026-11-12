@@ -3,7 +3,6 @@
 
 /* Títulos de página: mesmo tamanho, peso e espaçamento em todas as telas. */
 #main-content .page-head h1,
-#main-content .perfect-hero h1,
 #main-content .connections-heading h1 {
   font-size: clamp(26px, 2.4vw, 31px);
   font-weight: 700;
@@ -12,29 +11,22 @@
   margin: 6px 0 8px;
 }
 #main-content .page-head p,
-#main-content .perfect-hero p,
 #main-content .connections-heading p {
   color: var(--muted, var(--text-1));
   font-size: 14px;
   line-height: 1.7;
   max-width: 640px;
 }
-#main-content .perfect-eyebrow,
 #main-content .connections-eyebrow {
   font-size: 10px;
   letter-spacing: 1.4px;
   color: var(--accent);
   font-weight: 750;
 }
-#main-content .perfect-hero,
 #main-content .connections-heading {
   padding: 4px 0 22px;
   margin: 0 0 22px;
   border-bottom: 1px solid var(--border);
-}
-/* O selo decorativo do Currículo Perfeito competia com o título. */
-#main-content .perfect-hero-note {
-  display: none;
 }
 
 /* Botão de arquivo nativo com a cara do app. */
@@ -75,7 +67,6 @@
 
 @media (max-width: 700px) {
   #main-content .page-head h1,
-  #main-content .perfect-hero h1,
   #main-content .connections-heading h1 {
     font-size: 26px;
   }
@@ -93,7 +84,6 @@
 #main-content > * > .career-flow,
 #main-content .career-flow,
 #main-content .jobs-page,
-#main-content .perfect-page,
 #main-content .connections-page {
   max-width: none;
   width: 100%;
@@ -110,101 +100,6 @@
 }
 #main-content .jobs-page .page-head {
   flex-wrap: nowrap;
-}
-
-/* ===== Currículo: nota ao lado da análise ===== */
-.resume-insights {
-  display: grid;
-  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
-  gap: 20px;
-  align-items: start;
-}
-.resume-insights-score {
-  position: sticky;
-  top: 16px;
-}
-.resume-insights-score .score-card {
-  padding: 22px 20px;
-}
-.resume-insights > .resume-review {
-  margin: 0;
-}
-
-/* ===== Plano: resumo e uso lado a lado ===== */
-.billing-overview {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 14px;
-  align-items: stretch;
-}
-.billing-overview > .billing-summary,
-.billing-overview > .billing-usage {
-  margin: 0;
-}
-.billing-overview > .billing-usage {
-  display: flex;
-  align-items: center;
-  padding: 16px 20px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface-2, var(--raised));
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-/* ===== Currículo Perfeito: prévia muda com o modelo escolhido ===== */
-.perfect-intro-paper {
-  transition: border-color 0.25s, background 0.25s;
-}
-.perfect-intro-paper.template-essencial {
-  border-top: 6px solid #202b36;
-}
-.perfect-intro-paper.template-essencial .perfect-mini-header {
-  color: #202b36;
-  border-bottom-color: #202b36;
-}
-.perfect-intro-paper.template-essencial .perfect-mini-header svg,
-.perfect-intro-paper.template-essencial .perfect-eyebrow,
-.perfect-intro-paper.template-essencial .perfect-preview-seal {
-  color: #202b36;
-}
-.perfect-intro-paper.template-essencial .perfect-skeleton b {
-  background: #c9ced3;
-}
-.perfect-intro-paper.template-moderno {
-  border-left: 8px solid #34724c;
-}
-.perfect-intro-paper.template-moderno .perfect-skeleton b {
-  background: #9fcfaf;
-}
-.perfect-intro-paper.template-executivo {
-  padding-top: 0;
-  overflow: hidden;
-}
-.perfect-intro-paper.template-executivo .perfect-eyebrow {
-  display: block;
-  margin: 0 -34px;
-  padding: 14px 34px 0;
-  background: #243d61;
-  color: #c9d6ea;
-}
-.perfect-intro-paper.template-executivo .perfect-mini-header {
-  margin: 0 -34px 27px;
-  padding: 18px 34px 22px;
-  background: #243d61;
-  color: #fff;
-  border-bottom: 0;
-  justify-content: center;
-  text-align: center;
-}
-.perfect-intro-paper.template-executivo .perfect-mini-header p {
-  color: #c9d6ea;
-}
-.perfect-intro-paper.template-executivo .perfect-skeleton b {
-  background: #b9c7dc;
-}
-.perfect-intro-paper.template-executivo .perfect-preview-seal {
-  color: #243d61;
 }
 
 /* ===== Tema claro mais suave (sem branco puro ofuscante) ===== */
