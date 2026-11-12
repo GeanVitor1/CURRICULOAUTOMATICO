@@ -91,6 +91,7 @@ export const keys: Record<Table, string[]> = {
   discoveryTasks: ["id"],
   resolutionTasks: ["id"],
   opportunityCatalog: ["key"],
+  jobReadings: ["key"],
 };
 export const collectionNames: Record<Table, string> = {
   users: "users",
@@ -108,4 +109,5 @@ export const collectionNames: Record<Table, string> = {
   discoveryTasks: "discovery_tasks",
   resolutionTasks: "resolution_tasks",
   opportunityCatalog: "opportunity_catalog",
+  jobReadings: "job_readings",
 };

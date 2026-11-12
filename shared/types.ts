@@ -210,7 +210,16 @@ export type Match = {
     signature: string;
   };
 };
+/** AI reading of a posting (server/job-reading.ts), shared across accounts. */
+export type JobReading = {
+  category: "backend" | "frontend" | "fullstack" | "mobile" | "data-engineering" | "data-analytics-bi" | "qa" | "devops-cloud" | "support-infra" | "not-it";
+  internship: boolean;
+  seniority: "estagio" | "junior" | "pleno" | "senior" | "nao-informado";
+  primaryStack: string[];
+  mandatory: string[];
+};
 export type Job = {
+  aiReading?: JobReading;
   discoverySourceIds?: string[];
   automation?: {
     correlationId: string;

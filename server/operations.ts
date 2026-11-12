@@ -83,6 +83,7 @@ import {
   DailyLimitError,
   StaleDiscoveryClaimError,
 } from "./errors";
+import { attachJobReadings } from "./job-reading";
 const now = () => new Date().toISOString();
 export function refreshMatches(w: Workspace) {
   w.routine.minScore=0;w.filters.minScore=0;
@@ -553,6 +554,8 @@ export async function discover(
       });
     }
   }
+  // Rules first, then a bounded, shared AI reading of the remaining IT postings.
+  await attachJobReadings(all);
   return mutateWorkspace(id, async (w, tx) => {
     await checkClaim(tx);
     // ATS returns published board snapshots; Jobicy's rolling feed never implies closure by absence.

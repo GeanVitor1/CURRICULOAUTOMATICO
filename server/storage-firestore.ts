@@ -114,6 +114,7 @@ function defaults(
       lastError: null,
     },
     opportunityCatalog: { fetchedAt: now, leaseToken: null, leaseUntil: null },
+    jobReadings: { model: "", createdAt: now },
     resolutionTasks: {
       requestedJobIds: [],
       status: "queued",

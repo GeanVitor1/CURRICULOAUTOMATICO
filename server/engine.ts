@@ -606,13 +606,25 @@ export function stackCoverageCompatible(job: Pick<Job, "title" | "description">,
   if (!wanted.length) return true;
   return wanted.some((s) => own.has(s) || (equivalent[s] || []).some((e) => own.has(e)));
 }
+/** With an AI reading, the candidate needs at least one of the posting's central technologies. */
+export function aiStackCompatible(stack: string[], profile: Pick<Profile, "skills" | "experience" | "headline">): boolean {
+  const ownText = [...(profile.skills || []), profile.experience || "", profile.headline || ""].join("\n");
+  const own = new Set(extractSkills(ownText).map(normalize));
+  if (!own.size) return true;
+  return stack.some((s) => {
+    const canonical = extractSkills(s).map(normalize);
+    const names = canonical.length ? canonical : [normalize(s)];
+    return names.some((n) => own.has(n) || (equivalent[extractSkills(s)[0]] || []).some((e) => own.has(normalize(e))) || includesTerm(ownText, s));
+  });
+}
 export function matchesObjectiveFilters(
   job: Job,
   profile: Profile,
   filters: Filters,
 ): boolean {
   if (job.availability === "closed") return false;
-  if (!isTechJob(job.title, job.description)) return false;
+  if (job.aiReading?.category === "not-it") return false;
+  if (!job.aiReading && !isTechJob(job.title, job.description)) return false;
   if (
     profile.acceptsPj === false &&
     /\bpj\b|pessoa juridica/.test(normalize(job.contract))
@@ -690,8 +702,12 @@ export function matchesObjectiveFilters(
     return false;
   // A stack named in the job title (e.g. "Analista de Sistemas Java") is the core of the
   // role: a generic title match must not recommend it to someone without that stack.
-  if (!titleStackCompatible(job.title, profile)) return false;
-  if (!stackCoverageCompatible(job, profile)) return false;
+  if (job.aiReading?.primaryStack.length) {
+    if (!aiStackCompatible(job.aiReading.primaryStack, profile)) return false;
+  } else {
+    if (!titleStackCompatible(job.title, profile)) return false;
+    if (!stackCoverageCompatible(job, profile)) return false;
+  }
   const assessment = analyze(job, profile, filters);
   return !assessment.blockers.some((s) =>
     /fora das suas preferencias|fora das suas preferências|fora do periodo|fora do período|abaixo do minimo|abaixo do mínimo|acima do maximo|acima do máximo|empresa bloqueada|termo excluido|termo excluído|seu filtro|seu limite|vaga nao cita|vaga não cita/.test(

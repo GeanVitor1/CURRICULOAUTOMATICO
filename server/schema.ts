@@ -203,6 +203,14 @@ export const opportunityCatalog = pgTable(
   (t) => [index("opportunity_company_idx").on(t.companyKey)],
 );
 
+/** AI reading of a public job posting, shared by every account (one paid call per posting). */
+export const jobReadings = pgTable("job_readings", {
+  key: text("key").primaryKey(),
+  reading: jsonb("reading").$type<Record<string, unknown>>().notNull(),
+  model: text("model").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const resolutionTasks = pgTable(
   "resolution_tasks",
   {
