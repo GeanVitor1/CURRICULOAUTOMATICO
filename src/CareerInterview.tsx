@@ -72,7 +72,7 @@ export function Choices({
     </div>
   );
 }
-export default function CareerInterview() {
+export default function CareerInterview({ embedded = false }: { embedded?: boolean } = {}) {
   const { w, navigate, toast } = useApp();
   const a = useAction();
   const client = useQueryClient();
@@ -288,11 +288,18 @@ export default function CareerInterview() {
       </div>
     );
   return (
-    <div className="career-flow">
-      <PageHead
-        title="Suas preferências"
-        description="Uma pergunta de cada vez. Você pode mudar as respostas depois."
-      />
+    <div className={embedded ? "sp-card sp-search" : "career-flow"}>
+      {embedded ? (
+        <header>
+          <h2>Busca de vagas</h2>
+          <p>Cargos, cidade, salário e regras que a automação usa para escolher e enviar candidaturas.</p>
+        </header>
+      ) : (
+        <PageHead
+          title="Suas preferências"
+          description="Uma pergunta de cada vez. Você pode mudar as respostas depois."
+        />
+      )}
       <section
         className="interview-card"
         aria-label="Entrevista de preferências"

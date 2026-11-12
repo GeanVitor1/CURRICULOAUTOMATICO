@@ -63,7 +63,7 @@ export function gettingStarted(w: Workspace) {
 /** Reading/importing a resume stays accessible; required facts still gate setup. */
 export function needsCandidateDetailsPage(w: Workspace, page: string) {
   return (
-    page === "preferencias" &&
+    (page === "preferencias" || page === "perfil-inteligente") &&
     !!w.resumes.length &&
     !candidateDetailsReady(w.profile)
   );

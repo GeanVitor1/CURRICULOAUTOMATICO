@@ -140,7 +140,7 @@ export function SetupProgress({ page }: { page: string }) {
     journey = gettingStarted(w);
   if (
     journey.configured ||
-    !["curriculo", "dados", "preferencias"].includes(page)
+    !["curriculo", "dados", "preferencias", "perfil-inteligente"].includes(page)
   )
     return null;
   return (
@@ -199,8 +199,8 @@ export function ProductHelp({
           ["curriculo", "Currículo", "Importar, criar ou revisar o documento."],
           ["dados", "Seus dados", "Conferir contato e respostas básicas."],
           [
-            "preferencias",
-            "Preferências",
+            "perfil-inteligente",
+            "Perfil inteligente",
             "Mudar cargos, local, salário e sites.",
           ],
           [

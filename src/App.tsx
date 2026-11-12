@@ -56,7 +56,6 @@ const pages = {
   candidaturas: lazy(() => import("./pages/Applications")),
   automacao: lazy(() => import("./SimpleAutomation")),
   curriculo: lazy(() => import("./SimpleResume")),
-  preferencias: lazy(() => import("./CareerInterview")),
   "perfil-inteligente": lazy(() => import("./SmartProfile")),
   conta: lazy(() => import("./SimpleAccount")),
   conexoes: lazy(() => import("./pages/Connections")),
@@ -65,7 +64,6 @@ const pages = {
 const nav = [
   { id: "automacao", label: "Automação", icon: Zap },
   { id: "curriculo", label: "Currículo", icon: FileText },
-  { id: "preferencias", label: "Preferências", icon: Settings2 },
   { id: "perfil-inteligente", label: "Perfil inteligente", icon: BrainCircuit },
   { id: "conexoes", label: "Conexões", icon: Link2 },
   { id: "vagas", label: "Vagas compatíveis", icon: Search },
@@ -75,7 +73,8 @@ const canonicalPage = (page: string) =>
   ({
     "visao-geral": "automacao",
     radar: "vagas",
-    perfil: "preferencias",
+    perfil: "perfil-inteligente",
+    preferencias: "perfil-inteligente",
     analises: "automacao",
     notificacoes: "candidaturas",
     configuracoes: "conta",

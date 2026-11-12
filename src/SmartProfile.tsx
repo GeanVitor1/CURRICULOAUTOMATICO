@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import CareerInterview from "./CareerInterview";
 import { BrainCircuit, Check, Pencil, Trash2 } from "lucide-react";
 import { Button, PageHead } from "./components";
 import { date, useAction, useApp } from "./lib";
@@ -190,6 +191,7 @@ export default function SmartProfile() {
       <PageHead eyebrow="PERFIL INTELIGENTE" title="Respostas que só você define"
         description="A IA redige respostas e o currículo comprova experiências. Preferências e fatos pessoais vêm só de você — sem informação, nunca respondemos “não”." />
       <PendingCard groups={pending} />
+      <CareerInterview embedded />
       <section className="sp-card">
         <header><h2>Preferências essenciais</h2><p>Responda uma vez. Usamos estas respostas em qualquer pergunta equivalente, em português ou inglês.</p></header>
         {!editingEssentials ? (

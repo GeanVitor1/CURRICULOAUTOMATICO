@@ -2,7 +2,7 @@ import {isBrowserSessionPortal} from './browser-connectors';
 
 type BrowserStorage=Pick<Storage,'getItem'|'setItem'|'removeItem'>;
 const returnKey='empregatos:login-return';
-const pages=new Set(['automacao','curriculo','dados','preferencias','candidaturas','vagas','conta','conexoes']);
+const pages=new Set(['automacao','curriculo','dados','preferencias','perfil-inteligente','candidaturas','vagas','conta','conexoes']);
 
 // Only app routes are accepted, never a caller-controlled origin or OAuth URL.
 export function safeAppReturn(value:string|null|undefined):string|null{
