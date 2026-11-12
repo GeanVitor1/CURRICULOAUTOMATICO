@@ -19,7 +19,7 @@ const questions = [
   ["Vamos começar por você.", "O básico para uma empresa entrar em contato."],
   [
     "Que trabalho você procura?",
-    "Pode ser uma profissão, uma área ou seu primeiro emprego.",
+    "Um cargo de TI, como desenvolvedor, analista de dados, QA ou suporte.",
   ],
   [
     "Conte sobre seus estudos.",
@@ -299,15 +299,15 @@ export default function ResumeBuilder({
                 autoFocus
                 value={draft.headline}
                 onChange={(e) => update("headline", e.target.value)}
-                placeholder="Ex.: Primeiro emprego em atendimento"
+                placeholder="Ex.: Desenvolvedor .NET Pleno"
                 required
               />
               <div className="suggestion-chips">
                 {[
-                  "Primeiro emprego",
-                  "Atendimento ao cliente",
-                  "Área administrativa",
-                  "Logística",
+                  "Desenvolvedor Full Stack",
+                  "Desenvolvedor Front-end",
+                  "Analista de Dados",
+                  "Estágio em TI",
                 ].map((text) => (
                   <button
                     type="button"
@@ -349,8 +349,8 @@ export default function ResumeBuilder({
                 />
               </Field>
               <p className="wizard-hint">
-                Procurando seu primeiro emprego? Tudo bem. Seu currículo pode
-                destacar sua formação e o que você sabe fazer.
+                Começando em TI? Tudo bem. Projetos pessoais, GitHub e cursos
+                mostram o que você já sabe fazer.
               </p>
             </>
           )}

@@ -229,7 +229,7 @@ function Auth({ onSuccess }: { onSuccess: () => void | Promise<void> }) {
             <span>com você.</span>
           </h2>
           <p>
-            Do primeiro emprego ao próximo desafio.
+            Do estágio ao sênior, só vagas de TI.
             <br />
             Suas oportunidades. Seu ritmo.
           </p>
@@ -660,7 +660,7 @@ export default function App() {
   useEffect(() => {
     document.title =
       route === "/"
-        ? "EmpreGatos · Seu próximo emprego"
+        ? "EmpreGatos · Candidaturas automáticas para TI"
         : `${route === "/app" ? title : route === "/register" ? "Criar conta" : route === "/login" ? "Entrar" : route === "/privacy" ? "Privacidade" : "Página não encontrada"} · EmpreGatos`;
   }, [route, title]);
   return (

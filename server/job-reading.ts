@@ -80,8 +80,9 @@ export async function attachJobReadings(jobs: Job[]) {
     const keyOf = new Map(candidates.map((j) => [j, jobReadingKey(j)]));
     const keys = [...new Set(keyOf.values())];
     const cached = new Map<string, JobReading>();
-    for (let i = 0; i < keys.length; i += 100) {
-      const rows = await store.select("jobReadings", { where: inArray("key", keys.slice(i, i + 100)) });
+    // Firestore "in" filters accept at most 30 values.
+    for (let i = 0; i < keys.length; i += 30) {
+      const rows = await store.select("jobReadings", { where: inArray("key", keys.slice(i, i + 30)) });
       for (const row of rows) cached.set(row.key, row.reading as JobReading);
     }
     const missing = [...new Map(candidates.filter((j) => !cached.has(keyOf.get(j)!)).map((j) => [keyOf.get(j)!, j])).values()];

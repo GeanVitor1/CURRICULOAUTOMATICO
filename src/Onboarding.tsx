@@ -42,8 +42,10 @@ type Answers = {
 type Progress = { step: number; completed: boolean; answers: Partial<Answers> };
 
 const AREAS = [
-  "Primeiro emprego", "Atendimento", "Administrativo", "Vendas",
-  "Logística", "Saúde", "Educação", "Tecnologia", "Financeiro", "Marketing",
+  // Produto focado em TI: as áreas sugeridas são cargos de tecnologia.
+  "Desenvolvedor .NET", "Desenvolvedor Java", "Desenvolvedor Front-end", "Desenvolvedor Full Stack",
+  "Desenvolvedor Python", "Desenvolvedor PHP", "Desenvolvedor Mobile", "Analista de Dados",
+  "Analista de BI", "Analista de QA", "DevOps", "Analista de Suporte", "Estágio em TI",
 ];
 const SENIORITY = [
   ["Primeiro emprego", "Ainda não trabalhei com carteira assinada"],
