@@ -507,6 +507,44 @@ export function matchesRoleTitle(title: string, titles: string[], headline = "")
       .every((token) => actual.includes(token)),
   ) || roleFamilies.some((family) => family.test(actual) && family.test(desired));
 }
+const titleStacks: [string, string[]][] = [
+  ["Java", ["Java", "Spring", "Kotlin"]],
+  ["Spring", ["Java", "Spring"]],
+  ["Kotlin", ["Kotlin", "Java", "Android"]],
+  [".NET", [".NET", "C#", "ASP.NET Core"]],
+  ["C#", ["C#", ".NET"]],
+  ["Python", ["Python", "Django", "Flask", "FastAPI"]],
+  ["PHP", ["PHP", "Laravel"]],
+  ["Laravel", ["PHP", "Laravel"]],
+  ["Ruby", ["Ruby", "Rails"]],
+  ["Golang", ["Golang", "Go"]],
+  ["Node.js", ["Node.js", "NodeJS", "JavaScript", "TypeScript"]],
+  ["React", ["React", "React Native"]],
+  ["React Native", ["React Native", "React"]],
+  ["Angular", ["Angular"]],
+  ["Vue", ["Vue", "Vue.js"]],
+  ["Flutter", ["Flutter", "Dart"]],
+  ["Swift", ["Swift", "iOS"]],
+  ["iOS", ["iOS", "Swift"]],
+  ["Android", ["Android", "Kotlin", "Java"]],
+  ["Delphi", ["Delphi"]],
+  ["COBOL", ["COBOL"]],
+  ["ABAP", ["ABAP", "SAP"]],
+  ["Salesforce", ["Salesforce"]],
+  ["Elixir", ["Elixir"]],
+  ["Scala", ["Scala"]],
+  ["Rust", ["Rust"]],
+  ["Oracle", ["Oracle", "PL/SQL"]],
+];
+/** True when every technology named in the title is backed by the candidate's own skills or experience. */
+export function titleStackCompatible(title: string, profile: Pick<Profile, "skills" | "experience" | "headline">): boolean {
+  const own = [...(profile.skills || []), profile.experience || "", profile.headline || ""].join(" \n ");
+  // Without any technical evidence yet (resume not read), keep the job instead of guessing.
+  if (!extractSkills(own).length) return true;
+  return titleStacks
+    .filter(([term]) => includesTerm(title, term))
+    .every(([, accepted]) => accepted.some((skill) => includesTerm(own, skill)));
+}
 export function matchesObjectiveFilters(
   job: Job,
   profile: Profile,
@@ -588,6 +626,9 @@ export function matchesObjectiveFilters(
     )
   )
     return false;
+  // A stack named in the job title (e.g. "Analista de Sistemas Java") is the core of the
+  // role: a generic title match must not recommend it to someone without that stack.
+  if (!titleStackCompatible(job.title, profile)) return false;
   const assessment = analyze(job, profile, filters);
   return !assessment.blockers.some((s) =>
     /fora das suas preferencias|fora das suas preferências|fora do periodo|fora do período|abaixo do minimo|abaixo do mínimo|acima do maximo|acima do máximo|empresa bloqueada|termo excluido|termo excluído|seu filtro|seu limite|vaga nao cita|vaga não cita/.test(
