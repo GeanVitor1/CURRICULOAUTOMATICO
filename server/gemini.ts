@@ -40,6 +40,7 @@ export async function generateGemini(
     instructions?: string;
     schema?: Record<string, unknown>;
     search?: boolean;
+    temperature?: number;
   } = {},
 ) {
   if (!geminiConfigured())
@@ -67,7 +68,7 @@ export async function generateGemini(
             : {}),
           ...(options.search ? { tools: [{ google_search: {} }] } : {}),
           generationConfig: {
-            temperature: 0,
+            temperature: options.temperature ?? 0,
             maxOutputTokens: 8192,
             thinkingConfig: model.startsWith("gemini-3")
               ? { thinkingLevel: "low" }
@@ -119,7 +120,7 @@ export async function generateGemini(
   const result = JSON.parse(raw);
   const candidate = result.candidates?.[0];
   if (candidate?.finishReason !== "STOP")
-    throw new Error("Gemini não concluiu a resposta.");
+    throw new Error(`Gemini não concluiu a resposta (${candidate?.finishReason || "sem candidato"}).`);
   const text = (candidate.content?.parts || [])
     .filter((p: any) => !p.thought)
     .map((p: any) => p.text || "")

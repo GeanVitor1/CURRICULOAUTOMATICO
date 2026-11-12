@@ -6,7 +6,7 @@
   "functions": {
     "api/server.mjs": {
       "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs,dist-server/ats-browser-runner.mjs,dist-server/document-parser-worker.mjs}",
-      "maxDuration": 60
+      "maxDuration": 180
     },
     "api/search-worker.mjs": {
       "includeFiles": "{migrations/**,dist-server/portal-cloud-runner.mjs}",

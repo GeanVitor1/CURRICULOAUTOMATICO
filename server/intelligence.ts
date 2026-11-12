@@ -181,8 +181,13 @@ export async function generatePrivateDocument(userId:string,prompt:string,instru
   let result:unknown;
   if(config.provider==='gemini'){
    if(!geminiConfigured())throw new RequestError('A conexão de IA está indisponível. Confira as configurações.');
-   const response=await limited(()=>generateGemini(prompt,{model:config.model,instructions,schema:jsonSchema}));
-   stats.tokens+=Math.max(0,response.tokens);result=JSON.parse(response.text);
+   // Gemini occasionally degenerates into repetition until MAX_TOKENS; retry with a little variation.
+   for(let attempt=0;;attempt++){
+    try{
+     const response=await limited(()=>generateGemini(prompt,{model:config.model,instructions,schema:jsonSchema,temperature:attempt?0.3*attempt:0}));
+     stats.tokens+=Math.max(0,response.tokens);result=schema.parse(JSON.parse(response.text));break;
+    }catch(error){if(attempt>=2)throw error;console.warn('perfect-resume gemini attempt failed:',error instanceof Error?error.message.slice(0,160):'erro');}
+   }
   }else if(config.provider==='zen'){
    if(!zenKey()||!(await listZenModels()).some(m=>m.id===config.model&&m.resumeEligible))throw new RequestError('Escolha um modelo disponível para currículos nas configurações de IA.');
    const response=await requestIntelligence(`${zenBase}/chat/completions`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${zenKey()}`},body:JSON.stringify({model:config.model,stream:false,temperature:0,max_tokens:6500,response_format:{type:'json_object'},messages:[{role:'system',content:instructions+'\nEsquema: '+JSON.stringify(jsonSchema)},{role:'user',content:prompt}]})});
