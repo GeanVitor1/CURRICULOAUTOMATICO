@@ -40,9 +40,41 @@ export function evaluate(debug = false) {
   return { tp, fp, fn, precision, recall, errors };
 }
 
-if (process.argv[1]?.includes("evaluate-it-matching")) {
+if (process.argv[1]?.includes("evaluate-it-matching") && !process.argv.includes("--real")) {
   const r = evaluate(process.argv.includes("--debug"));
   console.log(r.errors.join("\n") || "Sem erros");
   console.log(`\nAcertos: ${r.tp} | Recomendações erradas: ${r.fp} | Vagas boas perdidas: ${r.fn}`);
   console.log(`Precisão: ${(r.precision * 100).toFixed(0)}% | Cobertura: ${(r.recall * 100).toFixed(0)}%`);
+}
+
+/** Mesma medição com vagas reais coletadas da Gupy: npx tsx scripts/evaluate-it-matching.ts --real */
+export async function evaluateReal(debug = false) {
+  const { realLabels } = await import("../tests/fixtures/real-it-labels");
+  const raw = (await import("../tests/fixtures/real-it-jobs.json", { with: { type: "json" } })).default as { title: string; description: string; workplaceType?: string }[];
+  const jobs = raw.map((r, i) => toJob({ id: String(i), title: r.title, description: (r.description || "").replace(/<[^>]+>|&nbsp;/g, " ") }));
+  let tp = 0, fp = 0, fn = 0;
+  const errors: string[] = [];
+  for (const p of benchProfiles) {
+    const profile = { ...defaultProfile, location: "Ilhéus, BA", ...parseResume(p.resume), level: p.level || "Pleno", confirmed: true } as Profile;
+    const filters = { ...defaultFilters, titles: p.titles, modalities: [], locations: [], contracts: [] };
+    jobs.forEach((job, i) => {
+      const label = realLabels[i];
+      if (label === "skip" || !label) return;
+      const blockers = analyze(job, profile, filters).blockers;
+      const recommended = matchesObjectiveFilters(job, profile, filters) && blockers.length === 0;
+      const wanted = label.includes(p.id);
+      const why = debug ? `  [${blockers.join(" / ")}]` : "";
+      if (recommended && wanted) tp++;
+      else if (recommended) { fp++; errors.push(`RECOMENDOU ERRADO  ${p.id} -> #${i} ${job.title}${why}`); }
+      else if (wanted) { fn++; errors.push(`PERDEU VAGA BOA    ${p.id} -> #${i} ${job.title}${why}`); }
+    });
+  }
+  return { tp, fp, fn, precision: tp / Math.max(1, tp + fp), recall: tp / Math.max(1, tp + fn), errors };
+}
+if (process.argv.includes("--real")) {
+  evaluateReal(process.argv.includes("--debug")).then((r) => {
+    console.log(r.errors.join("\n") || "Sem erros");
+    console.log(`\n[REAL] Acertos: ${r.tp} | Recomendações erradas: ${r.fp} | Vagas boas perdidas: ${r.fn}`);
+    console.log(`[REAL] Precisão: ${(r.precision * 100).toFixed(0)}% | Cobertura: ${(r.recall * 100).toFixed(0)}%`);
+  });
 }

@@ -37,7 +37,7 @@ describe('Quickin discovery for every candidate profession',()=>{
   vi.stubEnv('DISCOVERY_QUICKIN_ADDITIONAL_BOARDS',JSON.stringify([{board:'retail',company:'Comércio'},{board:'employer',company:'Duplicada'}]));
   expect(configuredQuickinBoards().map(s=>s.board)).toEqual(['employer','retail']);
  });
- it.each(['Analista de Dados','Desenvolvedor Java','Analista de Suporte','Engenheiro de Software','QA Analyst','Desenvolvedor .NET'])(
+ it.each(['Analista de Dados','Desenvolvedor Java','Analista de Suporte Técnico','Engenheiro de Software','QA Analyst','Desenvolvedor .NET'])(
   'retains the actual publication for %s',async title=>{
    const read=vi.fn(async(url:string)=>url.includes('api.quickin.io')?listing(url,[entry(1,title)]):publication(1,title));
    const result=await discoverQuickinBoard(source,workspace(title),read);

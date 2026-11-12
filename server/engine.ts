@@ -174,7 +174,12 @@ const vocabulary: Record<string, RegExp> = {
 };
 const nonTechSkills = new Set(["Enfermagem", "Cuidados com pacientes", "Educação", "Eletricidade", "Mecânica", "Condução de veículos", "Limpeza", "Cozinha"]);
 /** Technical skills the job asks for, excluding generic basics that every developer lists. */
-const genericTech = new Set(["Git", "APIs REST", "HTML", "CSS", "Excel", "SQL", "Linux", "CI/CD", "Docker", "Bootstrap", "jQuery", "Figma", "Postman"]);
+const genericTech = new Set(["Git", "APIs REST", "HTML", "CSS", "Excel", "SQL", "Linux", "CI/CD", "Docker", "Bootstrap", "jQuery", "Figma", "Postman", "Testes automatizados", "Redes"]);
+/** Only specific technologies can block an IT application; trade vocabulary and basics never do. */
+export function isBlockingTechSkill(skill: string): boolean {
+  const keys = Object.keys(vocabulary);
+  return keys.includes(skill) ? keys.indexOf(skill) >= keys.indexOf("C#") && !genericTech.has(skill) && !nonTechSkills.has(skill) : true;
+}
 export function coreTechSkills(text: string): string[] {
   return extractSkills(text).filter((s) => !genericTech.has(s) && !nonTechSkills.has(s) && Object.keys(vocabulary).indexOf(s) > Object.keys(vocabulary).indexOf("Excel"));
 }
@@ -298,7 +303,10 @@ const roleFamilies = [
   /recepcion|administrativ|secretari|office assistant/,
   /marketing|growth|social media|publicidade|comunicacao/,
   /\brh\b|recursos humanos|human resources|recruiter|recrut|talent/,
-  /\bdata\b|dados|\bbi\b|business intelligence/,
+  /\bdata\b|dados|\bbi\b|business intelligence|power bi/,
+  /devops|\bsre\b|cloud|plataforma|infraestrutura|infra\b/,
+  /\bqa\b|quality|qualidade de software|\btest|\btester\b/,
+  /suporte|help ?desk|service desk|infraestrutura|redes/,
   /operac|operations|logistic|supply chain|estoqu|almoxarif|producao/,
   /saude|health|enferme|nurs|medic|physician|terapeut|fisioterap/,
   /professor|teacher|educa|instrutor|instructor/,
@@ -564,12 +572,19 @@ const titleStacks: [string, string[]][] = [
   ["Rust", ["Rust"]],
   ["Oracle", ["Oracle", "PL/SQL"]],
 ];
-const techRoleTitle =
-  /\b(?:desenvolv\w*|developer|dev|programador\w*|software|engenheir\w* (?:de )?(?:software|dados|data|computacao|machine learning|ml|devops|cloud|sistemas|qa|testes|plataforma|confiabilidade|seguranca)|engineer|analista (?:de )?(?:sistemas|desenvolvimento|dados|bi|qa|testes|infraestrutura|infra|suporte|seguranca|redes|ti|devops|cloud|governanca de ti|banco de dados)|arquitet\w* (?:de )?(?:software|solucoes|sistemas|cloud|dados)|back.?end|front.?end|full.?stack|mobile|android|ios|devops|sre|cloud|qa|quality assurance|tester|testes|dados|data|bi|business intelligence|machine learning|inteligencia artificial|\bia\b|\bai\b|cientista de dados|dba|banco de dados|infraestrutura|infra|redes|suporte (?:tecnico|de ti|n[1-3])|help ?desk|service desk|tecnico de (?:informatica|ti|suporte)|seguranca da informacao|ciberseguranca|cybersecurity|\bti\b|\bit\b|tecnologia|sistemas|scrum master|product owner|tech lead|ux|ui|salesforce|sap|abap|erp|protheus|power bi|java|python|php|react|angular|node|golang|kotlin|flutter)\b/;
+// Titles that are IT on their own.
+const strongTechTitle =
+  /\b(?:desenvolvedor\w*|developer|programador\w*(?! de manutencao)|software|engenheir\w* (?:de )?(?:software|dados|data|computacao|machine learning|ml|devops|cloud|qa|testes|plataforma|confiabilidade)|engineer|analista (?:de )?(?:sistemas|desenvolvimento|dados|bi|qa|testes|seguranca da informacao|redes|ti|devops|cloud|banco de dados|suporte (?:tecnico|de ti)|infraestrutura de ti)|arquitet\w* (?:de )?(?:software|solucoes|sistemas|cloud|dados)|back.?end|front.?end|full.?stack|mobile|android|ios|devops|sre|qa|quality assurance|tester|cientista de dados|data scien\w*|dba|help ?desk|service desk|suporte (?:tecnico|de ti|n[1-3])|tecnico de (?:informatica|ti|suporte)|seguranca da informacao|ciberseguranca|cybersecurity|\bti\b|tecnologia da informacao|scrum master|tech lead|power bi|business intelligence|machine learning|java|python|php|react|angular|node|golang|kotlin|flutter|salesforce|abap)\b/;
+// Titles that are IT only when the posting itself asks for technology.
+const weakTechTitle = /\b(?:desenvolv\w*|estagi\w*|infraestrutura|infra|suporte|sistemas|dados|data|tecnologia|banco de dados|bi|cloud|redes|seguranca|programa\w*|analista|tecnico|it)\b/;
 /** The product only serves technology careers; non-IT postings are never recommended. */
-export function isTechJob(title: string): boolean {
+export function isTechJob(title: string, description = ""): boolean {
   const t = normalize(title);
-  return techRoleTitle.test(t) || /(?:^|[^a-z0-9])(?:\.net|c#)(?=$|[^a-z0-9])/.test(t);
+  if (strongTechTitle.test(t) || /(?:^|[^a-z0-9])(?:\.net|c#)(?=$|[^a-z0-9])/.test(t)) return true;
+  if (!weakTechTitle.test(t)) return false;
+  const keys = Object.keys(vocabulary);
+  return extractSkills(description).some((s) => keys.indexOf(s) >= keys.indexOf("C#")) ||
+    /linguagem de programacao|desenvolvimento de software|logica de programacao/.test(normalize(description));
 }
 /** True when every technology named in the title is backed by the candidate's own skills or experience. */
 export function titleStackCompatible(title: string, profile: Pick<Profile, "skills" | "experience" | "headline">): boolean {
@@ -597,7 +612,7 @@ export function matchesObjectiveFilters(
   filters: Filters,
 ): boolean {
   if (job.availability === "closed") return false;
-  if (!isTechJob(job.title)) return false;
+  if (!isTechJob(job.title, job.description)) return false;
   if (
     profile.acceptsPj === false &&
     /\bpj\b|pessoa juridica/.test(normalize(job.contract))
@@ -854,11 +869,18 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     blockers.push('Senioridade exigida ainda não confirmada no perfil.');
   if (/pleno|s[eê]nior|especialista/i.test(job.level) && /est[aá]gi|aprendiz|primeiro emprego|trainee/i.test(profile.level || ''))
     blockers.push('Senioridade exigida acima do seu nível atual.');
+  if (/est[aá]gi/i.test(profile.level || '') && !/estagi|trainee|aprendiz|intern/.test(normalize(job.title + ' ' + job.level)))
+    blockers.push('Seu perfil é de estágio; esta vaga não é de estágio.');
   if (!profile.skills.length)
     gaps.push("Confira suas competências e os requisitos publicados.");
   if (!job.skills.length)
     gaps.push("A fonte não identificou competências; revise a descrição.");
-  for (const required of [...job.requiredSkills, ...filters.requiredSkills]) {
+  // Long "mandatory" lists in real postings work as wish lists: with 3+ items, block only
+  // when the candidate covers less than half of them. Short, explicit requirements still block.
+  const publisherRequired = job.requiredSkills.filter(isBlockingTechSkill);
+  const coveredRequired = publisherRequired.filter((s) => known.has(normalize(s))).length;
+  const wishList = publisherRequired.length >= 3 && coveredRequired / publisherRequired.length >= 0.5;
+  for (const required of [...(wishList ? [] : publisherRequired), ...filters.requiredSkills]) {
     if (!known.has(normalize(required)))
       blockers.push(`Competência indispensável não confirmada: ${required}.`);
   }

@@ -1,5 +1,5 @@
 import {load} from 'cheerio';
-import {extractSkills} from './engine';
+import {extractSkills,isBlockingTechSkill} from './engine';
 import {createHash} from 'node:crypto';
 const cache=new Map<string,string[]>();
 const optional=/desejav|diferencial|opcional|preferencial|nice to have|preferred|nao (?:e |sao )?(?:necessari|exig|obrigat)|not (?:required|mandatory)/;
@@ -37,7 +37,7 @@ export function mandatoryRequirementLines(html:string){
 }
 export function mandatorySkillGroups(html:string){
  return mandatoryRequirementLines(html).flatMap(line=>line.split(/\s*(?:,|\be\b|\band\b|&)\s*/i).flatMap(clause=>{
-  const skills=extractSkills(clause);if(!skills.length)return [];
+  const skills=extractSkills(clause).filter(isBlockingTechSkill);if(!skills.length)return [];
   return /\bou\b|\bor\b/i.test(clause)?[skills]:skills.map(skill=>[skill]);
  }));
 }
