@@ -48,10 +48,15 @@ if (process.argv[1]?.includes("evaluate-it-matching") && !process.argv.includes(
 }
 
 /** Mesma medição com vagas reais coletadas da Gupy: npx tsx scripts/evaluate-it-matching.ts --real */
-export async function evaluateReal(debug = false) {
+export async function evaluateReal(debug = false, withAi = false) {
   const { realLabels } = await import("../tests/fixtures/real-it-labels");
   const raw = (await import("../tests/fixtures/real-it-jobs.json", { with: { type: "json" } })).default as { title: string; description: string; workplaceType?: string }[];
   const jobs = raw.map((r, i) => toJob({ id: String(i), title: r.title, description: (r.description || "").replace(/<[^>]+>|&nbsp;/g, " ") }));
+  if (withAi) {
+    const { existsSync, readFileSync } = await import("node:fs");
+    const cache = existsSync("scripts/.ai-cache.json") ? JSON.parse(readFileSync("scripts/.ai-cache.json", "utf8")) : {};
+    jobs.forEach((j, i) => { const r = cache[`job:${i}`]?.value; if (r) j.aiReading = r; });
+  }
   let tp = 0, fp = 0, fn = 0;
   const errors: string[] = [];
   for (const p of benchProfiles) {
@@ -72,7 +77,7 @@ export async function evaluateReal(debug = false) {
   return { tp, fp, fn, precision: tp / Math.max(1, tp + fp), recall: tp / Math.max(1, tp + fn), errors };
 }
 if (process.argv.includes("--real")) {
-  evaluateReal(process.argv.includes("--debug")).then((r) => {
+  evaluateReal(process.argv.includes("--debug"), process.argv.includes("--ai")).then((r) => {
     console.log(r.errors.join("\n") || "Sem erros");
     console.log(`\n[REAL] Acertos: ${r.tp} | Recomendações erradas: ${r.fp} | Vagas boas perdidas: ${r.fn}`);
     console.log(`[REAL] Precisão: ${(r.precision * 100).toFixed(0)}% | Cobertura: ${(r.recall * 100).toFixed(0)}%`);

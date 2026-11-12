@@ -70,7 +70,8 @@ export async function generateGemini(
           generationConfig: {
             temperature: options.temperature ?? 0,
             maxOutputTokens: 8192,
-            thinkingConfig: model.startsWith("gemini-3")
+            // Gemini 3+ (and the "-latest" aliases that point to it) reject thinkingBudget.
+            thinkingConfig: /^gemini-(?:[3-9]|.*-latest$)/.test(model)
               ? { thinkingLevel: "low" }
               : { thinkingBudget: 0 },
             ...(options.schema

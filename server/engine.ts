@@ -624,7 +624,7 @@ export function matchesObjectiveFilters(
 ): boolean {
   if (job.availability === "closed") return false;
   if (job.aiReading?.category === "not-it") return false;
-  if (!job.aiReading && !isTechJob(job.title, job.description)) return false;
+  if (!isTechJob(job.title, job.description)) return false;
   if (
     profile.acceptsPj === false &&
     /\bpj\b|pessoa juridica/.test(normalize(job.contract))
@@ -702,12 +702,10 @@ export function matchesObjectiveFilters(
     return false;
   // A stack named in the job title (e.g. "Analista de Sistemas Java") is the core of the
   // role: a generic title match must not recommend it to someone without that stack.
-  if (job.aiReading?.primaryStack.length) {
-    if (!aiStackCompatible(job.aiReading.primaryStack, profile)) return false;
-  } else {
-    if (!titleStackCompatible(job.title, profile)) return false;
-    if (!stackCoverageCompatible(job, profile)) return false;
-  }
+  // The AI reading only adds evidence: it can veto a job, never loosen the rules.
+  if (!titleStackCompatible(job.title, profile)) return false;
+  if (!stackCoverageCompatible(job, profile)) return false;
+  if (job.aiReading?.primaryStack.length && !aiStackCompatible(job.aiReading.primaryStack, profile)) return false;
   const assessment = analyze(job, profile, filters);
   return !assessment.blockers.some((s) =>
     /fora das suas preferencias|fora das suas preferências|fora do periodo|fora do período|abaixo do minimo|abaixo do mínimo|acima do maximo|acima do máximo|empresa bloqueada|termo excluido|termo excluído|seu filtro|seu limite|vaga nao cita|vaga não cita/.test(

@@ -21,7 +21,8 @@ export const jobReadingSchema = z.object({
   primaryStack: z.array(z.string().max(60)).max(8),
   mandatory: z.array(z.string().max(60)).max(12),
 });
-const batchSchema = z.object({ items: z.array(jobReadingSchema.extend({ id: z.string().max(20) })).max(10) });
+// The model sometimes repeats items; accept a few extra and keep only the requested ids.
+const batchSchema = z.object({ items: z.array(jobReadingSchema.extend({ id: z.string().max(20) })).max(30) });
 
 export const jobReadingInstructions = `Você classifica vagas para uma plataforma de candidaturas em TI. Responda só com JSON.
 Para CADA vaga recebida, devolva um item com o mesmo "id".
@@ -49,7 +50,9 @@ export async function readJobsBatch(items: { id: string; title: string; descript
   const response = await ask(prompt, { instructions: jobReadingInstructions, schema: z.toJSONSchema(batchSchema), temperature: 0 });
   const parsed = batchSchema.parse(JSON.parse(response.text));
   const known = new Set(items.map((i) => i.id));
-  return { readings: parsed.items.filter((i) => known.has(i.id)), tokens: response.tokens };
+  const seen = new Set<string>();
+  const readings = parsed.items.filter((i) => known.has(i.id) && !seen.has(i.id) && seen.add(i.id));
+  return { readings, tokens: response.tokens };
 }
 
 const budgetKey = () => `budget:${new Date().toISOString().slice(0, 10)}`;
