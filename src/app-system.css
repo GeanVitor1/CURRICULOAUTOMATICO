@@ -714,3 +714,58 @@
   #main-content .connections-refresh { position: static; }
   #main-content .connections-heading p { font-size: var(--eg-text-md); }
 }
+
+/* ---------- Dropdown dos selects (Chrome 135+: select customizável; outros navegadores mantêm o nativo com cores do tema) ---------- */
+#main-content select { color-scheme: light; }
+:root[data-theme="dark"] #main-content select { color-scheme: dark; }
+#main-content select option { background: #ffffff; color: #17231c; }
+:root[data-theme="dark"] #main-content select option { background: #18221c; color: #e8f0ea; }
+
+@supports (appearance: base-select) {
+  #main-content select,
+  #main-content select::picker(select) { appearance: base-select; }
+  #main-content select { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  #main-content select::picker-icon { color: #2f8a5b; transition: rotate 0.2s ease; }
+  #main-content select:open::picker-icon { rotate: 180deg; }
+  #main-content select::picker(select) {
+    margin-top: 6px;
+    padding: 6px;
+    border: 1px solid rgba(47, 138, 91, 0.22);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 18px 40px rgba(16, 40, 26, 0.16);
+    opacity: 0;
+    translate: 0 -4px;
+    transition: opacity 0.16s ease, translate 0.16s ease, overlay 0.16s allow-discrete, display 0.16s allow-discrete;
+  }
+  #main-content select:open::picker(select) { opacity: 1; translate: 0 0; }
+  @starting-style { #main-content select:open::picker(select) { opacity: 0; translate: 0 -4px; } }
+  #main-content select option {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: transparent;
+    color: #17231c;
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  #main-content select option::checkmark { color: #2f8a5b; }
+  #main-content select option:is(:hover, :focus-visible) { background: rgba(47, 138, 91, 0.1); outline: none; }
+  #main-content select option:checked { background: rgba(47, 138, 91, 0.16); font-weight: 600; }
+  #main-content select option[value=""] { color: #7b8a80; }
+
+  :root[data-theme="dark"] #main-content select::picker-icon { color: #8fd6ae; }
+  :root[data-theme="dark"] #main-content select::picker(select) {
+    background: #18221c;
+    border-color: rgba(143, 214, 174, 0.18);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.02);
+  }
+  :root[data-theme="dark"] #main-content select option { background: transparent; color: #e8f0ea; }
+  :root[data-theme="dark"] #main-content select option::checkmark { color: #8fd6ae; }
+  :root[data-theme="dark"] #main-content select option:is(:hover, :focus-visible) { background: rgba(143, 214, 174, 0.1); }
+  :root[data-theme="dark"] #main-content select option:checked { background: rgba(143, 214, 174, 0.16); color: #f2f7f3; }
+  :root[data-theme="dark"] #main-content select option[value=""] { color: #8a9a8f; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #main-content select::picker(select), #main-content select::picker-icon { transition: none; }
+}
