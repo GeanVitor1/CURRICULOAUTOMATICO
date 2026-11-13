@@ -46,7 +46,7 @@ export default function PortalConnectionFlow({portal,workspace}:{portal:BrowserS
     }else{
      const resumeId=authorizeResume.current;
      const result=await api<{ok:boolean;automatic:boolean}>(`/connections/${portal}/confirm`,{method:'POST',headers:{'X-Portal-Viewer':message.frame.viewerId},body:JSON.stringify(resumeId?{authorizeAutomation:true,profileResumeId:resumeId}:{connectionOnly:true,authorizeAutomation:false,profileResumeId:null}),signal:AbortSignal.timeout(55000)});
-     if(result.ok!==true||(!resumeId&&result.automatic!==false))throw Error('Não foi possível confirmar que a conexão foi salva. Confira o resultado em Conexões.');
+     if(result.ok!==true)throw Error('Não foi possível confirmar que a conexão foi salva. Confira o resultado em Conexões.');
     }
     if(mounted.current)finish();
    }catch(failure){if(mounted.current){setError((failure as Error).message);setSavePending(false);}}

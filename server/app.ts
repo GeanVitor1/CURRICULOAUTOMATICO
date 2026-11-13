@@ -154,7 +154,7 @@ import { prepareQuestionDrafts, savedQuestionDrafts } from "./question-drafts";
 import { withDiscoveryBudget } from "./discovery-budget";
 import { applicationPreferenceFields } from "../shared/application-preferences";
 import { resolveApplicationDestinations } from "./destination-resolver";
-import { cloudPortalEnabled } from "./portal-cloud-policy";
+import { cloudPortalCanApply, cloudPortalEnabled } from "./portal-cloud-policy";
 import { cloudPortalCommand } from "./portal-cloud";
 import {portalBrowserSessionSchema} from './portal-browser-session';
 import {sessionTransferSuspension,linkedinSessionRetestEnabled} from './session-transfer-policy';
@@ -1277,7 +1277,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     const viewerId = cloud
       ? z.string().uuid().parse(req.headers["x-portal-viewer"])
       : undefined;
-    const { profileResumeId } = z
+    let { profileResumeId } = z
       .object({ profileResumeId: z.string().max(100).nullable().default(null) })
       .parse(req.body || {});
     if (profileResumeId) {
@@ -1292,6 +1292,19 @@ export async function buildApp({ serveStatic = true } = {}) {
           authorizeAutomation: z.literal(false),
           profileResumeId: z.null(),
         }).strict().parse(req.body);
+        // An automatic routine already authorized sends: a ready workspace
+        // binds the approved resume instead of saving a send-less connection.
+        if (portal !== 'linkedin' && cloudPortalCanApply(u.id, portal)) {
+          const w = await readWorkspace(`${u.id}:live`);
+          const resumeId = w?.interview?.answers.resumeId;
+          if (
+            w?.routine.enabled && w.routine.mode === 'automatic' &&
+            w.profile.confirmed && w.interview?.completed && resumeId &&
+            w.interview.answers.sites.includes(portal) &&
+            w.resumes.some((r) => r.id === resumeId && r.approved)
+          )
+            profileResumeId = resumeId;
+        }
       } else {
         if(portal==='linkedin')throw new RequestError('A sessão do LinkedIn pode ser salva sem ativar envios. A integração de envio é separada.');
         z.object({
