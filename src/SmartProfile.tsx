@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { BrainCircuit, Check, Pencil, Play, Trash2 } from "lucide-react";
 import { candidatePortals, portals } from "../shared/portals";
 import type { InterviewAnswers } from "../shared/types";
@@ -65,13 +66,17 @@ function Check2({ checked, onChange, children }: { checked: boolean; onChange: (
   );
 }
 
-function PendingCard({ groups }: { groups: PendingGroup[] }) {
+function PendingCard({ groups: allGroups }: { groups: PendingGroup[] }) {
   const { toast } = useApp();
   const action = useAction();
+  const client = useQueryClient();
   const [values, setValues] = useState<Record<string, string>>({});
   const [sending, setSending] = useState<string | null>(null);
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [step, setStep] = useState(0);
+  const [answered, setAnswered] = useState<Set<string>>(() => new Set());
+  const groups = allGroups.filter((g) => !answered.has(g.key));
+  const unhide = (key: string) => setAnswered((s) => { const n = new Set(s); n.delete(key); return n; });
   if (!groups.length)
     return (
       <section className="sp-card sp-pending done">
@@ -83,19 +88,26 @@ function PendingCard({ groups }: { groups: PendingGroup[] }) {
   const send = (group: PendingGroup) => {
     const value = values[group.key]?.trim();
     if (!value) return;
-    setSending(group.key);
+    // Avança na hora; salva e recarrega em segundo plano.
     setNotes((n) => ({ ...n, [group.key]: "" }));
+    setAnswered((s) => new Set(s).add(group.key));
     action.mutate(
-      { path: "/pending-questions/answer", method: "POST", body: { confirmation: true, key: group.key, question: group.questions[0], value, reuse: true } },
+      { path: "/pending-questions/answer", method: "POST", invalidate: false, body: { confirmation: true, key: group.key, question: group.questions[0], value, reuse: true } },
       { onSuccess: (r: any) => {
-          const msg = r?.released
-            ? `Resposta salva. ${r.released} candidatura(s) voltaram para a fila de envio.`
-            : "Resposta salva, mas ela não corresponde a nenhuma opção desta vaga. Escolha outra opção ou edite em Outras respostas aprendidas.";
-          toast(msg);
-          setNotes((n) => ({ ...n, [group.key]: r?.released ? "" : msg }));
+          if (r?.released) toast(`Resposta salva. ${r.released} candidatura(s) voltaram para a fila de envio.`);
+          else {
+            const msg = "Resposta salva, mas ela não corresponde a nenhuma opção desta vaga. Escolha outra opção ou edite em Outras respostas aprendidas.";
+            toast(msg);
+            unhide(group.key);
+            setNotes((n) => ({ ...n, [group.key]: msg }));
+          }
+          void client.invalidateQueries({ queryKey: ["workspace"] });
+          void client.invalidateQueries({ queryKey: ["jobs"] });
         },
-        onError: (e: any) => setNotes((n) => ({ ...n, [group.key]: e?.message || "Não foi possível salvar. Tente novamente." })),
-        onSettled: () => setSending(null) },
+        onError: (e: any) => {
+          unhide(group.key);
+          setNotes((n) => ({ ...n, [group.key]: e?.message || "Não foi possível salvar. Tente novamente." }));
+        } },
     );
   };
   return (

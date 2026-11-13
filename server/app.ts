@@ -912,9 +912,12 @@ export async function buildApp({ serveStatic = true } = {}) {
   });
   const releaseAndDispatch = async (id: string, released: string[]) => {
     if (!released.length) return;
-    const { enqueueResolution } = await import("./resolution-queue");
-    await enqueueResolution(id);
-    await dispatchNextApplication(id);
+    // Em segundo plano: a resposta ao usuário não deve esperar o envio da próxima candidatura.
+    void (async () => {
+      const { enqueueResolution } = await import("./resolution-queue");
+      await enqueueResolution(id);
+      await dispatchNextApplication(id);
+    })().catch((e) => console.error("releaseAndDispatch", e));
   };
   app.get("/api/answer-memory", async (req) => {
     const { id } = await scope(req);
