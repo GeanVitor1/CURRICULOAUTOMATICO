@@ -81,7 +81,7 @@ export async function attachJobReadings(jobs: Job[]) {
   try {
     const { store } = await import("./db");
     const candidates = jobs.filter((j) => !j.aiReading && isTechJob(j.title, j.description));
-    if (!candidates.length) return;
+    if (!candidates.length) { console.log(JSON.stringify({ event: "job_reading_done", received: jobs.length, candidates: 0 })); return; }
     const keyOf = new Map(candidates.map((j) => [j, jobReadingKey(j)]));
     const keys = [...new Set(keyOf.values())];
     const cached = new Map<string, JobReading>();
@@ -108,14 +108,19 @@ export async function attachJobReadings(jobs: Job[]) {
       } catch (error) {
         const quota = /cota diária|PerDay/i.test(error instanceof Error ? error.message : "");
         await spend(1, quota).catch(() => undefined);
-        console.warn(JSON.stringify({ event: "job_reading_failed", quota }));
+        console.warn(JSON.stringify({ event: "job_reading_failed", quota, reason: (error instanceof Error ? error.message : "unknown").slice(0, 160) }));
         if (quota) break;
       }
     }
+    let attached = 0, vetoed = 0;
     for (const job of candidates) {
       const reading = cached.get(keyOf.get(job)!);
-      if (reading) job.aiReading = reading;
+      if (reading) { job.aiReading = reading; attached++; if (reading.category === "not-it") vetoed++; }
     }
+    // Success is logged too, so operators can confirm the feature without database access.
+    console.log(JSON.stringify({ event: "job_reading_done", received: jobs.length, candidates: candidates.length,
+      fromCache: candidates.length - missing.length, newlyRead: attached - (candidates.length - missing.length), attached, notIt: vetoed,
+      unread: candidates.length - attached }));
   } catch (error) {
     console.warn(JSON.stringify({ event: "job_reading_unavailable", type: error instanceof Error ? error.name : "unknown" }));
   }
