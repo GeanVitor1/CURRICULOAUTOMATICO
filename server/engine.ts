@@ -617,6 +617,13 @@ export function aiStackCompatible(stack: string[], profile: Pick<Profile, "skill
     return names.some((n) => own.has(n) || (equivalent[extractSkills(s)[0]] || []).some((e) => own.has(normalize(e))) || includesTerm(ownText, s));
   });
 }
+/** Postings reserved for people with disabilities; never applied to without the person's explicit confirmation. */
+export function isPcdExclusive(title: string, description = ""): boolean {
+  const t = normalize(title), text = normalize(title + " " + description);
+  return /(?:afirmativa|exclusiv[ao]|vagas? para)\s*(?:[(:—-]\s*)?(?:para\s+)?(?:pessoas?\s+)?(?:com\s+deficiencia|pcd)/.test(t) ||
+    /(?:^|[^a-z0-9])(?:pcd|pcds|p\.c\.d\.?)(?=$|[^a-z0-9])/.test(t) ||
+    /(?:vaga afirmativa|exclusiv[ao]|destinad[ao]s?|reservad[ao]s?|somente|apenas)\s*(?:para\s+|a\s+)?(?:pessoas?\s+)?(?:com\s+deficiencia|pcd)/.test(text);
+}
 export function matchesObjectiveFilters(
   job: Job,
   profile: Profile,
@@ -775,8 +782,7 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
     blockers: string[] = [];
   const text = normalize(job.title + " " + job.description);
   const jobTitle = normalize(job.title);
-  const affirmativePcd=/(?:afirmativa|exclusiv[ao]|vagas? para)\s*(?:[(:—-]\s*)?(?:pessoas?\s+)?(?:com\s+deficiencia|pcd)/.test(jobTitle)||
-    /(?:vaga afirmativa|exclusiv[ao])\s*(?:para\s+)?(?:pessoas?\s+)?(?:com\s+deficiencia|pcd)/.test(text);
+  const affirmativePcd=isPcdExclusive(job.title, job.description);
   if(affirmativePcd){
     const urls=[job.url,...(job.destinations||[]).map(d=>d.url)];
     const approved=profile.approvedAnswers?.some(a=>a.confirmedAt&&a.destinationUrl&&urls.includes(a.destinationUrl)&&

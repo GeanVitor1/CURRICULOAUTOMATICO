@@ -4,7 +4,7 @@ import { discoverySignal } from "./discovery-budget";
 import { z } from "zod";
 import type { Job, Workspace } from "../shared/types";
 import { isJobUrl, type PortalId } from "../shared/portals";
-import { classify, extractSkills, locationMatches, isTechJob, titleStackCompatible, stackCoverageCompatible, matchesRoleTitle } from "./engine";
+import { classify, extractSkills, locationMatches, isTechJob, titleStackCompatible, stackCoverageCompatible, matchesRoleTitle, isPcdExclusive } from "./engine";
 import { decode } from "./html";
 import { SourceError } from "./connectors";
 import { publicDiscoveryAvailable } from "./provider-capabilities";
@@ -317,6 +317,7 @@ async function readPublicPortal(
         const listed = parsed.data as { name?: string; description?: string; publishedDate?: string; jobUrl: string };
         const listedTitle = String(listed.name || ""), listedText = String(listed.description || "");
         if (knownUrls.has(listed.jobUrl)) continue;
+        if (isPcdExclusive(listedTitle, listedText)) continue;
         if (listed.publishedDate && Date.parse(listed.publishedDate) < oldest) continue;
         if (!isTechJob(listedTitle, listedText) || !titleStackCompatible(listedTitle, workspace.profile) ||
             !stackCoverageCompatible({ title: listedTitle, description: listedText }, workspace.profile) ||
