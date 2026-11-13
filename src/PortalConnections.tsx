@@ -23,6 +23,7 @@ import {
   type OfficialOAuthConnection,
 } from "../shared/official-oauth";
 import type { SiteCapability } from "./CareerInterview";
+import { InfoTip, StatusPill } from "./AutomationWidgets";
 
 type Frame = {
   image: string;
@@ -898,12 +899,15 @@ export default function PortalConnections({
                 {frame.notice}
               </p>
             )}
-            <p className="interview-help">
-              {cloud
-                ? "Após conectar e confirmar o currículo, tentaremos concluir as candidaturas compatíveis. Perguntas sem resposta ou verificações do portal ficam pendentes para você. "
-                : "A confirmação salva uma sessão autenticada. "}
-              Sua senha não será salva.
-            </p>
+            <StatusPill ok={!!frame.authenticated} okLabel="Login detectado" pendingLabel="Aguardando login" />
+            <p className="field-hint">Sua senha não será salva.</p>
+            <InfoTip summary="O que acontece depois?">
+              <p>
+                {cloud
+                  ? "Após conectar e confirmar o currículo, tentaremos concluir as candidaturas compatíveis. Perguntas sem resposta ou verificações do portal ficam pendentes para você."
+                  : "A confirmação salva uma sessão autenticada."}
+              </p>
+            </InfoTip>
             {frame.authenticated && (
               <Button
                 className="primary"

@@ -104,7 +104,7 @@ export default function SimpleAutomation() {
       {ready&&<AntigravityConnection />}
       {ready&&<details className="interview-card conversion-indicators" onToggle={e=>setShowConversion(e.currentTarget.open)}>
         <summary>Indicadores técnicos da automação</summary>
-        <p>Inventário preservado e etapas de candidatura. Um executor disponível ainda pode encontrar perguntas ou verificação humana no formulário.</p>
+        <p>Quantas vagas estão em cada etapa. Mesmo com envio disponível, o formulário ainda pode pedir respostas suas ou um captcha.</p>
         {conversion.isPending&&showConversion&&<p role="status">Consultando indicadores…</p>}
         {conversion.isError&&<p role="alert">Não foi possível consultar os indicadores agora.</p>}
         {conversion.data&&<>

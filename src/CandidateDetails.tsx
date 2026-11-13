@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Field, Mascot, PageHead } from "./components";
 import { useAction, useApp } from "./lib";
+import { InfoTip } from "./AutomationWidgets";
 
 export default function CandidateDetails() {
   const { w, navigate, toast } = useApp();
@@ -80,7 +81,7 @@ export default function CandidateDetails() {
           style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}
         >
           <h3 className="candidate-group-heading">Contato e localização</h3>
-          <p className="candidate-explanation">As empresas usam esses dados para entrar em contato. Confirme antes de continuar.</p>
+          <p className="field-hint">Usados pelas empresas para contato.</p>
           <Field label="Cidade e estado onde você mora">
             <input
               required
@@ -124,9 +125,7 @@ export default function CandidateDetails() {
               }}
             />
           </Field>
-          <p className="interview-help">
-            Se procura seu primeiro emprego na área, informe 0.
-          </p>
+          <p className="field-hint">Primeiro emprego na área? Informe 0.</p>
           <Field label="Pretensão salarial por mês (R$)">
             <input
               required={!undefinedSalary}
@@ -153,11 +152,9 @@ export default function CandidateDetails() {
             />
             Ainda não tenho pretensão salarial definida
           </label>
-          <p className="interview-help">
-            A pretensão é sua resposta para formulários. Ela não define um
-            salário mínimo para filtrar vagas. Sem um valor definido,
-            formulários que exigirem essa resposta pedirão sua participação.
-          </p>
+          <InfoTip summary="Usada só para responder formulários">
+            <p>A pretensão não filtra vagas por salário mínimo. Sem um valor definido, formulários que exigirem essa resposta pedirão sua participação.</p>
+          </InfoTip>
           <Field label="Você aceita contratação PJ?">
             <select
               required
@@ -172,7 +169,9 @@ export default function CandidateDetails() {
               <option value="false">Não aceito PJ</option>
             </select>
           </Field>
-          <p className="candidate-explanation">PJ significa pessoa jurídica, uma forma de contratação diferente de CLT. Você pode alterar essa preferência depois.</p>
+          <InfoTip summary="O que é PJ?">
+            <p>PJ significa pessoa jurídica, uma forma de contratação diferente de CLT. Você pode alterar essa preferência depois.</p>
+          </InfoTip>
           <Field label="Remuneração atual ou última e benefícios">
             <select
               required
@@ -201,11 +200,9 @@ export default function CandidateDetails() {
               />
             </Field>
           )}
-          <p className="interview-help">
-            Essa resposta é diferente da sua pretensão salarial. Ao escolher
-            “Prefiro não informar”, usaremos essa frase quando a empresa
-            perguntar sobre remuneração anterior.
-          </p>
+          <InfoTip summary="Diferente da pretensão salarial">
+            <p>Ao escolher “Prefiro não informar”, usaremos essa frase quando a empresa perguntar sobre remuneração anterior.</p>
+          </InfoTip>
           <label className="checkbox-field">
             <input
               required

@@ -34,6 +34,7 @@ export function automaticProgress(
     sent,
     usedToday,
     remaining: Math.max(0, target - Math.max(sent, usedToday || 0)),
+    blockers: automaticBlockerCounts(w),
     state: sent >= target ? "complete" : state,
     message:
       sent >= target
@@ -43,7 +44,7 @@ export function automaticProgress(
   };
 }
 
-export function automaticBlockerMessage(w: Workspace) {
+export function automaticBlockerCounts(w: Workspace) {
   const pending = w.applications.filter(
     (a) => !a.receipt && !a.submittedAt && a.status === "Requer ação manual",
   );
@@ -55,14 +56,21 @@ export function automaticBlockerMessage(w: Workspace) {
   const questions = pending.filter((a) => a.missingQuestions?.length).length;
   const uncertain=w.applications.filter(a=>a.status==='Resultado desconhecido'&&!a.receipt&&!a.submittedAt).length;
   const nonReceived=w.applications.filter(a=>a.status==='Falha no envio'&&a.reconciliations?.at(-1)?.outcome==='not_received'&&!a.receipt&&!a.submittedAt).length;
+  return { nonReceived, uncertain, human, questions };
+}
+
+const pl = (n: number, one: string, many: string) => (n === 1 ? one : many);
+
+export function automaticBlockerMessage(w: Workspace) {
+  const { nonReceived, uncertain, human, questions } = automaticBlockerCounts(w);
   const reasons = [
-    nonReceived ? `${nonReceived} tentativa(s) confirmada(s) pelo empregador como não recebida(s); nova tentativa exige revalidação.` : '',
-    uncertain ? `${uncertain} tentativa(s) com resultado desconhecido, sem recibo; não serão repetidas automaticamente.` : '',
+    nonReceived ? `${nonReceived} ${pl(nonReceived, "tentativa confirmada pelo empregador como não recebida", "tentativas confirmadas pelo empregador como não recebidas")}; nova tentativa exige revalidação.` : '',
+    uncertain ? `${uncertain} ${pl(uncertain, "tentativa", "tentativas")} com resultado desconhecido, sem recibo; não serão repetidas automaticamente.` : '',
     human
-      ? `${human} candidatura(s) bloqueada(s) por verificação humana no formulário.`
+      ? `${human} ${pl(human, "candidatura bloqueada", "candidaturas bloqueadas")} por verificação humana no formulário.`
       : "",
     questions
-      ? `${questions} candidatura(s) com perguntas ou consentimentos pendentes.`
+      ? `${questions} ${pl(questions, "candidatura", "candidaturas")} com perguntas ou consentimentos pendentes.`
       : "",
   ].filter(Boolean);
   if (!reasons.length) return "";
@@ -224,7 +232,7 @@ export async function continueAutomaticCycle(
   await save(
     "waiting",
     researchExhausted && remainingResearch
-      ? `O orçamento de pesquisa do dia foi atingido. ${remainingResearch} vaga(s) aguardam verificação; o progresso está salvo para o próximo agendamento. Ainda há saldo de envio.`
+      ? `O orçamento de pesquisa do dia foi atingido. ${remainingResearch} ${remainingResearch === 1 ? "vaga aguarda" : "vagas aguardam"} verificação; o progresso está salvo para o próximo agendamento. Ainda há saldo de envio.`
       : blocked
       ? `${blocked}${researchExhausted ? " Os destinos disponíveis foram verificados; ainda há saldo diário." : ""}`
       : quota

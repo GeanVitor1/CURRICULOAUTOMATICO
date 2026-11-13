@@ -138,9 +138,8 @@ export default function SimpleAccount() {
             <div>
               <h2>Você controla seus dados</h2>
               <p>
-                Baixe uma cópia do seu perfil e histórico. Para entender como
-                seus dados são usados, consulte nossa{" "}
-                <a href="/privacy">política de privacidade</a>.
+                Baixe uma cópia dos seus dados ·{" "}
+                <a href="/privacy">política de privacidade</a>
               </p>
             </div>
           </section>

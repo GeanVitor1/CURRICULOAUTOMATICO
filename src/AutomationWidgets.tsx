@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { ChevronDown, Clock, MessageCircleQuestion, Search, Send, ShieldAlert, UserCheck, XCircle } from "lucide-react";
+import { CheckCircle2, ChevronDown, Circle, Clock, Info, MessageCircleQuestion, Search, Send, ShieldAlert, UserCheck, XCircle } from "lucide-react";
 import { CountUp } from "./motion";
 import type { Workspace } from "../shared/types";
 
@@ -8,14 +8,16 @@ type Progress = NonNullable<Workspace["routine"]["progress"]>;
 /** Plural pt-BR simples para rótulos curtos. */
 export const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
-/** Extrai contagens da mensagem do servidor (texto livre) sem alterar a API. */
-function parseReasons(message: string) {
+/** Usa as contagens estruturadas do servidor; a regex sobre a frase é só fallback (progresso legado). */
+function parseReasons(progress: Progress) {
+  if (progress.blockers) return progress.blockers;
+  const message = progress.message || "";
   const num = (re: RegExp) => Number(message.match(re)?.[1] || 0);
   return {
-    nonReceived: num(/(\d+) tentativa\(s\) confirmada/),
-    uncertain: num(/(\d+) tentativa\(s\) com resultado desconhecido/),
-    human: num(/(\d+) candidatura\(s\) bloqueada/),
-    questions: num(/(\d+) candidatura\(s\) com perguntas/),
+    nonReceived: num(/(\d+) tentativas?(?:\(s\))? confirmada/),
+    uncertain: num(/(\d+) tentativas?(?:\(s\))? com resultado desconhecido/),
+    human: num(/(\d+) candidaturas?(?:\(s\))? bloqueada/),
+    questions: num(/(\d+) candidaturas?(?:\(s\))? com perguntas/),
   };
 }
 
@@ -29,7 +31,7 @@ export function fixPlurals(text: string) {
 }
 
 export function DailyProgress({ progress, onQuestions }: { progress: Progress; onQuestions: () => void }) {
-  const r = parseReasons(progress.message || "");
+  const r = parseReasons(progress);
   const pct = progress.target ? Math.min(100, Math.round((progress.sent / progress.target) * 100)) : 0;
   const chips: { key: string; n: number; label: string; icon: ReactNode; tone?: string; onClick?: () => void; hint: string }[] = [
     { key: "rem", n: progress.remaining, label: plural(progress.remaining, "restante", "restantes"), icon: <Send size={16} />, hint: "Envios ainda disponíveis hoje no seu plano." },
@@ -104,5 +106,44 @@ export function AutomationHowItWorks({ title, steps = DEFAULT_STEPS, children }:
       </button>
       {open && <div className="how-body">{children}</div>}
     </div>
+  );
+}
+
+/** Dica curta recolhível: uma linha visível, detalhes sob demanda. */
+export function InfoTip({ summary = "Ver detalhes", children }: { summary?: string; children: ReactNode }) {
+  return (
+    <details className="info-tip">
+      <summary><Info size={14} aria-hidden="true" />{summary}</summary>
+      <div className="info-tip-body">{children}</div>
+    </details>
+  );
+}
+
+export type Step = { icon: ReactNode; title: string; text?: ReactNode; done?: boolean };
+
+/** Passos numerados com ícone + título + 1 linha e estado visual. */
+export function StepList({ steps, label }: { steps: Step[]; label: string }) {
+  return (
+    <ol className="step-list" aria-label={label}>
+      {steps.map((s, i) => (
+        <li key={s.title} className={s.done ? "is-done" : ""} style={{ animationDelay: `${i * 80}ms` }}>
+          <span className="step-list-icon" aria-hidden="true">{s.done ? <CheckCircle2 size={18} /> : s.icon}</span>
+          <div>
+            <strong><span className="step-list-n">{i + 1}.</span> {s.title}</strong>
+            {s.text && <p>{s.text}</p>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/** Indicador conectado/pendente. */
+export function StatusPill({ ok, okLabel = "Conectado", pendingLabel = "Pendente" }: { ok: boolean; okLabel?: string; pendingLabel?: string }) {
+  return (
+    <span className={`status-pill ${ok ? "is-ok" : "is-pending"}`} role="status">
+      {ok ? <CheckCircle2 size={14} aria-hidden="true" /> : <Circle size={14} aria-hidden="true" />}
+      {ok ? okLabel : pendingLabel}
+    </span>
   );
 }

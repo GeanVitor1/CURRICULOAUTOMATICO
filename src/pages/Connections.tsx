@@ -8,6 +8,7 @@ import type {SiteCapability} from '../CareerInterview';
 import {browserConnectors,isBrowserSessionPortal,type BrowserSessionPortal} from '../../shared/browser-connectors';
 import ConnectionBrand from '../ConnectionBrand';
 import '../connections.css';
+import { InfoTip, StatusPill } from '../AutomationWidgets';
 
 const order:BrowserSessionPortal[]=['linkedin','gupy','infojobs','glassdoor'];
 const descriptions={linkedin:'Sua rede profissional e novas oportunidades.',gupy:'Suas oportunidades nos processos seletivos.',infojobs:'Seu perfil e suas vagas, mais perto de você.',glassdoor:'Sua conta para explorar o próximo passo.'};
@@ -38,8 +39,8 @@ export default function Connections(){
     return <article className={`connections-provider${connected?' is-connected':''}`} key={id}>
      <div className="connections-card-top"><ConnectionBrand portal={id}/><span className={`connections-state${connected?' is-connected':stale?' is-stale':''}`}>{connected?<Check size={13}/>:<span/>}{label}</span></div>
      <h2>{provider.name}</h2><p className="connections-provider-description">{descriptions[id]}</p>
-     {connected&&site?.needsResumeApproval&&<p className="connections-card-detail" role="status">Conectada, mas os envios automáticos ainda não foram liberados. Sem isso, a rotina não envia candidaturas por este site.</p>}<div className="connections-card-detail"><Clock3 size={15}/><span>{connected?(id==='linkedin'?'Login verificado neste Chrome':`Conectada em ${date(site?.connectedAt)}`):stale?'Confirme seu login para atualizar a conexão.':sites.isPending?'Conferindo o status da sua conta…':!available&&!sites.isError?'Conexão indisponível no momento.':'Conecte sua conta para começar.'}</span></div>
-     {id==='linkedin'&&<p className="connections-local-note">Verificação local. O envio automático pelo LinkedIn é separado.</p>}
+     {connected&&site?.needsResumeApproval&&<p className="connections-card-detail" role="status"><StatusPill ok={false} pendingLabel="Envios não liberados"/></p>}<div className="connections-card-detail"><Clock3 size={15}/><span>{connected?(id==='linkedin'?'Login verificado neste Chrome':`Conectada em ${date(site?.connectedAt)}`):stale?'Confirme seu login para atualizar a conexão.':sites.isPending?'Conferindo o status da sua conta…':!available&&!sites.isError?'Conexão indisponível no momento.':'Conecte sua conta para começar.'}</span></div>
+     {id==='linkedin'&&<InfoTip summary="Verificação local"><p>O envio automático pelo LinkedIn é separado.</p></InfoTip>}
      <div className="connections-card-actions">{connected&&site?.needsResumeApproval&&available?<a className="connections-connect" href={`/app?portal=${id}&flow=connections`} aria-label={`Liberar envios automáticos pelo ${provider.name}`}>Liberar envios automáticos<ArrowUpRight size={18}/></a>:connected?<span className="connections-connect is-secondary is-done" role="status"><span>Conectada</span><Check size={18}/></span>:available?<a className="connections-connect" href={`/app?portal=${id}&flow=connections`} aria-label={`Conectar ${provider.name}`}>Conectar conta<ArrowUpRight size={18}/></a>:<button className="connections-connect" disabled>{sites.isPending?'Verificando…':sites.isError?'Aguarde a verificação':'Indisponível'}</button>}{(connected||site?.sessionSaved||site?.sessionState==='local_stale')&&<button className="connections-disconnect" onClick={()=>setDisconnect(id)} aria-label={`Desconectar ${provider.name}`}><Unplug size={14}/>Desconectar</button>}</div>
     </article>;
    })}

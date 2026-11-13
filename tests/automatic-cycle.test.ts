@@ -41,13 +41,23 @@ vi.mock("../server/resolution-queue", () => ({
 import {
   automaticProgress,
   automaticBlockerMessage,
+  automaticBlockerCounts,
   continueAutomaticCycle,
 } from "../server/automatic-cycle";
 it('explica a tentativa incerta sem tratá-la como envio confirmado',()=>{
  const current=createWorkspace('Pessoa QA','qa@example.test');
  current.applications=[{status:'Resultado desconhecido',receipt:null,submittedAt:undefined} as any];
- expect(automaticBlockerMessage(current)).toContain('1 tentativa(s) com resultado desconhecido, sem recibo');
+ expect(automaticBlockerMessage(current)).toContain('1 tentativa com resultado desconhecido, sem recibo');
  expect(automaticBlockerMessage(current)).toContain('não serão repetidas automaticamente');
+ expect(automaticBlockerCounts(current)).toEqual({nonReceived:0,uncertain:1,human:0,questions:0});
+ expect(automaticProgress(current,10,'waiting','x').blockers).toEqual({nonReceived:0,uncertain:1,human:0,questions:0});
+});
+it('usa plural correto com mais de um bloqueio',()=>{
+ const current=createWorkspace('Pessoa QA','qa@example.test');
+ current.applications=[{status:'Resultado desconhecido',receipt:null},{status:'Resultado desconhecido',receipt:null}] as any;
+ const m=automaticBlockerMessage(current);
+ expect(m).toContain('2 tentativas com resultado desconhecido');
+ expect(m).not.toContain('(s)');
 });
 let w: Workspace;
 const sent = (id: string): Workspace["applications"][number] => ({
@@ -228,7 +238,7 @@ it("expõe bloqueios de formulário e cota de pesquisa sem alegar ausência de d
     state: "waiting",
   });
   expect(w.routine.progress?.message).toContain(
-    "1 candidatura(s) bloqueada(s) por verificação humana",
+    "1 candidatura bloqueada por verificação humana",
   );
   expect(w.routine.progress?.message).toContain(
     "destinos disponíveis foram verificados",

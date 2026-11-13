@@ -19,7 +19,7 @@ import type { Application } from "../../shared/types";
 
 function pendingReason(app: Application) {
   if (app.status === "Requer ação manual" && app.missingQuestions?.length)
-    return `Precisa de você: ${app.missingQuestions.length} pergunta${app.missingQuestions.length > 1 ? "s" : ""} sem resposta (${app.missingQuestions.slice(0, 2).join(" · ")}${app.missingQuestions.length > 2 ? "…" : ""})`;
+    return `${app.missingQuestions.length} pergunta${app.missingQuestions.length > 1 ? "s" : ""} sem resposta`;
   if (app.status === "Requer ação manual") return app.history.at(-1)?.message || "Precisa de uma ação sua.";
   if (app.status === "Aguardando aprovação") return "Na fila: o formulário será conferido antes do envio.";
   if (app.status === "Enviando") return "Envio em andamento.";
@@ -32,9 +32,12 @@ export default function Applications() {
   const { w, navigate } = useApp();
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [tab, setTab] = useState<"sent" | "pending">("sent");
+  const [tab, setTab] = useState<"sent" | "needs" | "progress">("sent");
   const inProgress = inProgressApplications(w.applications).sort((a, b) =>
     Number(b.status === "Requer ação manual") - Number(a.status === "Requer ação manual"));
+  const needsYou = inProgress.filter((a) => a.status === "Requer ação manual");
+  const ongoing = inProgress.filter((a) => a.status !== "Requer ação manual");
+  const listed = tab === "needs" ? needsYou : ongoing;
   const applications = w.applications.filter(confirmedApplication);
   const apps = applications.filter((app) => {
     const job = w.jobs.find((job) => job.id === app.jobId);
@@ -58,29 +61,35 @@ export default function Applications() {
         </Button>
       </PageHead>
       <div className="app-tabs" role="tablist" aria-label="Tipo de candidatura">
-        <button role="tab" aria-selected={tab === "sent"} className={tab === "sent" ? "active" : ""} onClick={() => setTab("sent")}>Enviadas ({applications.length})</button>
-        <button role="tab" aria-selected={tab === "pending"} className={tab === "pending" ? "active" : ""} onClick={() => setTab("pending")}>Precisa de você / Em andamento ({inProgress.length})</button>
+        <button role="tab" aria-selected={tab === "sent"} className={tab === "sent" ? "active" : ""} onClick={() => setTab("sent")}>Enviadas<span className="tab-count">{applications.length}</span></button>
+        <button role="tab" aria-selected={tab === "needs"} className={tab === "needs" ? "active" : ""} onClick={() => setTab("needs")}>Precisa de você<span className="tab-count">{needsYou.length}</span></button>
+        <button role="tab" aria-selected={tab === "progress"} className={tab === "progress" ? "active" : ""} onClick={() => setTab("progress")}>Em andamento<span className="tab-count">{ongoing.length}</span></button>
       </div>
-      {tab === "pending" ? (
-        inProgress.length ? (
+      {tab !== "sent" ? (
+        listed.length ? (
           <>
-            {inProgress.some((a) => a.missingQuestions?.length) && (
+            {tab === "needs" && listed.some((a) => a.missingQuestions?.length) && (
               <Button className="primary" onClick={() => navigate("perfil-inteligente")}>Responder pendências no Perfil inteligente</Button>
             )}
             <ul className="pending-apps">
-              {inProgress.map((app) => {
+              {listed.map((app) => {
                 const vacancy = w.jobs.find((item) => item.id === app.jobId);
                 return (
                   <li key={app.id}>
                     <strong>{vacancy ? `${vacancy.title} · ${vacancy.company}` : "Vaga"}</strong>
                     <span className={`badge ${app.status === "Requer ação manual" ? "amber" : "blue"}`}>{app.status}</span>
-                    <small>{pendingReason(app)}</small>
+                    <small>
+                      {pendingReason(app)}
+                      {!!app.missingQuestions?.length && app.status === "Requer ação manual" && (
+                        <> · <button type="button" className="link-button" onClick={() => navigate("perfil-inteligente")}>Responder no Perfil inteligente</button></>
+                      )}
+                    </small>
                   </li>
                 );
               })}
             </ul>
           </>
-        ) : <div className="panel"><Empty title="Nada pendente" icon={<CheckCircle2 size={28} />} description="Nenhuma candidatura aguarda você." /></div>
+        ) : <div className="panel"><Empty title={tab === "needs" ? "Nada pendente" : "Nada em andamento"} icon={<CheckCircle2 size={28} />} description={tab === "needs" ? "Nenhuma candidatura aguarda você." : "Nenhum envio em andamento agora."} /></div>
       ) : <>
       <div className="toolbar">
         <div className="search-input">

@@ -154,6 +154,8 @@ export type Routine = {
     usedToday?: number;
     target: number;
     remaining: number;
+    /** Contagens estruturadas dos bloqueios (ausente em progresso legado). */
+    blockers?: { nonReceived: number; uncertain: number; human: number; questions: number };
     state: "sending" | "searching" | "researching" | "complete" | "waiting";
     message: string;
     updatedAt: string;

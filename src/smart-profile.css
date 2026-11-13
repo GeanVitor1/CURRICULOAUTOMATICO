@@ -74,3 +74,18 @@
 
 .sp-stepper { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 .sp-stepper span { margin-right: auto; font-size: 13px; opacity: .75; }
+
+/* Chips selecionáveis (redesign) */
+.sp-choices label.sp-choice { position: relative; border-radius: 999px; padding: 8px 14px; transition: border-color var(--dur-hover) var(--ease-out), background var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out); }
+.sp-choices label.sp-choice:hover { transform: translateY(-1px); border-color: var(--eg-green); }
+.sp-choices .sp-choice input[type="radio"],
+.sp-choices .sp-choice input[type="checkbox"] { position: absolute; opacity: 0; width: 1px; height: 1px; min-width: 0; flex: 0 0 0; pointer-events: none; }
+.sp-choices label.sp-choice.selected { font-weight: 600; }
+.sp-choices label.sp-choice.selected::before { content: "✓"; font-weight: 700; }
+.sp-group { grid-column: 1 / -1; margin: 8px 0 -6px; padding-top: 14px; border-top: 1px solid var(--eg-border); display: flex; align-items: center; gap: 8px; font-size: var(--eg-text-md, 1rem); color: var(--eg-text); }
+.sp-group:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+.sp-group svg { color: var(--eg-green); }
+.sp-field input:focus-visible, .sp-field select:focus-visible { outline: none; border-color: var(--eg-green); box-shadow: var(--eg-focus); }
+@media (prefers-reduced-motion: reduce) {
+  .sp-choices label.sp-choice, .sp-choices label.sp-choice:hover { transition: none; transform: none; }
+}

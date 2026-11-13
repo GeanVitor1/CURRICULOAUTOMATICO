@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { BrainCircuit, Check, Pencil, Play, Trash2 } from "lucide-react";
+import { BrainCircuit, Briefcase, CalendarClock, Check, MapPin, Pencil, Play, Trash2, Zap } from "lucide-react";
+import { InfoTip } from "./AutomationWidgets";
 import { candidatePortals, portals } from "../shared/portals";
 import type { InterviewAnswers } from "../shared/types";
 import { useBilling } from "./Billing";
@@ -303,10 +304,10 @@ export default function SmartProfile() {
   return (
     <div className="career-flow smart-profile">
       <PageHead eyebrow="PERFIL INTELIGENTE" title="Respostas que só você define"
-        description="A IA redige respostas e o currículo comprova experiências. Preferências e fatos pessoais vêm só de você — sem informação, nunca respondemos “não”." />
+        description="Preferências e fatos pessoais vêm só de você." />
       <PendingCard groups={pending} />
       <section className="sp-card">
-        <header><h2>Preferências essenciais</h2><p>Responda uma vez. Usamos estas respostas para escolher as vagas e para preencher perguntas equivalentes, em português ou inglês.</p></header>
+        <header><h2>Preferências essenciais</h2><p>Responda uma vez; vale para escolher vagas e preencher formulários.</p><InfoTip><p>A IA redige respostas e o currículo comprova experiências. Sem informação sua, nunca respondemos “não”. As respostas valem para perguntas equivalentes em português ou inglês.</p></InfoTip></header>
         {!editingEssentials ? (
           <>
             <dl className="sp-summary">
@@ -319,6 +320,7 @@ export default function SmartProfile() {
         ) : (<>
         {!resume && <p className="sp-note">Envie seu currículo para escolher cargos, sites e ativar o envio automático. <Button onClick={() => navigate("curriculo")}>Enviar currículo</Button></p>}
         <div className="sp-grid">
+          <h3 className="sp-group"><Briefcase size={17} aria-hidden="true" /> Vagas</h3>
           {resume && <fieldset className="sp-field wide">
             <legend>Cargos que você procura</legend>
             <div className="sp-choices">
@@ -342,6 +344,7 @@ export default function SmartProfile() {
               <Check2 checked={fs.sameCityOnly} onChange={(on) => setSearch("sameCityOnly", on)}>Presencial e híbrido somente na minha cidade</Check2>
             )}
           </label>}
+          <h3 className="sp-group"><MapPin size={17} aria-hidden="true" /> Local e contrato</h3>
           <fieldset className="sp-field wide">
             <legend>Mudança de cidade</legend>
             <div className="sp-choices">
@@ -366,6 +369,7 @@ export default function SmartProfile() {
             <input inputMode="numeric" value={fs.salaryMax || ""} placeholder="Sem limite" onChange={(e) => setSearch("salaryMax", Number(e.target.value.replace(/\D/g, "")) || 0)} />
             <Check2 checked={fs.includeUnknownSalary} onChange={(on) => setSearch("includeUnknownSalary", on)}>Considerar vagas sem salário anunciado</Check2>
           </label>
+          <h3 className="sp-group"><CalendarClock size={17} aria-hidden="true" /> Disponibilidade</h3>
           <fieldset className="sp-field">
             <legend>Viagens a trabalho</legend>
             <div className="sp-choices">
@@ -392,6 +396,7 @@ export default function SmartProfile() {
             </select>
           </label>
           {resume && <>
+          <h3 className="sp-group"><Zap size={17} aria-hidden="true" /> Envio automático</h3>
           <label className="sp-field">
             <span className="sp-legend">Quando a vaga deve ter sido publicada?</span>
             <select value={fs.ageDays} onChange={(e) => setSearch("ageDays", Number(e.target.value))}>
@@ -412,7 +417,8 @@ export default function SmartProfile() {
           </label>
           <fieldset className="sp-field wide">
             <legend>Perguntas das vagas</legend>
-            <Check2 checked={form.answerAutomatically} onChange={(on) => set("answerAutomatically", on)}>Deixar a IA responder às perguntas das vagas. Verei as respostas no histórico; aceites jurídicos exigem minha autorização.</Check2>
+            <Check2 checked={form.answerAutomatically} onChange={(on) => set("answerAutomatically", on)}>Deixar a IA responder às perguntas das vagas</Check2>
+            <p className="field-hint">Respostas ficam no histórico; aceites jurídicos exigem sua autorização.</p>
           </fieldset>
           </>}
         </div>
@@ -428,7 +434,7 @@ export default function SmartProfile() {
         {extrasOpen && <><ApplicationPreferences /><ReconciledRetry /><EmailConnection /></>}
       </details>
       <section className="sp-card">
-        <header><h2>Outras respostas aprendidas</h2><p>Respostas que você deu a perguntas novas das vagas, além das preferências acima. Você pode corrigir ou excluir a qualquer momento.</p></header>
+        <header><h2>Outras respostas aprendidas</h2><p>Suas respostas a perguntas novas. Corrija ou exclua quando quiser.</p></header>
         {learned.length ? (
           <ul className="sp-memory">
             {learned.map((entry) => (
