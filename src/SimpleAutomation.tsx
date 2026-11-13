@@ -253,7 +253,7 @@ export default function SimpleAutomation() {
           </section>
           <section className="integration-info"><h3>Suas contas conectadas</h3><p>Gerencie LinkedIn, Gupy, InfoJobs e Glassdoor na sua área de Conexões.</p><Button onClick={()=>navigate('conexoes')}>Abrir conexões</Button></section>
           <div className="automation-counters">
-            <button onClick={() => navigate("vagas")}>
+            <button type="button" className="is-static" tabIndex={-1}>
               <strong>
                 {w.jobCounts?.collected ?? w.jobCounts?.total ?? 0}
               </strong>
@@ -290,10 +290,7 @@ export default function SimpleAutomation() {
                 <Search size={16} />
                 {waiting ? "Buscando…" : "Buscar agora"}
               </Button>
-              <Button onClick={() => navigate("vagas")}>
-                Ver vagas encontradas
-                <ArrowRight size={16} />
-              </Button>
+
               {w.routine.enabled && w.routine.mode === "automatic" && (
                 <Button disabled={a.isPending} onClick={() => a.mutate({path:"/routine/process"}, {onSuccess: result => toast(result.queued ? `${result.queued} candidatura(s) adicionada(s) à fila automática.` : "A rotina continuará buscando vagas com formulário compatível.")})}>
                   Processar vagas encontradas

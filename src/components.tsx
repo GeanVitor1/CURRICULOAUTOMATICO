@@ -158,7 +158,7 @@ export function DiscoveryStatus() {
         <Button onClick={() => navigate("preferencias")}>Conferir sites</Button>
       )}
       {!working && !!w.jobCounts?.excludedByFilters && (
-        <Button onClick={() => navigate("vagas")}>
+        <Button onClick={() => navigate("perfil-inteligente")}>
           Revisar filtros de vagas
         </Button>
       )}

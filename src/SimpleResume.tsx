@@ -5,7 +5,6 @@ import { Button, Field, Mascot, PageHead } from "./components";
 import { useAction, useApp } from "./lib";
 import ResumeBuilder from "./ResumeBuilder";
 import IntelligenceControl from "./IntelligenceControl";
-import ResumeReviewPanel from "./ResumeReviewPanel";
 import ResumeScore from "./ResumeScore";
 
 export default function SimpleResume() {
@@ -188,7 +187,6 @@ export default function SimpleResume() {
       </section>      {resume && (
         <div className={resume.review ? "resume-insights" : undefined}>
           {resume.review && <div className="resume-insights-score"><ResumeScore resume={resume} /></div>}
-          <ResumeReviewPanel resume={resume} showTargets />
         </div>
       )}
     </div>

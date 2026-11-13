@@ -578,3 +578,4 @@
     transform: none;
   }
 }
+.automation-counters button.is-static { pointer-events: none; }

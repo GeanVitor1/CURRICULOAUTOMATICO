@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import "./smart-profile.css";
 import { attentionApplications } from "../shared/confirmed-applications";
+import { groupPendingQuestions } from "../shared/answer-topics";
 import {SetupProgress,ProductHelp} from './GettingStarted';
 import {needsCandidateDetailsPage} from '../shared/getting-started';
 import {authEntryPath,clearAppReturn,pendingAppReturn,rememberAppReturn,safeAppReturn,saveTheme,storedTheme} from '../shared/browser-navigation';
@@ -52,7 +53,6 @@ const PortalConnectionFlow = lazy(() => import("./PortalConnectionFlow"));
 const CandidateDetails = lazy(() => import("./CandidateDetails"));
 const pages = {
   dados: CandidateDetails,
-  vagas: lazy(() => import("./pages/Jobs")),
   candidaturas: lazy(() => import("./pages/Applications")),
   automacao: lazy(() => import("./SimpleAutomation")),
   curriculo: lazy(() => import("./SimpleResume")),
@@ -66,13 +66,13 @@ const nav = [
   { id: "curriculo", label: "Currículo", icon: FileText },
   { id: "perfil-inteligente", label: "Perfil inteligente", icon: BrainCircuit },
   { id: "conexoes", label: "Conexões", icon: Link2 },
-  { id: "vagas", label: "Vagas compatíveis", icon: Search },
   { id: "candidaturas", label: "Candidaturas", icon: BriefcaseBusiness },
 ];
 const canonicalPage = (page: string) =>
   ({
     "visao-geral": "automacao",
-    radar: "vagas",
+    radar: "automacao",
+    vagas: "automacao",
     perfil: "perfil-inteligente",
     preferencias: "perfil-inteligente",
     analises: "automacao",
@@ -651,6 +651,7 @@ export default function App() {
   }, [toastMessage]);
   const w = workspace.data;
   const attentionCount = w ? attentionApplications(w.applications).length : 0;
+  const pendingAnswers = w ? groupPendingQuestions(w.applications).length : 0;
   const displayPage=w&&needsCandidateDetailsPage(w,page)?'dados':page;
   const remotePortal = new URLSearchParams(location.search).get("portal");
   const Page = pages[page as keyof typeof pages] || pages.automacao;
@@ -789,6 +790,7 @@ export default function App() {
                   <item.icon size={18} />
                   <span>{item.label}</span>
                   {item.id === "candidaturas" && !!attentionCount && <span className="nav-count" aria-label={`${attentionCount} precisam de você`}>{attentionCount}</span>}
+                  {item.id === "perfil-inteligente" && !!pendingAnswers && <span className="nav-count" aria-label={`${pendingAnswers} respostas pendentes`}>{pendingAnswers}</span>}
                 </button>
               ))}
             </nav>

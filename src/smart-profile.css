@@ -71,3 +71,6 @@
 .sp-field > .sp-choice { margin-top: 8px; }
 .smart-profile > .interview-extra { margin-top: 18px; }
 
+
+.sp-stepper { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.sp-stepper span { margin-right: auto; font-size: 13px; opacity: .75; }

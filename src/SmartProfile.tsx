@@ -71,6 +71,7 @@ function PendingCard({ groups }: { groups: PendingGroup[] }) {
   const [values, setValues] = useState<Record<string, string>>({});
   const [sending, setSending] = useState<string | null>(null);
   const [notes, setNotes] = useState<Record<string, string>>({});
+  const [step, setStep] = useState(0);
   if (!groups.length)
     return (
       <section className="sp-card sp-pending done">
@@ -101,10 +102,10 @@ function PendingCard({ groups }: { groups: PendingGroup[] }) {
     <section className="sp-card sp-pending">
       <header>
         <h2>Só precisamos de {groups.length} resposta{groups.length > 1 ? "s" : ""}</h2>
-        <p>Elas destravam {total} candidatura{total > 1 ? "s" : ""}. Responda uma vez e reutilizamos em vagas equivalentes.</p>
+        <p>Elas destravam {total} candidatura{total > 1 ? "s" : ""}. Uma pergunta por vez; respondemos as vagas equivalentes com a mesma resposta.</p>
       </header>
       <ol className="sp-groups">
-        {groups.map((group) => {
+        {[groups[Math.min(step, groups.length - 1)]].map((group) => {
           const isYesNo = group.topic && yesNoTopics.includes(group.topic);
           const current = values[group.key] || "";
           const set = (v: string) => setValues((s) => ({ ...s, [group.key]: v }));
@@ -132,6 +133,13 @@ function PendingCard({ groups }: { groups: PendingGroup[] }) {
                 <Button className="primary" aria-busy={sending === group.key} disabled={!current.trim() || action.isPending} onClick={() => send(group)}>{sending === group.key ? "Salvando…" : "Salvar resposta"}</Button>
               </div>
               {notes[group.key] && <p className="sp-note" role="status">{notes[group.key]}</p>}
+              {groups.length > 1 && (
+                <div className="sp-stepper">
+                  <span>Pergunta {Math.min(step, groups.length - 1) + 1} de {groups.length}</span>
+                  <Button disabled={step <= 0} onClick={() => setStep((i) => Math.max(0, Math.min(i, groups.length - 1) - 1))}>Anterior</Button>
+                  <Button disabled={step >= groups.length - 1} onClick={() => setStep((i) => Math.min(groups.length - 1, i + 1))}>Pular</Button>
+                </div>
+              )}
             </li>
           );
         })}

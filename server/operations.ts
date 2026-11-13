@@ -1219,6 +1219,10 @@ export async function automaticSend(
             : "Não foi possível confirmar o resultado. Verifique antes de repetir.",
     });
     if (receipt) notify(w, "Candidatura enviada", w.jobs.find(j => j.id === a.jobId)!.title);
+    else if (actionRequired && missingQuestions?.length) {
+      const job = w.jobs.find(j => j.id === a.jobId);
+      notify(w, "Responda para concluir a candidatura", `${job ? `${job.company} · ${job.title}: ` : ""}o formulário pediu ${missingQuestions.length} resposta(s) que só você pode dar. Abra Perfil inteligente para responder e retomar o envio.`);
+    }
     return a;
   });
 }
