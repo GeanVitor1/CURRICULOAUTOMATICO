@@ -4,6 +4,8 @@ import { useRef,useState } from "react";
 import type {AutomationConversion} from '../server/automation-conversion';
 import { Play, Pause, FileText, ArrowRight, Search, Info } from "lucide-react";
 import { Button, Mascot, PageHead, DiscoveryStatus } from "./components";
+import { CountUp } from "./motion";
+import { DailyProgress, AutomationHowItWorks } from "./AutomationWidgets";
 import { api, date, useAction, useApp } from "./lib";
 import type { SiteCapability } from "./CareerInterview";
 import { useBilling } from "./Billing";
@@ -94,7 +96,7 @@ export default function SimpleAutomation() {
   const waiting = ["queued", "running"].includes(w.runs[0]?.status || "");
   const sent = w.applications.filter(confirmedApplication).length;
   return (
-    <div className="career-flow">
+    <div className="career-flow app-stagger">
       <PageHead
         title={ready?'Sua automação':'Vamos preparar sua busca'}
         description={ready?'Seu currículo, suas preferências e suas candidaturas. Tudo em um só lugar.':'Veja o que já está pronto e qual é seu próximo passo.'}
@@ -132,13 +134,7 @@ export default function SimpleAutomation() {
         </div>
       )}
       {w.routine.enabled && w.routine.mode==='automatic' && w.routine.progress?.day===new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'}) && (
-        <section className="interview-card" aria-label="Candidaturas automáticas de hoje" role="status">
-          <h2>{w.routine.progress.sent} de {w.routine.progress.target} candidaturas automáticas confirmadas hoje</h2>
-          <p>{`${w.routine.progress.remaining} envios disponíveis hoje. `}{w.routine.progress.message}</p>
-          {(w.routine.progress.usedToday || 0)>w.routine.progress.sent && <p>A cota usada também inclui outras tentativas ou envios fora deste contador automático.</p>}
-          <p>O plano permite até {w.routine.progress.target} envios por dia. O sistema continua nas vagas compatíveis com envio disponível.</p>
-        </section>
-      )}
+        <DailyProgress progress={w.routine.progress} onQuestions={() => navigate("perfil-inteligente")} />      )}
       {!ready ? (
         <><GettingStarted/>
           {w.routine.enabled && (
@@ -175,7 +171,7 @@ export default function SimpleAutomation() {
                       : "Busca diária ativa · envio pelo site"
                     : "Automação pausada"}
                 </h2>
-                <p>
+                <p className="automation-next">
                   {waiting
                     ? "Uma busca está em andamento. Os resultados serão atualizados aqui."
                     : w.routine.enabled
@@ -226,6 +222,21 @@ export default function SimpleAutomation() {
               </div>
             )}
             {(officialAvailable || !allAvailable) && (
+              <AutomationHowItWorks
+                steps={officialAvailable || available ? [
+                  "Achamos vagas compatíveis",
+                  "Enviamos pelos canais oficiais",
+                  "Dúvidas ficam para você",
+                ] : undefined}
+                title={
+                    officialAvailable
+                      ? "Candidaturas automáticas nos canais disponíveis"
+                      : available
+                        ? "Envio automático nas fontes autorizadas"
+                        : cloudAvailable
+                          ? "Buscamos destinos oficiais para suas candidaturas"
+                          : "Você conclui o envio no site da empresa"}
+              >
               <div className="automation-scope" role="status">
                 <Info size={19} aria-hidden="true" />
                 <div>
@@ -249,18 +260,19 @@ export default function SimpleAutomation() {
                   </p>
                 </div>
               </div>
+              </AutomationHowItWorks>
             )}
           </section>
           <section className="integration-info"><h3>Suas contas conectadas</h3><p>Gerencie LinkedIn, Gupy, InfoJobs e Glassdoor na sua área de Conexões.</p><Button onClick={()=>navigate('conexoes')}>Abrir conexões</Button></section>
           <div className="automation-counters">
             <button type="button" className="is-static" tabIndex={-1}>
               <strong>
-                {w.jobCounts?.collected ?? w.jobCounts?.total ?? 0}
+                <CountUp value={w.jobCounts?.collected ?? w.jobCounts?.total ?? 0} />
               </strong>
               <span>Anúncios encontrados</span>
             </button>
             <button onClick={() => navigate("candidaturas")}>
-              <strong>{sent}</strong>
+              <strong><CountUp value={sent} /></strong>
               <span>Candidaturas enviadas</span>
             </button>
 
@@ -292,7 +304,7 @@ export default function SimpleAutomation() {
               </Button>
 
               {w.routine.enabled && w.routine.mode === "automatic" && (
-                <Button disabled={a.isPending} onClick={() => a.mutate({path:"/routine/process"}, {onSuccess: result => toast(result.queued ? `${result.queued} candidatura(s) adicionada(s) à fila automática.` : "A rotina continuará buscando vagas com formulário compatível.")})}>
+                <Button disabled={a.isPending} onClick={() => a.mutate({path:"/routine/process"}, {onSuccess: result => toast(result.queued ? `${result.queued} ${result.queued === 1 ? "candidatura adicionada" : "candidaturas adicionadas"} à fila automática.` : "A rotina continuará buscando vagas com formulário compatível.")})}>
                   Processar vagas encontradas
                 </Button>
               )}

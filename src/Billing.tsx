@@ -105,7 +105,7 @@ export default function Billing() {
               )}
             </div>
             <p className="billing-usage">
-              {billing.data.usedToday} tentativa(s) de envio hoje ·{" "}              {billing.data.remainingToday} disponível(is). A cota renova à
+              {billing.data.usedToday} {billing.data.usedToday === 1 ? "tentativa" : "tentativas"} de envio hoje ·{" "}              {billing.data.remainingToday} {billing.data.remainingToday === 1 ? "disponível" : "disponíveis"}. A cota renova à
               meia-noite, no horário de Brasília.
             </p>
             </div>

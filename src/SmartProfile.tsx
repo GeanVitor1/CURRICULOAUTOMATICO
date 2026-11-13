@@ -94,7 +94,7 @@ function PendingCard({ groups: allGroups }: { groups: PendingGroup[] }) {
     action.mutate(
       { path: "/pending-questions/answer", method: "POST", invalidate: false, body: { confirmation: true, key: group.key, question: group.questions[0], value, reuse: true } },
       { onSuccess: (r: any) => {
-          if (r?.released) toast(`Resposta salva. ${r.released} candidatura(s) voltaram para a fila de envio.`);
+          if (r?.released) toast(`Resposta salva. ${r.released} ${r.released === 1 ? "candidatura voltou" : "candidaturas voltaram"} para a fila de envio.`);
           else {
             const msg = "Resposta salva, mas ela não corresponde a nenhuma opção desta vaga. Escolha outra opção ou edite em Outras respostas aprendidas.";
             toast(msg);
@@ -266,7 +266,7 @@ export default function SmartProfile() {
       }
       setEditingEssentials(false);
       toast(activating ? "Preferências salvas e envio automático ativado."
-        : released ? `Preferências salvas. ${released} candidatura(s) destravadas.` : "Preferências salvas.");
+        : released ? `Preferências salvas. ${released} ${released === 1 ? "candidatura destravada" : "candidaturas destravadas"}.` : "Preferências salvas.");
       if (activating) navigate("automacao");
     } catch { /* useAction already shows the error */ }
   };
@@ -294,7 +294,7 @@ export default function SmartProfile() {
     ...(resume ? [
       ["Publicação da vaga", ageLabel(vs.ageDays)],
       ["Sites", vs.sites.map((site) => portals[site as keyof typeof portals]?.name || site).join(", ")],
-      ["Limite por dia", `${vs.dailyLimit} candidatura(s)`],
+      ["Limite por dia", `${vs.dailyLimit} ${vs.dailyLimit === 1 ? "candidatura" : "candidaturas"}`],
       ["Telefone", vs.phone || "Não informado"],
     ] as [string, string][] : []),
   ];

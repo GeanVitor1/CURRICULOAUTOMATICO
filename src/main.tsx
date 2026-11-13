@@ -19,6 +19,7 @@ import "./onboarding.css";
 import "./app-polish.css";
 import "./tokens.css";
 import "./app-unify.css";
+import "./app-motion.css";
 const client = new QueryClient({
   defaultOptions: {
     queries: { retry: false, staleTime: 30000, refetchOnWindowFocus: false },

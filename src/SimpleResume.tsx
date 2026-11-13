@@ -1,7 +1,7 @@
 import { apiUrl } from "./lib";
 import { useRef, useState } from "react";
-import { ArrowRight, FileText, Download } from "lucide-react";
-import { Button, Field, Mascot, PageHead } from "./components";
+import { ArrowRight, FileText, Download, UploadCloud } from "lucide-react";
+import { Button, Mascot, PageHead } from "./components";
 import { useAction, useApp } from "./lib";
 import ResumeBuilder from "./ResumeBuilder";
 import IntelligenceControl from "./IntelligenceControl";
@@ -16,6 +16,7 @@ export default function SimpleResume() {
   const [uploading, setUploading] = useState(false);
   const uploadPending = useRef(false);
   const [error, setError] = useState("");
+  const [dragging, setDragging] = useState(false);
   const resume = w.resumes[0];
   if (building)
     return (
@@ -27,6 +28,27 @@ export default function SimpleResume() {
         }}
       />
     );
+  const pick = (next: File | null) => {
+    setError("");
+    if (
+      next &&
+      (!/\.(pdf|docx)$/i.test(next.name) ||
+        next.size > 5 * 1024 * 1024 ||
+        next.size === 0)
+    ) {
+      setFile(null);
+      setError(
+        next.size === 0
+          ? "O arquivo está vazio. Escolha um currículo válido."
+          : next.size > 5 * 1024 * 1024
+            ? "O arquivo excede 5 MB. Escolha uma versão menor."
+            : "Escolha um currículo em PDF ou DOCX.",
+      );
+      return false;
+    }
+    setFile(next);
+    return true;
+  };
   const upload = async () => {
     if (!file || uploadPending.current || savingConsent || a.isPending) return;
     uploadPending.current = true;
@@ -50,12 +72,12 @@ export default function SimpleResume() {
     }
   };
   return (
-    <div className="career-flow">
+    <div className="career-flow app-stagger">
       <PageHead
         title="Seu currículo"
-        description="Envie um PDF ou DOCX, ou crie seu primeiro currículo com nossa ajuda. Adicionar o documento não inicia candidaturas."
+        description="PDF ou DOCX. Enviar o arquivo não inicia candidaturas."
       />
-      <section className="interview-card">
+      <section className={`interview-card resume-card ${resume ? "is-saved" : ""}`}>
         <Mascot
           className="journey-mascot"
           variant={uploading ? "thinking" : "handing-resume"}
@@ -97,43 +119,33 @@ export default function SimpleResume() {
             void upload();
           }}
         >
-          <Field
-            label={
-              resume
-                ? "Substituir currículo (opcional)"
-                : "Escolha seu currículo"
-            }
-            help="PDF ou DOCX, até 5 MB."
+          <label
+            className={`resume-drop ${dragging ? "is-drag" : ""} ${file ? "has-file" : ""} ${uploading ? "is-busy" : ""}`}
+            onDragOver={(e) => { e.preventDefault(); if (!uploading) setDragging(true); }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragging(false);
+              if (!uploading) pick(e.dataTransfer.files?.[0] || null);
+            }}
           >
+            <UploadCloud size={22} aria-hidden="true" />
+            <span className="resume-drop-text">
+              <strong>
+                {file ? file.name : resume ? "Substituir currículo" : "Escolha seu currículo"}
+              </strong>
+              <small>{file ? "Pronto para enviar" : "Arraste aqui ou clique · PDF ou DOCX, até 5 MB"}</small>
+            </span>
             <input
               aria-label="Selecionar currículo"
               type="file"
               accept=".pdf,.docx"
               disabled={uploading}
               onChange={(e) => {
-                const next = e.target.files?.[0] || null;
-                setError("");
-                if (
-                  next &&
-                  (!/\.(pdf|docx)$/i.test(next.name) ||
-                    next.size > 5 * 1024 * 1024 ||
-                    next.size === 0)
-                ) {
-                  setFile(null);
-                  e.target.value = "";
-                  setError(
-                    next.size === 0
-                      ? "O arquivo está vazio. Escolha um currículo válido."
-                      : next.size > 5 * 1024 * 1024
-                        ? "O arquivo excede 5 MB. Escolha uma versão menor."
-                        : "Escolha um currículo em PDF ou DOCX.",
-                  );
-                  return;
-                }
-                setFile(next);
+                if (!pick(e.target.files?.[0] || null)) e.target.value = "";
               }}
             />
-          </Field>
+          </label>
           {error && (
             <p className="negative" role="alert">
               {error}

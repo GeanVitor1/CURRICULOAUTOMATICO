@@ -333,7 +333,7 @@ export default function CareerInterview({ embedded = false }: { embedded?: boole
                 <p>
                   {w.profile.years === null
                     ? "Experiência pendente"
-                    : `${w.profile.years} ano(s) de experiência`}{" "}
+                    : `${w.profile.years} ${w.profile.years === 1 ? "ano" : "anos"} de experiência`}{" "}
                   ·{" "}
                   {w.profile.salaryDesired > 0
                     ? `Pretensão de R$ ${w.profile.salaryDesired.toLocaleString("pt-BR")} por mês`
