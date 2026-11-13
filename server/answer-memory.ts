@@ -38,6 +38,22 @@ export function upsertMemory(w: Workspace, input: MemoryInput) {
 
 const blocked = (q: string) => legalAcceptance(q) || identityQuestion(q);
 
+const YES = /^(sim|yes|concordo|aceito|de acordo|autorizo|li e concordo)\b/;
+const NO = /^(nao|no|discordo|nao concordo|nao aceito|nao autorizo)\b/;
+/** Mapeia a resposta do usuário para uma opção do formulário ("Sim" -> "Sim, concordo"). */
+export function matchOption(value: string, options?: string[]) {
+  if (!options?.length) return value;
+  const v = normalized(value);
+  const exact = options.find((o) => normalized(o) === v);
+  if (exact) return exact;
+  const prefixed = options.filter((o) => normalized(o).startsWith(v));
+  if (prefixed.length === 1) return prefixed[0];
+  const polarity = YES.test(v) ? YES : NO.test(v) ? NO : null;
+  if (!polarity) return undefined;
+  const same = options.filter((o) => polarity.test(normalized(o)) && !(polarity === YES && NO.test(normalized(o))));
+  return same.length === 1 ? same[0] : undefined;
+}
+
 /**
  * Re-checks every paused application: questions now answerable from memory (or the
  * exact answer given for an untopiced question) are recorded as destination-scoped
@@ -54,13 +70,16 @@ export function releasePending(w: Workspace, untopiced?: { key: string; value: s
     const origin = new URL(a.destinationUrl).origin;
     const resolved: string[] = [];
     for (const question of a.missingQuestions) {
-      if (blocked(question)) continue;
       const options = a.questionOptions?.[question];
       let value: string | undefined;
       const match = classifyQuestion(question, options);
-      if (match) value = memoryAnswer(question, w.profile, job, options)?.value;
-      else if (untopiced && topicKey(null, question) === untopiced.key && !sensitiveQuestion(question))
-        value = !options?.length ? untopiced.value : options.find((o) => normalized(o) === normalized(untopiced.value));
+      // Aceite jurídico só com resposta explícita do usuário para esta pergunta (nunca por memória/reuso).
+      const explicit = !!untopiced && topicKey(match, question) === untopiced.key;
+      if (blocked(question)) {
+        if (!explicit || identityQuestion(question)) continue;
+        value = matchOption(untopiced!.value, options);
+      } else if (match) value = memoryAnswer(question, w.profile, job, options)?.value;
+      else if (explicit && !sensitiveQuestion(question)) value = matchOption(untopiced!.value, options);
       if (!value) continue;
       w.profile.approvedAnswers = [
         ...(w.profile.approvedAnswers || []).filter((x) => !(x.question === question && x.destinationUrl === a.destinationUrl)),

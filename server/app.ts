@@ -966,7 +966,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       if (match) {
         upsertMemory(w, { topic: match.topic, params: match.params?.technology ? { technology: match.params.technology } : undefined,
           value: body.value, conditions: body.conditions, reuse: body.reuse, examples: [body.question] });
-        return releasePending(w);
+        return releasePending(w, { key: body.key, value: body.value });
       }
       return releasePending(w, { key: body.key, value: body.value });
     });
