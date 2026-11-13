@@ -32,7 +32,7 @@ const item = {
   city: "Ilhéus",
   state: "Bahia",
   workplaceType: "on-site",
-  publishedDate: "2026-10-08T12:00:00Z",
+  publishedDate: new Date().toISOString(),
 };
 const html = (data: unknown[]) =>
   JSON.stringify({
@@ -47,11 +47,12 @@ afterEach(() => {
 describe("Consulta pública sem Gemini", () => {
   it('requests and examines at most fifteen candidates for five remaining slots, instead of accumulating hundreds',async()=>{
     vi.stubEnv('GEMINI_API_KEY','');
-    const fetcher=vi.spyOn(globalThis,'fetch').mockImplementation(async()=>new Response(JSON.stringify({data:Array.from({length:50},(_,i)=>({...item,id:i+1,jobUrl:`https://empresa.gupy.io/jobs/${i+1}`})),pagination:{total:400}})));
+    const fetcher=vi.spyOn(globalThis,'fetch').mockImplementation(async(url)=>{const offset=Number(new URL(String(url)).searchParams.get('offset')||0);return new Response(JSON.stringify({data:Array.from({length:50},(_,i)=>({...item,id:offset+i+1,jobUrl:`https://empresa.gupy.io/jobs/${offset+i+1}`})),pagination:{total:400}}));});
     const result=await withDiscoveryCandidates(15,()=>discoverPortal(source,workspace()));
     expect(result.examined).toBe(15);expect(result.value.jobs).toHaveLength(15);
-    expect(fetcher).toHaveBeenCalledTimes(1);
-    expect(new URL(String(fetcher.mock.calls[0][0])).searchParams.get('limit')).toBe('15');
+    // The cheap listing is paged (up to 150 per title); only pre-screened postings spend the budget.
+    expect(fetcher.mock.calls.length).toBeLessThanOrEqual(3);
+    expect(new URL(String(fetcher.mock.calls[0][0])).searchParams.get('limit')).toBe('50');
   });
   it("usa o tipo de contratação publicado pela Gupy mesmo quando a descrição não diz CLT", async () => {
     vi.stubEnv("GEMINI_API_KEY", "");

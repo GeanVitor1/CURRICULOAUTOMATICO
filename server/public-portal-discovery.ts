@@ -4,7 +4,7 @@ import { discoverySignal } from "./discovery-budget";
 import { z } from "zod";
 import type { Job, Workspace } from "../shared/types";
 import { isJobUrl, type PortalId } from "../shared/portals";
-import { classify, extractSkills, locationMatches } from "./engine";
+import { classify, extractSkills, locationMatches, isTechJob, titleStackCompatible, stackCoverageCompatible, matchesRoleTitle } from "./engine";
 import { decode } from "./html";
 import { SourceError } from "./connectors";
 import { publicDiscoveryAvailable } from "./provider-capabilities";
@@ -227,7 +227,8 @@ async function readPublicPortal(
   titleSearch: for (const title of titles) {
     if (portal === "gupy") {
       const list: unknown[] = [];
-      const maximum=discoveryCandidateLimit(450), pageSize=Math.max(1,Math.min(50,maximum));
+      // The listing is cheap and already carries title and description; only inspected candidates spend the budget.
+      const maximum=150, pageSize=50;
       const locations =
         workspace.filters.locations.length &&
         !(
@@ -306,11 +307,21 @@ async function readPublicPortal(
         }
       }
       let validRecords = 0;
+      const knownUrls = new Set(workspace.jobs.flatMap((j) => [j.url, ...j.origins.map((o) => o.url)]));
+      const oldest = Date.now() - Math.max(1, workspace.filters.ageDays || 30) * 86400000;
       for (const item of list.slice(0, 450)) {
-        if(!takeDiscoveryCandidate())break titleSearch;
         const parsed = gupyJob.safeParse(item);
         if (!parsed.success || !isJobUrl("gupy", parsed.data.jobUrl)) continue;
         validRecords++;
+        // Free pre-screen from the listing itself: known, stale or clearly incompatible postings never use the daily budget.
+        const listed = parsed.data as { name?: string; description?: string; publishedDate?: string; jobUrl: string };
+        const listedTitle = String(listed.name || ""), listedText = String(listed.description || "");
+        if (knownUrls.has(listed.jobUrl)) continue;
+        if (listed.publishedDate && Date.parse(listed.publishedDate) < oldest) continue;
+        if (!isTechJob(listedTitle, listedText) || !titleStackCompatible(listedTitle, workspace.profile) ||
+            !stackCoverageCompatible({ title: listedTitle, description: listedText }, workspace.profile) ||
+            !matchesRoleTitle(listedTitle, workspace.filters.titles, workspace.profile.headline)) continue;
+        if(!takeDiscoveryCandidate())break titleSearch;
         const data = parsed.data;
         if (
           data.applicationDeadline &&
