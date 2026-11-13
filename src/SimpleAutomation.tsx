@@ -2,7 +2,7 @@ import { confirmedApplication } from "../shared/confirmed-applications";
 import { useQuery } from "@tanstack/react-query";
 import { useRef,useState } from "react";
 import type {AutomationConversion} from '../server/automation-conversion';
-import { Play, Pause, FileText, ArrowRight, Search, Info } from "lucide-react";
+import { Play, Pause, FileText, ArrowRight, Search, Info, Send } from "lucide-react";
 import { Button, Mascot, PageHead, DiscoveryStatus } from "./components";
 import { CountUp } from "./motion";
 import { DailyProgress, AutomationHowItWorks } from "./AutomationWidgets";
@@ -263,20 +263,21 @@ export default function SimpleAutomation() {
               </AutomationHowItWorks>
             )}
           </section>
-          <section className="integration-info"><h3>Suas contas conectadas</h3><p>Gerencie LinkedIn, Gupy, InfoJobs e Glassdoor na sua área de Conexões.</p><Button onClick={()=>navigate('conexoes')}>Abrir conexões</Button></section>
-          <div className="automation-counters">
-            <button type="button" className="is-static" tabIndex={-1}>
+          <div className="automation-counters kpi-band">
+            <button type="button" className="is-static kpi-card" tabIndex={-1}>
+              <span className="kpi-icon" aria-hidden="true"><Search size={18} /></span>
               <strong>
                 <CountUp value={w.jobCounts?.collected ?? w.jobCounts?.total ?? 0} />
               </strong>
               <span>Anúncios encontrados</span>
             </button>
-            <button onClick={() => navigate("candidaturas")}>
+            <button className="kpi-card" onClick={() => navigate("candidaturas")}>
+              <span className="kpi-icon" aria-hidden="true"><Send size={18} /></span>
               <strong><CountUp value={sent} /></strong>
               <span>Candidaturas enviadas</span>
             </button>
-
           </div>
+          <section className="integration-info"><h3>Suas contas conectadas</h3><p>Gerencie LinkedIn, Gupy, InfoJobs e Glassdoor na sua área de Conexões.</p><Button onClick={()=>navigate('conexoes')}>Abrir conexões</Button></section>
           <section className="automation-preferences">
             <div>
               <FileText size={18} />
