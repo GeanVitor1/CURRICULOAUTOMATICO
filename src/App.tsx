@@ -727,7 +727,7 @@ export default function App() {
           fallback={<div className="app-loading">Carregando navegador…</div>}
         >
           {new URLSearchParams(location.search).get('flow')==='connections'
-            ? <PortalConnectionFlow portal={remotePortal}/>
+            ? <PortalConnectionFlow portal={remotePortal} workspace={w}/>
             : <RemotePortalLogin portal={remotePortal} workspace={w} />}
         </Suspense>
       ) : (

@@ -7,10 +7,19 @@ import {browserConnectors,type BrowserSessionPortal} from '../shared/browser-con
 import type {BrowserConnectionAccess} from '../shared/session-transfer-policy';
 import ConnectionBrand from './ConnectionBrand';
 import ChromeExtensionInstallation from './ChromeExtensionInstallation';
+import type {Workspace} from '../shared/types';
 import './RemotePortalLogin.css';
 import './connections.css';
 
-export default function PortalConnectionFlow({portal}:{portal:BrowserSessionPortal}){
+/** Resume that the server accepts to authorize automatic sends for this portal, if the workspace is ready. */
+export function automationResumeId(w:Workspace|undefined,portal:BrowserSessionPortal){
+ if(!w||portal==='linkedin'||!w.profile?.confirmed||!w.interview?.completed||!w.interview.answers.sites.includes(portal))return null;
+ const id=w.interview.answers.resumeId;
+ return id&&w.resumes.some(r=>r.id===id&&r.approved)?id:null;
+}
+
+export default function PortalConnectionFlow({portal,workspace}:{portal:BrowserSessionPortal;workspace?:Workspace}){
+ const authorizeResume=useRef<string|null>(null);authorizeResume.current=automationResumeId(workspace,portal);
  const provider=browserConnectors[portal],saving=useRef(false),opened=useRef(false),mounted=useRef(true);
  const [extension,setExtension]=useState<{version:string;kind:string;text:string}|null>(null),[savePending,setSavePending]=useState(false),[error,setError]=useState(''),[detected,setDetected]=useState(false);
  const access=useQuery({queryKey:['connection-flow-context',portal],queryFn:()=>api<BrowserConnectionAccess>(`/connections/browser-extension-context?portal=${portal}`,{cache:'no-store'}),staleTime:0});
@@ -35,8 +44,9 @@ export default function PortalConnectionFlow({portal}:{portal:BrowserSessionPort
      const current=await api<BrowserConnectionAccess>(`/connections/browser-extension-context?portal=${portal}`,{cache:'no-store',signal:AbortSignal.timeout(15000)});
      if(current.available!==true||current.mode!=='local-browser'||!current.localLogin||!Number.isFinite(current.localLogin.expiresAt)||current.localLogin.expiresAt<=Date.now()||!Number.isFinite(Date.parse(current.localLogin.observedAt)))throw Error('O servidor ainda não confirmou uma verificação válida do LinkedIn.');
     }else{
-     const result=await api<{ok:boolean;automatic:boolean}>(`/connections/${portal}/confirm`,{method:'POST',headers:{'X-Portal-Viewer':message.frame.viewerId},body:JSON.stringify({connectionOnly:true,authorizeAutomation:false,profileResumeId:null}),signal:AbortSignal.timeout(55000)});
-     if(result.ok!==true||result.automatic!==false)throw Error('Não foi possível confirmar que a conexão foi salva. Confira o resultado em Conexões.');
+     const resumeId=authorizeResume.current;
+     const result=await api<{ok:boolean;automatic:boolean}>(`/connections/${portal}/confirm`,{method:'POST',headers:{'X-Portal-Viewer':message.frame.viewerId},body:JSON.stringify(resumeId?{authorizeAutomation:true,profileResumeId:resumeId}:{connectionOnly:true,authorizeAutomation:false,profileResumeId:null}),signal:AbortSignal.timeout(55000)});
+     if(result.ok!==true||(!resumeId&&result.automatic!==false))throw Error('Não foi possível confirmar que a conexão foi salva. Confira o resultado em Conexões.');
     }
     if(mounted.current)finish();
    }catch(failure){if(mounted.current){setError((failure as Error).message);setSavePending(false);}}
@@ -51,6 +61,6 @@ export default function PortalConnectionFlow({portal}:{portal:BrowserSessionPort
   {problem&&<div className="connections-error" role="alert"><p>{problem}</p><a href="/app#conexoes">Conferir minhas conexões</a>{access.isError&&<button onClick={()=>void access.refetch()}>Tentar novamente</button>}</div>}
   {!savePending&&!working&&extension&&access.data?.available&&<button className="connection-flow-open" onClick={open}><Puzzle size={18}/>Abrir aba da extensão<ArrowUpRight size={18}/></button>}
   {!extension&&detected&&access.data?.available&&<ChromeExtensionInstallation onOpenConnector={open} onCheckInstallation={()=>window.postMessage({type:'empregatos:request-connector-status',portal},location.origin)}/>}
-  <p className="connection-flow-privacy"><ShieldCheck size={18}/>{portal==='linkedin'?'O LinkedIn é verificado neste Chrome. Esta conexão não ativa envios automáticos.':'Você autoriza apenas esta conexão. Sua rotina de candidaturas continua sob seu controle.'}</p>
+  <p className="connection-flow-privacy"><ShieldCheck size={18}/>{portal==='linkedin'?'O LinkedIn é verificado neste Chrome. Esta conexão não ativa envios automáticos.':(automationResumeId(workspace,portal)?'Ao concluir, os envios automáticos por este site ficam liberados com o currículo aprovado nas suas preferências.':'Você autoriza apenas esta conexão. Sua rotina de candidaturas continua sob seu controle.')}</p>
  </div></main>;
 }
