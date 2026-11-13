@@ -354,7 +354,9 @@ export async function discover(
           sources.push(source);
       // Public board APIs are cheaper and more reliable than indexed portal queries.
       const priority = (source: (typeof sources)[number]) =>
-        source.id===officialCareersSource.id ? -6 : source.id===corporateEmailSource.id ? -5 : source.id===ablerSource.id ? -4 : source.id.startsWith('company-board:') || source.id.startsWith('quickin-board:')
+        // The public Gupy API is what reliably yields IT postings; query it first so the small daily
+        // candidate budget is not exhausted by failing or unrelated catalogs before it.
+        source.type === "portal" && source.board === "gupy" ? -10 : source.id===officialCareersSource.id ? -6 : source.id===corporateEmailSource.id ? -5 : source.id===ablerSource.id ? -4 : source.id.startsWith('company-board:') || source.id.startsWith('quickin-board:')
           ? -3
           : source.id === employerFeedSource.id
           ? -2
