@@ -962,16 +962,16 @@ export async function buildApp({ serveStatic = true } = {}) {
     const { upsertMemory, releasePending } = await import("./answer-memory");
     const match = classifyQuestion(body.question);
     if (topicKey(match, body.question) !== body.key) throw new RequestError("Pergunta pendente não reconhecida.");
+    const stats = { answered: 0 };
     const released = await mutateWorkspace(id, (w) => {
-      if (match) {
+      if (match)
         upsertMemory(w, { topic: match.topic, params: match.params?.technology ? { technology: match.params.technology } : undefined,
           value: body.value, conditions: body.conditions, reuse: body.reuse, examples: [body.question] });
-        return releasePending(w, { key: body.key, value: body.value });
-      }
-      return releasePending(w, { key: body.key, value: body.value });
+      return releasePending(w, { key: body.key, value: body.value }, stats);
     });
     await releaseAndDispatch(id, released);
-    return { ok: true, released: released.length };
+    // answered: perguntas resolvidas; released: vagas sem pendências que voltaram à fila.
+    return { ok: true, released: released.length, answered: stats.answered };
   });
   app.put("/api/candidate-details", async (req) => {
     const { id, demo } = await scope(req);

@@ -47,3 +47,15 @@ describe("releasePending com aceite jurídico", () => {
     expect(releasePending(w)).toEqual([]);
   });
 });
+
+describe("releasePending com outras perguntas pendentes", () => {
+  it("conta a resposta mesmo sem liberar a vaga", () => {
+    const key = topicKey(classifyQuestion(lgpd), lgpd);
+    const w = workspace(["Sim", "Não"]);
+    w.applications[0].missingQuestions.push("Qual sua cor favorita de caneta?");
+    const stats = { answered: 0 };
+    expect(releasePending(w, { key, value: "Sim" }, stats)).toEqual([]);
+    expect(stats.answered).toBe(1);
+    expect(w.applications[0].missingQuestions).toEqual(["Qual sua cor favorita de caneta?"]);
+  });
+});

@@ -96,6 +96,7 @@ function PendingCard({ groups: allGroups }: { groups: PendingGroup[] }) {
       { path: "/pending-questions/answer", method: "POST", invalidate: false, body: { confirmation: true, key: group.key, question: group.questions[0], value, reuse: true } },
       { onSuccess: (r: any) => {
           if (r?.released) toast(`Resposta salva. ${r.released} ${r.released === 1 ? "candidatura voltou" : "candidaturas voltaram"} para a fila de envio.`);
+          else if (r?.answered) toast("Resposta salva. A vaga ainda tem outras perguntas pendentes.");
           else {
             const msg = "Resposta salva, mas ela não corresponde a nenhuma opção desta vaga. Escolha outra opção ou edite em Outras respostas aprendidas.";
             toast(msg);

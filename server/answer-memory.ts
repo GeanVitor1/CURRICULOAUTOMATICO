@@ -60,7 +60,7 @@ export function matchOption(value: string, options?: string[]) {
  * approved answers and removed from the pending list. Applications with nothing
  * left pending go back to the preparation queue (the form is inspected again before sending).
  */
-export function releasePending(w: Workspace, untopiced?: { key: string; value: string }) {
+export function releasePending(w: Workspace, untopiced?: { key: string; value: string }, stats?: { answered: number }) {
   const released: string[] = [];
   const at = new Date().toISOString();
   for (const a of w.applications) {
@@ -88,6 +88,7 @@ export function releasePending(w: Workspace, untopiced?: { key: string; value: s
       resolved.push(question);
     }
     if (!resolved.length) continue;
+    if (stats) stats.answered += resolved.length;
     a.missingQuestions = a.missingQuestions.filter((q) => !resolved.includes(q));
     a.updatedAt = at;
     a.history.push({ at, actor: "Usuário", message: `Respondeu ${resolved.length} pergunta(s) pendente(s) pelo Perfil inteligente.` });
