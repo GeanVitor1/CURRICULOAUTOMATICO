@@ -59,3 +59,13 @@ describe("releasePending com outras perguntas pendentes", () => {
     expect(w.applications[0].missingQuestions).toEqual(["Qual sua cor favorita de caneta?"]);
   });
 });
+
+describe("releasePending atualiza o painel da automação", () => {
+  it("zera perguntas pendentes no progresso após responder", () => {
+    const key = topicKey(classifyQuestion(lgpd), lgpd);
+    const w = workspace(["Sim", "Não"]);
+    w.routine = { progress: { blockers: { questions: 2, human: 0, uncertain: 0, nonReceived: 0 } } };
+    releasePending(w, { key, value: "Sim" });
+    expect(w.routine.progress.blockers.questions).toBe(0);
+  });
+});

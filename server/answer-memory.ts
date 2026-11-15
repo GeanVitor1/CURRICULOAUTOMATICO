@@ -100,5 +100,11 @@ export function releasePending(w: Workspace, untopiced?: { key: string; value: s
       released.push(a.id);
     }
   }
+  // O painel da automação mostra uma foto do último ciclo; atualize a contagem de perguntas já.
+  const blockers = w.routine?.progress?.blockers;
+  if (blockers)
+    blockers.questions = w.applications.filter(
+      (a) => !a.receipt && !a.submittedAt && a.status === "Requer ação manual" && a.missingQuestions?.length,
+    ).length;
   return released;
 }
