@@ -38,6 +38,9 @@ export function effectivePlan(
 export const unlimitedAccount = (userId?: string) =>
   !!userId && (process.env.UNLIMITED_ACCOUNT_IDS || "").split(",").map(id => id.trim()).includes(userId);
 const unlimitedPlan = plans.find((p) => p.id === "pro")!;
+/** Each new search of an unlimited account releases one free-plan sized batch. */
+export const UNLIMITED_BATCH = plans[0].dailyLimit;
+export const UNLIMITED_CEILING = unlimitedPlan.dailyLimit;
 export async function accountPlan(
   userId: string,
   connection: Transaction | Store = store,

@@ -4,6 +4,8 @@ import type { ExecutionOrigin } from "../shared/types";
 import { and, asc, eq, inArray, lt, or } from "./storage-types";
 import { store, mutateWorkspace } from "./db";
 import { dispatchDiscovery } from "./vercel-dispatch";
+import { billingDay, unlimitedAccount, UNLIMITED_BATCH, UNLIMITED_CEILING } from "./billing";
+import { dailySubmissionAttempts } from "./submission-attempts";
 import {
   discover,
   notify,
@@ -37,6 +39,16 @@ export async function enqueueDiscovery(workspaceId: string, origin: ExecutionOri
       throw new RequestError(
         "Configure pelo menos uma fonte antes de pesquisar.",
       );
+    if (!continuation && unlimitedAccount(row.userId)) {
+      // Unlimited accounts run in free-plan sized batches: every new search
+      // releases one more batch on top of today's usage instead of the whole ceiling.
+      const used = Math.max(
+        await tx.count("applicationUsage", and(eq("userId", row.userId), eq("day", billingDay()))),
+        dailySubmissionAttempts(row.data),
+      );
+      const pendingApproval = row.data.applications.filter((a) => a.status === "Aguardando aprovação").length;
+      row.data.routine.dailyLimit = Math.min(UNLIMITED_CEILING, used + pendingApproval + UNLIMITED_BATCH);
+    }
     const id = randomUUID(),
       at = new Date();
     await tx.insert("discoveryTasks", { id, workspaceId, status: "queued" });
