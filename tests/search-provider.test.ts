@@ -24,12 +24,13 @@ it("uses the owner's Antigravity even when the Gemini API is configured", async 
   expect(mocks.agy).toHaveBeenCalledWith("owner", "Find public jobs");
   expect(mocks.api).not.toHaveBeenCalled();
 });
-it("does not silently change to Gemini API when Antigravity fails", async () => {
-  mocks.agy.mockRejectedValue(new Error("Antigravity connection unavailable"));
-  await expect(searchCitedUrls("Find public jobs", "owner")).rejects.toThrow(
-    "Antigravity connection unavailable",
-  );
-  expect(mocks.api).not.toHaveBeenCalled();
+it("falls back to the configured Gemini API and logs when Antigravity fails", async () => {
+  const log = vi.spyOn(console, "error").mockImplementation(() => {});
+  mocks.agy.mockRejectedValue(new Error("Sandbox empregatos-antigravity not found"));
+  mocks.api.mockResolvedValue({ text: "", grounding: { groundingChunks: [{ web: { uri: "https://jobs.example.com/vaga/1" } }] } });
+  expect(await searchCitedUrls("Find public jobs", "owner")).toEqual({ available: true, urls: ["https://jobs.example.com/vaga/1"] });
+  expect(mocks.api).toHaveBeenCalledOnce();
+  expect(log.mock.calls[0][0]).toContain("antigravity_search_fallback");
 });
 it("keeps other accounts outside the owner's Antigravity subscription", async () => {
   mocks.api.mockResolvedValue({ grounding: { groundingChunks: [] } });

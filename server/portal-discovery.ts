@@ -1,3 +1,4 @@
+import { fallbackFromAntigravity } from "./antigravity-fallback";
 import {searchWorkspaces,searchPlace,searchScopeText} from './search-scopes';
 import { randomUUID } from "node:crypto";
 import { discoverySignal } from "./discovery-budget";
@@ -159,7 +160,7 @@ async function discoverPortalScope(
             "\n" +
             prompt +
             "\nAs fontes de search_web podem vir como URLs assinadas vertexaisearch.cloud.google.com/grounding-api-redirect/. Copie essas URLs exatamente para citationUrl em cada vaga. O servidor resolve a fonte no Google e confirma o anúncio. Se a ferramenta não mostrar a URL direta, use a URL assinada também em url. Não descarte uma vaga só porque a fonte é um redirecionamento Google. Não use links de páginas de lista como vagas individuais.",
-        )
+        ).catch(fallbackFromAntigravity)
       : null;
     if (
       agentResult &&
@@ -225,7 +226,7 @@ async function discoverPortalScope(
       !grounding?.webSearchQueries?.length
     )
       throw new SourceError(
-        `A busca ${useAntigravity ? "Antigravity" : "Gemini"} não retornou fontes verificáveis. Use a busca no portal ou tente novamente.`,
+        `A busca ${agentResult ? "Antigravity" : "Gemini"} não retornou fontes verificáveis. Use a busca no portal ou tente novamente.`,
       );
     const parsed = resultsSchema.parse(
       JSON.parse(

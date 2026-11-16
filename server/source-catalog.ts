@@ -133,6 +133,8 @@ async function load(
       );
     return { jobs, cached: false, checkedAt: checkedAt.toISOString() };
   } catch (error) {
+    if (!(error instanceof SourceError))
+      console.error(JSON.stringify({ event: "source_refresh_failed", key, type: error instanceof Error ? error.name : "UnknownError", message: error instanceof Error ? error.message.slice(0, 300) : undefined }));
     const message =
       error instanceof SourceError
         ? error.message
