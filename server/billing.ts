@@ -32,10 +32,17 @@ export function effectivePlan(
     plans[0]
   );
 }
+/** Accounts listed in UNLIMITED_ACCOUNT_IDS (server config) get the highest
+ * daily ceiling without a subscription, so the operator can test end to end
+ * on the same day instead of waiting for the free quota to reset. */
+export const unlimitedAccount = (userId?: string) =>
+  !!userId && (process.env.UNLIMITED_ACCOUNT_IDS || "").split(",").map(id => id.trim()).includes(userId);
+const unlimitedPlan = plans.find((p) => p.id === "pro")!;
 export async function accountPlan(
   userId: string,
   connection: Transaction | Store = store,
 ) {
+  if (unlimitedAccount(userId)) return unlimitedPlan;
   const [subscription] = await connection.select("subscriptions", {
     where: eq("userId", userId),
   });
@@ -45,7 +52,7 @@ export async function billingSummary(userId: string): Promise<BillingSummary> {
   const [subscription] = await store.select("subscriptions", {
     where: eq("userId", userId),
   });
-  const plan = effectivePlan(subscription);
+  const plan = unlimitedAccount(userId) ? unlimitedPlan : effectivePlan(subscription);
   const used = await store.count(
     "applicationUsage",
     and(eq("userId", userId), eq("day", billingDay())),
