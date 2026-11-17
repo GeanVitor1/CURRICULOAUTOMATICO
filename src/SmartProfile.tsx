@@ -31,6 +31,7 @@ type Essentials = {
   salary: string;
   start: string;
   english: string;
+  level: string;
   search: InterviewAnswers;
   answerAutomatically: boolean;
 };
@@ -211,6 +212,7 @@ export default function SmartProfile() {
       salary: "",
       start: find("start_availability")?.value || w.profile.availability || "",
       english: find("english_level")?.value || "",
+      level: w.profile.level || "",
       search: { ...search, salaryMin: search.salaryMin || Number(find("salary_expectation")?.value) || w.profile.salaryDesired || 0 },
       answerAutomatically: w.profile.answerPolicy?.enabled ?? true,
     };
@@ -252,9 +254,12 @@ export default function SmartProfile() {
     if (s.salaryMin > 0) entries.push({ topic: "salary_expectation", value: String(s.salaryMin) });
     if (form.start.trim()) entries.push({ topic: "start_availability", value: form.start.trim() });
     if (form.english) entries.push({ topic: "english_level", value: form.english });
-    if (!resume && !entries.length) return toast("Preencha ao menos uma preferência.");
+    if (!form.level || /^n[aã]o especificado$/i.test(form.level)) return toast("Informe sua senioridade.");
+    if (!resume && !entries.length && form.level === w.profile.level) return toast("Preencha ao menos uma preferência.");
     try {
       let released = 0;
+      if (form.level !== w.profile.level)
+        await action.mutateAsync({ path: "/profile", method: "PUT", body: { ...w.profile, level: form.level } });
       if (resume) {
         const answers: InterviewAnswers = { ...s, resumeId: resume.id, modalities: form.modalities,
           contracts: form.contracts.filter((c) => c !== "Freelancer") };
@@ -388,6 +393,13 @@ export default function SmartProfile() {
           <label className="sp-field">
             <span className="sp-legend">Disponibilidade para início</span>
             <input value={form.start} onChange={(e) => set("start", e.target.value)} placeholder="Ex.: Imediata, 30 dias" />
+          </label>
+          <label className="sp-field">
+            <span className="sp-legend">Sua senioridade</span>
+            <select value={form.level} onChange={(e) => set("level", e.target.value)}>
+              <option value="">Selecione…</option>
+              {["Primeiro emprego", "Aprendiz", "Estágio", "Trainee", "Júnior", "Pleno", "Sênior"].map((l) => <option key={l}>{l}</option>)}
+            </select>
           </label>
           <label className="sp-field">
             <span className="sp-legend">Nível de inglês</span>

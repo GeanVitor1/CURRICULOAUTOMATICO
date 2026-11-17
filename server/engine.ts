@@ -442,7 +442,7 @@ export function classify(text: string) {
         ? "Primeiro emprego"
         : /senior|\bsr\b|staff|\bprincipal\s+(?:software\s+)?(?:engineer|developer|architect|designer)\b|\b(?:engineer|developer|architect|designer)\s+principal\b|lead/.test(n)
           ? "Sênior"
-          : /pleno|\bmid/.test(n)
+          : /pleno|\bpl\b|\bmid/.test(n)
             ? "Pleno"
             : /junior|\bjr\b|engineer i\b|entry.level|associate/.test(n)
               ? "Júnior"
@@ -888,6 +888,8 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
   if (/s[eê]nior|tech lead|lideran[cç]a/i.test(job.level) && /^(?:n[aã]o|unknown|unspecified)/i.test(profile.level))
     blockers.push('Senioridade exigida ainda não confirmada no perfil.');
   if (/pleno|s[eê]nior|especialista/i.test(job.level) && /est[aá]gi|aprendiz|primeiro emprego|trainee/i.test(profile.level || ''))
+    blockers.push('Senioridade exigida acima do seu nível atual.');
+  else if (/pleno|s[eê]nior|especialista/i.test(job.level) && /j[uú]nior/i.test(profile.level || ''))
     blockers.push('Senioridade exigida acima do seu nível atual.');
   if (/est[aá]gi/i.test(profile.level || '') && !/estagi|trainee|aprendiz|intern/.test(normalize(job.title + ' ' + job.level)))
     blockers.push('Seu perfil é de estágio; esta vaga não é de estágio.');

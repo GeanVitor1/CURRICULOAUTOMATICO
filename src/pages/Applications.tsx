@@ -38,7 +38,8 @@ export default function Applications() {
   const needsYou = inProgress.filter((a) => a.status === "Requer ação manual");
   const ongoing = inProgress.filter((a) => a.status !== "Requer ação manual");
   const listed = tab === "needs" ? needsYou : ongoing;
-  const applications = w.applications.filter(confirmedApplication);
+  const applications = w.applications.filter(confirmedApplication)
+    .sort((a, b) => Date.parse(b.submittedAt!) - Date.parse(a.submittedAt!));
   const apps = applications.filter((app) => {
     const job = w.jobs.find((job) => job.id === app.jobId);
     return (
