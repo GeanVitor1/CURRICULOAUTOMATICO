@@ -364,8 +364,10 @@ export async function discover(
           ? -1
           : source.id === officialCareersSource.id
           ? 0
+          // Portais escolhidos pelo usuário (LinkedIn, Glassdoor…) logo após a Gupy: com o teto
+          // de 6 fontes por busca, no fim da fila eles nunca eram consultados.
           : source.type === "portal"
-            ? 2
+            ? -9
             : 0;
       rankDiscoverySources(w,sources);
       sources.sort((a, b) => priority(a) - priority(b));
