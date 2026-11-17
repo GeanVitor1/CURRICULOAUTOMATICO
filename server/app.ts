@@ -663,7 +663,7 @@ export async function buildApp({ serveStatic = true } = {}) {
   app.get("/api/workspace", async (req) => {
     const { id, u } = await scope(req);
     const w = (await readWorkspace(id))!;
-    refreshMatches(w);
+    // Compatibilidade é avaliada pela automação ao escolher as próximas vagas, não a cada tela/salvamento.
     const [sending, workers, intelligence] = await Promise.all([
       applicationCapabilities(u.id, w.resumes[0]?.id || ""),
       queue ? queue.getWorkers().catch(() => []) : Promise.resolve([]),
@@ -751,7 +751,7 @@ export async function buildApp({ serveStatic = true } = {}) {
   app.get("/api/jobs", async (req) => {
     const { id } = await scope(req);
     const w = (await readWorkspace(id))!;
-    refreshMatches(w);
+    // Compatibilidade é avaliada pela automação ao escolher as próximas vagas, não a cada tela/salvamento.
     const applications = new Map(w.applications.map((a) => [a.jobId, a]));
     const q = z
       .object({
@@ -828,7 +828,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       )
         w.profile.candidateDetailsConfirmedAt =
           previous.candidateDetailsConfirmedAt;
-      refreshMatches(w);
+      // Preferência nova vale para as próximas vagas: a automação reavalia ao escolher o que enviar.
     });
     return { ok: true };
   });
@@ -982,7 +982,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     const details = candidateDetailsSchema.parse(req.body);
     await mutateWorkspace(id, (w) => {
       applyCandidateDetails(w, details);
-      refreshMatches(w);
+      // Preferência nova vale para as próximas vagas: a automação reavalia ao escolher o que enviar.
     });
     return { ok: true };
   });
@@ -1384,7 +1384,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     const routine = await mutateWorkspace(id, (w) => {
       if (body.complete) w.routine.time = scheduledTime(w.routine.time);
       applyInterview(w, body, availableSites);
-      if (body.complete) refreshMatches(w);
+      // Preferência nova vale para as próximas vagas: a automação reavalia ao escolher o que enviar.
       return w.routine;
     });
     if (body.complete) {
@@ -1451,7 +1451,7 @@ export async function buildApp({ serveStatic = true } = {}) {
         w.filters.modalities = a.modalities;
         w.filters.contracts = a.contracts;
         w.filters.salaryMin = a.salaryMin;
-        refreshMatches(w);
+        // Preferência nova vale para as próximas vagas: a automação reavalia ao escolher o que enviar.
       }
       return { ok: true };
     });
@@ -1528,7 +1528,7 @@ export async function buildApp({ serveStatic = true } = {}) {
     const f = filtersSchema.parse(req.body);
     await mutateWorkspace(id, (w) => {
       w.filters = f;
-      refreshMatches(w);
+      // Preferência nova vale para as próximas vagas: a automação reavalia ao escolher o que enviar.
     });
     return { ok: true };
   });
@@ -1560,7 +1560,7 @@ export async function buildApp({ serveStatic = true } = {}) {
       // A saved search cannot silently enable submission while a routine is running.
       w.routine.enabled = false;
       w.routine.nextRun = null;
-      refreshMatches(w);
+      // Preferência nova vale para as próximas vagas: a automação reavalia ao escolher o que enviar.
       return { ok: true };
     });
     await configureSchedule(id, false, "08:00");
