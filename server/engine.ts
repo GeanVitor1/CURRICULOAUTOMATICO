@@ -191,26 +191,34 @@ function includesTerm(text: string, term: string): boolean {
     normalize(text),
   );
 }
+const technicalVocabulary = new Set(Object.keys(vocabulary).slice(Object.keys(vocabulary).indexOf("Excel") + 1).filter((k) => !nonTechSkills.has(k)));
+// Pure function called several times per job on the same texts (and on the same profile for
+// every job); a bounded cache keeps recalculating all matches from taking tens of seconds.
+const skillCache = new Map<string, string[]>();
 export function extractSkills(text: string, custom: string[] = []): string[] {
+  const key = custom.join("\u0001") + "\u0000" + text;
+  const cached = skillCache.get(key);
+  if (cached) return [...cached];
   const positive = evidenceLines(text).filter((line) => !line.negated);
   const technicalText = positive.map((line) => line.text).join("\n");
-  const professional = positive
+  const technicalNormalized = normalize(technicalText);
+  const professionalNormalized = normalize(positive
     .filter((line) => !line.domainOnly)
     .map((line) => line.text)
-    .join("\n");
-  const technical = new Set(Object.keys(vocabulary).slice(Object.keys(vocabulary).indexOf("Excel") + 1).filter((k) => !nonTechSkills.has(k)));
-  return [
+    .join("\n"));
+  const result = [
     ...new Set([
       ...Object.entries(vocabulary)
         .filter(([skill, re]) =>
-          re.test(
-            normalize(technical.has(skill) ? technicalText : professional),
-          ),
+          re.test(technicalVocabulary.has(skill) ? technicalNormalized : professionalNormalized),
         )
         .map(([s]) => s),
       ...custom.filter((s) => s && includesTerm(technicalText, s)),
     ]),
   ];
+  if (skillCache.size >= 5000) skillCache.delete(skillCache.keys().next().value!);
+  skillCache.set(key, result);
+  return [...result];
 }
 export function parseResume(text: string): Partial<Profile> {
   const sections = resumeSections(text);
