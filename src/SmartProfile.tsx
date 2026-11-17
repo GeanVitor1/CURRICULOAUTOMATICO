@@ -286,6 +286,7 @@ export default function SmartProfile() {
 
   const view = initial(), vs = view.search;
   const summary: [string, string][] = [
+    ["Senioridade", w.profile.level && !/^n[aã]o especificado$/i.test(w.profile.level) ? w.profile.level : "Não informado"],
     ...(resume ? [
       ["Cargos", vs.titles.join(", ") || "Não informado"],
       ["Cidade", vs.city ? `${vs.city}${vs.sameCityOnly ? " (presencial/híbrido só aqui)" : ""}` : "Não informado"],
