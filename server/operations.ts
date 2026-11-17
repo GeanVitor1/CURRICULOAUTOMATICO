@@ -547,7 +547,7 @@ export async function discover(
         lastError: null,
       });
     } catch (error) {
-      examinedTotal+=inspected;
+      // Fonte que falhou não trouxe anúncio aproveitável: não consome o orçamento diário.
       console.error(JSON.stringify({event:"discovery_source_failed",runId,sourceId:source.id,type:error instanceof Error ? error.name : "UnknownError"}));
       const message =
         error instanceof SourceError
