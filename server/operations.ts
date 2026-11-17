@@ -1399,8 +1399,12 @@ export function queuePreparedApplications(w: Workspace, nativeSites: string[], d
     if(prior && prior.automaticBlockedFingerprint===preparationFingerprint(w,prior)) continue;
     const readyResume=!!prior && prior.status==="Requer ação manual" && supportedResume && !prior.missingQuestions?.length && resumableJobSubmission(prior,job);
     if (!remaining && !readyResume) continue;
+    // O período de publicação serve para escolher vagas NOVAS. Um rascunho já iniciado e com
+    // perguntas respondidas não pode ficar preso só porque a vaga envelheceu na fila.
+    const filters=readyResume?{...w.filters,ageDays:36500,dateKnownOnly:false}:w.filters;
+    const blockers=readyResume?job.match.blockers.filter(b=>!/fora do período|data de publicação/i.test(b)):job.match.blockers;
     if (job.discarded || job.availability === "closed" || !matchesSelectedSites(job,w) ||
-        !matchesObjectiveFilters(job,w.profile,w.filters) || job.match.blockers.length || !submissionRoute(w,job,nativeSites)) continue;
+        !matchesObjectiveFilters(job,w.profile,filters) || blockers.length || !submissionRoute(w,job,nativeSites)) continue;
     let application = w.applications.find(a => a.jobId === job.id);
     const automaticRetry = !!application && automaticAnswersEnabled(w.profile) && application.answerPolicyAttemptedAt!==w.profile.answerPolicy!.confirmedAt;
     if (application?.missingQuestions?.length && !automaticRetry) continue;

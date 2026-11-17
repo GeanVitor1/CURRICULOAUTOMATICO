@@ -379,6 +379,24 @@ describe("Encaminhamento real de candidaturas, sem serviços externos no teste",
       expect(operations.queuePreparedApplications(w,['gupy'])).toBe(0);
     });
   });
+  it('retoma rascunho Gupy respondido mesmo que a vaga tenha passado do período de publicação',async()=>{
+    vi.stubEnv('APPLICATION_WEBHOOK_AUTHORIZED','false');
+    const vacancy=job('9400124'),[id]=await prepare([vacancy],false);
+    await database.mutateWorkspace(workspaceId,w=>{
+      const j=w.jobs[0],a=w.applications.find(a=>a.id===id)!;
+      j.resolution={state:'partial'} as any;
+      j.publishedAt=new Date(Date.now()-30*86400000).toISOString();
+      w.filters.ageDays=7;w.filters.dateKnownOnly=true;
+      a.history.push({at:new Date().toISOString(),actor:'Sistema',message:'Envio iniciado.'});
+      a.attempts=[{id:'old-pause',executor:'browser',outcome:'pre_submit_blocked',startedAt:new Date().toISOString()} as any];
+      a.resumeState={resumeId:a.resumeId!,destinationUrl:j.url,recordedAt:new Date().toISOString()};
+      a.missingQuestions=[];a.status='Requer ação manual';
+      operations.refreshMatches(w);
+      expect(j.match.blockers).toContain('Publicação fora do período configurado.');
+      expect(operations.queuePreparedApplications(w,['gupy'])).toBe(1);
+      expect(a.status).toBe('Aguardando aprovação');
+    });
+  });
   it('não repete um formulário bloqueado sem alteração dos dados confirmados',async()=>{
     const {preparationFingerprint}=await import('../server/submission-preparation');
     const vacancy=job('9501');const [id]=await prepare([vacancy],false);
