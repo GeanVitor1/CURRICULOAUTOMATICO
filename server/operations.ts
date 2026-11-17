@@ -87,7 +87,11 @@ import { attachJobReadings } from "./job-reading";
 const now = () => new Date().toISOString();
 export function refreshMatches(w: Workspace) {
   w.routine.minScore=0;w.filters.minScore=0;
+  // Enviadas ou encerradas não voltam à fila: a avaliação do momento do envio fica congelada.
+  // Só vagas ainda candidatáveis refletem um perfil ou preferência alterados.
+  const sent = new Set(w.applications.filter((a) => a.receipt || a.submittedAt).map((a) => a.jobId));
   w.jobs.forEach((j) => {
+    if (j.match && (sent.has(j.id) || j.availability === "closed")) return;
     Object.assign(j, correctJobEvidence(j));
     j.match = analyze(j, w.profile, w.filters);
     if(!permittedJobSource(j)){j.match.blockers.push(SOURCE_POLICY_MESSAGE);j.match.radar=false;}
