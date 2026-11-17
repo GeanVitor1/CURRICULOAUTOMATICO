@@ -13,10 +13,12 @@ export function discoveryQuota(w: Workspace, planLimit: number, recordedUsage = 
     w.jobs.some(j => j.id === a.jobId && permittedJobSource(j)) &&
     !dailySubmissionAttempts({applications:[a]}, date)).length;
   const remaining = Math.max(0, target - used - pending);
-  const maximum = target * 3;
+  // Pequenos limites diários gastavam o orçamento inteiro numa fonte improdutiva. Até 30 anúncios
+  // por dia (um único lote de 30) cabe na infraestrutura gratuita; planos maiores seguem 3 por vaga.
+  const maximum = Math.max(target * 3, Math.min(30, target * 6));
   const examined = w.routine.discoveryBudget?.day === day ? w.routine.discoveryBudget.examined : 0;
   return {day, target, remaining, maximum, examined,
-    candidateLimit: Math.max(0, Math.min(30, remaining * 3, maximum - examined))};
+    candidateLimit: Math.max(0, Math.min(30, remaining * 6, maximum - examined))};
 }
 const candidates = new AsyncLocalStorage<{limit:number;examined:number}>();
 export function discoveryCandidateLimit(fallback: number) {

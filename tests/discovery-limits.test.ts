@@ -8,21 +8,21 @@ function workspace(){const w=createWorkspace('Pessoa','qa@example.test');w.routi
 function application(id:string,status='Enviada'):Application{return {id,jobId:id,mode:'automatic',status,createdAt:date.toISOString(),updatedAt:date.toISOString(),note:'',receipt:status==='Enviada'?'receipt':null,submittedAt:status==='Enviada'?date.toISOString():undefined,history:[{at:date.toISOString(),actor:'Sistema',message:'Envio iniciado.'}]} as Application;}
 
 describe('Proportional account discovery budget',()=>{
- it('caps five daily slots at fifteen candidates, including a larger preferred limit',()=>{
+ it('caps five daily slots at thirty candidates, including a larger preferred limit',()=>{
   const w=workspace();w.routine.dailyLimit=100;
-  expect(discoveryQuota(w,5,0,date)).toMatchObject({target:5,remaining:5,maximum:15,candidateLimit:15});
+  expect(discoveryQuota(w,5,0,date)).toMatchObject({target:5,remaining:5,maximum:30,candidateLimit:30});
  });
  it('uses the real balance and counts uncertain attempts without calling them receipts',()=>{
   const w=workspace();w.applications=[application('one'),application('two','Resultado desconhecido')];
-  expect(discoveryQuota(w,5,0,date)).toMatchObject({remaining:3,candidateLimit:9});
+  expect(discoveryQuota(w,5,0,date)).toMatchObject({remaining:3,candidateLimit:18});
   expect(w.applications[1].receipt).toBeNull();
-  expect(discoveryQuota(w,5,4,date)).toMatchObject({remaining:1,candidateLimit:3});
+  expect(discoveryQuota(w,5,4,date)).toMatchObject({remaining:1,candidateLimit:6});
   expect(discoveryQuota(w,5,5,date).candidateLimit).toBe(0);
  });
  it('uses queued applications before spending on new searches',()=>{
   const w=workspace();w.jobs=[{id:'queued',url:'https://empresa.gupy.io/jobs/123',company:'Empresa'} as any];
   w.applications=[{...application('queued','Aguardando aprovação'),history:[]}];
-  expect(discoveryQuota(w,5,0,date)).toMatchObject({remaining:4,candidateLimit:12});
+  expect(discoveryQuota(w,5,0,date)).toMatchObject({remaining:4,candidateLimit:24});
  });
  it('does not count a removed source as a useful pending slot',()=>{
   const w=workspace();w.jobs=[{id:'queued',url:'https://jobs.quickin.io/globalti/jobs/123',company:'Global TI'} as any];
@@ -30,11 +30,11 @@ describe('Proportional account discovery budget',()=>{
   expect(discoveryQuota(w,5,0,date).remaining).toBe(5);
  });
  it('does not multiply the daily budget on continuations and resets on the next billing day',()=>{
-  const w=workspace();w.routine.discoveryBudget={day:discoveryDay(date),target:5,examined:14};
+  const w=workspace();w.routine.discoveryBudget={day:discoveryDay(date),target:5,examined:29};
   expect(discoveryQuota(w,5,0,date).candidateLimit).toBe(1);
-  w.routine.discoveryBudget.examined=15;
+  w.routine.discoveryBudget.examined=30;
   expect(discoveryQuota(w,5,0,date).candidateLimit).toBe(0);
-  expect(discoveryQuota(w,5,0,new Date('2026-10-30T16:00:00Z')).candidateLimit).toBe(15);
+  expect(discoveryQuota(w,5,0,new Date('2026-10-30T16:00:00Z')).candidateLimit).toBe(30);
  });
  it('keeps larger plans proportional and finite per queue batch',()=>{
   const w=workspace();w.routine.dailyLimit=50;

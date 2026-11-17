@@ -33,9 +33,9 @@ afterEach(()=>vi.unstubAllEnvs());
 it('stops after a bounded first source and shares the daily cap with later runs',async()=>{
  const first=await discover('owner:live');
  expect(mocks.load).toHaveBeenCalledTimes(1);
- expect(first.discoveryBudget).toMatchObject({target:5,remaining:5,limit:15,examined:15});
- expect(w.jobs.length).toBeLessThanOrEqual(15);
- expect(w.routine.discoveryBudget?.examined).toBe(15);
+ expect(first.discoveryBudget).toMatchObject({target:5,remaining:5,limit:30,examined:30});
+ expect(w.jobs.length).toBeLessThanOrEqual(30);
+ expect(w.routine.discoveryBudget?.examined).toBe(30);
  await discover('owner:live');
  expect(mocks.load).toHaveBeenCalledTimes(1);
  expect(w.runs[0].discoveryBudget?.limit).toBe(0);
