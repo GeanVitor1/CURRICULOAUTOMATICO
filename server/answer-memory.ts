@@ -79,7 +79,8 @@ export function releasePending(w: Workspace, untopiced?: { key: string; value: s
         if (!explicit || identityQuestion(question)) continue;
         value = matchOption(untopiced!.value, options);
       } else if (match) value = memoryAnswer(question, w.profile, job, options)?.value;
-      else if (explicit && !sensitiveQuestion(question)) value = matchOption(untopiced!.value, options);
+      // Resposta explícita do usuário vale mesmo para pergunta sensível (PcD, gênero…); fica presa à vaga em approvedFieldAnswer.
+      else if (explicit) value = matchOption(untopiced!.value, options);
       if (!value) continue;
       w.profile.approvedAnswers = [
         ...(w.profile.approvedAnswers || []).filter((x) => !(x.question === question && x.destinationUrl === a.destinationUrl)),

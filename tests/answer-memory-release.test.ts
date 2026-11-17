@@ -69,3 +69,16 @@ describe("releasePending atualiza o painel da automação", () => {
     expect(w.routine.progress.blockers.questions).toBe(0);
   });
 });
+
+describe("releasePending com pergunta sensível", () => {
+  it("aceita a resposta explícita do usuário para PcD", () => {
+    const pcd = "Você é uma pessoa com deficiência (PcD)?";
+    const w = workspace();
+    w.applications[0].missingQuestions = [pcd];
+    w.applications[0].questionOptions = { [pcd]: ["Sim", "Não"] };
+    const stats = { answered: 0 };
+    expect(releasePending(w, { key: topicKey(classifyQuestion(pcd), pcd), value: "Não" }, stats)).toEqual(["a1"]);
+    expect(stats.answered).toBe(1);
+    expect(w.profile.approvedAnswers[0]).toMatchObject({ value: "Não", destinationUrl: "https://empresa.example/vaga" });
+  });
+});
