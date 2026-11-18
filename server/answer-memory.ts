@@ -91,6 +91,8 @@ export function releasePending(w: Workspace, untopiced?: { key: string; value: s
     if (!resolved.length) continue;
     if (stats) stats.answered += resolved.length;
     a.missingQuestions = a.missingQuestions.filter((q) => !resolved.includes(q));
+    // Novas respostas mudam o formulário: a marca de "bloqueado sem alteração" deixa de valer.
+    delete a.automaticBlockedFingerprint;
     a.updatedAt = at;
     a.history.push({ at, actor: "Usuário", message: `Respondeu ${resolved.length} pergunta(s) pendente(s) pelo Perfil inteligente.` });
     if (!a.missingQuestions.length && !a.singleSubmission &&
