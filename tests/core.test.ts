@@ -65,6 +65,13 @@ describe("Motor de aderência", () => {
     expect(result.criteria).toEqual([]);
     expect(matchesObjectiveFilters({...job, contract}, profile, filters)).toBe(true);
   });
+  it("bloqueia vaga Pleno/Sênior pelo título para perfil Júnior mesmo com nível salvo antigo", () => {
+    const jr = {...profile, level: "Júnior"};
+    const block = "Senioridade exigida acima do seu nível atual.";
+    expect(analyze({...job, title: "DESENVOLVEDOR FULL STACK PL", level: "Não informado"}, jr, defaultFilters).blockers).toContain(block);
+    expect(analyze({...job, title: "Dev .NET SR", level: "Não informado"}, jr, defaultFilters).blockers).toContain(block);
+    expect(analyze({...job, title: "Analista de Sistemas Júnior", level: "Não informado"}, jr, defaultFilters).blockers).not.toContain(block);
+  });
   it("mantém o bloqueio de contratação explicitamente incompatível", () => {
     const filters = {...defaultFilters, contracts: ["CLT"]};
     expect(analyze({...job, contract: "PJ"}, profile, filters).blockers).toContain("Contratação fora das suas preferências.");
