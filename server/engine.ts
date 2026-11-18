@@ -861,7 +861,7 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
       `Habilitação exigida não confirmada: CNH ${driving[1].toUpperCase()}.`,
     );
   const schooling = (s: string) =>
-    /ensino superior|graduacao|bacharel|licenciatura/.test(s)
+    /ensino superior|graduacao|bacharel|licenciatura|tecnologo|tecnologia em|curso superior|faculdade|universidade|centro universitario/.test(s)
       ? 3
       : /ensino medio/.test(s)
         ? 2
@@ -871,7 +871,12 @@ export function analyze(job: Job, profile: Profile, filters: Filters): Match {
   const requiredSchooling = schooling(text),
     confirmedSchooling = schooling(qualificationText);
   const mandatorySchooling=Math.max(0,...mandatoryRequirementLines(job.description).map(line=>schooling(normalize(line))));
-  if(mandatorySchooling>confirmedSchooling)blockers.push('Escolaridade obrigatória não confirmada no perfil.');
+  // Curso superior em andamento só não serve quando a vaga exige explicitamente o diploma concluído.
+  const studying=/\b(?:atual|cursando|em andamento|previsao)\b/.test(normalize(profile.education||''));
+  const requiresCompleted=mandatoryRequirementLines(job.description).map(normalize)
+    .some(line=>schooling(line)===3&&/complet|formad|concluid/.test(line)&&!/cursando|em andamento|ou complet/.test(line));
+  if(mandatorySchooling>confirmedSchooling||(mandatorySchooling===3&&studying&&requiresCompleted))
+    blockers.push('Escolaridade obrigatória não confirmada no perfil.');
   if (requiredSchooling && confirmedSchooling < requiredSchooling)
     gaps.push(
       "Escolaridade citada na vaga ainda não confirmada no seu perfil.",
