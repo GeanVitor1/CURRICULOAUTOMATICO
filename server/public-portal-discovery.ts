@@ -221,7 +221,7 @@ async function readPublicPortal(
     ),
   ]
     .filter(Boolean)
-    .slice(0, 4);
+    .slice(0, 8);
   const jobs = new Map<string, Job>();
   const detailed = new Set<string>();
   titleSearch: for (const title of titles) {
@@ -318,6 +318,8 @@ async function readPublicPortal(
         const listedTitle = String(listed.name || ""), listedText = String(listed.description || "");
         if (knownUrls.has(listed.jobUrl)) continue;
         if (isPcdExclusive(listedTitle, listedText)) continue;
+        // Perfil Júnior: vagas Pleno/Sênior pelo título seriam bloqueadas depois; não gastam a cota diária.
+        if (/j[uú]nior|est[aá]gi|trainee/i.test(workspace.profile.level || "") && /(?:^|[^\p{L}])(?:pleno|pl|s[eê]nior|sr|especialista|mid[- ]?level|master|lead|l[ií]der)(?![\p{L}])/iu.test(listedTitle)) continue;
         if (listed.publishedDate && Date.parse(listed.publishedDate) < oldest) continue;
         if (!isTechJob(listedTitle, listedText) || !titleStackCompatible(listedTitle, workspace.profile) ||
             !stackCoverageCompatible({ title: listedTitle, description: listedText }, workspace.profile) ||
