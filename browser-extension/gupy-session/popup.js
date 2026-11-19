@@ -12,6 +12,7 @@ document.querySelector('#version').textContent=`EmpreGatos ${chrome.runtime?.get
 let context=null,busy=false,loadSequence=0;
 const update=()=>{connect.disabled=busy||!context?.available||context.portal!==select.value;status.setAttribute?.('aria-busy',String(busy));connect.textContent=busy?'Conectando…':browserConnectionMode(select.value)==='local-browser'?'Verificar LinkedIn':'Conectar conta';};
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const withTimeout=(promise,ms)=>Promise.race([promise,pause(ms).then(()=>null)]);
 const missingTab=error=>/no tab with id|invalid tab id|tab was closed/i.test(String(error?.message||error));
 const projectUrl=(tab,portal)=>{
  try{const url=new URL(tab.url||tab.pendingUrl);return url.origin===base&&url.pathname==='/app'&&url.searchParams.get('portal')===portal;}catch{return false;}
@@ -104,8 +105,10 @@ async function scanLogin(portal,provider,local){
   for(const tab of tabs.slice(0,20)){
    let url;try{url=new URL(tab.url||tab.pendingUrl);}catch{continue;}
    if(url.protocol!=='https:'||!sessionDomain(portal,url.hostname)||/signin|sign-in|\/login|checkpoint|challenge|authwall|signup/i.test(url.pathname))continue;
+   // Abas descartadas/congeladas nunca respondem: pule e limite a espera.
+   if(tab.discarded||tab.frozen||tab.status==='unloaded')continue;
    let results;
-   try{results=await chrome.scripting.executeScript({target:{tabId:tab.id},args:[provider.signedSelector,local],func:(selector,localOnly)=>{
+   try{results=await withTimeout(chrome.scripting.executeScript({target:{tabId:tab.id},args:[provider.signedSelector,local],func:(selector,localOnly)=>{
     const signed=!!document.querySelector(selector)||[...document.querySelectorAll('button')].some(button=>/^(Sair|Logout|Sign out)$/i.test(button.textContent.trim()));
     if(!signed)return null;
     if(localOnly)return {origin:location.origin,authenticated:true};
@@ -113,8 +116,8 @@ async function scanLogin(portal,provider,local){
     const local=[];
     for(let i=0;i<localStorage.length;i++){const name=localStorage.key(i);if(/token|auth|session/i.test(name))local.push({name,value:localStorage.getItem(name)});}
     return {origin:location.origin,localStorage:local};
-   }});}catch(error){if(missingTab(error)){disappeared=true;continue;}throw error;}
-   const state=results[0]?.result;
+   }}),4000);}catch(error){if(missingTab(error)){disappeared=true;continue;}if(/cannot access|frame|error page|no tab/i.test(String(error?.message||error)))continue;throw error;}
+   const state=results?.[0]?.result;
    if(state&&sessionDomain(portal,new URL(state.origin).hostname)){authenticated=true;origins.set(state.origin,state);}
   }
   if(!disappeared)break;
@@ -132,8 +135,10 @@ connect.addEventListener('click',async()=>{
   // Request from this explicit click, before awaiting any other operation.
   const granted=await chrome.permissions.request({origins:provider.domains.map(domain=>`https://*.${domain}/*`)});
   if(!granted)throw new Error(`O acesso ao ${provider.name} não foi autorizado no Chrome.`);
+  status.textContent='Confirmando sua conta do EmpreGatos…';
   destination=await validateDestination(portal,expected);context=destination;
   if(local&&destination.mode!=='local-browser')throw new Error('O servidor precisa ser atualizado para verificar o LinkedIn no seu Chrome. Nenhuma sessão foi transferida.');
+  status.textContent=`Procurando o login do ${provider.name} nas abas abertas…`;
   let found=await scanLogin(portal,provider,local);
   if(!found.authenticated){
    // Abre o login e espera o usuário entrar; a conexão segue sozinha.
