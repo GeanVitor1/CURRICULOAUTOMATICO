@@ -9,7 +9,7 @@ export const browserConnectors = {
   linkedin: {name:'LinkedIn',domains:['linkedin.com'],accountUrl:'https://www.linkedin.com/feed/',
     // The current feed no longer exposes global-nav classes. Require both
     // private-navigation links and an expandable avatar menu, not any photo.
-    signedSelector:'.global-nav__me, .global-nav__me-photo, .global-nav__primary-link-me-menu-trigger, body:has(a[href*="/mynetwork/"]):has(a[href*="/messaging/"], button[aria-label^="Mensagens"], button[aria-label^="Messaging"]) button[aria-expanded]:has(img)'},
+    signedSelector:'.global-nav__me, .global-nav__me-photo, .global-nav__primary-link-me-menu-trigger, body:has(a[href*="/mynetwork/"]):has(a[href*="/messaging/"], button[aria-label^="Mensagens"], button[aria-label^="Messaging"]) button[aria-expanded]:has(img), header:has(a[href*="/mynetwork"]):has(a[href*="/messaging/"]):has(a[href*="/notifications/"])'},
 } as const;
 export type BrowserSessionPortal=keyof typeof browserConnectors;
 /** LinkedIn stays in the person's browser. Never export its authentication. */
