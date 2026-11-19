@@ -565,7 +565,8 @@ export async function applyGupyApplication(
       : pause(
           "A Gupy demorou para carregar. Revise a conexão e as etapas pendentes.",
         );
-  } catch {
+  } catch (error) {
+    console.error(JSON.stringify({event:"gupy_executor_error",applyClicked,finalClicked,draftRecognized,url:(()=>{try{return new URL(page.url()).pathname}catch{return null}})(),error:String((error as Error)?.stack||error).slice(0,1500)}));
     return finalClicked || optionalAnswersSubmitted || (applyClicked && !draftRecognized)
       ? unknown(
           "A conexão foi interrompida durante a tentativa. Confira a candidatura antes de repetir.",
