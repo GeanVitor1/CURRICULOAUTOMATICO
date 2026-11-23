@@ -1601,3 +1601,6 @@
 .no-jobs-notice .no-jobs-actions small { color: var(--muted); font-size: 11.5px; }
 .no-jobs-notice.compact { padding: 12px 14px; margin: 8px 0 0; }
 .no-jobs-notice.compact .no-jobs-icon { width: 28px; height: 28px; }
+.discovery-status .no-jobs-reasons { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 3px; font-size: 12px; color: var(--muted); }
+.discovery-status .no-jobs-reasons b { color: var(--accent); margin-right: 4px; }
+.discovery-status .no-jobs-next { font-size: 11.5px; color: var(--muted); margin-top: 8px; }

@@ -20,28 +20,34 @@ function reasonLabel(reason: string) {
   return reason.replace(/\.$/, "");
 }
 
-export function NoNewJobsNotice({ run, compact = false }: { run: Run; compact?: boolean }) {
-  const { w, navigate } = useApp();
+/** Resumo de uma busca sem vagas novas: anúncios analisados, motivos principais e texto. */
+export function noNewJobsSummary(run: Run, ageDays: number) {
   const examined = (run.sourceProductivity || []).reduce((sum, p) => sum + (p.examined || 0), 0);
   const reasons: Record<string, number> = {};
   for (const p of run.sourceProductivity || [])
     for (const [reason, n] of Object.entries(p.excluded || {})) reasons[reason] = (reasons[reason] || 0) + n;
-  const top = Object.entries(reasons).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const top = Object.entries(reasons).sort((a, b) => b[1] - a[1]).slice(0, 3)
+    .map(([reason, n]) => ({ label: reasonLabel(reason), n }));
+  const text = (examined
+    ? `Analisamos ${examined} anúncio${examined > 1 ? "s" : ""} publicado${examined > 1 ? "s" : ""} ${periodLabel(ageDays)}, mas nenhum combinava com seu perfil e filtros.`
+    : `Não apareceram anúncios novos ${periodLabel(ageDays)} para os seus cargos.`) +
+    " Isso não é um erro: a busca funcionou normalmente.";
+  return { examined, top, text };
+}
+
+export function NoNewJobsNotice({ run, compact = false }: { run: Run; compact?: boolean }) {
+  const { w, navigate } = useApp();
+  const { top, text } = noNewJobsSummary(run, w.filters.ageDays);
   return (
     <div className={"no-jobs-notice" + (compact ? " compact" : "")} role="status">
       <span className="no-jobs-icon"><SearchCheck size={18} /></span>
       <div>
         <strong>Nenhuma vaga nova desta vez</strong>
-        <p>
-          {examined
-            ? `Analisamos ${examined} anúncio${examined > 1 ? "s" : ""} publicado${examined > 1 ? "s" : ""} ${periodLabel(w.filters.ageDays)}, mas nenhum combinava com seu perfil e filtros.`
-            : `Não apareceram anúncios novos ${periodLabel(w.filters.ageDays)} para os seus cargos.`}{" "}
-          Isso não é um erro: a busca funcionou normalmente.
-        </p>
+        <p>{text}</p>
         {!!top.length && (
           <ul>
-            {top.map(([reason, n]) => (
-              <li key={reason}><b>{n}</b> {reasonLabel(reason)}</li>
+            {top.map(({ label, n }) => (
+              <li key={label}><b>{n}</b> {label}</li>
             ))}
           </ul>
         )}

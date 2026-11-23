@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useAction, useApp, salary, date } from "./lib";
+import { isNoNewJobsRun, noNewJobsSummary } from "./NoNewJobsNotice";
 import type { Job } from "../shared/types";
 import { animatedThinking, mascots, type MascotVariant } from "./mascots";
 export function Logo({ small = false }: { small?: boolean }) {
@@ -82,6 +83,28 @@ export function DiscoveryStatus() {
   const run = w.runs[0];
   if (!run) return null;
   const working = ["queued", "running"].includes(run.status);
+  const empty = isNoNewJobsRun(run) && !run.errors.length ? noNewJobsSummary(run, w.filters.ageDays) : null;
+  if (empty)
+    return (
+      <motion.div layout className="discovery-status completed no-new-jobs" role="status">
+        <Mascot className="discovery-mascot" variant="considering" eager />
+        <div>
+          <strong>Nenhuma vaga nova desta vez</strong>
+          <p>{empty.text}</p>
+          {!!empty.top.length && (
+            <ul className="no-jobs-reasons">
+              {empty.top.map(({ label, n }) => (
+                <li key={label}><b>{n}</b> {label}</li>
+              ))}
+            </ul>
+          )}
+          {w.routine.enabled && w.routine.nextRun && (
+            <p className="no-jobs-next">Próxima busca: {date(w.routine.nextRun, true)}</p>
+          )}
+        </div>
+        <Button onClick={() => navigate("perfil-inteligente")}>Ampliar período ou filtros</Button>
+      </motion.div>
+    );
   return (
     <motion.div
       layout
