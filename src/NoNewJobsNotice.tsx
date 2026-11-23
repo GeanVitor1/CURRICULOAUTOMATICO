@@ -7,7 +7,9 @@ type Run = Workspace["runs"][number];
 
 /** A busca rodou, mas não achou vagas novas compatíveis: não é uma falha. */
 export function isNoNewJobsRun(run?: Run) {
-  return !!run && run.discovered === 0 && ["completed", "partial"].includes(run.status);
+  // Sem fontes consultadas (orçamento do dia atingido, saldo já usado) não é "busca sem vagas".
+  return !!run && run.discovered === 0 && ["completed", "partial"].includes(run.status) &&
+    !!run.sourceProductivity?.length;
 }
 
 const periodLabel = (days: number) =>
