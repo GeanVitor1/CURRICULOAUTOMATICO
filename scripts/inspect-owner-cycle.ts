@@ -3,6 +3,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { Firestore } from "@google-cloud/firestore";
 import { GoogleAuth, OAuth2Client } from "google-auth-library";
+import { firebaseCliClient } from "./firebase-cli-auth";
 import { firestoreStore } from "../server/storage-firestore";
 import { and, eq } from "../server/storage-types";
 import { clearApplicationHistory } from "../server/clear-application-history";
@@ -17,10 +18,9 @@ const config = JSON.parse(
     "utf8",
   ),
 );
-if (!config.tokens?.access_token)
+if (!config.tokens?.refresh_token)
   throw new Error("Entre no Firebase CLI primeiro.");
-const client = new OAuth2Client();
-client.setCredentials({ access_token: config.tokens.access_token });
+const client = firebaseCliClient();
 const projectId = "curriculoautomatico-a15fa";
 process.env.FIREBASE_PROJECT_ID = projectId;
 const database = new Firestore({

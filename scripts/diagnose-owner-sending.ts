@@ -4,6 +4,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { Firestore } from "@google-cloud/firestore";
 import { GoogleAuth, OAuth2Client } from "google-auth-library";
+import { firebaseCliClient } from "./firebase-cli-auth";
 import { firestoreStore } from "../server/storage-firestore";
 import { and, eq } from "../server/storage-types";
 import { analyze, matchesObjectiveFilters, matchesSelectedSites } from "../server/engine";
@@ -11,8 +12,7 @@ import { analyze, matchesObjectiveFilters, matchesSelectedSites } from "../serve
 const email = process.argv.find((a) => a.startsWith("--email="))?.slice(8);
 if (!email) throw new Error("Informe --email=conta");
 const config = JSON.parse(await readFile(join(homedir(), ".config/configstore/firebase-tools.json"), "utf8"));
-const client = new OAuth2Client();
-client.setCredentials({ access_token: config.tokens.access_token });
+const client = firebaseCliClient();
 const projectId = "curriculoautomatico-a15fa";
 process.env.FIREBASE_PROJECT_ID = projectId;
 const store = firestoreStore(new Firestore({ projectId, ignoreUndefinedProperties: true, auth: new GoogleAuth({ authClient: client, projectId }) }));

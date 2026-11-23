@@ -2,12 +2,13 @@ import {readFile,writeFile,mkdir} from "node:fs/promises";
 import {homedir} from "node:os";
 import {join} from "node:path";
 import {OAuth2Client} from "google-auth-library";
+import { firebaseCliClient } from "./firebase-cli-auth";
 
 // Creates only the two missing recovery indexes. Never deletes indexes/documents.
 const project="curriculoautomatico-a15fa";
 const config=JSON.parse(await readFile(join(homedir(),".config/configstore/firebase-tools.json"),"utf8"));
-if(!config.tokens?.access_token||config.tokens.expires_at<=Date.now())throw new Error("Exige autenticação Firebase CLI válida.");
-const client=new OAuth2Client();client.setCredentials({access_token:config.tokens.access_token});
+if(!config.tokens?.refresh_token)throw new Error("Exige autenticação Firebase CLI válida.");
+const client=firebaseCliClient();
 const root=`https://firestore.googleapis.com/v1/projects/${project}/databases/(default)`;
 const result:{at:string;apply:boolean;edition?:string;indexes:unknown[];error?:unknown}={at:new Date().toISOString(),apply:process.argv.includes("--apply"),indexes:[]};
 try {

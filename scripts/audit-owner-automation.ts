@@ -3,6 +3,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { Firestore } from "@google-cloud/firestore";
 import { GoogleAuth, OAuth2Client } from "google-auth-library";
+import { firebaseCliClient } from "./firebase-cli-auth";
 import dotenv from "dotenv";
 import { firestoreStore } from "../server/storage-firestore";
 import { and, eq, or, lt } from "../server/storage-types";
@@ -15,7 +16,7 @@ import { confirmedAutomaticApplication } from "../server/automation-trace";
 const config = JSON.parse(await readFile(join(homedir(),".config/configstore/firebase-tools.json"),"utf8"));
 const email = process.argv.find(arg => arg.startsWith("--email="))?.slice(8) ||
   (process.argv.includes("--operator") ? config.user?.email : undefined);
-if (!email || !config.tokens?.access_token || config.tokens.expires_at <= Date.now())
+if (!email || !config.tokens?.refresh_token)
   throw new Error("Exige titular explícito (--operator ou --email=) e credencial Firebase CLI válida.");
 const envFile = process.argv.find(arg => arg.startsWith("--env="))?.slice(6);
 if (envFile) {
@@ -24,8 +25,7 @@ if (envFile) {
   for (const key of ["ATS_PUBLIC_FORM_PLATFORMS","ATS_BROWSER_AUTHORIZED","COMPANY_FORM_AUTHORIZED","GOOGLE_CLIENT_ID","GOOGLE_REDIRECT_URI","APP_ORIGIN","DISCOVERY_COMPANY_BOARDS"])
     if (env[key]) process.env[key] = env[key];
 }
-const client = new OAuth2Client();
-client.setCredentials({access_token:config.tokens.access_token});
+const client = firebaseCliClient();
 const projectId = "curriculoautomatico-a15fa";
 const db = new Firestore({projectId,ignoreUndefinedProperties:true,auth:new GoogleAuth({authClient:client,projectId})});
 const store = firestoreStore(db);
