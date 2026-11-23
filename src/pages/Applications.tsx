@@ -72,23 +72,47 @@ export default function Applications() {
             {tab === "needs" && listed.some((a) => a.missingQuestions?.length) && (
               <Button className="primary" onClick={() => navigate("perfil-inteligente")}>Responder pendências no Perfil inteligente</Button>
             )}
-            <ul className="pending-apps">
-              {listed.map((app) => {
-                const vacancy = w.jobs.find((item) => item.id === app.jobId);
-                return (
-                  <li key={app.id}>
-                    <strong>{vacancy ? `${vacancy.title} · ${vacancy.company}` : "Vaga"}</strong>
-                    <span className={`badge ${app.status === "Requer ação manual" ? "amber" : "blue"}`}>{app.status}</span>
-                    <small>
-                      {pendingReason(app)}
-                      {!!app.missingQuestions?.length && app.status === "Requer ação manual" && (
-                        <> · <button type="button" className="link-button" onClick={() => navigate("perfil-inteligente")}>Responder no Perfil inteligente</button></>
-                      )}
-                    </small>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="count-caption">{listed.length} {tab === "needs" ? "candidaturas aguardando você" : "candidaturas em andamento"}</div>
+            <div className="panel table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Oportunidade</th>
+                    <th>Status</th>
+                    <th>Última atualização</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listed.map((app) => {
+                    const vacancy = w.jobs.find((item) => item.id === app.jobId);
+                    const updated = app.history.at(-1)?.at;
+                    return (
+                      <tr key={app.id}>
+                        <td>
+                          <div className="table-job">
+                            <CompanyLogo name={vacancy?.company || "Vaga"} />
+                            <div>
+                              <strong>{vacancy?.title || "Vaga"}</strong>
+                              <span>{vacancy?.company}</span>
+                              <small className="muted">
+                                {pendingReason(app)}
+                                {!!app.missingQuestions?.length && app.status === "Requer ação manual" && (
+                                  <> · <button type="button" className="link-button" onClick={() => navigate("perfil-inteligente")}>Responder no Perfil inteligente</button></>
+                                )}
+                              </small>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <span className={`badge ${app.status === "Requer ação manual" ? "amber" : "blue"}`}>{app.status}</span>
+                        </td>
+                        <td className="muted">{updated ? date(updated) : "—"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </>
         ) : <div className="panel"><Empty title={tab === "needs" ? "Nada pendente" : "Nada em andamento"} icon={<CheckCircle2 size={28} />} description={tab === "needs" ? "Nenhuma candidatura aguarda você." : "Nenhum envio em andamento agora."} /></div>
       ) : <>
