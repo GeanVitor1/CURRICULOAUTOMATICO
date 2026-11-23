@@ -1,4 +1,5 @@
 import { missingDataAuthorized, missingDataEligible, missingDataFingerprint } from "./missing-data-consent";
+import { pruneExpired } from "./retention";
 import {salaryOption} from './salary-options';
 import {PORTAL_RUNTIME_VERSION} from '../shared/portal-runtime-version';
 import { randomUUID } from "node:crypto";
