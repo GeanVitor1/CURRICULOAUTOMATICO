@@ -168,9 +168,9 @@ export function FiltersModal({
               value={f.ageDays}
               onChange={(e) => update("ageDays", Number(e.target.value))}
             >
-              {[1, 3, 7, 30, 90, 365].map((n) => (
+              {[1, 3, 7, 15, 30, 90, 365].map((n) => (
                 <option value={n} key={n}>
-                  {n} {n === 1 ? "dia" : "dias"}
+                  {n === 1 ? "Últimas 24 horas" : `${n} dias`}
                 </option>
               ))}
             </select>

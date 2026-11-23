@@ -145,6 +145,7 @@ export default function Jobs() {
             <option value={1}>Últimas 24 horas</option>
             <option value={3}>Últimos 3 dias</option>
             <option value={7}>Última semana</option>
+            <option value={15}>Últimos 15 dias</option>
             <option value={30}>Último mês</option>
             <option value={365}>Qualquer data</option>
           </select>

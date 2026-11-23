@@ -28,6 +28,7 @@ import {
 import { api, useApp, useAction, date, isToday, submitted } from "./lib";
 import type { Job } from "../shared/types";
 import "./product.css";
+import { NoNewJobsNotice, isNoNewJobsRun } from "./NoNewJobsNotice";
 
 export default function Dashboard() {
   const { w, navigate, toast } = useApp();
@@ -326,7 +327,9 @@ export default function Dashboard() {
                   começar.
                 </p>
               )}
-              {latestRun && (
+              {isNoNewJobsRun(latestRun) ? (
+                <NoNewJobsNotice run={latestRun} />
+              ) : latestRun && (
                 <div
                   className={
                     "last-search-note " +

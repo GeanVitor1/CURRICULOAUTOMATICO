@@ -168,7 +168,7 @@ const contractChoices = [
 ] as const;
 const modalityLabel: Record<string, string> = { remoto: "Remoto", hibrido: "Híbrido", presencial: "Presencial" };
 const modalityKey = (label: string) => Object.entries(modalityLabel).find(([, l]) => l === label)?.[0] || label.toLowerCase();
-const ageLabel = (days: number) => ({ 1: "Últimas 24 horas", 3: "Últimos 3 dias", 7: "Última semana", 30: "Último mês" } as Record<number, string>)[days] || "Qualquer data";
+const ageLabel = (days: number) => ({ 1: "Últimas 24 horas", 3: "Últimos 3 dias", 7: "Última semana", 15: "Últimos 15 dias", 30: "Último mês" } as Record<number, string>)[days] || "Qualquer data";
 const money = (n: number) => `R$ ${n.toLocaleString("pt-BR")}`;
 
 export default function SmartProfile() {
@@ -414,7 +414,7 @@ export default function SmartProfile() {
           <label className="sp-field">
             <span className="sp-legend">Quando a vaga deve ter sido publicada?</span>
             <select value={fs.ageDays} onChange={(e) => setSearch("ageDays", Number(e.target.value))}>
-              {[1, 3, 7, 30, 365].map((d) => <option key={d} value={d}>{ageLabel(d)}</option>)}
+              {[1, 3, 7, 15, 30, 365].map((d) => <option key={d} value={d}>{ageLabel(d)}</option>)}
             </select>
           </label>
           <label className="sp-field">

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Badge, Button, Empty, Field, PageHead, Panel } from "../components";
 import { date, useAction, useApp } from "../lib";
+import { NoNewJobsNotice, isNoNewJobsRun } from "../NoNewJobsNotice";
 export default function Automation() {
   const { w, demo, navigate, toast } = useApp();
   const a = useAction();
@@ -178,7 +179,7 @@ export default function Automation() {
                 <div className="run-row" key={run.id}>
                   <div>
                     <strong>{date(run.at, true)}</strong>
-                    <Badge
+                    {isNoNewJobsRun(run) ? <Badge tone="blue">Sem vagas novas</Badge> : <Badge
                       tone={
                         run.status === "completed"
                           ? "green"
@@ -196,9 +197,9 @@ export default function Automation() {
                           interrupted: "Interrompida",
                         } as any
                       )[run.status] || run.status}
-                    </Badge>
+                    </Badge>}
                   </div>
-                  <p>{run.message}</p>
+                  {isNoNewJobsRun(run) ? <NoNewJobsNotice run={run} compact /> : <p>{run.message}</p>}
                   <small>
                     {run.discovered} novas vagas · {run.processed} candidaturas
                     preparadas

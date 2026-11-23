@@ -697,7 +697,13 @@ export async function discover(
       }
 
     }
-    notify(
+    if (!count && run.status !== "failed")
+      notify(
+        w,
+        "Nenhuma vaga nova desta vez",
+        `A busca funcionou, mas nenhum anúncio publicado nos últimos ${w.filters.ageDays} dia(s) combinou com seu perfil e filtros. Não é um erro: tentaremos de novo na próxima busca. Para ver mais vagas, amplie o período ou os filtros.`,
+      );
+    else notify(
       w,
       "Busca finalizada",
       errors.length

@@ -1571,3 +1571,33 @@
     flex-wrap: wrap;
   }
 }
+
+/* Busca sem vagas novas: informativo, não erro. */
+.no-jobs-notice {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--accent-bg);
+  color: var(--text);
+}
+.no-jobs-notice .no-jobs-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--accent);
+}
+.no-jobs-notice strong { display: block; font-size: 14px; margin-bottom: 4px; }
+.no-jobs-notice p { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.no-jobs-notice ul { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+.no-jobs-notice li b { color: var(--accent); margin-right: 4px; }
+.no-jobs-notice .no-jobs-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.no-jobs-notice .no-jobs-actions small { color: var(--muted); font-size: 11.5px; }
+.no-jobs-notice.compact { padding: 12px 14px; margin: 8px 0 0; }
+.no-jobs-notice.compact .no-jobs-icon { width: 28px; height: 28px; }
