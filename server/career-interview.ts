@@ -93,7 +93,10 @@ export function applyInterview(
     throw new RequestError(
       "O envio automático ainda não está conectado aos sites escolhidos. Você pode salvar suas preferências ou iniciar apenas a busca e preparação.",
     );
+  // A senioridade escolhida pelo usuário vale mais que a lida do currículo.
+  const chosenLevel = w.profile.level;
   applyResumeProfile(w, resume);
+  if (chosenLevel && !/^n[aã]o especificado$/i.test(chosenLevel)) w.profile.level = chosenLevel;
   if (a.city.trim()) w.profile.location = a.city;
   if (a.phone?.trim()) w.profile.phone = a.phone;
   w.profile.salaryMin = a.salaryMin;

@@ -103,6 +103,12 @@ describe("Entrevista e filtros simples", () => {
     expect(w.routine.enabled).toBe(false);
     expect(w.resumes[0].approved).toBe(false);
   });
+  it("mantém a senioridade escolhida ao salvar as preferências", () => {
+    const w = workspace();
+    w.profile.level = "Júnior";
+    applyInterview(w, interviewSchema.parse({ step: 5, answers, complete: true }));
+    expect(w.profile.level).toBe("Júnior");
+  });
   it("transforma as respostas em critérios únicos e gerencia os sites sem configuração técnica", () => {
     const w = workspace();
     w.filters.skills = ["Excel"];
